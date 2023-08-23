@@ -13,53 +13,112 @@
  */
 
 import { exists, mapValues } from '../runtime';
-/**
- * 
- * @export
- * @interface RegisterNsInner
- */
-export interface RegisterNsInner {
-    /**
-     * Хост name-сервера.
-     * @type {string}
-     * @memberof RegisterNsInner
-     */
-    host: string;
-    /**
-     * Список IP-адресов name-сервера
-     * @type {Array<string>}
-     * @memberof RegisterNsInner
-     */
-    ips: Array<string>;
-}
+import type { DomainPaymentPeriod } from './DomainPaymentPeriod';
+import {
+    DomainPaymentPeriodFromJSON,
+    DomainPaymentPeriodFromJSONTyped,
+    DomainPaymentPeriodToJSON,
+} from './DomainPaymentPeriod';
+import type { DomainRegisterNsInner } from './DomainRegisterNsInner';
+import {
+    DomainRegisterNsInnerFromJSON,
+    DomainRegisterNsInnerFromJSONTyped,
+    DomainRegisterNsInnerToJSON,
+} from './DomainRegisterNsInner';
 
 /**
- * Check if a given object implements the RegisterNsInner interface.
+ * Заявка на регистрацию домена
+ * @export
+ * @interface DomainRegister
  */
-export function instanceOfRegisterNsInner(value: object): boolean {
+export interface DomainRegister {
+    /**
+     * Тип создаваемой заявки.
+     * @type {string}
+     * @memberof DomainRegister
+     */
+    action: DomainRegisterActionEnum;
+    /**
+     * Полное имя домена.
+     * @type {string}
+     * @memberof DomainRegister
+     */
+    fqdn: string;
+    /**
+     * Это логическое значение, которое показывает, включено ли автопродление домена.
+     * @type {boolean}
+     * @memberof DomainRegister
+     */
+    isAutoprolongEnabled?: boolean;
+    /**
+     * Это логическое значение, которое показывает, включено ли скрытие данных администратора домена для whois. Опция недоступна для доменов в зонах .ru и .рф.
+     * @type {boolean}
+     * @memberof DomainRegister
+     */
+    isWhoisPrivacyEnabled?: boolean;
+    /**
+     * Name-серверы для регистрации домена. Если не передавать этот параметр, будут использованы наши стандартные name-серверы. Нужно указать как минимум 2 name-сервера.
+     * @type {Array<DomainRegisterNsInner>}
+     * @memberof DomainRegister
+     */
+    ns?: Array<DomainRegisterNsInner>;
+    /**
+     * 
+     * @type {DomainPaymentPeriod}
+     * @memberof DomainRegister
+     */
+    period?: DomainPaymentPeriod;
+    /**
+     * Идентификатор администратора, на которого регистрируется домен.
+     * @type {number}
+     * @memberof DomainRegister
+     */
+    personId: number;
+}
+
+
+/**
+ * @export
+ */
+export const DomainRegisterActionEnum = {
+    Register: 'register'
+} as const;
+export type DomainRegisterActionEnum = typeof DomainRegisterActionEnum[keyof typeof DomainRegisterActionEnum];
+
+
+/**
+ * Check if a given object implements the DomainRegister interface.
+ */
+export function instanceOfDomainRegister(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "host" in value;
-    isInstance = isInstance && "ips" in value;
+    isInstance = isInstance && "action" in value;
+    isInstance = isInstance && "fqdn" in value;
+    isInstance = isInstance && "personId" in value;
 
     return isInstance;
 }
 
-export function RegisterNsInnerFromJSON(json: any): RegisterNsInner {
-    return RegisterNsInnerFromJSONTyped(json, false);
+export function DomainRegisterFromJSON(json: any): DomainRegister {
+    return DomainRegisterFromJSONTyped(json, false);
 }
 
-export function RegisterNsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegisterNsInner {
+export function DomainRegisterFromJSONTyped(json: any, ignoreDiscriminator: boolean): DomainRegister {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'host': json['host'],
-        'ips': json['ips'],
+        'action': json['action'],
+        'fqdn': json['fqdn'],
+        'isAutoprolongEnabled': !exists(json, 'is_autoprolong_enabled') ? undefined : json['is_autoprolong_enabled'],
+        'isWhoisPrivacyEnabled': !exists(json, 'is_whois_privacy_enabled') ? undefined : json['is_whois_privacy_enabled'],
+        'ns': !exists(json, 'ns') ? undefined : ((json['ns'] as Array<any>).map(DomainRegisterNsInnerFromJSON)),
+        'period': !exists(json, 'period') ? undefined : DomainPaymentPeriodFromJSON(json['period']),
+        'personId': json['person_id'],
     };
 }
 
-export function RegisterNsInnerToJSON(value?: RegisterNsInner | null): any {
+export function DomainRegisterToJSON(value?: DomainRegister | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +127,13 @@ export function RegisterNsInnerToJSON(value?: RegisterNsInner | null): any {
     }
     return {
         
-        'host': value.host,
-        'ips': value.ips,
+        'action': value.action,
+        'fqdn': value.fqdn,
+        'is_autoprolong_enabled': value.isAutoprolongEnabled,
+        'is_whois_privacy_enabled': value.isWhoisPrivacyEnabled,
+        'ns': value.ns === undefined ? undefined : ((value.ns as Array<any>).map(DomainRegisterNsInnerToJSON)),
+        'period': DomainPaymentPeriodToJSON(value.period),
+        'person_id': value.personId,
     };
 }
 

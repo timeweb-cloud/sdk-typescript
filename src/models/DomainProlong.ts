@@ -29,55 +29,55 @@ import {
 /**
  * Заявка на продление домена
  * @export
- * @interface Prolong
+ * @interface DomainProlong
  */
-export interface Prolong {
+export interface DomainProlong {
     /**
      * Тип создаваемой заявки.
      * @type {string}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
-    action: ProlongActionEnum;
+    action: DomainProlongActionEnum;
     /**
      * Полное имя домена.
      * @type {string}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     fqdn: string;
     /**
      * Это логическое значение, которое показывает включена ли услуга "Антиспам" для домена
      * @type {boolean}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     isAntispamEnabled?: boolean;
     /**
      * Это логическое значение, которое показывает, включено ли автопродление домена.
      * @type {boolean}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     isAutoprolongEnabled?: boolean;
     /**
      * Это логическое значение, которое показывает, включено ли скрытие данных администратора домена для whois. Опция недоступна для доменов в зонах .ru и .рф.
      * @type {boolean}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     isWhoisPrivacyEnabled?: boolean;
     /**
      * 
      * @type {DomainPaymentPeriod}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     period?: DomainPaymentPeriod;
     /**
      * Идентификатор администратора, на которого зарегистрирован домен.
      * @type {number}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     personId?: number;
     /**
      * 
      * @type {DomainPrimeType}
-     * @memberof Prolong
+     * @memberof DomainProlong
      */
     prime?: DomainPrimeType;
 }
@@ -86,16 +86,16 @@ export interface Prolong {
 /**
  * @export
  */
-export const ProlongActionEnum = {
+export const DomainProlongActionEnum = {
     Prolong: 'prolong'
 } as const;
-export type ProlongActionEnum = typeof ProlongActionEnum[keyof typeof ProlongActionEnum];
+export type DomainProlongActionEnum = typeof DomainProlongActionEnum[keyof typeof DomainProlongActionEnum];
 
 
 /**
- * Check if a given object implements the Prolong interface.
+ * Check if a given object implements the DomainProlong interface.
  */
-export function instanceOfProlong(value: object): boolean {
+export function instanceOfDomainProlong(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "action" in value;
     isInstance = isInstance && "fqdn" in value;
@@ -103,11 +103,11 @@ export function instanceOfProlong(value: object): boolean {
     return isInstance;
 }
 
-export function ProlongFromJSON(json: any): Prolong {
-    return ProlongFromJSONTyped(json, false);
+export function DomainProlongFromJSON(json: any): DomainProlong {
+    return DomainProlongFromJSONTyped(json, false);
 }
 
-export function ProlongFromJSONTyped(json: any, ignoreDiscriminator: boolean): Prolong {
+export function DomainProlongFromJSONTyped(json: any, ignoreDiscriminator: boolean): DomainProlong {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -124,7 +124,7 @@ export function ProlongFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     };
 }
 
-export function ProlongToJSON(value?: Prolong | null): any {
+export function DomainProlongToJSON(value?: DomainProlong | null): any {
     if (value === undefined) {
         return undefined;
     }

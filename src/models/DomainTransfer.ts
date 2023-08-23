@@ -16,25 +16,25 @@ import { exists, mapValues } from '../runtime';
 /**
  * Заявка на перенос домена
  * @export
- * @interface Transfer
+ * @interface DomainTransfer
  */
-export interface Transfer {
+export interface DomainTransfer {
     /**
      * Тип создаваемой заявки.
      * @type {string}
-     * @memberof Transfer
+     * @memberof DomainTransfer
      */
-    action: TransferActionEnum;
+    action: DomainTransferActionEnum;
     /**
      * Код авторизации для переноса домена.
      * @type {string}
-     * @memberof Transfer
+     * @memberof DomainTransfer
      */
     authCode: string;
     /**
      * Полное имя домена.
      * @type {string}
-     * @memberof Transfer
+     * @memberof DomainTransfer
      */
     fqdn: string;
 }
@@ -43,16 +43,16 @@ export interface Transfer {
 /**
  * @export
  */
-export const TransferActionEnum = {
+export const DomainTransferActionEnum = {
     Transfer: 'transfer'
 } as const;
-export type TransferActionEnum = typeof TransferActionEnum[keyof typeof TransferActionEnum];
+export type DomainTransferActionEnum = typeof DomainTransferActionEnum[keyof typeof DomainTransferActionEnum];
 
 
 /**
- * Check if a given object implements the Transfer interface.
+ * Check if a given object implements the DomainTransfer interface.
  */
-export function instanceOfTransfer(value: object): boolean {
+export function instanceOfDomainTransfer(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "action" in value;
     isInstance = isInstance && "authCode" in value;
@@ -61,11 +61,11 @@ export function instanceOfTransfer(value: object): boolean {
     return isInstance;
 }
 
-export function TransferFromJSON(json: any): Transfer {
-    return TransferFromJSONTyped(json, false);
+export function DomainTransferFromJSON(json: any): DomainTransfer {
+    return DomainTransferFromJSONTyped(json, false);
 }
 
-export function TransferFromJSONTyped(json: any, ignoreDiscriminator: boolean): Transfer {
+export function DomainTransferFromJSONTyped(json: any, ignoreDiscriminator: boolean): DomainTransfer {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -77,7 +77,7 @@ export function TransferFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function TransferToJSON(value?: Transfer | null): any {
+export function DomainTransferToJSON(value?: DomainTransfer | null): any {
     if (value === undefined) {
         return undefined;
     }

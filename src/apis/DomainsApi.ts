@@ -21,6 +21,7 @@ import type {
   CreateDns,
   CreateDomainDNSRecord201Response,
   CreateDomainRequest201Response,
+  DomainRegister,
   GetDomain200Response,
   GetDomainDNSRecords200Response,
   GetDomainNameServers200Response,
@@ -33,7 +34,6 @@ import type {
   GetFinances500Response,
   GetTLD200Response,
   GetTLDs200Response,
-  Register,
   UpdateDomain,
   UpdateDomainAutoProlongation200Response,
   UpdateDomainNameServers,
@@ -52,6 +52,8 @@ import {
     CreateDomainDNSRecord201ResponseToJSON,
     CreateDomainRequest201ResponseFromJSON,
     CreateDomainRequest201ResponseToJSON,
+    DomainRegisterFromJSON,
+    DomainRegisterToJSON,
     GetDomain200ResponseFromJSON,
     GetDomain200ResponseToJSON,
     GetDomainDNSRecords200ResponseFromJSON,
@@ -76,8 +78,6 @@ import {
     GetTLD200ResponseToJSON,
     GetTLDs200ResponseFromJSON,
     GetTLDs200ResponseToJSON,
-    RegisterFromJSON,
-    RegisterToJSON,
     UpdateDomainFromJSON,
     UpdateDomainToJSON,
     UpdateDomainAutoProlongation200ResponseFromJSON,
@@ -107,7 +107,7 @@ export interface CreateDomainDNSRecordRequest {
 }
 
 export interface CreateDomainRequestRequest {
-    register: Register;
+    domainRegister: DomainRegister;
 }
 
 export interface DeleteDomainRequest {
@@ -371,8 +371,8 @@ export class DomainsApi extends runtime.BaseAPI {
      * Создание заявки на регистрацию/продление/трансфер домена
      */
     async createDomainRequestRaw(requestParameters: CreateDomainRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDomainRequest201Response>> {
-        if (requestParameters.register === null || requestParameters.register === undefined) {
-            throw new runtime.RequiredError('register','Required parameter requestParameters.register was null or undefined when calling createDomainRequest.');
+        if (requestParameters.domainRegister === null || requestParameters.domainRegister === undefined) {
+            throw new runtime.RequiredError('domainRegister','Required parameter requestParameters.domainRegister was null or undefined when calling createDomainRequest.');
         }
 
         const queryParameters: any = {};
@@ -394,7 +394,7 @@ export class DomainsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RegisterToJSON(requestParameters.register),
+            body: DomainRegisterToJSON(requestParameters.domainRegister),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateDomainRequest201ResponseFromJSON(jsonValue));

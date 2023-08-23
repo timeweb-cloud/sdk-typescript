@@ -141,7 +141,11 @@ src/models/DomainNameServer.ts
 src/models/DomainNameServerItemsInner.ts
 src/models/DomainPaymentPeriod.ts
 src/models/DomainPrimeType.ts
+src/models/DomainProlong.ts
+src/models/DomainRegister.ts
+src/models/DomainRegisterNsInner.ts
 src/models/DomainRequest.ts
+src/models/DomainTransfer.ts
 src/models/EditApiKey.ts
 src/models/Finances.ts
 src/models/FirewallGroupInAPI.ts
@@ -276,11 +280,8 @@ src/models/PresetsResponse.ts
 src/models/PresetsStorage.ts
 src/models/Project.ts
 src/models/ProjectResource.ts
-src/models/Prolong.ts
 src/models/Quota.ts
 src/models/RefreshApiKey.ts
-src/models/Register.ts
-src/models/RegisterNsInner.ts
 src/models/RemoveCountries.ts
 src/models/RemoveIps.ts
 src/models/RenameStorageFileRequest.ts
@@ -315,7 +316,6 @@ src/models/StatusCompanyInfo.ts
 src/models/Subdomain.ts
 src/models/TopLevelDomain.ts
 src/models/TopLevelDomainAllowedBuyPeriodsInner.ts
-src/models/Transfer.ts
 src/models/TransferStatus.ts
 src/models/TransferStatusErrorsInner.ts
 src/models/TransferStorageRequest.ts
