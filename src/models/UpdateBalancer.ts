@@ -97,12 +97,6 @@ export interface UpdateBalancer {
      * @memberof UpdateBalancer
      */
     rise?: number;
-    /**
-     * Идентификатор тарифа.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    presetId?: number;
 }
 
 
@@ -159,7 +153,6 @@ export function UpdateBalancerFromJSONTyped(json: any, ignoreDiscriminator: bool
         'timeout': !exists(json, 'timeout') ? undefined : json['timeout'],
         'fall': !exists(json, 'fall') ? undefined : json['fall'],
         'rise': !exists(json, 'rise') ? undefined : json['rise'],
-        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
     };
 }
 
@@ -185,7 +178,6 @@ export function UpdateBalancerToJSON(value?: UpdateBalancer | null): any {
         'timeout': value.timeout,
         'fall': value.fall,
         'rise': value.rise,
-        'preset_id': value.presetId,
     };
 }
 
