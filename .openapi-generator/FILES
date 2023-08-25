@@ -358,6 +358,7 @@ src/models/UrlStatus.ts
 src/models/Use.ts
 src/models/Vds.ts
 src/models/VdsDisksInner.ts
+src/models/VdsImage.ts
 src/models/VdsNetworksInner.ts
 src/models/VdsNetworksInnerIpsInner.ts
 src/models/VdsOs.ts

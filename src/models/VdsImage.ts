@@ -13,261 +13,49 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { VdsDisksInner } from './VdsDisksInner';
-import {
-    VdsDisksInnerFromJSON,
-    VdsDisksInnerFromJSONTyped,
-    VdsDisksInnerToJSON,
-} from './VdsDisksInner';
-import type { VdsImage } from './VdsImage';
-import {
-    VdsImageFromJSON,
-    VdsImageFromJSONTyped,
-    VdsImageToJSON,
-} from './VdsImage';
-import type { VdsNetworksInner } from './VdsNetworksInner';
-import {
-    VdsNetworksInnerFromJSON,
-    VdsNetworksInnerFromJSONTyped,
-    VdsNetworksInnerToJSON,
-} from './VdsNetworksInner';
-import type { VdsOs } from './VdsOs';
-import {
-    VdsOsFromJSON,
-    VdsOsFromJSONTyped,
-    VdsOsToJSON,
-} from './VdsOs';
-import type { VdsSoftware } from './VdsSoftware';
-import {
-    VdsSoftwareFromJSON,
-    VdsSoftwareFromJSONTyped,
-    VdsSoftwareToJSON,
-} from './VdsSoftware';
-
 /**
- * Сервер
+ * Образ сервера.
  * @export
- * @interface Vds
+ * @interface VdsImage
  */
-export interface Vds {
+export interface VdsImage {
     /**
-     * Уникальный идентификатор для каждого экземпляра сервера. Автоматически генерируется при создании.
-     * @type {number}
-     * @memberof Vds
-     */
-    id: number;
-    /**
-     * Удобочитаемое имя, установленное для выделенного сервера.
+     * Уникальный идентификатор образа сервера.
      * @type {string}
-     * @memberof Vds
+     * @memberof VdsImage
+     */
+    id: string;
+    /**
+     * Название образа сервера.
+     * @type {string}
+     * @memberof VdsImage
      */
     name: string;
     /**
-     * Комментарий к выделенному серверу.
-     * @type {string}
-     * @memberof Vds
-     */
-    comment: string;
-    /**
-     * Дата создания сервера в формате ISO8061.
-     * @type {string}
-     * @memberof Vds
-     */
-    createdAt: string;
-    /**
-     * 
-     * @type {VdsOs}
-     * @memberof Vds
-     */
-    os: VdsOs;
-    /**
-     * 
-     * @type {VdsSoftware}
-     * @memberof Vds
-     */
-    software: VdsSoftware | null;
-    /**
-     * Уникальный идентификатор тарифа сервера.
-     * @type {number}
-     * @memberof Vds
-     */
-    presetId: number | null;
-    /**
-     * Локация сервера.
-     * @type {string}
-     * @memberof Vds
-     */
-    location: VdsLocationEnum;
-    /**
-     * Уникальный идентификатор конфигуратора сервера.
-     * @type {number}
-     * @memberof Vds
-     */
-    configuratorId: number | null;
-    /**
-     * Режим загрузки ОС сервера.
-     * @type {string}
-     * @memberof Vds
-     */
-    bootMode: VdsBootModeEnum;
-    /**
-     * Статус сервера.
-     * @type {string}
-     * @memberof Vds
-     */
-    status: VdsStatusEnum;
-    /**
-     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда был запущен сервер.
-     * @type {Date}
-     * @memberof Vds
-     */
-    startAt: Date | null;
-    /**
-     * Это логическое значение, которое показывает, включена ли защита от DDOS у данного сервера.
+     * Является ли образ кастомным.
      * @type {boolean}
-     * @memberof Vds
+     * @memberof VdsImage
      */
-    isDdosGuard: boolean;
-    /**
-     * Количество ядер процессора сервера.
-     * @type {number}
-     * @memberof Vds
-     */
-    cpu: number;
-    /**
-     * Частота ядер процессора сервера.
-     * @type {string}
-     * @memberof Vds
-     */
-    cpuFrequency: string;
-    /**
-     * Размер (в Мб) ОЗУ сервера.
-     * @type {number}
-     * @memberof Vds
-     */
-    ram: number;
-    /**
-     * Список дисков сервера.
-     * @type {Array<VdsDisksInner>}
-     * @memberof Vds
-     */
-    disks: Array<VdsDisksInner>;
-    /**
-     * Уникальный идентификатор аватара сервера. Описание методов работы с аватарами появится позднее.
-     * @type {string}
-     * @memberof Vds
-     */
-    avatarId: string | null;
-    /**
-     * Пароль от VNC.
-     * @type {string}
-     * @memberof Vds
-     */
-    vncPass: string;
-    /**
-     * Пароль root сервера или пароль Администратора для серверов Windows.
-     * @type {string}
-     * @memberof Vds
-     */
-    rootPass: string | null;
-    /**
-     * 
-     * @type {VdsImage}
-     * @memberof Vds
-     */
-    image: VdsImage | null;
-    /**
-     * Список сетей диска.
-     * @type {Array<VdsNetworksInner>}
-     * @memberof Vds
-     */
-    networks: Array<VdsNetworksInner>;
+    isCustom: boolean;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the VdsImage interface.
  */
-export const VdsLocationEnum = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1'
-} as const;
-export type VdsLocationEnum = typeof VdsLocationEnum[keyof typeof VdsLocationEnum];
-
-/**
- * @export
- */
-export const VdsBootModeEnum = {
-    Std: 'std',
-    Single: 'single',
-    Cd: 'cd'
-} as const;
-export type VdsBootModeEnum = typeof VdsBootModeEnum[keyof typeof VdsBootModeEnum];
-
-/**
- * @export
- */
-export const VdsStatusEnum = {
-    Installing: 'installing',
-    SoftwareInstall: 'software_install',
-    Reinstalling: 'reinstalling',
-    On: 'on',
-    Off: 'off',
-    TurningOn: 'turning_on',
-    TurningOff: 'turning_off',
-    HardTurningOff: 'hard_turning_off',
-    Rebooting: 'rebooting',
-    HardRebooting: 'hard_rebooting',
-    Removing: 'removing',
-    Removed: 'removed',
-    Cloning: 'cloning',
-    Transfer: 'transfer',
-    Blocked: 'blocked',
-    Configuring: 'configuring',
-    NoPaid: 'no_paid',
-    PermanentBlocked: 'permanent_blocked'
-} as const;
-export type VdsStatusEnum = typeof VdsStatusEnum[keyof typeof VdsStatusEnum];
-
-
-/**
- * Check if a given object implements the Vds interface.
- */
-export function instanceOfVds(value: object): boolean {
+export function instanceOfVdsImage(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "comment" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "os" in value;
-    isInstance = isInstance && "software" in value;
-    isInstance = isInstance && "presetId" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "configuratorId" in value;
-    isInstance = isInstance && "bootMode" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "startAt" in value;
-    isInstance = isInstance && "isDdosGuard" in value;
-    isInstance = isInstance && "cpu" in value;
-    isInstance = isInstance && "cpuFrequency" in value;
-    isInstance = isInstance && "ram" in value;
-    isInstance = isInstance && "disks" in value;
-    isInstance = isInstance && "avatarId" in value;
-    isInstance = isInstance && "vncPass" in value;
-    isInstance = isInstance && "rootPass" in value;
-    isInstance = isInstance && "image" in value;
-    isInstance = isInstance && "networks" in value;
+    isInstance = isInstance && "isCustom" in value;
 
     return isInstance;
 }
 
-export function VdsFromJSON(json: any): Vds {
-    return VdsFromJSONTyped(json, false);
+export function VdsImageFromJSON(json: any): VdsImage {
+    return VdsImageFromJSONTyped(json, false);
 }
 
-export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
+export function VdsImageFromJSONTyped(json: any, ignoreDiscriminator: boolean): VdsImage {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -275,30 +63,11 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         
         'id': json['id'],
         'name': json['name'],
-        'comment': json['comment'],
-        'createdAt': json['created_at'],
-        'os': VdsOsFromJSON(json['os']),
-        'software': VdsSoftwareFromJSON(json['software']),
-        'presetId': json['preset_id'],
-        'location': json['location'],
-        'configuratorId': json['configurator_id'],
-        'bootMode': json['boot_mode'],
-        'status': json['status'],
-        'startAt': (json['start_at'] === null ? null : new Date(json['start_at'])),
-        'isDdosGuard': json['is_ddos_guard'],
-        'cpu': json['cpu'],
-        'cpuFrequency': json['cpu_frequency'],
-        'ram': json['ram'],
-        'disks': ((json['disks'] as Array<any>).map(VdsDisksInnerFromJSON)),
-        'avatarId': json['avatar_id'],
-        'vncPass': json['vnc_pass'],
-        'rootPass': json['root_pass'],
-        'image': VdsImageFromJSON(json['image']),
-        'networks': ((json['networks'] as Array<any>).map(VdsNetworksInnerFromJSON)),
+        'isCustom': json['is_custom'],
     };
 }
 
-export function VdsToJSON(value?: Vds | null): any {
+export function VdsImageToJSON(value?: VdsImage | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -309,26 +78,7 @@ export function VdsToJSON(value?: Vds | null): any {
         
         'id': value.id,
         'name': value.name,
-        'comment': value.comment,
-        'created_at': value.createdAt,
-        'os': VdsOsToJSON(value.os),
-        'software': VdsSoftwareToJSON(value.software),
-        'preset_id': value.presetId,
-        'location': value.location,
-        'configurator_id': value.configuratorId,
-        'boot_mode': value.bootMode,
-        'status': value.status,
-        'start_at': (value.startAt === null ? null : value.startAt.toISOString()),
-        'is_ddos_guard': value.isDdosGuard,
-        'cpu': value.cpu,
-        'cpu_frequency': value.cpuFrequency,
-        'ram': value.ram,
-        'disks': ((value.disks as Array<any>).map(VdsDisksInnerToJSON)),
-        'avatar_id': value.avatarId,
-        'vnc_pass': value.vncPass,
-        'root_pass': value.rootPass,
-        'image': VdsImageToJSON(value.image),
-        'networks': ((value.networks as Array<any>).map(VdsNetworksInnerToJSON)),
+        'is_custom': value.isCustom,
     };
 }
 

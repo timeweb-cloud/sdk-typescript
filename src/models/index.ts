@@ -338,6 +338,7 @@ export * from './UrlStatus';
 export * from './Use';
 export * from './Vds';
 export * from './VdsDisksInner';
+export * from './VdsImage';
 export * from './VdsNetworksInner';
 export * from './VdsNetworksInnerIpsInner';
 export * from './VdsOs';
