@@ -182,6 +182,12 @@ export interface Vds {
      * @memberof Vds
      */
     networks: Array<VdsNetworksInner>;
+    /**
+     * Cloud-init скрипт
+     * @type {string}
+     * @memberof Vds
+     */
+    cloudInit: string | null;
 }
 
 
@@ -259,6 +265,7 @@ export function instanceOfVds(value: object): boolean {
     isInstance = isInstance && "rootPass" in value;
     isInstance = isInstance && "image" in value;
     isInstance = isInstance && "networks" in value;
+    isInstance = isInstance && "cloudInit" in value;
 
     return isInstance;
 }
@@ -295,6 +302,7 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         'rootPass': json['root_pass'],
         'image': VdsImageFromJSON(json['image']),
         'networks': ((json['networks'] as Array<any>).map(VdsNetworksInnerFromJSON)),
+        'cloudInit': json['cloud_init'],
     };
 }
 
@@ -329,6 +337,7 @@ export function VdsToJSON(value?: Vds | null): any {
         'root_pass': value.rootPass,
         'image': VdsImageToJSON(value.image),
         'networks': ((value.networks as Array<any>).map(VdsNetworksInnerToJSON)),
+        'cloud_init': value.cloudInit,
     };
 }
 

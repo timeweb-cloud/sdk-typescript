@@ -80,6 +80,12 @@ export interface UpdateServer {
      * @memberof UpdateServer
      */
     imageId?: string;
+    /**
+     * Cloud-init скрипт
+     * @type {string}
+     * @memberof UpdateServer
+     */
+    cloudInit?: string;
 }
 
 /**
@@ -110,6 +116,7 @@ export function UpdateServerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'avatarId': !exists(json, 'avatar_id') ? undefined : json['avatar_id'],
         'comment': !exists(json, 'comment') ? undefined : json['comment'],
         'imageId': !exists(json, 'image_id') ? undefined : json['image_id'],
+        'cloudInit': !exists(json, 'cloud_init') ? undefined : json['cloud_init'],
     };
 }
 
@@ -131,6 +138,7 @@ export function UpdateServerToJSON(value?: UpdateServer | null): any {
         'avatar_id': value.avatarId,
         'comment': value.comment,
         'image_id': value.imageId,
+        'cloud_init': value.cloudInit,
     };
 }
 

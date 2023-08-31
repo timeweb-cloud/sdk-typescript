@@ -111,6 +111,12 @@ export interface CreateServer {
      * @memberof CreateServer
      */
     network?: Network;
+    /**
+     * Cloud-init скрипт
+     * @type {string}
+     * @memberof CreateServer
+     */
+    cloudInit?: string;
 }
 
 /**
@@ -148,6 +154,7 @@ export function CreateServerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'sshKeysIds': !exists(json, 'ssh_keys_ids') ? undefined : json['ssh_keys_ids'],
         'isLocalNetwork': !exists(json, 'is_local_network') ? undefined : json['is_local_network'],
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
+        'cloudInit': !exists(json, 'cloud_init') ? undefined : json['cloud_init'],
     };
 }
 
@@ -173,6 +180,7 @@ export function CreateServerToJSON(value?: CreateServer | null): any {
         'ssh_keys_ids': value.sshKeysIds,
         'is_local_network': value.isLocalNetwork,
         'network': NetworkToJSON(value.network),
+        'cloud_init': value.cloudInit,
     };
 }
 
