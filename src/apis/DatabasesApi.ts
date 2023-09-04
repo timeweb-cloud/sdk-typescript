@@ -372,7 +372,7 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать инстанс базы данных, отправьте POST-запрос на `/api/v1/databases/{db_cluster_id}/instances`.
+     * Чтобы создать инстанс базы данных, отправьте POST-запрос на `/api/v1/databases/{db_cluster_id}/instances`.\\    Существующие пользователи не будут иметь доступа к новой базе данных после создания. Вы можете изменить привилегии для пользователя через <a href=\'#tag/Bazy-dannyh/operation/updateDatabaseUser\'>метод изменения пользователя</a> 
      * Создание инстанса базы данных
      */
     async createDatabaseInstanceRaw(requestParameters: CreateDatabaseInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseInstance201Response>> {
@@ -410,7 +410,7 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать инстанс базы данных, отправьте POST-запрос на `/api/v1/databases/{db_cluster_id}/instances`.
+     * Чтобы создать инстанс базы данных, отправьте POST-запрос на `/api/v1/databases/{db_cluster_id}/instances`.\\    Существующие пользователи не будут иметь доступа к новой базе данных после создания. Вы можете изменить привилегии для пользователя через <a href=\'#tag/Bazy-dannyh/operation/updateDatabaseUser\'>метод изменения пользователя</a> 
      * Создание инстанса базы данных
      */
     async createDatabaseInstance(requestParameters: CreateDatabaseInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseInstance201Response> {

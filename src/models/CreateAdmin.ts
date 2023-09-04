@@ -38,6 +38,12 @@ export interface CreateAdmin {
      */
     host?: string;
     /**
+     * Уникальный идентификатор инстанса базы данных для приминения привилегий. В данных момент поле доступно только для кластеров MySQL. Если поле не передано, то привилегии будут применены ко всем инстансам
+     * @type {number}
+     * @memberof CreateAdmin
+     */
+    instanceId?: number;
+    /**
      * Список привилегий пользователя базы данных
      * @type {Array<string>}
      * @memberof CreateAdmin
@@ -107,6 +113,7 @@ export function CreateAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'login': json['login'],
         'password': json['password'],
         'host': !exists(json, 'host') ? undefined : json['host'],
+        'instanceId': !exists(json, 'instance_id') ? undefined : json['instance_id'],
         'privileges': json['privileges'],
         'description': !exists(json, 'description') ? undefined : json['description'],
     };
@@ -124,6 +131,7 @@ export function CreateAdminToJSON(value?: CreateAdmin | null): any {
         'login': value.login,
         'password': value.password,
         'host': value.host,
+        'instance_id': value.instanceId,
         'privileges': value.privileges,
         'description': value.description,
     };

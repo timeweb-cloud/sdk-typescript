@@ -37,6 +37,12 @@ export interface UpdateAdmin {
      * @memberof UpdateAdmin
      */
     description?: string;
+    /**
+     * Уникальный идентификатор инстанса базы данных для приминения привилегий. В данных момент поле доступно только для кластеров MySQL. Если поле не передано, то привилегии будут применены ко всем инстансам
+     * @type {number}
+     * @memberof UpdateAdmin
+     */
+    instanceId?: number;
 }
 
 
@@ -92,6 +98,7 @@ export function UpdateAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'password': !exists(json, 'password') ? undefined : json['password'],
         'privileges': !exists(json, 'privileges') ? undefined : json['privileges'],
         'description': !exists(json, 'description') ? undefined : json['description'],
+        'instanceId': !exists(json, 'instance_id') ? undefined : json['instance_id'],
     };
 }
 
@@ -107,6 +114,7 @@ export function UpdateAdminToJSON(value?: UpdateAdmin | null): any {
         'password': value.password,
         'privileges': value.privileges,
         'description': value.description,
+        'instance_id': value.instanceId,
     };
 }
 
