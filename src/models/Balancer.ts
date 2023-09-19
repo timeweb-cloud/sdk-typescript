@@ -152,6 +152,12 @@ export interface Balancer {
      * @memberof Balancer
      */
     ips: Array<string>;
+    /**
+     * Географическое расположение балансировщика
+     * @type {string}
+     * @memberof Balancer
+     */
+    location: BalancerLocationEnum;
 }
 
 
@@ -186,6 +192,15 @@ export const BalancerStatusEnum = {
 } as const;
 export type BalancerStatusEnum = typeof BalancerStatusEnum[keyof typeof BalancerStatusEnum];
 
+/**
+ * @export
+ */
+export const BalancerLocationEnum = {
+    Ru1: 'ru-1',
+    Pl1: 'pl-1'
+} as const;
+export type BalancerLocationEnum = typeof BalancerLocationEnum[keyof typeof BalancerLocationEnum];
+
 
 /**
  * Check if a given object implements the Balancer interface.
@@ -213,6 +228,7 @@ export function instanceOfBalancer(value: object): boolean {
     isInstance = isInstance && "isUseProxy" in value;
     isInstance = isInstance && "rules" in value;
     isInstance = isInstance && "ips" in value;
+    isInstance = isInstance && "location" in value;
 
     return isInstance;
 }
@@ -248,6 +264,7 @@ export function BalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'isUseProxy': json['is_use_proxy'],
         'rules': ((json['rules'] as Array<any>).map(RuleFromJSON)),
         'ips': json['ips'],
+        'location': json['location'],
     };
 }
 
@@ -281,6 +298,7 @@ export function BalancerToJSON(value?: Balancer | null): any {
         'is_use_proxy': value.isUseProxy,
         'rules': ((value.rules as Array<any>).map(RuleToJSON)),
         'ips': value.ips,
+        'location': value.location,
     };
 }
 
