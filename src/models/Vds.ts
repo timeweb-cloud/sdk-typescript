@@ -188,6 +188,12 @@ export interface Vds {
      * @memberof Vds
      */
     cloudInit: string | null;
+    /**
+     * Включен ли QEMU-agent на сервере
+     * @type {boolean}
+     * @memberof Vds
+     */
+    qemuAgent: boolean;
 }
 
 
@@ -266,6 +272,7 @@ export function instanceOfVds(value: object): boolean {
     isInstance = isInstance && "image" in value;
     isInstance = isInstance && "networks" in value;
     isInstance = isInstance && "cloudInit" in value;
+    isInstance = isInstance && "qemuAgent" in value;
 
     return isInstance;
 }
@@ -303,6 +310,7 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         'image': VdsImageFromJSON(json['image']),
         'networks': ((json['networks'] as Array<any>).map(VdsNetworksInnerFromJSON)),
         'cloudInit': json['cloud_init'],
+        'qemuAgent': json['qemu_agent'],
     };
 }
 
@@ -338,6 +346,7 @@ export function VdsToJSON(value?: Vds | null): any {
         'image': VdsImageToJSON(value.image),
         'networks': ((value.networks as Array<any>).map(VdsNetworksInnerToJSON)),
         'cloud_init': value.cloudInit,
+        'qemu_agent': value.qemuAgent,
     };
 }
 
