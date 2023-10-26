@@ -29,6 +29,7 @@ export interface Network {
      * IP-адрес в сети.
      * @type {string}
      * @memberof Network
+     * @deprecated
      */
     ip?: string;
 }
