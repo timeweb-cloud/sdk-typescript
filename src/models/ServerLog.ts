@@ -26,13 +26,13 @@ export interface ServerLog {
      */
     id: number;
     /**
-     * Дата лога
+     * Дата лога.
      * @type {Date}
      * @memberof ServerLog
      */
     loggedAt: Date;
     /**
-     * Событие сервера
+     * Событие сервера.
      * @type {string}
      * @memberof ServerLog
      */

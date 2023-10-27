@@ -183,13 +183,13 @@ export interface Vds {
      */
     networks: Array<VdsNetworksInner>;
     /**
-     * Cloud-init скрипт
+     * Cloud-init скрипт.
      * @type {string}
      * @memberof Vds
      */
     cloudInit: string | null;
     /**
-     * Включен ли QEMU-agent на сервере
+     * Включен ли QEMU-agent на сервере.
      * @type {boolean}
      * @memberof Vds
      */

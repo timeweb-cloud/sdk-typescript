@@ -20,19 +20,19 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ServerIp {
     /**
-     * Тип IP-адреса сети
+     * Тип IP-адреса сети.
      * @type {string}
      * @memberof ServerIp
      */
     type: ServerIpTypeEnum;
     /**
-     * IP-адрес сети
+     * IP-адрес сети.
      * @type {string}
      * @memberof ServerIp
      */
     ip: string;
     /**
-     * Запись имени узла
+     * Запись имени узла.
      * @type {string}
      * @memberof ServerIp
      */

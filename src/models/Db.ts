@@ -45,7 +45,7 @@ export interface Db {
      */
     createdAt: string;
     /**
-     * Идентификатор пользователя
+     * Идентификатор пользователя.
      * @type {string}
      * @memberof Db
      */

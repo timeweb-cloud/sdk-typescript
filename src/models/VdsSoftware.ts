@@ -14,19 +14,19 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * ПО из маркетплейса
+ * ПО из маркетплейса.
  * @export
  * @interface VdsSoftware
  */
 export interface VdsSoftware {
     /**
-     * Уникальный идентификатор ПО из маркетплейса
+     * Уникальный идентификатор ПО из маркетплейса.
      * @type {number}
      * @memberof VdsSoftware
      */
     id?: number;
     /**
-     * Название ПО из маркетплейса
+     * Название ПО из маркетплейса.
      * @type {string}
      * @memberof VdsSoftware
      */

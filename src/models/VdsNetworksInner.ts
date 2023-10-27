@@ -51,7 +51,7 @@ export interface VdsNetworksInner {
      */
     ips: Array<VdsNetworksInnerIpsInner> | null;
     /**
-     * Подключена ли DDoS-защита. Только для публичных сетей
+     * Подключена ли DDoS-защита. Только для публичных сетей.
      * @type {boolean}
      * @memberof VdsNetworksInner
      */

@@ -26,13 +26,13 @@ export interface VdsNetworksInnerIpsInner {
      */
     type: VdsNetworksInnerIpsInnerTypeEnum;
     /**
-     * IP-адрес сети
+     * IP-адрес сети.
      * @type {string}
      * @memberof VdsNetworksInnerIpsInner
      */
     ip: string;
     /**
-     * Запись имени узла
+     * Запись имени узла.
      * @type {string}
      * @memberof VdsNetworksInnerIpsInner
      */
