@@ -12,72 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+
 /**
- * 
+ * Тип базы данных.
  * @export
- * @interface Network
  */
-export interface Network {
-    /**
-     * Уникальный идентификатор сети.
-     * @type {string}
-     * @memberof Network
-     */
-    id: string;
-    /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
-     */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+export const DbType = {
+    Mysql: 'mysql',
+    Mysql5: 'mysql5',
+    Postgres: 'postgres',
+    Postgres14: 'postgres14',
+    Postgres15: 'postgres15',
+    Redis: 'redis',
+    Mongodb: 'mongodb',
+    Opensearch: 'opensearch',
+    Kafka: 'kafka',
+    Rabbitmq: 'rabbitmq'
+} as const;
+export type DbType = typeof DbType[keyof typeof DbType];
+
+
+export function DbTypeFromJSON(json: any): DbType {
+    return DbTypeFromJSONTyped(json, false);
 }
 
-/**
- * Check if a given object implements the Network interface.
- */
-export function instanceOfNetwork(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-
-    return isInstance;
+export function DbTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): DbType {
+    return json as DbType;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
-}
-
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
-    };
-}
-
-export function NetworkToJSON(value?: Network | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
-    };
+export function DbTypeToJSON(value?: DbType | null): any {
+    return value as any;
 }
 

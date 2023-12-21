@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Policy } from './Policy';
+import {
+    PolicyFromJSON,
+    PolicyFromJSONTyped,
+    PolicyToJSON,
+} from './Policy';
+
 /**
  * 
  * @export
@@ -49,6 +56,12 @@ export interface FirewallGroupOutAPI {
      * @memberof FirewallGroupOutAPI
      */
     description: string;
+    /**
+     * 
+     * @type {Policy}
+     * @memberof FirewallGroupOutAPI
+     */
+    policy: Policy;
 }
 
 /**
@@ -61,6 +74,7 @@ export function instanceOfFirewallGroupOutAPI(value: object): boolean {
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "policy" in value;
 
     return isInstance;
 }
@@ -80,6 +94,7 @@ export function FirewallGroupOutAPIFromJSONTyped(json: any, ignoreDiscriminator:
         'updatedAt': (new Date(json['updated_at'])),
         'name': json['name'],
         'description': json['description'],
+        'policy': PolicyFromJSON(json['policy']),
     };
 }
 
@@ -97,6 +112,7 @@ export function FirewallGroupOutAPIToJSON(value?: FirewallGroupOutAPI | null): a
         'updated_at': (value.updatedAt.toISOString()),
         'name': value.name,
         'description': value.description,
+        'policy': PolicyToJSON(value.policy),
     };
 }
 

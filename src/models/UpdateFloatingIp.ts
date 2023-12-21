@@ -16,57 +16,48 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Network
+ * @interface UpdateFloatingIp
  */
-export interface Network {
+export interface UpdateFloatingIp {
     /**
-     * Уникальный идентификатор сети.
+     * Комментарий
      * @type {string}
-     * @memberof Network
+     * @memberof UpdateFloatingIp
      */
-    id: string;
+    comment?: string;
     /**
-     * Плавающий IP-адрес
+     * Запись имени узла.
      * @type {string}
-     * @memberof Network
+     * @memberof UpdateFloatingIp
      */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+    ptr?: string;
 }
 
 /**
- * Check if a given object implements the Network interface.
+ * Check if a given object implements the UpdateFloatingIp interface.
  */
-export function instanceOfNetwork(value: object): boolean {
+export function instanceOfUpdateFloatingIp(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
 
     return isInstance;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function UpdateFloatingIpFromJSON(json: any): UpdateFloatingIp {
+    return UpdateFloatingIpFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
+export function UpdateFloatingIpFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateFloatingIp {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'comment': !exists(json, 'comment') ? undefined : json['comment'],
+        'ptr': !exists(json, 'ptr') ? undefined : json['ptr'],
     };
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function UpdateFloatingIpToJSON(value?: UpdateFloatingIp | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,9 +66,8 @@ export function NetworkToJSON(value?: Network | null): any {
     }
     return {
         
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
+        'comment': value.comment,
+        'ptr': value.ptr,
     };
 }
 

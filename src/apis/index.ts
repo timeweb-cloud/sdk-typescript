@@ -7,6 +7,7 @@ export * from './DatabasesApi';
 export * from './DedicatedServersApi';
 export * from './DomainsApi';
 export * from './FirewallApi';
+export * from './FloatingIPApi';
 export * from './ImagesApi';
 export * from './KubernetesApi';
 export * from './MailApi';

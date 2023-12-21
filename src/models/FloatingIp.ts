@@ -13,60 +13,116 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
+
 /**
  * 
  * @export
- * @interface Network
+ * @interface FloatingIp
  */
-export interface Network {
+export interface FloatingIp {
     /**
-     * Уникальный идентификатор сети.
+     * Идентификатор IP.
      * @type {string}
-     * @memberof Network
+     * @memberof FloatingIp
      */
     id: string;
     /**
-     * Плавающий IP-адрес
+     * IP-адрес
      * @type {string}
-     * @memberof Network
+     * @memberof FloatingIp
      */
-    floatingIp?: string;
+    ip: string;
     /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
+     * Это логическое значение, которое показывает, включена ли защита от DDoS.
+     * @type {boolean}
+     * @memberof FloatingIp
      */
-    ip?: string;
+    isDdosGuard: boolean;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof FloatingIp
+     */
+    availabilityZone: AvailabilityZone;
+    /**
+     * Тип ресурса.
+     * @type {string}
+     * @memberof FloatingIp
+     */
+    resourceType?: FloatingIpResourceTypeEnum;
+    /**
+     * Id ресурса.
+     * @type {number}
+     * @memberof FloatingIp
+     */
+    resourceId?: number;
+    /**
+     * Комментарий
+     * @type {string}
+     * @memberof FloatingIp
+     */
+    comment?: string;
+    /**
+     * Запись имени узла.
+     * @type {string}
+     * @memberof FloatingIp
+     */
+    ptr?: string;
 }
 
+
 /**
- * Check if a given object implements the Network interface.
+ * @export
  */
-export function instanceOfNetwork(value: object): boolean {
+export const FloatingIpResourceTypeEnum = {
+    Server: 'server',
+    Balancer: 'balancer',
+    Database: 'database'
+} as const;
+export type FloatingIpResourceTypeEnum = typeof FloatingIpResourceTypeEnum[keyof typeof FloatingIpResourceTypeEnum];
+
+
+/**
+ * Check if a given object implements the FloatingIp interface.
+ */
+export function instanceOfFloatingIp(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "ip" in value;
+    isInstance = isInstance && "isDdosGuard" in value;
+    isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function FloatingIpFromJSON(json: any): FloatingIp {
+    return FloatingIpFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
+export function FloatingIpFromJSONTyped(json: any, ignoreDiscriminator: boolean): FloatingIp {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'ip': json['ip'],
+        'isDdosGuard': json['is_ddos_guard'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
+        'resourceType': !exists(json, 'resource_type') ? undefined : json['resource_type'],
+        'resourceId': !exists(json, 'resource_id') ? undefined : json['resource_id'],
+        'comment': !exists(json, 'comment') ? undefined : json['comment'],
+        'ptr': !exists(json, 'ptr') ? undefined : json['ptr'],
     };
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function FloatingIpToJSON(value?: FloatingIp | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -76,8 +132,13 @@ export function NetworkToJSON(value?: Network | null): any {
     return {
         
         'id': value.id,
-        'floating_ip': value.floatingIp,
         'ip': value.ip,
+        'is_ddos_guard': value.isDdosGuard,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'resource_type': value.resourceType,
+        'resource_id': value.resourceId,
+        'comment': value.comment,
+        'ptr': value.ptr,
     };
 }
 

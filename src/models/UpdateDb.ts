@@ -51,7 +51,7 @@ export interface UpdateDb {
      */
     configParameters?: ConfigParameters;
     /**
-     * Использовать или нет внешний ip.
+     * Использовать или нет внешний IP.
      * @type {boolean}
      * @memberof UpdateDb
      */

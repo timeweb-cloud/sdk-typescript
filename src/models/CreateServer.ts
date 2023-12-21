@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
 import type { CreateServerConfiguration } from './CreateServerConfiguration';
 import {
     CreateServerConfigurationFromJSON,
@@ -117,6 +123,12 @@ export interface CreateServer {
      * @memberof CreateServer
      */
     cloudInit?: string;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof CreateServer
+     */
+    availabilityZone?: AvailabilityZone;
 }
 
 /**
@@ -155,6 +167,7 @@ export function CreateServerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'isLocalNetwork': !exists(json, 'is_local_network') ? undefined : json['is_local_network'],
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'cloudInit': !exists(json, 'cloud_init') ? undefined : json['cloud_init'],
+        'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -181,6 +194,7 @@ export function CreateServerToJSON(value?: CreateServer | null): any {
         'is_local_network': value.isLocalNetwork,
         'network': NetworkToJSON(value.network),
         'cloud_init': value.cloudInit,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

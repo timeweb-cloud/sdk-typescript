@@ -10,6 +10,7 @@ src/apis/DatabasesApi.ts
 src/apis/DedicatedServersApi.ts
 src/apis/DomainsApi.ts
 src/apis/FirewallApi.ts
+src/apis/FloatingIPApi.ts
 src/apis/ImagesApi.ts
 src/apis/KubernetesApi.ts
 src/apis/MailApi.ts
@@ -46,9 +47,11 @@ src/models/ApiKey.ts
 src/models/AutoBackup.ts
 src/models/AutoReplyIsDisabled.ts
 src/models/AutoReplyIsEnabled.ts
+src/models/AvailabilityZone.ts
 src/models/Backup.ts
 src/models/Balancer.ts
 src/models/BaseError.ts
+src/models/BindFloatingIp.ts
 src/models/Bonus.ts
 src/models/Bucket.ts
 src/models/BucketDiskStats.ts
@@ -84,6 +87,8 @@ src/models/CreateDomainDNSRecord201Response.ts
 src/models/CreateDomainMailbox201Response.ts
 src/models/CreateDomainMailboxRequest.ts
 src/models/CreateDomainRequest201Response.ts
+src/models/CreateFloatingIp.ts
+src/models/CreateFloatingIp201Response.ts
 src/models/CreateFolderInStorageRequest.ts
 src/models/CreateInstance.ts
 src/models/CreateKey201Response.ts
@@ -113,6 +118,7 @@ src/models/DatabaseClusterNetworksInnerIpsInner.ts
 src/models/DatabaseInstance.ts
 src/models/Db.ts
 src/models/DbDiskStats.ts
+src/models/DbType.ts
 src/models/DedicatedServer.ts
 src/models/DedicatedServerAdditionalService.ts
 src/models/DedicatedServerPreset.ts
@@ -161,6 +167,7 @@ src/models/FirewallRuleOutAPI.ts
 src/models/FirewallRuleOutResponse.ts
 src/models/FirewallRuleProtocol.ts
 src/models/FirewallRulesOutResponse.ts
+src/models/FloatingIp.ts
 src/models/ForwardingIncomingIsDisabled.ts
 src/models/ForwardingIncomingIsEnabled.ts
 src/models/ForwardingOutgoingIsDisabled.ts
@@ -199,6 +206,7 @@ src/models/GetFinances403Response.ts
 src/models/GetFinances404Response.ts
 src/models/GetFinances429Response.ts
 src/models/GetFinances500Response.ts
+src/models/GetFloatingIps200Response.ts
 src/models/GetKey200Response.ts
 src/models/GetKeys200Response.ts
 src/models/GetMailQuota200Response.ts
@@ -274,6 +282,7 @@ src/models/NotificationSettingType.ts
 src/models/OS.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
+src/models/Policy.ts
 src/models/PresetsBalancer.ts
 src/models/PresetsDbs.ts
 src/models/PresetsResponse.ts
@@ -331,6 +340,7 @@ src/models/UpdateDomainAutoProlongation200Response.ts
 src/models/UpdateDomainMailInfoRequest.ts
 src/models/UpdateDomainNameServers.ts
 src/models/UpdateDomainNameServersNameServersInner.ts
+src/models/UpdateFloatingIp.ts
 src/models/UpdateInstance.ts
 src/models/UpdateKeyRequest.ts
 src/models/UpdateMailQuotaRequest.ts

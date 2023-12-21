@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
+
 /**
  * 
  * @export
@@ -55,6 +62,12 @@ export interface Vpc {
      * @memberof Vpc
      */
     description?: string;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof Vpc
+     */
+    availabilityZone: AvailabilityZone;
 }
 
 
@@ -78,6 +91,7 @@ export function instanceOfVpc(value: object): boolean {
     isInstance = isInstance && "subnetV4" in value;
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
 }
@@ -98,6 +112,7 @@ export function VpcFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vpc {
         'location': json['location'],
         'createdAt': (new Date(json['created_at'])),
         'description': !exists(json, 'description') ? undefined : json['description'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -116,6 +131,7 @@ export function VpcToJSON(value?: Vpc | null): any {
         'location': value.location,
         'created_at': (value.createdAt.toISOString()),
         'description': value.description,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

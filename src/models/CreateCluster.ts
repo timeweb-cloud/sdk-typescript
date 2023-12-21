@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
 import type { ConfigParameters } from './ConfigParameters';
 import {
     ConfigParametersFromJSON,
@@ -31,6 +37,12 @@ import {
     CreateClusterInstanceFromJSONTyped,
     CreateClusterInstanceToJSON,
 } from './CreateClusterInstance';
+import type { DbType } from './DbType';
+import {
+    DbTypeFromJSON,
+    DbTypeFromJSONTyped,
+    DbTypeToJSON,
+} from './DbType';
 import type { Network } from './Network';
 import {
     NetworkFromJSON,
@@ -51,11 +63,11 @@ export interface CreateCluster {
      */
     name: string;
     /**
-     * Тип базы данных.
-     * @type {string}
+     * 
+     * @type {DbType}
      * @memberof CreateCluster
      */
-    type: CreateClusterTypeEnum;
+    type: DbType;
     /**
      * 
      * @type {CreateClusterAdmin}
@@ -98,20 +110,14 @@ export interface CreateCluster {
      * @memberof CreateCluster
      */
     description?: string;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof CreateCluster
+     */
+    availabilityZone?: AvailabilityZone;
 }
 
-
-/**
- * @export
- */
-export const CreateClusterTypeEnum = {
-    Mysql: 'mysql',
-    Mysql5: 'mysql5',
-    Postgres: 'postgres',
-    Redis: 'redis',
-    Mongodb: 'mongodb'
-} as const;
-export type CreateClusterTypeEnum = typeof CreateClusterTypeEnum[keyof typeof CreateClusterTypeEnum];
 
 /**
  * @export
@@ -146,7 +152,7 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'name': json['name'],
-        'type': json['type'],
+        'type': DbTypeFromJSON(json['type']),
         'admin': !exists(json, 'admin') ? undefined : CreateClusterAdminFromJSON(json['admin']),
         'instance': !exists(json, 'instance') ? undefined : CreateClusterInstanceFromJSON(json['instance']),
         'hashType': !exists(json, 'hash_type') ? undefined : json['hash_type'],
@@ -154,6 +160,7 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'configParameters': !exists(json, 'config_parameters') ? undefined : ConfigParametersFromJSON(json['config_parameters']),
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'description': !exists(json, 'description') ? undefined : json['description'],
+        'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -167,7 +174,7 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
     return {
         
         'name': value.name,
-        'type': value.type,
+        'type': DbTypeToJSON(value.type),
         'admin': CreateClusterAdminToJSON(value.admin),
         'instance': CreateClusterInstanceToJSON(value.instance),
         'hash_type': value.hashType,
@@ -175,6 +182,7 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
         'config_parameters': ConfigParametersToJSON(value.configParameters),
         'network': NetworkToJSON(value.network),
         'description': value.description,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

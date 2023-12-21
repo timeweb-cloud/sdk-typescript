@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
 import type { VdsDisksInner } from './VdsDisksInner';
 import {
     VdsDisksInnerFromJSON,
@@ -123,7 +129,7 @@ export interface Vds {
      */
     startAt: Date | null;
     /**
-     * Это логическое значение, которое показывает, включена ли защита от DDOS у данного сервера.
+     * Это логическое значение, которое показывает, включена ли защита от DDoS у данного сервера.
      * @type {boolean}
      * @memberof Vds
      */
@@ -194,6 +200,12 @@ export interface Vds {
      * @memberof Vds
      */
     isQemuAgent?: boolean;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof Vds
+     */
+    availabilityZone: AvailabilityZone;
 }
 
 
@@ -272,6 +284,7 @@ export function instanceOfVds(value: object): boolean {
     isInstance = isInstance && "image" in value;
     isInstance = isInstance && "networks" in value;
     isInstance = isInstance && "cloudInit" in value;
+    isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
 }
@@ -310,6 +323,7 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         'networks': ((json['networks'] as Array<any>).map(VdsNetworksInnerFromJSON)),
         'cloudInit': json['cloud_init'],
         'isQemuAgent': !exists(json, 'is_qemu_agent') ? undefined : json['is_qemu_agent'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -346,6 +360,7 @@ export function VdsToJSON(value?: Vds | null): any {
         'networks': ((value.networks as Array<any>).map(VdsNetworksInnerToJSON)),
         'cloud_init': value.cloudInit,
         'is_qemu_agent': value.isQemuAgent,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

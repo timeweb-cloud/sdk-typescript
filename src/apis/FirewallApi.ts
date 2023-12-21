@@ -69,6 +69,7 @@ export interface AddResourceToGroupRequest {
 
 export interface CreateGroupRequest {
     firewallGroupInAPI: FirewallGroupInAPI;
+    policy?: CreateGroupPolicyEnum;
 }
 
 export interface CreateGroupRuleRequest {
@@ -198,6 +199,10 @@ export class FirewallApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.policy !== undefined) {
+            queryParameters['policy'] = requestParameters.policy;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -782,3 +787,12 @@ export class FirewallApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const CreateGroupPolicyEnum = {
+    Drop: 'DROP',
+    Accept: 'ACCEPT'
+} as const;
+export type CreateGroupPolicyEnum = typeof CreateGroupPolicyEnum[keyof typeof CreateGroupPolicyEnum];

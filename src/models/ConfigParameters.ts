@@ -80,91 +80,91 @@ export interface ConfigParameters {
      */
     maxHeapTableSize?: string;
     /**
-     * Доля измененных или удаленных записей в таблице, при которой процесс автоочистки выполнит команду `ANALYZE` (`postgres`).
+     * Доля измененных или удаленных записей в таблице, при которой процесс автоочистки выполнит команду `ANALYZE` (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     autovacuumAnalyzeScaleFactor?: string;
     /**
-     * Задержка между запусками процесса фоновой записи (`postgres`).
+     * Задержка между запусками процесса фоновой записи (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     bgwriterDelay?: string;
     /**
-     * Максимальное число элементов буферного кеша (`postgres`).
+     * Максимальное число элементов буферного кеша (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     bgwriterLruMaxpages?: string;
     /**
-     * Время ожидания, по истечении которого будет выполняться проверка состояния перекрестной блокировки (`postgres`).
+     * Время ожидания, по истечении которого будет выполняться проверка состояния перекрестной блокировки (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     deadlockTimeout?: string;
     /**
-     * Максимальный размер очереди записей индекса `GIN` (`postgres`).
+     * Максимальный размер очереди записей индекса `GIN` (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     ginPendingListLimit?: string;
     /**
-     * Время простоя открытой транзакции, при превышении которого будет завершена сессия с этой транзакцией (`postgres`).
+     * Время простоя открытой транзакции, при превышении которого будет завершена сессия с этой транзакцией (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     idleInTransactionSessionTimeout?: string;
     /**
-     * Время простоя не открытой транзакции, при превышении которого будет завершена сессия с этой транзакцией (`postgres`).
+     * Время простоя не открытой транзакции, при превышении которого будет завершена сессия с этой транзакцией (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     idleSessionTimeout?: string;
     /**
-     * Значение количества элементов в списке `FROM` при превышении которого, планировщик будет переносить в список явные инструкции `JOIN` (`postgres`).
+     * Значение количества элементов в списке `FROM` при превышении которого, планировщик будет переносить в список явные инструкции `JOIN` (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     joinCollapseLimit?: string;
     /**
-     * Время ожидания освобождения блокировки (`postgres`).
+     * Время ожидания освобождения блокировки (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     lockTimeout?: string;
     /**
-     * Максимальное число транзакций, которые могут одновременно находиться в подготовленном состоянии (`postgres`).
+     * Максимальное число транзакций, которые могут одновременно находиться в подготовленном состоянии (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     maxPreparedTransactions?: string;
     /**
-     * Допустимое количество соединений (`postgres` | `mysql`).
+     * Допустимое количество соединений (`postgres` | `postgres14`| `postgres15` | `mysql`).
      * @type {string}
      * @memberof ConfigParameters
      */
     maxConnections?: string;
     /**
-     * Устанавливает количество буферов общей памяти, используемых сервером (`postgres`).
+     * Устанавливает количество буферов общей памяти, используемых сервером (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     sharedBuffers?: string;
     /**
-     * Устанавливает количество буферов дисковых страниц в общей памяти для WAL (`postgres`).
+     * Устанавливает количество буферов дисковых страниц в общей памяти для WAL (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     walBuffers?: string;
     /**
-     * Устанавливает максимальное количество временных буферов, используемых каждой сессией (`postgres`).
+     * Устанавливает максимальное количество временных буферов, используемых каждой сессией (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */
     tempBuffers?: string;
     /**
-     * Устанавливает максимальное количество памяти, используемое для рабочих пространств запросов (`postgres`).
+     * Устанавливает максимальное количество памяти, используемое для рабочих пространств запросов (`postgres` | `postgres14`| `postgres15`).
      * @type {string}
      * @memberof ConfigParameters
      */

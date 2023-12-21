@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
 import type { Rule } from './Rule';
 import {
     RuleFromJSON,
@@ -158,6 +164,12 @@ export interface Balancer {
      * @memberof Balancer
      */
     location: BalancerLocationEnum;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof Balancer
+     */
+    availabilityZone: AvailabilityZone;
 }
 
 
@@ -229,6 +241,7 @@ export function instanceOfBalancer(value: object): boolean {
     isInstance = isInstance && "rules" in value;
     isInstance = isInstance && "ips" in value;
     isInstance = isInstance && "location" in value;
+    isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
 }
@@ -265,6 +278,7 @@ export function BalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'rules': ((json['rules'] as Array<any>).map(RuleFromJSON)),
         'ips': json['ips'],
         'location': json['location'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -299,6 +313,7 @@ export function BalancerToJSON(value?: Balancer | null): any {
         'rules': ((value.rules as Array<any>).map(RuleToJSON)),
         'ips': value.ips,
         'location': value.location,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

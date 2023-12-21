@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DbType } from './DbType';
+import {
+    DbTypeFromJSON,
+    DbTypeFromJSONTyped,
+    DbTypeToJSON,
+} from './DbType';
+
 /**
  * 
  * @export
@@ -56,11 +63,11 @@ export interface PresetsDbs {
      */
     disk?: number;
     /**
-     * Тип тарифа базы данных
-     * @type {string}
+     * 
+     * @type {DbType}
      * @memberof PresetsDbs
      */
-    type?: PresetsDbsTypeEnum;
+    type?: DbType;
     /**
      * Стоимость тарифа базы данных
      * @type {number}
@@ -75,18 +82,6 @@ export interface PresetsDbs {
     location?: PresetsDbsLocationEnum;
 }
 
-
-/**
- * @export
- */
-export const PresetsDbsTypeEnum = {
-    Mysql: 'mysql',
-    Mysql5: 'mysql5',
-    Postgres: 'postgres',
-    Redis: 'redis',
-    Mongodb: 'mongodb'
-} as const;
-export type PresetsDbsTypeEnum = typeof PresetsDbsTypeEnum[keyof typeof PresetsDbsTypeEnum];
 
 /**
  * @export
@@ -124,7 +119,7 @@ export function PresetsDbsFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
         'ram': !exists(json, 'ram') ? undefined : json['ram'],
         'disk': !exists(json, 'disk') ? undefined : json['disk'],
-        'type': !exists(json, 'type') ? undefined : json['type'],
+        'type': !exists(json, 'type') ? undefined : DbTypeFromJSON(json['type']),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'location': !exists(json, 'location') ? undefined : json['location'],
     };
@@ -145,7 +140,7 @@ export function PresetsDbsToJSON(value?: PresetsDbs | null): any {
         'cpu': value.cpu,
         'ram': value.ram,
         'disk': value.disk,
-        'type': value.type,
+        'type': DbTypeToJSON(value.type),
         'price': value.price,
         'location': value.location,
     };

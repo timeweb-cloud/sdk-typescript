@@ -19,6 +19,12 @@ import {
     ConfigParametersFromJSONTyped,
     ConfigParametersToJSON,
 } from './ConfigParameters';
+import type { DbType } from './DbType';
+import {
+    DbTypeFromJSON,
+    DbTypeFromJSONTyped,
+    DbTypeToJSON,
+} from './DbType';
 import type { Network } from './Network';
 import {
     NetworkFromJSON,
@@ -51,11 +57,11 @@ export interface CreateDb {
      */
     name: string;
     /**
-     * Тип базы данных.
-     * @type {string}
+     * 
+     * @type {DbType}
      * @memberof CreateDb
      */
-    type: CreateDbTypeEnum;
+    type: DbType;
     /**
      * Тип хеширования базы данных (mysql5 | mysql | postgres).
      * @type {string}
@@ -82,18 +88,6 @@ export interface CreateDb {
     network?: Network;
 }
 
-
-/**
- * @export
- */
-export const CreateDbTypeEnum = {
-    Mysql: 'mysql',
-    Mysql5: 'mysql5',
-    Postgres: 'postgres',
-    Redis: 'redis',
-    Mongodb: 'mongodb'
-} as const;
-export type CreateDbTypeEnum = typeof CreateDbTypeEnum[keyof typeof CreateDbTypeEnum];
 
 /**
  * @export
@@ -131,7 +125,7 @@ export function CreateDbFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'login': !exists(json, 'login') ? undefined : json['login'],
         'password': json['password'],
         'name': json['name'],
-        'type': json['type'],
+        'type': DbTypeFromJSON(json['type']),
         'hashType': !exists(json, 'hash_type') ? undefined : json['hash_type'],
         'presetId': json['preset_id'],
         'configParameters': !exists(json, 'config_parameters') ? undefined : ConfigParametersFromJSON(json['config_parameters']),
@@ -151,7 +145,7 @@ export function CreateDbToJSON(value?: CreateDb | null): any {
         'login': value.login,
         'password': value.password,
         'name': value.name,
-        'type': value.type,
+        'type': DbTypeToJSON(value.type),
         'hash_type': value.hashType,
         'preset_id': value.presetId,
         'config_parameters': ConfigParametersToJSON(value.configParameters),

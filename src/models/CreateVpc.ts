@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
+
 /**
  * 
  * @export
@@ -43,6 +50,12 @@ export interface CreateVpc {
      * @memberof CreateVpc
      */
     description?: string;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof CreateVpc
+     */
+    availabilityZone?: AvailabilityZone;
 }
 
 
@@ -82,6 +95,7 @@ export function CreateVpcFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'subnetV4': json['subnet_v4'],
         'location': json['location'],
         'description': !exists(json, 'description') ? undefined : json['description'],
+        'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -98,6 +112,7 @@ export function CreateVpcToJSON(value?: CreateVpc | null): any {
         'subnet_v4': value.subnetV4,
         'location': value.location,
         'description': value.description,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

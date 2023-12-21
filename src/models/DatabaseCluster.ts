@@ -31,6 +31,12 @@ import {
     DatabaseClusterNetworksInnerFromJSONTyped,
     DatabaseClusterNetworksInnerToJSON,
 } from './DatabaseClusterNetworksInner';
+import type { DbType } from './DbType';
+import {
+    DbTypeFromJSON,
+    DbTypeFromJSONTyped,
+    DbTypeToJSON,
+} from './DbType';
 
 /**
  * Кластер базы данных
@@ -69,11 +75,11 @@ export interface DatabaseCluster {
      */
     networks: Array<DatabaseClusterNetworksInner>;
     /**
-     * Тип кластера базы данных.
-     * @type {string}
+     * 
+     * @type {DbType}
      * @memberof DatabaseCluster
      */
-    type: DatabaseClusterTypeEnum;
+    type: DbType;
     /**
      * Тип хеширования кластера базы данных (mysql5 | mysql | postgres).
      * @type {string}
@@ -129,18 +135,6 @@ export const DatabaseClusterLocationEnum = {
     Kz1: 'kz-1'
 } as const;
 export type DatabaseClusterLocationEnum = typeof DatabaseClusterLocationEnum[keyof typeof DatabaseClusterLocationEnum];
-
-/**
- * @export
- */
-export const DatabaseClusterTypeEnum = {
-    Mysql: 'mysql',
-    Mysql5: 'mysql5',
-    Postgres: 'postgres',
-    Redis: 'redis',
-    Mongodb: 'mongodb'
-} as const;
-export type DatabaseClusterTypeEnum = typeof DatabaseClusterTypeEnum[keyof typeof DatabaseClusterTypeEnum];
 
 /**
  * @export
@@ -201,7 +195,7 @@ export function DatabaseClusterFromJSONTyped(json: any, ignoreDiscriminator: boo
         'location': json['location'],
         'name': json['name'],
         'networks': ((json['networks'] as Array<any>).map(DatabaseClusterNetworksInnerFromJSON)),
-        'type': json['type'],
+        'type': DbTypeFromJSON(json['type']),
         'hashType': json['hash_type'],
         'port': json['port'],
         'status': json['status'],
@@ -226,7 +220,7 @@ export function DatabaseClusterToJSON(value?: DatabaseCluster | null): any {
         'location': value.location,
         'name': value.name,
         'networks': ((value.networks as Array<any>).map(DatabaseClusterNetworksInnerToJSON)),
-        'type': value.type,
+        'type': DbTypeToJSON(value.type),
         'hash_type': value.hashType,
         'port': value.port,
         'status': value.status,

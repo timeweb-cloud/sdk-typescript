@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
 import type { Network } from './Network';
 import {
     NetworkFromJSON,
@@ -116,6 +122,12 @@ export interface CreateBalancer {
      * @memberof CreateBalancer
      */
     network?: Network;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof CreateBalancer
+     */
+    availabilityZone?: AvailabilityZone;
 }
 
 
@@ -188,6 +200,7 @@ export function CreateBalancerFromJSONTyped(json: any, ignoreDiscriminator: bool
         'rise': json['rise'],
         'presetId': json['preset_id'],
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
+        'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -215,6 +228,7 @@ export function CreateBalancerToJSON(value?: CreateBalancer | null): any {
         'rise': value.rise,
         'preset_id': value.presetId,
         'network': NetworkToJSON(value.network),
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

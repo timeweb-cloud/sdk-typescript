@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
 import type { ConfigParameters } from './ConfigParameters';
 import {
     ConfigParametersFromJSON,
@@ -25,6 +31,12 @@ import {
     DbDiskStatsFromJSONTyped,
     DbDiskStatsToJSON,
 } from './DbDiskStats';
+import type { DbType } from './DbType';
+import {
+    DbTypeFromJSON,
+    DbTypeFromJSONTyped,
+    DbTypeToJSON,
+} from './DbType';
 
 /**
  * База данных
@@ -81,11 +93,11 @@ export interface Db {
      */
     host: string | null;
     /**
-     * Тип базы данных.
-     * @type {string}
+     * 
+     * @type {DbType}
      * @memberof Db
      */
-    type: DbTypeEnum;
+    type: DbType;
     /**
      * Тип хеширования базы данных (mysql5 | mysql | postgres).
      * @type {string}
@@ -140,6 +152,12 @@ export interface Db {
      * @memberof Db
      */
     isOnlyLocalIpAccess: boolean;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof Db
+     */
+    availabilityZone: AvailabilityZone;
 }
 
 
@@ -153,18 +171,6 @@ export const DbLocationEnum = {
     Kz1: 'kz-1'
 } as const;
 export type DbLocationEnum = typeof DbLocationEnum[keyof typeof DbLocationEnum];
-
-/**
- * @export
- */
-export const DbTypeEnum = {
-    Mysql: 'mysql',
-    Mysql5: 'mysql5',
-    Postgres: 'postgres',
-    Redis: 'redis',
-    Mongodb: 'mongodb'
-} as const;
-export type DbTypeEnum = typeof DbTypeEnum[keyof typeof DbTypeEnum];
 
 /**
  * @export
@@ -210,6 +216,7 @@ export function instanceOfDb(value: object): boolean {
     isInstance = isInstance && "diskStats" in value;
     isInstance = isInstance && "configParameters" in value;
     isInstance = isInstance && "isOnlyLocalIpAccess" in value;
+    isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
 }
@@ -232,7 +239,7 @@ export function DbFromJSONTyped(json: any, ignoreDiscriminator: boolean): Db {
         'password': json['password'],
         'name': json['name'],
         'host': json['host'],
-        'type': json['type'],
+        'type': DbTypeFromJSON(json['type']),
         'hashType': json['hash_type'],
         'port': json['port'],
         'ip': json['ip'],
@@ -242,6 +249,7 @@ export function DbFromJSONTyped(json: any, ignoreDiscriminator: boolean): Db {
         'diskStats': DbDiskStatsFromJSON(json['disk_stats']),
         'configParameters': ConfigParametersFromJSON(json['config_parameters']),
         'isOnlyLocalIpAccess': json['is_only_local_ip_access'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
@@ -262,7 +270,7 @@ export function DbToJSON(value?: Db | null): any {
         'password': value.password,
         'name': value.name,
         'host': value.host,
-        'type': value.type,
+        'type': DbTypeToJSON(value.type),
         'hash_type': value.hashType,
         'port': value.port,
         'ip': value.ip,
@@ -272,6 +280,7 @@ export function DbToJSON(value?: Db | null): any {
         'disk_stats': DbDiskStatsToJSON(value.diskStats),
         'config_parameters': ConfigParametersToJSON(value.configParameters),
         'is_only_local_ip_access': value.isOnlyLocalIpAccess,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

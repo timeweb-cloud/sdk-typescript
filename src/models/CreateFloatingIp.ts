@@ -13,60 +13,60 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
+
 /**
  * 
  * @export
- * @interface Network
+ * @interface CreateFloatingIp
  */
-export interface Network {
+export interface CreateFloatingIp {
     /**
-     * Уникальный идентификатор сети.
-     * @type {string}
-     * @memberof Network
+     * Это логическое значение, которое показывает, включена ли защита от DDoS.
+     * @type {boolean}
+     * @memberof CreateFloatingIp
      */
-    id: string;
+    isDdosGuard: boolean;
     /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
+     * 
+     * @type {AvailabilityZone}
+     * @memberof CreateFloatingIp
      */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+    availabilityZone: AvailabilityZone;
 }
 
 /**
- * Check if a given object implements the Network interface.
+ * Check if a given object implements the CreateFloatingIp interface.
  */
-export function instanceOfNetwork(value: object): boolean {
+export function instanceOfCreateFloatingIp(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "isDdosGuard" in value;
+    isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function CreateFloatingIpFromJSON(json: any): CreateFloatingIp {
+    return CreateFloatingIpFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
+export function CreateFloatingIpFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateFloatingIp {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'isDdosGuard': json['is_ddos_guard'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function CreateFloatingIpToJSON(value?: CreateFloatingIp | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,9 +75,8 @@ export function NetworkToJSON(value?: Network | null): any {
     }
     return {
         
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
+        'is_ddos_guard': value.isDdosGuard,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };
 }
 

@@ -13,60 +13,66 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FloatingIp } from './FloatingIp';
+import {
+    FloatingIpFromJSON,
+    FloatingIpFromJSONTyped,
+    FloatingIpToJSON,
+} from './FloatingIp';
+import type { Meta } from './Meta';
+import {
+    MetaFromJSON,
+    MetaFromJSONTyped,
+    MetaToJSON,
+} from './Meta';
+
 /**
  * 
  * @export
- * @interface Network
+ * @interface GetFloatingIps200Response
  */
-export interface Network {
+export interface GetFloatingIps200Response {
     /**
-     * Уникальный идентификатор сети.
-     * @type {string}
-     * @memberof Network
+     * 
+     * @type {Meta}
+     * @memberof GetFloatingIps200Response
      */
-    id: string;
+    meta: Meta;
     /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
+     * 
+     * @type {Array<FloatingIp>}
+     * @memberof GetFloatingIps200Response
      */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+    ips: Array<FloatingIp>;
 }
 
 /**
- * Check if a given object implements the Network interface.
+ * Check if a given object implements the GetFloatingIps200Response interface.
  */
-export function instanceOfNetwork(value: object): boolean {
+export function instanceOfGetFloatingIps200Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "ips" in value;
 
     return isInstance;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function GetFloatingIps200ResponseFromJSON(json: any): GetFloatingIps200Response {
+    return GetFloatingIps200ResponseFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
+export function GetFloatingIps200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFloatingIps200Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'meta': MetaFromJSON(json['meta']),
+        'ips': ((json['ips'] as Array<any>).map(FloatingIpFromJSON)),
     };
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function GetFloatingIps200ResponseToJSON(value?: GetFloatingIps200Response | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,9 +81,8 @@ export function NetworkToJSON(value?: Network | null): any {
     }
     return {
         
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
+        'meta': MetaToJSON(value.meta),
+        'ips': ((value.ips as Array<any>).map(FloatingIpToJSON)),
     };
 }
 

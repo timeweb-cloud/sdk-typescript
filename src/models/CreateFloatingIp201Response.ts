@@ -13,60 +13,52 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FloatingIp } from './FloatingIp';
+import {
+    FloatingIpFromJSON,
+    FloatingIpFromJSONTyped,
+    FloatingIpToJSON,
+} from './FloatingIp';
+
 /**
  * 
  * @export
- * @interface Network
+ * @interface CreateFloatingIp201Response
  */
-export interface Network {
+export interface CreateFloatingIp201Response {
     /**
-     * Уникальный идентификатор сети.
-     * @type {string}
-     * @memberof Network
+     * 
+     * @type {FloatingIp}
+     * @memberof CreateFloatingIp201Response
      */
-    id: string;
-    /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
-     */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+    ip: FloatingIp;
 }
 
 /**
- * Check if a given object implements the Network interface.
+ * Check if a given object implements the CreateFloatingIp201Response interface.
  */
-export function instanceOfNetwork(value: object): boolean {
+export function instanceOfCreateFloatingIp201Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "ip" in value;
 
     return isInstance;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function CreateFloatingIp201ResponseFromJSON(json: any): CreateFloatingIp201Response {
+    return CreateFloatingIp201ResponseFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
+export function CreateFloatingIp201ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateFloatingIp201Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'ip': FloatingIpFromJSON(json['ip']),
     };
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function CreateFloatingIp201ResponseToJSON(value?: CreateFloatingIp201Response | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,9 +67,7 @@ export function NetworkToJSON(value?: Network | null): any {
     }
     return {
         
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
+        'ip': FloatingIpToJSON(value.ip),
     };
 }
 

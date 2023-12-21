@@ -12,72 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+
 /**
- * 
+ * An enumeration.
  * @export
- * @interface Network
  */
-export interface Network {
-    /**
-     * Уникальный идентификатор сети.
-     * @type {string}
-     * @memberof Network
-     */
-    id: string;
-    /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
-     */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+export const Policy = {
+    Accept: 'ACCEPT',
+    Drop: 'DROP'
+} as const;
+export type Policy = typeof Policy[keyof typeof Policy];
+
+
+export function PolicyFromJSON(json: any): Policy {
+    return PolicyFromJSONTyped(json, false);
 }
 
-/**
- * Check if a given object implements the Network interface.
- */
-export function instanceOfNetwork(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-
-    return isInstance;
+export function PolicyFromJSONTyped(json: any, ignoreDiscriminator: boolean): Policy {
+    return json as Policy;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
-}
-
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
-    };
-}
-
-export function NetworkToJSON(value?: Network | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
-    };
+export function PolicyToJSON(value?: Policy | null): any {
+    return value as any;
 }
 

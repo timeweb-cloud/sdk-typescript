@@ -12,72 +12,33 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+
 /**
- * 
+ * Зона доступности.
  * @export
- * @interface Network
  */
-export interface Network {
-    /**
-     * Уникальный идентификатор сети.
-     * @type {string}
-     * @memberof Network
-     */
-    id: string;
-    /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
-     */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+export const AvailabilityZone = {
+    Spb1: 'spb-1',
+    Spb2: 'spb-2',
+    Spb3: 'spb-3',
+    Spb4: 'spb-4',
+    Nsk1: 'nsk-1',
+    Ams1: 'ams-1',
+    Gdn1: 'gdn-1',
+    Ala1: 'ala-1'
+} as const;
+export type AvailabilityZone = typeof AvailabilityZone[keyof typeof AvailabilityZone];
+
+
+export function AvailabilityZoneFromJSON(json: any): AvailabilityZone {
+    return AvailabilityZoneFromJSONTyped(json, false);
 }
 
-/**
- * Check if a given object implements the Network interface.
- */
-export function instanceOfNetwork(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-
-    return isInstance;
+export function AvailabilityZoneFromJSONTyped(json: any, ignoreDiscriminator: boolean): AvailabilityZone {
+    return json as AvailabilityZone;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
-}
-
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
-    };
-}
-
-export function NetworkToJSON(value?: Network | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
-    };
+export function AvailabilityZoneToJSON(value?: AvailabilityZone | null): any {
+    return value as any;
 }
 

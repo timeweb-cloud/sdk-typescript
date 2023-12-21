@@ -16,57 +16,62 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Network
+ * @interface BindFloatingIp
  */
-export interface Network {
+export interface BindFloatingIp {
     /**
-     * Уникальный идентификатор сети.
+     * Тип ресурса.
      * @type {string}
-     * @memberof Network
+     * @memberof BindFloatingIp
      */
-    id: string;
+    resourceType: BindFloatingIpResourceTypeEnum;
     /**
-     * Плавающий IP-адрес
-     * @type {string}
-     * @memberof Network
+     * Id ресурса.
+     * @type {number}
+     * @memberof BindFloatingIp
      */
-    floatingIp?: string;
-    /**
-     * IP-адрес в сети.
-     * @type {string}
-     * @memberof Network
-     * @deprecated
-     */
-    ip?: string;
+    resourceId: number;
 }
 
+
 /**
- * Check if a given object implements the Network interface.
+ * @export
  */
-export function instanceOfNetwork(value: object): boolean {
+export const BindFloatingIpResourceTypeEnum = {
+    Server: 'server',
+    Balancer: 'balancer',
+    Database: 'database'
+} as const;
+export type BindFloatingIpResourceTypeEnum = typeof BindFloatingIpResourceTypeEnum[keyof typeof BindFloatingIpResourceTypeEnum];
+
+
+/**
+ * Check if a given object implements the BindFloatingIp interface.
+ */
+export function instanceOfBindFloatingIp(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "resourceType" in value;
+    isInstance = isInstance && "resourceId" in value;
 
     return isInstance;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function BindFloatingIpFromJSON(json: any): BindFloatingIp {
+    return BindFloatingIpFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
+export function BindFloatingIpFromJSONTyped(json: any, ignoreDiscriminator: boolean): BindFloatingIp {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'resourceType': json['resource_type'],
+        'resourceId': json['resource_id'],
     };
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function BindFloatingIpToJSON(value?: BindFloatingIp | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,9 +80,8 @@ export function NetworkToJSON(value?: Network | null): any {
     }
     return {
         
-        'id': value.id,
-        'floating_ip': value.floatingIp,
-        'ip': value.ip,
+        'resource_type': value.resourceType,
+        'resource_id': value.resourceId,
     };
 }
 
