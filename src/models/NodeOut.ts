@@ -79,6 +79,12 @@ export interface NodeOut {
      * @memberof NodeOut
      */
     network: number;
+    /**
+     * Ip-адрес ноды
+     * @type {string}
+     * @memberof NodeOut
+     */
+    nodeIp: string;
 }
 
 /**
@@ -96,6 +102,7 @@ export function instanceOfNodeOut(value: object): boolean {
     isInstance = isInstance && "ram" in value;
     isInstance = isInstance && "disk" in value;
     isInstance = isInstance && "network" in value;
+    isInstance = isInstance && "nodeIp" in value;
 
     return isInstance;
 }
@@ -120,6 +127,7 @@ export function NodeOutFromJSONTyped(json: any, ignoreDiscriminator: boolean): N
         'ram': json['ram'],
         'disk': json['disk'],
         'network': json['network'],
+        'nodeIp': json['node_ip'],
     };
 }
 
@@ -142,6 +150,7 @@ export function NodeOutToJSON(value?: NodeOut | null): any {
         'ram': value.ram,
         'disk': value.disk,
         'network': value.network,
+        'node_ip': value.nodeIp,
     };
 }
 
