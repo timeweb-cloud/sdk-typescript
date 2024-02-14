@@ -183,7 +183,7 @@ export interface Vds {
      */
     image: VdsImage | null;
     /**
-     * Список сетей диска.
+     * Список сетей сервера.
      * @type {Array<VdsNetworksInner>}
      * @memberof Vds
      */

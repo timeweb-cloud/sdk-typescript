@@ -27,6 +27,12 @@ import {
  */
 export interface VdsNetworksInner {
     /**
+     * Уникальный идентификатор сети. Есть только у приватных сетей.
+     * @type {string}
+     * @memberof VdsNetworksInner
+     */
+    id?: string;
+    /**
      * Тип сети.
      * @type {string}
      * @memberof VdsNetworksInner
@@ -100,6 +106,7 @@ export function VdsNetworksInnerFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'type': json['type'],
         'natMode': !exists(json, 'nat_mode') ? undefined : json['nat_mode'],
         'bandwidth': !exists(json, 'bandwidth') ? undefined : json['bandwidth'],
@@ -117,6 +124,7 @@ export function VdsNetworksInnerToJSON(value?: VdsNetworksInner | null): any {
     }
     return {
         
+        'id': value.id,
         'type': value.type,
         'nat_mode': value.natMode,
         'bandwidth': value.bandwidth,
