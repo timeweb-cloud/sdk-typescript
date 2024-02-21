@@ -27,7 +27,8 @@ export const DbType = {
     Mongodb: 'mongodb',
     Opensearch: 'opensearch',
     Kafka: 'kafka',
-    Rabbitmq: 'rabbitmq'
+    Rabbitmq: 'rabbitmq',
+    Clickhouse: 'clickhouse'
 } as const;
 export type DbType = typeof DbType[keyof typeof DbType];
 
