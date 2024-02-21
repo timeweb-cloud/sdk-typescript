@@ -14,7 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Пользователь базы данных.
  * @export
  * @interface CreateClusterAdmin
  */
