@@ -13,171 +13,81 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { AvailabilityZone } from './AvailabilityZone';
-import {
-    AvailabilityZoneFromJSON,
-    AvailabilityZoneFromJSONTyped,
-    AvailabilityZoneToJSON,
-} from './AvailabilityZone';
-import type { ConfigParameters } from './ConfigParameters';
-import {
-    ConfigParametersFromJSON,
-    ConfigParametersFromJSONTyped,
-    ConfigParametersToJSON,
-} from './ConfigParameters';
-import type { CreateClusterAdmin } from './CreateClusterAdmin';
-import {
-    CreateClusterAdminFromJSON,
-    CreateClusterAdminFromJSONTyped,
-    CreateClusterAdminToJSON,
-} from './CreateClusterAdmin';
-import type { CreateClusterInstance } from './CreateClusterInstance';
-import {
-    CreateClusterInstanceFromJSON,
-    CreateClusterInstanceFromJSONTyped,
-    CreateClusterInstanceToJSON,
-} from './CreateClusterInstance';
-import type { CreateDbAutoBackups } from './CreateDbAutoBackups';
-import {
-    CreateDbAutoBackupsFromJSON,
-    CreateDbAutoBackupsFromJSONTyped,
-    CreateDbAutoBackupsToJSON,
-} from './CreateDbAutoBackups';
-import type { DbType } from './DbType';
-import {
-    DbTypeFromJSON,
-    DbTypeFromJSONTyped,
-    DbTypeToJSON,
-} from './DbType';
-import type { Network } from './Network';
-import {
-    NetworkFromJSON,
-    NetworkFromJSONTyped,
-    NetworkToJSON,
-} from './Network';
-
 /**
- * 
+ * База данных
  * @export
- * @interface CreateCluster
+ * @interface CreateDbAutoBackups
  */
-export interface CreateCluster {
+export interface CreateDbAutoBackups {
     /**
-     * Название кластера базы данных.
-     * @type {string}
-     * @memberof CreateCluster
-     */
-    name: string;
-    /**
-     * 
-     * @type {DbType}
-     * @memberof CreateCluster
-     */
-    type: DbType;
-    /**
-     * 
-     * @type {CreateClusterAdmin}
-     * @memberof CreateCluster
-     */
-    admin?: CreateClusterAdmin;
-    /**
-     * 
-     * @type {CreateClusterInstance}
-     * @memberof CreateCluster
-     */
-    instance?: CreateClusterInstance;
-    /**
-     * Тип хеширования базы данных (mysql5 | mysql | postgres).
-     * @type {string}
-     * @memberof CreateCluster
-     */
-    hashType?: CreateClusterHashTypeEnum;
-    /**
-     * Идентификатор тарифа.
+     * Количество копий для хранения. Минимальное количество `1`, максимальное `99`
      * @type {number}
-     * @memberof CreateCluster
+     * @memberof CreateDbAutoBackups
      */
-    presetId: number;
+    copyCount: number;
     /**
-     * 
-     * @type {ConfigParameters}
-     * @memberof CreateCluster
+     * Дата начала создания первого автобэкапа. Значение в формате `ISO8601`. Время не учитывается.
+     * @type {Date}
+     * @memberof CreateDbAutoBackups
      */
-    configParameters?: ConfigParameters;
+    creationStartAt: Date;
     /**
-     * 
-     * @type {Network}
-     * @memberof CreateCluster
-     */
-    network?: Network;
-    /**
-     * Описание кластера базы данных
+     * Периодичность создания автобэкапов
      * @type {string}
-     * @memberof CreateCluster
+     * @memberof CreateDbAutoBackups
      */
-    description?: string;
+    interval: CreateDbAutoBackupsIntervalEnum;
     /**
-     * 
-     * @type {AvailabilityZone}
-     * @memberof CreateCluster
+     * День недели, в который будут создаваться автобэкапы. Работает только со значением `interval`: `week`. Доступные значение от `1 `до `7`.
+     * @type {number}
+     * @memberof CreateDbAutoBackups
      */
-    availabilityZone?: AvailabilityZone;
-    /**
-     * 
-     * @type {CreateDbAutoBackups}
-     * @memberof CreateCluster
-     */
-    autoBackups?: CreateDbAutoBackups;
+    dayOfWeek: number;
 }
 
 
 /**
  * @export
  */
-export const CreateClusterHashTypeEnum = {
-    CachingSha2: 'caching_sha2',
-    MysqlNative: 'mysql_native'
+export const CreateDbAutoBackupsIntervalEnum = {
+    Day: 'day',
+    Week: 'week',
+    Month: 'month'
 } as const;
-export type CreateClusterHashTypeEnum = typeof CreateClusterHashTypeEnum[keyof typeof CreateClusterHashTypeEnum];
+export type CreateDbAutoBackupsIntervalEnum = typeof CreateDbAutoBackupsIntervalEnum[keyof typeof CreateDbAutoBackupsIntervalEnum];
 
 
 /**
- * Check if a given object implements the CreateCluster interface.
+ * Check if a given object implements the CreateDbAutoBackups interface.
  */
-export function instanceOfCreateCluster(value: object): boolean {
+export function instanceOfCreateDbAutoBackups(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "presetId" in value;
+    isInstance = isInstance && "copyCount" in value;
+    isInstance = isInstance && "creationStartAt" in value;
+    isInstance = isInstance && "interval" in value;
+    isInstance = isInstance && "dayOfWeek" in value;
 
     return isInstance;
 }
 
-export function CreateClusterFromJSON(json: any): CreateCluster {
-    return CreateClusterFromJSONTyped(json, false);
+export function CreateDbAutoBackupsFromJSON(json: any): CreateDbAutoBackups {
+    return CreateDbAutoBackupsFromJSONTyped(json, false);
 }
 
-export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateCluster {
+export function CreateDbAutoBackupsFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateDbAutoBackups {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
-        'type': DbTypeFromJSON(json['type']),
-        'admin': !exists(json, 'admin') ? undefined : CreateClusterAdminFromJSON(json['admin']),
-        'instance': !exists(json, 'instance') ? undefined : CreateClusterInstanceFromJSON(json['instance']),
-        'hashType': !exists(json, 'hash_type') ? undefined : json['hash_type'],
-        'presetId': json['preset_id'],
-        'configParameters': !exists(json, 'config_parameters') ? undefined : ConfigParametersFromJSON(json['config_parameters']),
-        'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
-        'autoBackups': !exists(json, 'auto_backups') ? undefined : CreateDbAutoBackupsFromJSON(json['auto_backups']),
+        'copyCount': json['copy_count'],
+        'creationStartAt': (new Date(json['creation_start_at'])),
+        'interval': json['interval'],
+        'dayOfWeek': json['day_of_week'],
     };
 }
 
-export function CreateClusterToJSON(value?: CreateCluster | null): any {
+export function CreateDbAutoBackupsToJSON(value?: CreateDbAutoBackups | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -186,17 +96,10 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
     }
     return {
         
-        'name': value.name,
-        'type': DbTypeToJSON(value.type),
-        'admin': CreateClusterAdminToJSON(value.admin),
-        'instance': CreateClusterInstanceToJSON(value.instance),
-        'hash_type': value.hashType,
-        'preset_id': value.presetId,
-        'config_parameters': ConfigParametersToJSON(value.configParameters),
-        'network': NetworkToJSON(value.network),
-        'description': value.description,
-        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
-        'auto_backups': CreateDbAutoBackupsToJSON(value.autoBackups),
+        'copy_count': value.copyCount,
+        'creation_start_at': (value.creationStartAt.toISOString()),
+        'interval': value.interval,
+        'day_of_week': value.dayOfWeek,
     };
 }
 

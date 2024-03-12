@@ -59,6 +59,7 @@ export * from './CreateDatabaseCluster201Response';
 export * from './CreateDatabaseInstance201Response';
 export * from './CreateDatabaseUser201Response';
 export * from './CreateDb';
+export * from './CreateDbAutoBackups';
 export * from './CreateDedicatedServer';
 export * from './CreateDedicatedServer201Response';
 export * from './CreateDns';

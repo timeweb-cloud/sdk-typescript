@@ -80,6 +80,7 @@ src/models/CreateDatabaseCluster201Response.ts
 src/models/CreateDatabaseInstance201Response.ts
 src/models/CreateDatabaseUser201Response.ts
 src/models/CreateDb.ts
+src/models/CreateDbAutoBackups.ts
 src/models/CreateDedicatedServer.ts
 src/models/CreateDedicatedServer201Response.ts
 src/models/CreateDns.ts
