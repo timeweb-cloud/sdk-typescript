@@ -40,7 +40,8 @@ export interface BindFloatingIp {
 export const BindFloatingIpResourceTypeEnum = {
     Server: 'server',
     Balancer: 'balancer',
-    Database: 'database'
+    Database: 'database',
+    Network: 'network'
 } as const;
 export type BindFloatingIpResourceTypeEnum = typeof BindFloatingIpResourceTypeEnum[keyof typeof BindFloatingIpResourceTypeEnum];
 

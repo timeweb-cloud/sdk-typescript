@@ -37,7 +37,7 @@ export interface FloatingIp {
      * @type {string}
      * @memberof FloatingIp
      */
-    ip: string;
+    ip: string | null;
     /**
      * Это логическое значение, которое показывает, включена ли защита от DDoS.
      * @type {boolean}
@@ -55,25 +55,25 @@ export interface FloatingIp {
      * @type {string}
      * @memberof FloatingIp
      */
-    resourceType?: FloatingIpResourceTypeEnum;
+    resourceType: FloatingIpResourceTypeEnum;
     /**
      * Id ресурса.
      * @type {number}
      * @memberof FloatingIp
      */
-    resourceId?: number;
+    resourceId: number | null;
     /**
      * Комментарий
      * @type {string}
      * @memberof FloatingIp
      */
-    comment?: string;
+    comment: string | null;
     /**
      * Запись имени узла.
      * @type {string}
      * @memberof FloatingIp
      */
-    ptr?: string;
+    ptr: string | null;
 }
 
 
@@ -83,7 +83,8 @@ export interface FloatingIp {
 export const FloatingIpResourceTypeEnum = {
     Server: 'server',
     Balancer: 'balancer',
-    Database: 'database'
+    Database: 'database',
+    Network: 'network'
 } as const;
 export type FloatingIpResourceTypeEnum = typeof FloatingIpResourceTypeEnum[keyof typeof FloatingIpResourceTypeEnum];
 
@@ -97,6 +98,10 @@ export function instanceOfFloatingIp(value: object): boolean {
     isInstance = isInstance && "ip" in value;
     isInstance = isInstance && "isDdosGuard" in value;
     isInstance = isInstance && "availabilityZone" in value;
+    isInstance = isInstance && "resourceType" in value;
+    isInstance = isInstance && "resourceId" in value;
+    isInstance = isInstance && "comment" in value;
+    isInstance = isInstance && "ptr" in value;
 
     return isInstance;
 }
@@ -115,10 +120,10 @@ export function FloatingIpFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'ip': json['ip'],
         'isDdosGuard': json['is_ddos_guard'],
         'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
-        'resourceType': !exists(json, 'resource_type') ? undefined : json['resource_type'],
-        'resourceId': !exists(json, 'resource_id') ? undefined : json['resource_id'],
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
-        'ptr': !exists(json, 'ptr') ? undefined : json['ptr'],
+        'resourceType': json['resource_type'],
+        'resourceId': json['resource_id'],
+        'comment': json['comment'],
+        'ptr': json['ptr'],
     };
 }
 

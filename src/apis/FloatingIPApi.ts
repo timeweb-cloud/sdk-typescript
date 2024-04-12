@@ -133,7 +133,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать создать плавающий IP, отправьте POST-запрос в `/api/v1/floating-ip`, задав необходимые атрибуты.
+     * Чтобы создать создать плавающий IP, отправьте POST-запрос в `/api/v1/floating-ips`, задав необходимые атрибуты.
      * Создание плавающего IP
      */
     async createFloatingIpRaw(requestParameters: CreateFloatingIpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateFloatingIp201Response>> {
@@ -167,7 +167,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать создать плавающий IP, отправьте POST-запрос в `/api/v1/floating-ip`, задав необходимые атрибуты.
+     * Чтобы создать создать плавающий IP, отправьте POST-запрос в `/api/v1/floating-ips`, задав необходимые атрибуты.
      * Создание плавающего IP
      */
     async createFloatingIp(requestParameters: CreateFloatingIpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateFloatingIp201Response> {
