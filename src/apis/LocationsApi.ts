@@ -13,32 +13,69 @@
  */
 
 
+import * as runtime from '../runtime';
+import type {
+  GetFinances400Response,
+  GetFinances401Response,
+  GetFinances403Response,
+  GetFinances429Response,
+  GetFinances500Response,
+  GetLocations200Response,
+} from '../models/index';
+import {
+    GetFinances400ResponseFromJSON,
+    GetFinances400ResponseToJSON,
+    GetFinances401ResponseFromJSON,
+    GetFinances401ResponseToJSON,
+    GetFinances403ResponseFromJSON,
+    GetFinances403ResponseToJSON,
+    GetFinances429ResponseFromJSON,
+    GetFinances429ResponseToJSON,
+    GetFinances500ResponseFromJSON,
+    GetFinances500ResponseToJSON,
+    GetLocations200ResponseFromJSON,
+    GetLocations200ResponseToJSON,
+} from '../models/index';
+
 /**
- * Локация.
- * @export
+ * 
  */
-export const Location = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Ru3: 'ru-3',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1',
-    Nl1: 'nl-1',
-    Us1: 'us-1',
-    Us2: 'us-2'
-} as const;
-export type Location = typeof Location[keyof typeof Location];
+export class LocationsApi extends runtime.BaseAPI {
 
+    /**
+     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
+     * Получение списка локаций
+     */
+    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
+        const queryParameters: any = {};
 
-export function LocationFromJSON(json: any): Location {
-    return LocationFromJSONTyped(json, false);
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/locations`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
+     * Получение списка локаций
+     */
+    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
+        const response = await this.getLocationsRaw(initOverrides);
+        return await response.value();
+    }
+
 }
-
-export function LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Location {
-    return json as Location;
-}
-
-export function LocationToJSON(value?: Location | null): any {
-    return value as any;
-}
-

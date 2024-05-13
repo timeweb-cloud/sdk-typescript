@@ -13,6 +13,7 @@ src/apis/FirewallApi.ts
 src/apis/FloatingIPApi.ts
 src/apis/ImagesApi.ts
 src/apis/KubernetesApi.ts
+src/apis/LocationsApi.ts
 src/apis/MailApi.ts
 src/apis/ProjectsApi.ts
 src/apis/S3Api.ts
@@ -210,6 +211,7 @@ src/models/GetFinances500Response.ts
 src/models/GetFloatingIps200Response.ts
 src/models/GetKey200Response.ts
 src/models/GetKeys200Response.ts
+src/models/GetLocations200Response.ts
 src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
 src/models/GetNotificationSettings200Response.ts
@@ -260,6 +262,7 @@ src/models/ImagesOutResponse.ts
 src/models/Invoice.ts
 src/models/K8SVersionsResponse.ts
 src/models/Location.ts
+src/models/LocationDto.ts
 src/models/Mailbox.ts
 src/models/MailboxAutoReply.ts
 src/models/MailboxForwardingIncoming.ts

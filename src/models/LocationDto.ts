@@ -12,33 +12,80 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
+import type { Location } from './Location';
+import {
+    LocationFromJSON,
+    LocationFromJSONTyped,
+    LocationToJSON,
+} from './Location';
 
 /**
- * Локация.
+ * Локация
  * @export
+ * @interface LocationDto
  */
-export const Location = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Ru3: 'ru-3',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1',
-    Nl1: 'nl-1',
-    Us1: 'us-1',
-    Us2: 'us-2'
-} as const;
-export type Location = typeof Location[keyof typeof Location];
-
-
-export function LocationFromJSON(json: any): Location {
-    return LocationFromJSONTyped(json, false);
+export interface LocationDto {
+    /**
+     * 
+     * @type {Location}
+     * @memberof LocationDto
+     */
+    location: Location;
+    /**
+     * Код локации в формате `ISO 3166`
+     * @type {string}
+     * @memberof LocationDto
+     */
+    locationCode: string;
+    /**
+     * Список зон, доступных в данной локации
+     * @type {Array<string>}
+     * @memberof LocationDto
+     */
+    availabilityZones: Array<string>;
 }
 
-export function LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Location {
-    return json as Location;
+/**
+ * Check if a given object implements the LocationDto interface.
+ */
+export function instanceOfLocationDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "location" in value;
+    isInstance = isInstance && "locationCode" in value;
+    isInstance = isInstance && "availabilityZones" in value;
+
+    return isInstance;
 }
 
-export function LocationToJSON(value?: Location | null): any {
-    return value as any;
+export function LocationDtoFromJSON(json: any): LocationDto {
+    return LocationDtoFromJSONTyped(json, false);
+}
+
+export function LocationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): LocationDto {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'location': LocationFromJSON(json['location']),
+        'locationCode': json['location_code'],
+        'availabilityZones': json['availability_zones'],
+    };
+}
+
+export function LocationDtoToJSON(value?: LocationDto | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'location': LocationToJSON(value.location),
+        'location_code': value.locationCode,
+        'availability_zones': value.availabilityZones,
+    };
 }
 

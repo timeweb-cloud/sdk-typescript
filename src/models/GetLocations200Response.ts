@@ -12,33 +12,77 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
+import type { LocationDto } from './LocationDto';
+import {
+    LocationDtoFromJSON,
+    LocationDtoFromJSONTyped,
+    LocationDtoToJSON,
+} from './LocationDto';
+import type { Meta } from './Meta';
+import {
+    MetaFromJSON,
+    MetaFromJSONTyped,
+    MetaToJSON,
+} from './Meta';
 
 /**
- * Локация.
+ * 
  * @export
+ * @interface GetLocations200Response
  */
-export const Location = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Ru3: 'ru-3',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1',
-    Nl1: 'nl-1',
-    Us1: 'us-1',
-    Us2: 'us-2'
-} as const;
-export type Location = typeof Location[keyof typeof Location];
-
-
-export function LocationFromJSON(json: any): Location {
-    return LocationFromJSONTyped(json, false);
+export interface GetLocations200Response {
+    /**
+     * 
+     * @type {Meta}
+     * @memberof GetLocations200Response
+     */
+    meta: Meta;
+    /**
+     * 
+     * @type {Array<LocationDto>}
+     * @memberof GetLocations200Response
+     */
+    locations: Array<LocationDto>;
 }
 
-export function LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Location {
-    return json as Location;
+/**
+ * Check if a given object implements the GetLocations200Response interface.
+ */
+export function instanceOfGetLocations200Response(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "locations" in value;
+
+    return isInstance;
 }
 
-export function LocationToJSON(value?: Location | null): any {
-    return value as any;
+export function GetLocations200ResponseFromJSON(json: any): GetLocations200Response {
+    return GetLocations200ResponseFromJSONTyped(json, false);
+}
+
+export function GetLocations200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetLocations200Response {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'meta': MetaFromJSON(json['meta']),
+        'locations': ((json['locations'] as Array<any>).map(LocationDtoFromJSON)),
+    };
+}
+
+export function GetLocations200ResponseToJSON(value?: GetLocations200Response | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'meta': MetaToJSON(value.meta),
+        'locations': ((value.locations as Array<any>).map(LocationDtoToJSON)),
+    };
 }
 

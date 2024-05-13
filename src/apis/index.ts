@@ -10,6 +10,7 @@ export * from './FirewallApi';
 export * from './FloatingIPApi';
 export * from './ImagesApi';
 export * from './KubernetesApi';
+export * from './LocationsApi';
 export * from './MailApi';
 export * from './ProjectsApi';
 export * from './S3Api';
