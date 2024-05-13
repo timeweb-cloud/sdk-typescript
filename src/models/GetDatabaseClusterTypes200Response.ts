@@ -12,31 +12,77 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
+import type { DatabaseType } from './DatabaseType';
+import {
+    DatabaseTypeFromJSON,
+    DatabaseTypeFromJSONTyped,
+    DatabaseTypeToJSON,
+} from './DatabaseType';
+import type { Meta } from './Meta';
+import {
+    MetaFromJSON,
+    MetaFromJSONTyped,
+    MetaToJSON,
+} from './Meta';
 
 /**
- * Локация.
+ * 
  * @export
+ * @interface GetDatabaseClusterTypes200Response
  */
-export const Location = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Ru3: 'ru-3',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1',
-    Nl1: 'nl-1'
-} as const;
-export type Location = typeof Location[keyof typeof Location];
-
-
-export function LocationFromJSON(json: any): Location {
-    return LocationFromJSONTyped(json, false);
+export interface GetDatabaseClusterTypes200Response {
+    /**
+     * 
+     * @type {Meta}
+     * @memberof GetDatabaseClusterTypes200Response
+     */
+    meta: Meta;
+    /**
+     * 
+     * @type {Array<DatabaseType>}
+     * @memberof GetDatabaseClusterTypes200Response
+     */
+    types: Array<DatabaseType>;
 }
 
-export function LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Location {
-    return json as Location;
+/**
+ * Check if a given object implements the GetDatabaseClusterTypes200Response interface.
+ */
+export function instanceOfGetDatabaseClusterTypes200Response(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "types" in value;
+
+    return isInstance;
 }
 
-export function LocationToJSON(value?: Location | null): any {
-    return value as any;
+export function GetDatabaseClusterTypes200ResponseFromJSON(json: any): GetDatabaseClusterTypes200Response {
+    return GetDatabaseClusterTypes200ResponseFromJSONTyped(json, false);
+}
+
+export function GetDatabaseClusterTypes200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetDatabaseClusterTypes200Response {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'meta': MetaFromJSON(json['meta']),
+        'types': ((json['types'] as Array<any>).map(DatabaseTypeFromJSON)),
+    };
+}
+
+export function GetDatabaseClusterTypes200ResponseToJSON(value?: GetDatabaseClusterTypes200Response | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'meta': MetaToJSON(value.meta),
+        'types': ((value.types as Array<any>).map(DatabaseTypeToJSON)),
+    };
 }
 

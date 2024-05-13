@@ -118,6 +118,7 @@ src/models/DatabaseClusterDiskStats.ts
 src/models/DatabaseClusterNetworksInner.ts
 src/models/DatabaseClusterNetworksInnerIpsInner.ts
 src/models/DatabaseInstance.ts
+src/models/DatabaseType.ts
 src/models/Db.ts
 src/models/DbDiskStats.ts
 src/models/DbType.ts
@@ -187,6 +188,7 @@ src/models/GetConfigurators200Response.ts
 src/models/GetCountries200Response.ts
 src/models/GetDatabaseAutoBackupsSettings200Response.ts
 src/models/GetDatabaseBackups200Response.ts
+src/models/GetDatabaseClusterTypes200Response.ts
 src/models/GetDatabaseClusters200Response.ts
 src/models/GetDatabaseInstances200Response.ts
 src/models/GetDatabaseUsers200Response.ts

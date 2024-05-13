@@ -30,6 +30,7 @@ import type {
   DeleteDatabaseCluster200Response,
   GetDatabaseAutoBackupsSettings200Response,
   GetDatabaseBackups200Response,
+  GetDatabaseClusterTypes200Response,
   GetDatabaseClusters200Response,
   GetDatabaseInstances200Response,
   GetDatabaseUsers200Response,
@@ -77,6 +78,8 @@ import {
     GetDatabaseAutoBackupsSettings200ResponseToJSON,
     GetDatabaseBackups200ResponseFromJSON,
     GetDatabaseBackups200ResponseToJSON,
+    GetDatabaseClusterTypes200ResponseFromJSON,
+    GetDatabaseClusterTypes200ResponseToJSON,
     GetDatabaseClusters200ResponseFromJSON,
     GetDatabaseClusters200ResponseToJSON,
     GetDatabaseInstances200ResponseFromJSON,
@@ -899,6 +902,42 @@ export class DatabasesApi extends runtime.BaseAPI {
      */
     async getDatabaseCluster(requestParameters: GetDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseCluster201Response> {
         const response = await this.getDatabaseClusterRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список типов баз данных на вашем аккаунте, отправьте GET-запрос на `/api/v1/database-types`.
+     * Получение списка типов кластеров баз данных
+     */
+    async getDatabaseClusterTypesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseClusterTypes200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/database-types`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseClusterTypes200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список типов баз данных на вашем аккаунте, отправьте GET-запрос на `/api/v1/database-types`.
+     * Получение списка типов кластеров баз данных
+     */
+    async getDatabaseClusterTypes(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseClusterTypes200Response> {
+        const response = await this.getDatabaseClusterTypesRaw(initOverrides);
         return await response.value();
     }
 

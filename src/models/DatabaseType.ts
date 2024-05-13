@@ -12,31 +12,73 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
+/**
+ * Тип кластера базы данных
+ * @export
+ * @interface DatabaseType
+ */
+export interface DatabaseType {
+    /**
+     * Название кластера базы данных.
+     * @type {string}
+     * @memberof DatabaseType
+     */
+    name: string;
+    /**
+     * Версия кластера базы данных.
+     * @type {string}
+     * @memberof DatabaseType
+     */
+    version: string;
+    /**
+     * Тип кластера базы данных. Передается при создании кластера в поле `type`
+     * @type {string}
+     * @memberof DatabaseType
+     */
+    type: string;
+}
 
 /**
- * Локация.
- * @export
+ * Check if a given object implements the DatabaseType interface.
  */
-export const Location = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Ru3: 'ru-3',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1',
-    Nl1: 'nl-1'
-} as const;
-export type Location = typeof Location[keyof typeof Location];
+export function instanceOfDatabaseType(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "version" in value;
+    isInstance = isInstance && "type" in value;
 
-
-export function LocationFromJSON(json: any): Location {
-    return LocationFromJSONTyped(json, false);
+    return isInstance;
 }
 
-export function LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Location {
-    return json as Location;
+export function DatabaseTypeFromJSON(json: any): DatabaseType {
+    return DatabaseTypeFromJSONTyped(json, false);
 }
 
-export function LocationToJSON(value?: Location | null): any {
-    return value as any;
+export function DatabaseTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatabaseType {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'name': json['name'],
+        'version': json['version'],
+        'type': json['type'],
+    };
+}
+
+export function DatabaseTypeToJSON(value?: DatabaseType | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'name': value.name,
+        'version': value.version,
+        'type': value.type,
+    };
 }
 
