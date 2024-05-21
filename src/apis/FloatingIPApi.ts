@@ -87,7 +87,7 @@ export interface UpdateFloatingIPRequest {
 export class FloatingIPApi extends runtime.BaseAPI {
 
     /**
-     * Чтобы привязать IP к сервису, отправьте POST-запрос на `/api/v1/floating-ip/{floating_ip_id}/bind`.
+     * Чтобы привязать IP к сервису, отправьте POST-запрос на `/api/v1/floating-ips/{floating_ip_id}/bind`.
      * Привязать IP к сервису
      */
     async bindFloatingIpRaw(requestParameters: BindFloatingIpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -125,7 +125,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы привязать IP к сервису, отправьте POST-запрос на `/api/v1/floating-ip/{floating_ip_id}/bind`.
+     * Чтобы привязать IP к сервису, отправьте POST-запрос на `/api/v1/floating-ips/{floating_ip_id}/bind`.
      * Привязать IP к сервису
      */
     async bindFloatingIp(requestParameters: BindFloatingIpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -291,7 +291,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы отвязать IP от сервиса, отправьте POST-запрос на `/api/v1/floating-ip/{floating_ip_id}/unbind`.
+     * Чтобы отвязать IP от сервиса, отправьте POST-запрос на `/api/v1/floating-ips/{floating_ip_id}/unbind`.
      * Отвязать IP от сервиса
      */
     async unbindFloatingIpRaw(requestParameters: UnbindFloatingIpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -322,7 +322,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы отвязать IP от сервиса, отправьте POST-запрос на `/api/v1/floating-ip/{floating_ip_id}/unbind`.
+     * Чтобы отвязать IP от сервиса, отправьте POST-запрос на `/api/v1/floating-ips/{floating_ip_id}/unbind`.
      * Отвязать IP от сервиса
      */
     async unbindFloatingIp(requestParameters: UnbindFloatingIpRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
