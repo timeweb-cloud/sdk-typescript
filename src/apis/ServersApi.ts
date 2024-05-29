@@ -133,6 +133,11 @@ import {
     UpdateServerOSBootModeRequestToJSON,
 } from '../models/index';
 
+export interface ActionOnServerRequest {
+    serverId: number;
+    action: ActionOnServerActionEnum;
+}
+
 export interface AddServerIPOperationRequest {
     serverId: number;
     addServerIPRequest: AddServerIPRequest;
@@ -243,7 +248,7 @@ export interface PerformActionOnBackupOperationRequest {
 
 export interface PerformActionOnServerOperationRequest {
     serverId: number;
-    performActionOnServerRequest: PerformActionOnServerRequest;
+    performActionOnServerRequest?: PerformActionOnServerRequest;
 }
 
 export interface UpdateServerRequest {
@@ -289,6 +294,49 @@ export interface UpdateServerOSBootModeOperationRequest {
  * 
  */
 export class ServersApi extends runtime.BaseAPI {
+
+    /**
+     * Чтобы выполнить действие над сервером, отправьте POST-запрос на `/api/v2/{account_id}/servers/{server_id}/{action}`.
+     * Выполнение действия над сервером
+     */
+    async actionOnServerRaw(requestParameters: ActionOnServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling actionOnServer.');
+        }
+
+        if (requestParameters.action === null || requestParameters.action === undefined) {
+            throw new runtime.RequiredError('action','Required parameter requestParameters.action was null or undefined when calling actionOnServer.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/{account_id}/servers/{server_id}/{action}`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))).replace(`{${"action"}}`, encodeURIComponent(String(requestParameters.action))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы выполнить действие над сервером, отправьте POST-запрос на `/api/v2/{account_id}/servers/{server_id}/{action}`.
+     * Выполнение действия над сервером
+     */
+    async actionOnServer(requestParameters: ActionOnServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.actionOnServerRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Чтобы добавить IP-адрес сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/ips`. \\  На данный момент IPv6 доступны только для серверов с локацией `ru-1`.
@@ -1388,10 +1436,6 @@ export class ServersApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling performActionOnServer.');
         }
 
-        if (requestParameters.performActionOnServerRequest === null || requestParameters.performActionOnServerRequest === undefined) {
-            throw new runtime.RequiredError('performActionOnServerRequest','Required parameter requestParameters.performActionOnServerRequest was null or undefined when calling performActionOnServer.');
-        }
-
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -1750,6 +1794,21 @@ export class ServersApi extends runtime.BaseAPI {
 
 }
 
+/**
+ * @export
+ */
+export const ActionOnServerActionEnum = {
+    HardReboot: 'hard_reboot',
+    HardShutdown: 'hard_shutdown',
+    Install: 'install',
+    Reboot: 'reboot',
+    Remove: 'remove',
+    ResetPassword: 'reset_password',
+    Shutdown: 'shutdown',
+    Start: 'start',
+    Clone: 'clone'
+} as const;
+export type ActionOnServerActionEnum = typeof ActionOnServerActionEnum[keyof typeof ActionOnServerActionEnum];
 /**
  * @export
  */
