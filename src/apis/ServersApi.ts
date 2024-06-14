@@ -133,11 +133,6 @@ import {
     UpdateServerOSBootModeRequestToJSON,
 } from '../models/index';
 
-export interface ActionOnServerRequest {
-    serverId: number;
-    action: ActionOnServerActionEnum;
-}
-
 export interface AddServerIPOperationRequest {
     serverId: number;
     addServerIPRequest: AddServerIPRequest;
@@ -235,7 +230,15 @@ export interface GetServersRequest {
     offset?: number;
 }
 
+export interface HardShutdownServerRequest {
+    serverId: number;
+}
+
 export interface ImageUnmountAndServerReloadRequest {
+    serverId: number;
+}
+
+export interface InstallServerRequest {
     serverId: number;
 }
 
@@ -249,6 +252,22 @@ export interface PerformActionOnBackupOperationRequest {
 export interface PerformActionOnServerOperationRequest {
     serverId: number;
     performActionOnServerRequest?: PerformActionOnServerRequest;
+}
+
+export interface RebootServerRequest {
+    serverId: number;
+}
+
+export interface ResetServerPasswordRequest {
+    serverId: number;
+}
+
+export interface ShutdownServerRequest {
+    serverId: number;
+}
+
+export interface StartServerRequest {
+    serverId: number;
 }
 
 export interface UpdateServerRequest {
@@ -294,49 +313,6 @@ export interface UpdateServerOSBootModeOperationRequest {
  * 
  */
 export class ServersApi extends runtime.BaseAPI {
-
-    /**
-     * Чтобы выполнить действие над сервером, отправьте POST-запрос на `/api/v2/{account_id}/servers/{server_id}/{action}`.
-     * Выполнение действия над сервером
-     */
-    async actionOnServerRaw(requestParameters: ActionOnServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
-            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling actionOnServer.');
-        }
-
-        if (requestParameters.action === null || requestParameters.action === undefined) {
-            throw new runtime.RequiredError('action','Required parameter requestParameters.action was null or undefined when calling actionOnServer.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/{account_id}/servers/{server_id}/{action}`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))).replace(`{${"action"}}`, encodeURIComponent(String(requestParameters.action))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Чтобы выполнить действие над сервером, отправьте POST-запрос на `/api/v2/{account_id}/servers/{server_id}/{action}`.
-     * Выполнение действия над сервером
-     */
-    async actionOnServer(requestParameters: ActionOnServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.actionOnServerRaw(requestParameters, initOverrides);
-    }
 
     /**
      * Чтобы добавить IP-адрес сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/ips`. \\  На данный момент IPv6 доступны только для серверов с локацией `ru-1`.
@@ -1339,6 +1315,45 @@ export class ServersApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы выполнить принудительное выключение сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/hard-shutdown`.
+     * Принудительное выключение сервера
+     */
+    async hardShutdownServerRaw(requestParameters: HardShutdownServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling hardShutdownServer.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/hard-shutdown`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы выполнить принудительное выключение сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/hard-shutdown`.
+     * Принудительное выключение сервера
+     */
+    async hardShutdownServer(requestParameters: HardShutdownServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.hardShutdownServerRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Чтобы отмонтировать ISO образ и перезагрузить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/image-unmount`.
      * Отмонтирование ISO образа и перезагрузка сервера
      */
@@ -1375,6 +1390,45 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async imageUnmountAndServerReload(requestParameters: ImageUnmountAndServerReloadRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.imageUnmountAndServerReloadRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы установить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/install`.
+     * Установка сервера
+     */
+    async installServerRaw(requestParameters: InstallServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling installServer.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/install`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы установить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/install`.
+     * Установка сервера
+     */
+    async installServer(requestParameters: InstallServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.installServerRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -1467,6 +1521,162 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async performActionOnServer(requestParameters: PerformActionOnServerOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.performActionOnServerRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы перезагрузить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/reboot`.
+     * Перезагрузка сервера
+     */
+    async rebootServerRaw(requestParameters: RebootServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling rebootServer.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/reboot`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы перезагрузить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/reboot`.
+     * Перезагрузка сервера
+     */
+    async rebootServer(requestParameters: RebootServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.rebootServerRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы сбросить пароль сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/reset-password`.
+     * Сброс пароля сервера
+     */
+    async resetServerPasswordRaw(requestParameters: ResetServerPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling resetServerPassword.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/reset-password`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы сбросить пароль сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/reset-password`.
+     * Сброс пароля сервера
+     */
+    async resetServerPassword(requestParameters: ResetServerPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.resetServerPasswordRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы выключить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/shutdown`.
+     * Выключение сервера
+     */
+    async shutdownServerRaw(requestParameters: ShutdownServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling shutdownServer.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/shutdown`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы выключить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/shutdown`.
+     * Выключение сервера
+     */
+    async shutdownServer(requestParameters: ShutdownServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.shutdownServerRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы запустить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/start`.
+     * Запуск сервера
+     */
+    async startServerRaw(requestParameters: StartServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling startServer.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/start`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы запустить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/start`.
+     * Запуск сервера
+     */
+    async startServer(requestParameters: StartServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.startServerRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -1794,21 +2004,6 @@ export class ServersApi extends runtime.BaseAPI {
 
 }
 
-/**
- * @export
- */
-export const ActionOnServerActionEnum = {
-    HardReboot: 'hard_reboot',
-    HardShutdown: 'hard_shutdown',
-    Install: 'install',
-    Reboot: 'reboot',
-    Remove: 'remove',
-    ResetPassword: 'reset_password',
-    Shutdown: 'shutdown',
-    Start: 'start',
-    Clone: 'clone'
-} as const;
-export type ActionOnServerActionEnum = typeof ActionOnServerActionEnum[keyof typeof ActionOnServerActionEnum];
 /**
  * @export
  */
