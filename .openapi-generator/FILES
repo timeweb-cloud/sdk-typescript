@@ -152,7 +152,6 @@ src/models/DomainPaymentPeriod.ts
 src/models/DomainPrimeType.ts
 src/models/DomainProlong.ts
 src/models/DomainRegister.ts
-src/models/DomainRegisterNsInner.ts
 src/models/DomainRequest.ts
 src/models/DomainTransfer.ts
 src/models/EditApiKey.ts

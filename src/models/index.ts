@@ -130,7 +130,6 @@ export * from './DomainPaymentPeriod';
 export * from './DomainPrimeType';
 export * from './DomainProlong';
 export * from './DomainRegister';
-export * from './DomainRegisterNsInner';
 export * from './DomainRequest';
 export * from './DomainTransfer';
 export * from './EditApiKey';

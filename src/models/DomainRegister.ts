@@ -19,12 +19,6 @@ import {
     DomainPaymentPeriodFromJSONTyped,
     DomainPaymentPeriodToJSON,
 } from './DomainPaymentPeriod';
-import type { DomainRegisterNsInner } from './DomainRegisterNsInner';
-import {
-    DomainRegisterNsInnerFromJSON,
-    DomainRegisterNsInnerFromJSONTyped,
-    DomainRegisterNsInnerToJSON,
-} from './DomainRegisterNsInner';
 
 /**
  * Заявка на регистрацию домена
@@ -56,12 +50,6 @@ export interface DomainRegister {
      * @memberof DomainRegister
      */
     isWhoisPrivacyEnabled?: boolean;
-    /**
-     * Name-серверы для регистрации домена. Если не передавать этот параметр, будут использованы наши стандартные name-серверы. Нужно указать как минимум 2 name-сервера.
-     * @type {Array<DomainRegisterNsInner>}
-     * @memberof DomainRegister
-     */
-    ns?: Array<DomainRegisterNsInner>;
     /**
      * 
      * @type {DomainPaymentPeriod}
@@ -112,7 +100,6 @@ export function DomainRegisterFromJSONTyped(json: any, ignoreDiscriminator: bool
         'fqdn': json['fqdn'],
         'isAutoprolongEnabled': !exists(json, 'is_autoprolong_enabled') ? undefined : json['is_autoprolong_enabled'],
         'isWhoisPrivacyEnabled': !exists(json, 'is_whois_privacy_enabled') ? undefined : json['is_whois_privacy_enabled'],
-        'ns': !exists(json, 'ns') ? undefined : ((json['ns'] as Array<any>).map(DomainRegisterNsInnerFromJSON)),
         'period': !exists(json, 'period') ? undefined : DomainPaymentPeriodFromJSON(json['period']),
         'personId': json['person_id'],
     };
@@ -131,7 +118,6 @@ export function DomainRegisterToJSON(value?: DomainRegister | null): any {
         'fqdn': value.fqdn,
         'is_autoprolong_enabled': value.isAutoprolongEnabled,
         'is_whois_privacy_enabled': value.isWhoisPrivacyEnabled,
-        'ns': value.ns === undefined ? undefined : ((value.ns as Array<any>).map(DomainRegisterNsInnerToJSON)),
         'period': DomainPaymentPeriodToJSON(value.period),
         'person_id': value.personId,
     };
