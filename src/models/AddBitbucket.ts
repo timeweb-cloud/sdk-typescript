@@ -32,7 +32,7 @@ export interface AddBitbucket {
      */
     providerToken: string;
     /**
-     * Логин пользователя BitBucket.
+     * Логин пользователя Bitbucket.
      * @type {string}
      * @memberof AddBitbucket
      */

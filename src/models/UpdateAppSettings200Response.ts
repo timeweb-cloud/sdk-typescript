@@ -34,10 +34,10 @@ import {
 export interface UpdateAppSettings200Response {
     /**
      * 
-     * @type {Array<App>}
+     * @type {App}
      * @memberof UpdateAppSettings200Response
      */
-    app: Array<App>;
+    app: App;
     /**
      * 
      * @type {Meta}
@@ -67,7 +67,7 @@ export function UpdateAppSettings200ResponseFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'app': ((json['app'] as Array<any>).map(AppFromJSON)),
+        'app': AppFromJSON(json['app']),
         'meta': MetaFromJSON(json['meta']),
     };
 }
@@ -81,7 +81,7 @@ export function UpdateAppSettings200ResponseToJSON(value?: UpdateAppSettings200R
     }
     return {
         
-        'app': ((value.app as Array<any>).map(AppToJSON)),
+        'app': AppToJSON(value.app),
         'meta': MetaToJSON(value.meta),
     };
 }

@@ -14,7 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Добавление аккаунта gitlab
+ * Добавление аккаунта GitLab
  * @export
  * @interface AddGitlab
  */
@@ -26,7 +26,7 @@ export interface AddGitlab {
      */
     providerType: AddGitlabProviderTypeEnum;
     /**
-     * Токен доступа. <br> Для Gitlab необходимо использовать персональный токен доступа. Инструкции по созданию можно найти в <a target='_blank' href='https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token'>документации GitLab</a>. <br> Установите следующие разрешения: `api`
+     * Токен доступа. <br> Для GitLab необходимо использовать персональный токен доступа. Инструкции по созданию можно найти в <a target='_blank' href='https://docs.GitLab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token'>документации GitLab</a>. <br> Установите следующие разрешения: `api`
      * @type {string}
      * @memberof AddGitlab
      */
@@ -38,7 +38,7 @@ export interface AddGitlab {
  * @export
  */
 export const AddGitlabProviderTypeEnum = {
-    Gitlab: 'gitlab'
+    Gitlab: 'Gitlab'
 } as const;
 export type AddGitlabProviderTypeEnum = typeof AddGitlabProviderTypeEnum[keyof typeof AddGitlabProviderTypeEnum];
 

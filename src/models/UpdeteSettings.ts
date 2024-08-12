@@ -63,13 +63,13 @@ export interface UpdeteSettings {
      */
     envVersion?: string;
     /**
-     * Директория с индексным файлом. Обязателен для приложений `type: frontend`. Не используется для приложений `type: backend`.
+     * Путь к директории с индексным файлом. Используется для приложений `type: frontend`. Не используется для приложений `type: backend`. Значение всегда должно начинаться с `/`.
      * @type {string}
      * @memberof UpdeteSettings
      */
     indexDir?: string;
     /**
-     * Команда для запуска приложения. Обязателен для приложений `type: backend`. Не используется для приложений `type: frontend`.
+     * Команда для запуска приложения. Используется для приложений `type: backend`. Не используется для приложений `type: frontend`.
      * @type {string}
      * @memberof UpdeteSettings
      */

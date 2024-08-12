@@ -24,7 +24,6 @@ import type {
   CreateDatabaseBackup409Response,
   CreateDeploy201Response,
   CreateDeployRequest,
-  GetApp200Response,
   GetAppDeploys200Response,
   GetAppLogs200Response,
   GetApps200Response,
@@ -63,8 +62,6 @@ import {
     CreateDeploy201ResponseToJSON,
     CreateDeployRequestFromJSON,
     CreateDeployRequestToJSON,
-    GetApp200ResponseFromJSON,
-    GetApp200ResponseToJSON,
     GetAppDeploys200ResponseFromJSON,
     GetAppDeploys200ResponseToJSON,
     GetAppLogs200ResponseFromJSON,
@@ -457,7 +454,7 @@ export class AppsApi extends runtime.BaseAPI {
      * Чтобы получить приложение по id, отправьте GET-запрос на `/api/v1/apps/{app_id}`.
      * Получение приложения по id
      */
-    async getAppRaw(requestParameters: GetAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetApp200Response>> {
+    async getAppRaw(requestParameters: GetAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateApp201Response>> {
         if (requestParameters.appId === null || requestParameters.appId === undefined) {
             throw new runtime.RequiredError('appId','Required parameter requestParameters.appId was null or undefined when calling getApp.');
         }
@@ -481,14 +478,14 @@ export class AppsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetApp200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateApp201ResponseFromJSON(jsonValue));
     }
 
     /**
      * Чтобы получить приложение по id, отправьте GET-запрос на `/api/v1/apps/{app_id}`.
      * Получение приложения по id
      */
-    async getApp(requestParameters: GetAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetApp200Response> {
+    async getApp(requestParameters: GetAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateApp201Response> {
         const response = await this.getAppRaw(requestParameters, initOverrides);
         return await response.value();
     }

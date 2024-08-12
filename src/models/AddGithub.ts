@@ -14,7 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Добавление аккаунта github
+ * Добавление аккаунта GitHub
  * @export
  * @interface AddGithub
  */
@@ -26,7 +26,7 @@ export interface AddGithub {
      */
     providerType: AddGithubProviderTypeEnum;
     /**
-     * Токен доступа. <br> Для GitHub необходимо использовать 'Fine-grained personal access token'. Инструкции по созданию можно найти в <a target='_blank' href='https://docs.github.com/ru/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token'>документации GitHub</a>. <br> Выберите репозитории, к которым хотите предоставить доступ, и установите следующие разрешения: `Webhooks: read and write`, `Contents: read-only`.
+     * Токен доступа. <br> Для GitHub необходимо использовать 'Fine-grained personal access token'. Инструкции по созданию можно найти в <a target='_blank' href='https://docs.GitHub.com/ru/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token'>документации GitHub</a>. <br> Выберите репозитории, к которым хотите предоставить доступ, и установите следующие разрешения: `Webhooks: read and write`, `Contents: read-only`.
      * @type {string}
      * @memberof AddGithub
      */
@@ -38,7 +38,7 @@ export interface AddGithub {
  * @export
  */
 export const AddGithubProviderTypeEnum = {
-    Github: 'github'
+    Github: 'Github'
 } as const;
 export type AddGithubProviderTypeEnum = typeof AddGithubProviderTypeEnum[keyof typeof AddGithubProviderTypeEnum];
 

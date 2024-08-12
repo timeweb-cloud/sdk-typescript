@@ -181,7 +181,6 @@ export * from './Frameworks';
 export * from './Free';
 export * from './GetAccountStatus200Response';
 export * from './GetAllProjectResources200Response';
-export * from './GetApp200Response';
 export * from './GetAppDeploys200Response';
 export * from './GetAppLogs200Response';
 export * from './GetApps200Response';

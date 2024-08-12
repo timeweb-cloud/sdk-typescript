@@ -105,7 +105,7 @@ export interface CreateApp {
      */
     framework: Frameworks;
     /**
-     * Директория с индексным файлом. Обязателен для приложений `type: frontend`. Не используется для приложений `type: backend`. Должно начинаться с `/`.
+     * Путь к директории с индексным файлом. Обязателен для приложений `type: frontend`. Не используется для приложений `type: backend`. Значение всегда должно начинаться с `/`.
      * @type {string}
      * @memberof CreateApp
      */

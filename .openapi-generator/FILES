@@ -204,7 +204,6 @@ src/models/Frameworks.ts
 src/models/Free.ts
 src/models/GetAccountStatus200Response.ts
 src/models/GetAllProjectResources200Response.ts
-src/models/GetApp200Response.ts
 src/models/GetAppDeploys200Response.ts
 src/models/GetAppLogs200Response.ts
 src/models/GetApps200Response.ts
