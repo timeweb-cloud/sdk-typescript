@@ -81,7 +81,7 @@ export interface CreateApp {
      */
     name: string;
     /**
-     * Комментарий к приложения.
+     * Комментарий к приложению.
      * @type {string}
      * @memberof CreateApp
      */
@@ -111,7 +111,7 @@ export interface CreateApp {
      */
     indexDir?: string;
     /**
-     * Команда для запуска приложения. Обязателен для приложений `type: backend`. Не используется для приложений `type: frontend`.
+     * Команда для запуска приложения. Обязательна для приложений `type: backend`. Не используется для приложений `type: frontend`.
      * @type {string}
      * @memberof CreateApp
      */

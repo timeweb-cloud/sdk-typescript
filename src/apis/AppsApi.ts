@@ -811,7 +811,7 @@ export class AppsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить информацию о деплое, отправьте GET-запрос на `/app/{app_id}/deploy/{deploy_id}`.
+     * Чтобы получить информацию о деплое, отправьте GET-запрос на `api/v1/apps/{app_id}/deploy/{deploy_id}/logs`.
      * Получение логов деплоя приложения
      */
     async getDeployLogsRaw(requestParameters: GetDeployLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDeployLogs200Response>> {
@@ -850,7 +850,7 @@ export class AppsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить информацию о деплое, отправьте GET-запрос на `/app/{app_id}/deploy/{deploy_id}`.
+     * Чтобы получить информацию о деплое, отправьте GET-запрос на `api/v1/apps/{app_id}/deploy/{deploy_id}/logs`.
      * Получение логов деплоя приложения
      */
     async getDeployLogs(requestParameters: GetDeployLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDeployLogs200Response> {

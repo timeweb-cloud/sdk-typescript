@@ -159,7 +159,7 @@ export interface App {
      */
     presetId: number;
     /**
-     * Директория с индексным файлом. Определено для приложений `type: frontend`. Для приложений `type: backend` всегда null.
+     * Путь к директории с индексным файлом. Определен для приложений `type: frontend`. Для приложений `type: backend` всегда null.
      * @type {string}
      * @memberof App
      */
@@ -171,7 +171,7 @@ export interface App {
      */
     buildCmd: string;
     /**
-     * Команда для запуска приложения. Определено для приложений `type: backend`. Для приложений `type: frontend` всегда null.
+     * Команда для запуска приложения. Определена для приложений `type: backend`. Для приложений `type: frontend` всегда null.
      * @type {string}
      * @memberof App
      */

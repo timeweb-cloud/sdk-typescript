@@ -87,7 +87,7 @@ export interface UpdeteSettings {
      */
     name?: string;
     /**
-     * Комментарий к приложения.
+     * Комментарий к приложению.
      * @type {string}
      * @memberof UpdeteSettings
      */
