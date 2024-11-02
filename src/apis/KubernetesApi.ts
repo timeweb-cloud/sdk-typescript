@@ -648,7 +648,7 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить ресурсы кластера, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/resources`.
+     * Устаревший метод, работает только для старых кластеров. \\  Чтобы получить ресурсы кластера, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/resources`.
      * Получение ресурсов кластера
      */
     async getClusterResourcesRaw(requestParameters: GetClusterResourcesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ResourcesResponse>> {
@@ -679,7 +679,7 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить ресурсы кластера, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/resources`.
+     * Устаревший метод, работает только для старых кластеров. \\  Чтобы получить ресурсы кластера, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/resources`.
      * Получение ресурсов кластера
      */
     async getClusterResources(requestParameters: GetClusterResourcesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ResourcesResponse> {
