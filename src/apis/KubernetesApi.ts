@@ -732,7 +732,7 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список сетевых драйверов k8s, отправьте GET-запрос в `/api/v1/k8s/network_drivers`.
+     * Чтобы получить список сетевых драйверов k8s, отправьте GET-запрос в `/api/v1/k8s/network-drivers`.
      * Получение списка сетевых драйверов k8s
      */
     async getK8SNetworkDriversRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NetworkDriversResponse>> {
@@ -749,7 +749,7 @@ export class KubernetesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/k8s/network_drivers`,
+            path: `/api/v1/k8s/network-drivers`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -759,7 +759,7 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список сетевых драйверов k8s, отправьте GET-запрос в `/api/v1/k8s/network_drivers`.
+     * Чтобы получить список сетевых драйверов k8s, отправьте GET-запрос в `/api/v1/k8s/network-drivers`.
      * Получение списка сетевых драйверов k8s
      */
     async getK8SNetworkDrivers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NetworkDriversResponse> {
@@ -768,7 +768,7 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список версий k8s, отправьте GET-запрос в `/api/v1/k8s/k8s_versions`.
+     * Чтобы получить список версий k8s, отправьте GET-запрос в `/api/v1/k8s/k8s-versions`.
      * Получение списка версий k8s
      */
     async getK8SVersionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<K8SVersionsResponse>> {
@@ -785,7 +785,7 @@ export class KubernetesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/k8s/k8s_versions`,
+            path: `/api/v1/k8s/k8s-versions`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -795,7 +795,7 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список версий k8s, отправьте GET-запрос в `/api/v1/k8s/k8s_versions`.
+     * Чтобы получить список версий k8s, отправьте GET-запрос в `/api/v1/k8s/k8s-versions`.
      * Получение списка версий k8s
      */
     async getK8SVersions(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<K8SVersionsResponse> {
