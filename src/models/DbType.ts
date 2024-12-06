@@ -20,11 +20,12 @@
 export const DbType = {
     Mysql: 'mysql',
     Mysql5: 'mysql5',
-    Postgres: 'postgres',
     Postgres14: 'postgres14',
     Postgres15: 'postgres15',
     Postgres16: 'postgres16',
+    Postgres17: 'postgres17',
     Redis: 'redis',
+    Redis7: 'redis7',
     Mongodb4: 'mongodb4',
     Mongodb: 'mongodb',
     Mongodb6: 'mongodb6',
