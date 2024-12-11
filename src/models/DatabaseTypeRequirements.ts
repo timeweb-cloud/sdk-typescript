@@ -13,83 +13,58 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { DatabaseTypeRequirements } from './DatabaseTypeRequirements';
-import {
-    DatabaseTypeRequirementsFromJSON,
-    DatabaseTypeRequirementsFromJSONTyped,
-    DatabaseTypeRequirementsToJSON,
-} from './DatabaseTypeRequirements';
-
 /**
- * Тип кластера базы данных
+ * Требования к кластеру базы данных.
  * @export
- * @interface DatabaseType
+ * @interface DatabaseTypeRequirements
  */
-export interface DatabaseType {
+export interface DatabaseTypeRequirements {
     /**
-     * Название кластера базы данных.
-     * @type {string}
-     * @memberof DatabaseType
+     * Минимальное количество CPU.
+     * @type {number}
+     * @memberof DatabaseTypeRequirements
      */
-    name: string;
+    cpuMin?: number;
     /**
-     * Версия кластера базы данных.
-     * @type {string}
-     * @memberof DatabaseType
+     * Минимальный объем оперативной памяти.
+     * @type {number}
+     * @memberof DatabaseTypeRequirements
      */
-    version: string;
+    ramMin?: number;
     /**
-     * Тип кластера базы данных. Передается при создании кластера в поле `type`
-     * @type {string}
-     * @memberof DatabaseType
+     * Минимальный объем дискового пространства.
+     * @type {number}
+     * @memberof DatabaseTypeRequirements
      */
-    type: string;
-    /**
-     * Поддерживает ли база данных репликацию.
-     * @type {boolean}
-     * @memberof DatabaseType
-     */
-    isAvailableReplication: boolean;
-    /**
-     * 
-     * @type {DatabaseTypeRequirements}
-     * @memberof DatabaseType
-     */
-    requirements?: DatabaseTypeRequirements;
+    diskMin?: number;
 }
 
 /**
- * Check if a given object implements the DatabaseType interface.
+ * Check if a given object implements the DatabaseTypeRequirements interface.
  */
-export function instanceOfDatabaseType(value: object): boolean {
+export function instanceOfDatabaseTypeRequirements(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "isAvailableReplication" in value;
 
     return isInstance;
 }
 
-export function DatabaseTypeFromJSON(json: any): DatabaseType {
-    return DatabaseTypeFromJSONTyped(json, false);
+export function DatabaseTypeRequirementsFromJSON(json: any): DatabaseTypeRequirements {
+    return DatabaseTypeRequirementsFromJSONTyped(json, false);
 }
 
-export function DatabaseTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatabaseType {
+export function DatabaseTypeRequirementsFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatabaseTypeRequirements {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
-        'version': json['version'],
-        'type': json['type'],
-        'isAvailableReplication': json['is_available_replication'],
-        'requirements': !exists(json, 'requirements') ? undefined : DatabaseTypeRequirementsFromJSON(json['requirements']),
+        'cpuMin': !exists(json, 'cpu_min') ? undefined : json['cpu_min'],
+        'ramMin': !exists(json, 'ram_min') ? undefined : json['ram_min'],
+        'diskMin': !exists(json, 'disk_min') ? undefined : json['disk_min'],
     };
 }
 
-export function DatabaseTypeToJSON(value?: DatabaseType | null): any {
+export function DatabaseTypeRequirementsToJSON(value?: DatabaseTypeRequirements | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -98,11 +73,9 @@ export function DatabaseTypeToJSON(value?: DatabaseType | null): any {
     }
     return {
         
-        'name': value.name,
-        'version': value.version,
-        'type': value.type,
-        'is_available_replication': value.isAvailableReplication,
-        'requirements': DatabaseTypeRequirementsToJSON(value.requirements),
+        'cpu_min': value.cpuMin,
+        'ram_min': value.ramMin,
+        'disk_min': value.diskMin,
     };
 }
 

@@ -1080,7 +1080,7 @@ export class ProjectsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список всех проектов на вашем аккаунте, отправьте GET-запрос на `/api/v1/dedicated-servers`.   Тело ответа будет представлять собой объект JSON с ключом `projects`.
+     * Чтобы получить список всех проектов на вашем аккаунте, отправьте GET-запрос на `/api/v1/projects`.   Тело ответа будет представлять собой объект JSON с ключом `projects`.
      * Получение списка проектов
      */
     async getProjectsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetProjects200Response>> {
@@ -1107,7 +1107,7 @@ export class ProjectsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список всех проектов на вашем аккаунте, отправьте GET-запрос на `/api/v1/dedicated-servers`.   Тело ответа будет представлять собой объект JSON с ключом `projects`.
+     * Чтобы получить список всех проектов на вашем аккаунте, отправьте GET-запрос на `/api/v1/projects`.   Тело ответа будет представлять собой объект JSON с ключом `projects`.
      * Получение списка проектов
      */
     async getProjects(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetProjects200Response> {

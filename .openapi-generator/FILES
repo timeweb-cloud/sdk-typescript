@@ -142,6 +142,7 @@ src/models/DatabaseClusterNetworksInner.ts
 src/models/DatabaseClusterNetworksInnerIpsInner.ts
 src/models/DatabaseInstance.ts
 src/models/DatabaseType.ts
+src/models/DatabaseTypeRequirements.ts
 src/models/Db.ts
 src/models/DbDiskStats.ts
 src/models/DbType.ts

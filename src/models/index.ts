@@ -119,6 +119,7 @@ export * from './DatabaseClusterNetworksInner';
 export * from './DatabaseClusterNetworksInnerIpsInner';
 export * from './DatabaseInstance';
 export * from './DatabaseType';
+export * from './DatabaseTypeRequirements';
 export * from './Db';
 export * from './DbDiskStats';
 export * from './DbType';
