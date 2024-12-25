@@ -16,6 +16,7 @@ src/apis/ImagesApi.ts
 src/apis/KubernetesApi.ts
 src/apis/LocationsApi.ts
 src/apis/MailApi.ts
+src/apis/NetworkDrivesApi.ts
 src/apis/ProjectsApi.ts
 src/apis/S3Api.ts
 src/apis/SSHApi.ts
@@ -118,6 +119,8 @@ src/models/CreateFolderInStorageRequest.ts
 src/models/CreateInstance.ts
 src/models/CreateKey201Response.ts
 src/models/CreateKeyRequest.ts
+src/models/CreateNetworkDrive.ts
+src/models/CreateNetworkDrive201Response.ts
 src/models/CreateProject.ts
 src/models/CreateProject201Response.ts
 src/models/CreateRule.ts
@@ -250,6 +253,9 @@ src/models/GetKeys200Response.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
+src/models/GetNetworkDrives200Response.ts
+src/models/GetNetworkDrivesAvailableResources200Response.ts
+src/models/GetNetworkDrivesPresets200Response.ts
 src/models/GetNotificationSettings200Response.ts
 src/models/GetOsList200Response.ts
 src/models/GetProjectBalancers200Response.ts
@@ -308,7 +314,14 @@ src/models/MailboxForwardingOutgoing.ts
 src/models/MailboxSpamFilter.ts
 src/models/MasterPresetOutApi.ts
 src/models/Meta.ts
+src/models/MountNetworkDrive.ts
 src/models/Network.ts
+src/models/NetworkDrive.ts
+src/models/NetworkDriveAvailableResource.ts
+src/models/NetworkDrivePreset.ts
+src/models/NetworkDrivePresetRead.ts
+src/models/NetworkDrivePresetWrite.ts
+src/models/NetworkDriveServiceListInner.ts
 src/models/NetworkDriversResponse.ts
 src/models/NodeCount.ts
 src/models/NodeGroupIn.ts
@@ -391,6 +404,7 @@ src/models/UpdateInstance.ts
 src/models/UpdateKeyRequest.ts
 src/models/UpdateMailQuotaRequest.ts
 src/models/UpdateMailbox.ts
+src/models/UpdateNetworkDrive.ts
 src/models/UpdateNotificationSettingsRequest.ts
 src/models/UpdateNotificationSettingsRequestSettingsInner.ts
 src/models/UpdateNotificationSettingsRequestSettingsInnerChannels.ts

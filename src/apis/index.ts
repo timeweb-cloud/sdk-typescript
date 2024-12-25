@@ -13,6 +13,7 @@ export * from './ImagesApi';
 export * from './KubernetesApi';
 export * from './LocationsApi';
 export * from './MailApi';
+export * from './NetworkDrivesApi';
 export * from './ProjectsApi';
 export * from './S3Api';
 export * from './SSHApi';
