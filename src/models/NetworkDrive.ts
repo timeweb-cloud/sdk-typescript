@@ -87,7 +87,7 @@ export interface NetworkDrive {
      */
     type: NetworkDriveTypeEnum;
     /**
-     * Идентификатор сетевого диска.
+     * Идентификатор тарифа.
      * @type {number}
      * @memberof NetworkDrive
      */
