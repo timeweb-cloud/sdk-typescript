@@ -23,9 +23,9 @@ import type {
   GetFinances400Response,
   GetFinances401Response,
   GetFinances403Response,
-  GetFinances404Response,
   GetFinances429Response,
   GetFinances500Response,
+  GetImage404Response,
   UpdateDedicatedServerRequest,
 } from '../models/index';
 import {
@@ -45,12 +45,12 @@ import {
     GetFinances401ResponseToJSON,
     GetFinances403ResponseFromJSON,
     GetFinances403ResponseToJSON,
-    GetFinances404ResponseFromJSON,
-    GetFinances404ResponseToJSON,
     GetFinances429ResponseFromJSON,
     GetFinances429ResponseToJSON,
     GetFinances500ResponseFromJSON,
     GetFinances500ResponseToJSON,
+    GetImage404ResponseFromJSON,
+    GetImage404ResponseToJSON,
     UpdateDedicatedServerRequestFromJSON,
     UpdateDedicatedServerRequestToJSON,
 } from '../models/index';

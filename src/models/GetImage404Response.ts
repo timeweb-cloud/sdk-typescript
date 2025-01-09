@@ -16,111 +16,65 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateApiKey
+ * @interface GetImage404Response
  */
-export interface CreateApiKey {
+export interface GetImage404Response {
     /**
-     * Имя, установленное для токена.
+     * Короткий идентификатор, соответствующий возвращаемому коду состояния HTTP.
+     * @type {number}
+     * @memberof GetImage404Response
+     */
+    statusCode: number;
+    /**
+     * Сообщение, предоставляющее дополнительную информацию об ошибке, в том числе сведения, помогающие устранить ее, когда это возможно.
      * @type {string}
-     * @memberof CreateApiKey
+     * @memberof GetImage404Response
      */
-    name: string;
+    message?: string;
     /**
-     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда истекает токен.
-     * @type {Date}
-     * @memberof CreateApiKey
+     * Краткое описание ошибки HTTP на основе статуса.
+     * @type {string}
+     * @memberof GetImage404Response
      */
-    expire?: Date;
+    errorCode: string;
     /**
-     * Это логическое значение, которое показывает, можно ли удалять управляемые сервисы при помощи данного токена без подтверждения через Телеграм, когда это подтверждение включено.
-     * @type {boolean}
-     * @memberof CreateApiKey
+     * Идентификатор запроса, который можно указывать при обращении в службу технической поддержки, чтобы помочь определить проблему.
+     * @type {string}
+     * @memberof GetImage404Response
      */
-    isAbleToDelete?: boolean;
-    /**
-     * Роли, которые могут быть назначены токену.
-     * @type {Array<string>}
-     * @memberof CreateApiKey
-     */
-    roles?: Array<CreateApiKeyRolesEnum>;
-    /**
-     * Список идентификаторов проектов, к которым привязан токен. Если передан null - доступ к проектам не ограничен.
-     * @type {Array<number>}
-     * @memberof CreateApiKey
-     */
-    projects?: Array<number> | null;
+    responseId: string;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the GetImage404Response interface.
  */
-export const CreateApiKeyRolesEnum = {
-    Serversread: 'servers:read',
-    Serverswrite: 'servers:write',
-    Databasesread: 'databases:read',
-    Databaseswrite: 'databases:write',
-    Balancersread: 'balancers:read',
-    Balancerswrite: 'balancers:write',
-    Storagesread: 'storages:read',
-    Storageswrite: 'storages:write',
-    Dedicatedread: 'dedicated:read',
-    Dedicatedwrite: 'dedicated:write',
-    Clustersread: 'clusters:read',
-    Clusterswrite: 'clusters:write',
-    Vpcread: 'vpc:read',
-    Vpcwrite: 'vpc:write',
-    FloatingIpsread: 'floating-ips:read',
-    FloatingIpswrite: 'floating-ips:write',
-    Domainsread: 'domains:read',
-    Domainswrite: 'domains:write',
-    Administratorswrite: 'administrators:write',
-    Firewallread: 'firewall:read',
-    Firewallread: 'firewall:read',
-    Financeswrite: 'finances:write',
-    Supportread: 'support:read',
-    Supportwrite: 'support:write',
-    Vpnread: 'vpn:read',
-    Vpnwrite: 'vpn:write',
-    Mailread: 'mail:read',
-    Mailwrite: 'mail:write',
-    Appsread: 'apps:read',
-    Appswrite: 'apps:write',
-    NetworkDrivesread: 'network-drives:read',
-    NetworkDriveswrite: 'network-drives:write'
-} as const;
-export type CreateApiKeyRolesEnum = typeof CreateApiKeyRolesEnum[keyof typeof CreateApiKeyRolesEnum];
-
-
-/**
- * Check if a given object implements the CreateApiKey interface.
- */
-export function instanceOfCreateApiKey(value: object): boolean {
+export function instanceOfGetImage404Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "statusCode" in value;
+    isInstance = isInstance && "errorCode" in value;
+    isInstance = isInstance && "responseId" in value;
 
     return isInstance;
 }
 
-export function CreateApiKeyFromJSON(json: any): CreateApiKey {
-    return CreateApiKeyFromJSONTyped(json, false);
+export function GetImage404ResponseFromJSON(json: any): GetImage404Response {
+    return GetImage404ResponseFromJSONTyped(json, false);
 }
 
-export function CreateApiKeyFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApiKey {
+export function GetImage404ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetImage404Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
-        'expire': !exists(json, 'expire') ? undefined : (new Date(json['expire'])),
-        'isAbleToDelete': !exists(json, 'is_able_to_delete') ? undefined : json['is_able_to_delete'],
-        'roles': !exists(json, 'roles') ? undefined : json['roles'],
-        'projects': !exists(json, 'projects') ? undefined : json['projects'],
+        'statusCode': json['status_code'],
+        'message': !exists(json, 'message') ? undefined : json['message'],
+        'errorCode': json['error_code'],
+        'responseId': json['response_id'],
     };
 }
 
-export function CreateApiKeyToJSON(value?: CreateApiKey | null): any {
+export function GetImage404ResponseToJSON(value?: GetImage404Response | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -129,11 +83,10 @@ export function CreateApiKeyToJSON(value?: CreateApiKey | null): any {
     }
     return {
         
-        'name': value.name,
-        'expire': value.expire === undefined ? undefined : (value.expire.toISOString()),
-        'is_able_to_delete': value.isAbleToDelete,
-        'roles': value.roles,
-        'projects': value.projects,
+        'status_code': value.statusCode,
+        'message': value.message,
+        'error_code': value.errorCode,
+        'response_id': value.responseId,
     };
 }
 

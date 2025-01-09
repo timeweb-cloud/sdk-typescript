@@ -22,10 +22,10 @@ import type {
   GetFinances400Response,
   GetFinances401Response,
   GetFinances403Response,
-  GetFinances404Response,
   GetFinances429Response,
   GetFinances500Response,
   GetFloatingIps200Response,
+  GetImage404Response,
   UpdateFloatingIp,
 } from '../models/index';
 import {
@@ -43,14 +43,14 @@ import {
     GetFinances401ResponseToJSON,
     GetFinances403ResponseFromJSON,
     GetFinances403ResponseToJSON,
-    GetFinances404ResponseFromJSON,
-    GetFinances404ResponseToJSON,
     GetFinances429ResponseFromJSON,
     GetFinances429ResponseToJSON,
     GetFinances500ResponseFromJSON,
     GetFinances500ResponseToJSON,
     GetFloatingIps200ResponseFromJSON,
     GetFloatingIps200ResponseToJSON,
+    GetImage404ResponseFromJSON,
+    GetImage404ResponseToJSON,
     UpdateFloatingIpFromJSON,
     UpdateFloatingIpToJSON,
 } from '../models/index';

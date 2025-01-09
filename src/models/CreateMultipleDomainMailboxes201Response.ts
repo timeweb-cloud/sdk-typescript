@@ -13,68 +13,52 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Mailbox } from './Mailbox';
+import {
+    MailboxFromJSON,
+    MailboxFromJSONTyped,
+    MailboxToJSON,
+} from './Mailbox';
+
 /**
  * 
  * @export
- * @interface GetFinances404Response
+ * @interface CreateMultipleDomainMailboxes201Response
  */
-export interface GetFinances404Response {
+export interface CreateMultipleDomainMailboxes201Response {
     /**
-     * Короткий идентификатор, соответствующий возвращаемому коду состояния HTTP.
-     * @type {number}
-     * @memberof GetFinances404Response
+     * 
+     * @type {Array<Mailbox>}
+     * @memberof CreateMultipleDomainMailboxes201Response
      */
-    statusCode: number;
-    /**
-     * Сообщение, предоставляющее дополнительную информацию об ошибке, в том числе сведения, помогающие устранить ее, когда это возможно.
-     * @type {string}
-     * @memberof GetFinances404Response
-     */
-    message?: string;
-    /**
-     * Краткое описание ошибки HTTP на основе статуса.
-     * @type {string}
-     * @memberof GetFinances404Response
-     */
-    errorCode: string;
-    /**
-     * Идентификатор запроса, который можно указывать при обращении в службу технической поддержки, чтобы помочь определить проблему.
-     * @type {string}
-     * @memberof GetFinances404Response
-     */
-    responseId: string;
+    mailboxes: Array<Mailbox>;
 }
 
 /**
- * Check if a given object implements the GetFinances404Response interface.
+ * Check if a given object implements the CreateMultipleDomainMailboxes201Response interface.
  */
-export function instanceOfGetFinances404Response(value: object): boolean {
+export function instanceOfCreateMultipleDomainMailboxes201Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "statusCode" in value;
-    isInstance = isInstance && "errorCode" in value;
-    isInstance = isInstance && "responseId" in value;
+    isInstance = isInstance && "mailboxes" in value;
 
     return isInstance;
 }
 
-export function GetFinances404ResponseFromJSON(json: any): GetFinances404Response {
-    return GetFinances404ResponseFromJSONTyped(json, false);
+export function CreateMultipleDomainMailboxes201ResponseFromJSON(json: any): CreateMultipleDomainMailboxes201Response {
+    return CreateMultipleDomainMailboxes201ResponseFromJSONTyped(json, false);
 }
 
-export function GetFinances404ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFinances404Response {
+export function CreateMultipleDomainMailboxes201ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateMultipleDomainMailboxes201Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'statusCode': json['status_code'],
-        'message': !exists(json, 'message') ? undefined : json['message'],
-        'errorCode': json['error_code'],
-        'responseId': json['response_id'],
+        'mailboxes': ((json['mailboxes'] as Array<any>).map(MailboxFromJSON)),
     };
 }
 
-export function GetFinances404ResponseToJSON(value?: GetFinances404Response | null): any {
+export function CreateMultipleDomainMailboxes201ResponseToJSON(value?: CreateMultipleDomainMailboxes201Response | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -83,10 +67,7 @@ export function GetFinances404ResponseToJSON(value?: GetFinances404Response | nu
     }
     return {
         
-        'status_code': value.statusCode,
-        'message': value.message,
-        'error_code': value.errorCode,
-        'response_id': value.responseId,
+        'mailboxes': ((value.mailboxes as Array<any>).map(MailboxToJSON)),
     };
 }
 

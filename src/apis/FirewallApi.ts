@@ -25,9 +25,9 @@ import type {
   FirewallRulesOutResponse,
   GetFinances400Response,
   GetFinances401Response,
-  GetFinances404Response,
   GetFinances429Response,
   GetFinances500Response,
+  GetImage404Response,
   ResourceType,
 } from '../models/index';
 import {
@@ -51,12 +51,12 @@ import {
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
     GetFinances401ResponseToJSON,
-    GetFinances404ResponseFromJSON,
-    GetFinances404ResponseToJSON,
     GetFinances429ResponseFromJSON,
     GetFinances429ResponseToJSON,
     GetFinances500ResponseFromJSON,
     GetFinances500ResponseToJSON,
+    GetImage404ResponseFromJSON,
+    GetImage404ResponseToJSON,
     ResourceTypeFromJSON,
     ResourceTypeToJSON,
 } from '../models/index';

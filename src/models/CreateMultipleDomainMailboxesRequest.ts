@@ -13,114 +13,52 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CreateMultipleDomainMailboxesRequestMailboxesInner } from './CreateMultipleDomainMailboxesRequestMailboxesInner';
+import {
+    CreateMultipleDomainMailboxesRequestMailboxesInnerFromJSON,
+    CreateMultipleDomainMailboxesRequestMailboxesInnerFromJSONTyped,
+    CreateMultipleDomainMailboxesRequestMailboxesInnerToJSON,
+} from './CreateMultipleDomainMailboxesRequestMailboxesInner';
+
 /**
  * 
  * @export
- * @interface CreateApiKey
+ * @interface CreateMultipleDomainMailboxesRequest
  */
-export interface CreateApiKey {
+export interface CreateMultipleDomainMailboxesRequest {
     /**
-     * Имя, установленное для токена.
-     * @type {string}
-     * @memberof CreateApiKey
+     * Массив объектов с данными почтовых ящиков
+     * @type {Array<CreateMultipleDomainMailboxesRequestMailboxesInner>}
+     * @memberof CreateMultipleDomainMailboxesRequest
      */
-    name: string;
-    /**
-     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда истекает токен.
-     * @type {Date}
-     * @memberof CreateApiKey
-     */
-    expire?: Date;
-    /**
-     * Это логическое значение, которое показывает, можно ли удалять управляемые сервисы при помощи данного токена без подтверждения через Телеграм, когда это подтверждение включено.
-     * @type {boolean}
-     * @memberof CreateApiKey
-     */
-    isAbleToDelete?: boolean;
-    /**
-     * Роли, которые могут быть назначены токену.
-     * @type {Array<string>}
-     * @memberof CreateApiKey
-     */
-    roles?: Array<CreateApiKeyRolesEnum>;
-    /**
-     * Список идентификаторов проектов, к которым привязан токен. Если передан null - доступ к проектам не ограничен.
-     * @type {Array<number>}
-     * @memberof CreateApiKey
-     */
-    projects?: Array<number> | null;
+    mailboxes: Array<CreateMultipleDomainMailboxesRequestMailboxesInner>;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the CreateMultipleDomainMailboxesRequest interface.
  */
-export const CreateApiKeyRolesEnum = {
-    Serversread: 'servers:read',
-    Serverswrite: 'servers:write',
-    Databasesread: 'databases:read',
-    Databaseswrite: 'databases:write',
-    Balancersread: 'balancers:read',
-    Balancerswrite: 'balancers:write',
-    Storagesread: 'storages:read',
-    Storageswrite: 'storages:write',
-    Dedicatedread: 'dedicated:read',
-    Dedicatedwrite: 'dedicated:write',
-    Clustersread: 'clusters:read',
-    Clusterswrite: 'clusters:write',
-    Vpcread: 'vpc:read',
-    Vpcwrite: 'vpc:write',
-    FloatingIpsread: 'floating-ips:read',
-    FloatingIpswrite: 'floating-ips:write',
-    Domainsread: 'domains:read',
-    Domainswrite: 'domains:write',
-    Administratorswrite: 'administrators:write',
-    Firewallread: 'firewall:read',
-    Firewallread: 'firewall:read',
-    Financeswrite: 'finances:write',
-    Supportread: 'support:read',
-    Supportwrite: 'support:write',
-    Vpnread: 'vpn:read',
-    Vpnwrite: 'vpn:write',
-    Mailread: 'mail:read',
-    Mailwrite: 'mail:write',
-    Appsread: 'apps:read',
-    Appswrite: 'apps:write',
-    NetworkDrivesread: 'network-drives:read',
-    NetworkDriveswrite: 'network-drives:write'
-} as const;
-export type CreateApiKeyRolesEnum = typeof CreateApiKeyRolesEnum[keyof typeof CreateApiKeyRolesEnum];
-
-
-/**
- * Check if a given object implements the CreateApiKey interface.
- */
-export function instanceOfCreateApiKey(value: object): boolean {
+export function instanceOfCreateMultipleDomainMailboxesRequest(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "mailboxes" in value;
 
     return isInstance;
 }
 
-export function CreateApiKeyFromJSON(json: any): CreateApiKey {
-    return CreateApiKeyFromJSONTyped(json, false);
+export function CreateMultipleDomainMailboxesRequestFromJSON(json: any): CreateMultipleDomainMailboxesRequest {
+    return CreateMultipleDomainMailboxesRequestFromJSONTyped(json, false);
 }
 
-export function CreateApiKeyFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApiKey {
+export function CreateMultipleDomainMailboxesRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateMultipleDomainMailboxesRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
-        'expire': !exists(json, 'expire') ? undefined : (new Date(json['expire'])),
-        'isAbleToDelete': !exists(json, 'is_able_to_delete') ? undefined : json['is_able_to_delete'],
-        'roles': !exists(json, 'roles') ? undefined : json['roles'],
-        'projects': !exists(json, 'projects') ? undefined : json['projects'],
+        'mailboxes': ((json['mailboxes'] as Array<any>).map(CreateMultipleDomainMailboxesRequestMailboxesInnerFromJSON)),
     };
 }
 
-export function CreateApiKeyToJSON(value?: CreateApiKey | null): any {
+export function CreateMultipleDomainMailboxesRequestToJSON(value?: CreateMultipleDomainMailboxesRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -129,11 +67,7 @@ export function CreateApiKeyToJSON(value?: CreateApiKey | null): any {
     }
     return {
         
-        'name': value.name,
-        'expire': value.expire === undefined ? undefined : (value.expire.toISOString()),
-        'is_able_to_delete': value.isAbleToDelete,
-        'roles': value.roles,
-        'projects': value.projects,
+        'mailboxes': ((value.mailboxes as Array<any>).map(CreateMultipleDomainMailboxesRequestMailboxesInnerToJSON)),
     };
 }
 
