@@ -14,63 +14,52 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Лейбл для группы нод
  * @export
- * @interface AddIps
+ * @interface SetLabels
  */
-export interface AddIps {
+export interface SetLabels {
     /**
-     * IP-адрес.
+     * Ключ
      * @type {string}
-     * @memberof AddIps
+     * @memberof SetLabels
+     */
+    key: string;
+    /**
+     * Значение
+     * @type {string}
+     * @memberof SetLabels
      */
     value: string;
-    /**
-     * Результат добавления IP-адреса.
-     * @type {string}
-     * @memberof AddIps
-     */
-    status: AddIpsStatusEnum;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the SetLabels interface.
  */
-export const AddIpsStatusEnum = {
-    Success: 'success',
-    Conflict: 'conflict'
-} as const;
-export type AddIpsStatusEnum = typeof AddIpsStatusEnum[keyof typeof AddIpsStatusEnum];
-
-
-/**
- * Check if a given object implements the AddIps interface.
- */
-export function instanceOfAddIps(value: object): boolean {
+export function instanceOfSetLabels(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "key" in value;
     isInstance = isInstance && "value" in value;
-    isInstance = isInstance && "status" in value;
 
     return isInstance;
 }
 
-export function AddIpsFromJSON(json: any): AddIps {
-    return AddIpsFromJSONTyped(json, false);
+export function SetLabelsFromJSON(json: any): SetLabels {
+    return SetLabelsFromJSONTyped(json, false);
 }
 
-export function AddIpsFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddIps {
+export function SetLabelsFromJSONTyped(json: any, ignoreDiscriminator: boolean): SetLabels {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'key': json['key'],
         'value': json['value'],
-        'status': json['status'],
     };
 }
 
-export function AddIpsToJSON(value?: AddIps | null): any {
+export function SetLabelsToJSON(value?: SetLabels | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -79,8 +68,8 @@ export function AddIpsToJSON(value?: AddIps | null): any {
     }
     return {
         
+        'key': value.key,
         'value': value.value,
-        'status': value.status,
     };
 }
 

@@ -14,63 +14,68 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Параметры конфигурации воркер-ноды. Нельзя передавать вместе с `preset_id`. Локация воркер-нод должна совпадать с локацией кластера
  * @export
- * @interface AddIps
+ * @interface NodeGroupInConfiguration
  */
-export interface AddIps {
+export interface NodeGroupInConfiguration {
     /**
-     * IP-адрес.
-     * @type {string}
-     * @memberof AddIps
+     * ID конфигуратора кластера
+     * @type {number}
+     * @memberof NodeGroupInConfiguration
      */
-    value: string;
+    configuratorId: number;
     /**
-     * Результат добавления IP-адреса.
-     * @type {string}
-     * @memberof AddIps
+     * Размер диска в МБ
+     * @type {number}
+     * @memberof NodeGroupInConfiguration
      */
-    status: AddIpsStatusEnum;
+    disk: number;
+    /**
+     * Количество ядер процессора
+     * @type {number}
+     * @memberof NodeGroupInConfiguration
+     */
+    cpu: number;
+    /**
+     * Размер ОЗУ сервера в МБ
+     * @type {number}
+     * @memberof NodeGroupInConfiguration
+     */
+    ram: number;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the NodeGroupInConfiguration interface.
  */
-export const AddIpsStatusEnum = {
-    Success: 'success',
-    Conflict: 'conflict'
-} as const;
-export type AddIpsStatusEnum = typeof AddIpsStatusEnum[keyof typeof AddIpsStatusEnum];
-
-
-/**
- * Check if a given object implements the AddIps interface.
- */
-export function instanceOfAddIps(value: object): boolean {
+export function instanceOfNodeGroupInConfiguration(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "value" in value;
-    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "configuratorId" in value;
+    isInstance = isInstance && "disk" in value;
+    isInstance = isInstance && "cpu" in value;
+    isInstance = isInstance && "ram" in value;
 
     return isInstance;
 }
 
-export function AddIpsFromJSON(json: any): AddIps {
-    return AddIpsFromJSONTyped(json, false);
+export function NodeGroupInConfigurationFromJSON(json: any): NodeGroupInConfiguration {
+    return NodeGroupInConfigurationFromJSONTyped(json, false);
 }
 
-export function AddIpsFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddIps {
+export function NodeGroupInConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): NodeGroupInConfiguration {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'value': json['value'],
-        'status': json['status'],
+        'configuratorId': json['configurator_id'],
+        'disk': json['disk'],
+        'cpu': json['cpu'],
+        'ram': json['ram'],
     };
 }
 
-export function AddIpsToJSON(value?: AddIps | null): any {
+export function NodeGroupInConfigurationToJSON(value?: NodeGroupInConfiguration | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -79,8 +84,10 @@ export function AddIpsToJSON(value?: AddIps | null): any {
     }
     return {
         
-        'value': value.value,
-        'status': value.status,
+        'configurator_id': value.configuratorId,
+        'disk': value.disk,
+        'cpu': value.cpu,
+        'ram': value.ram,
     };
 }
 

@@ -328,6 +328,7 @@ src/models/NetworkDriveServiceListInner.ts
 src/models/NetworkDriversResponse.ts
 src/models/NodeCount.ts
 src/models/NodeGroupIn.ts
+src/models/NodeGroupInConfiguration.ts
 src/models/NodeGroupOut.ts
 src/models/NodeGroupResponse.ts
 src/models/NodeGroupsResponse.ts
@@ -376,6 +377,7 @@ src/models/ServersOsRequirements.ts
 src/models/ServersPreset.ts
 src/models/ServersSoftware.ts
 src/models/ServersSoftwareRequirements.ts
+src/models/SetLabels.ts
 src/models/SettingCondition.ts
 src/models/SpamFilterIsDisabled.ts
 src/models/SpamFilterIsEnabled.ts
