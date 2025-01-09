@@ -20,13 +20,13 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ResourceTransfer {
     /**
-     * Идентификатор проекта, куда переносится ресурс.
+     * ID проекта, куда переносится ресурс.
      * @type {number}
      * @memberof ResourceTransfer
      */
     toProject: number;
     /**
-     * Идентификатор перемещаемого ресурса (сервера, хранилища, кластера, балансировщика, базы данных или выделенного сервера).
+     * ID перемещаемого ресурса (сервера, хранилища, кластера, балансировщика, базы данных или выделенного сервера).
      * @type {number}
      * @memberof ResourceTransfer
      */

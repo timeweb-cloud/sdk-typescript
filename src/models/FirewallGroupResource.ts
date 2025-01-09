@@ -23,27 +23,27 @@ import {
 /**
  * 
  * @export
- * @interface FirewallGroupResourceOutAPI
+ * @interface FirewallGroupResource
  */
-export interface FirewallGroupResourceOutAPI {
+export interface FirewallGroupResource {
     /**
-     * resource id
+     * ID ресурса.
      * @type {number}
-     * @memberof FirewallGroupResourceOutAPI
+     * @memberof FirewallGroupResource
      */
     id: number;
     /**
      * 
      * @type {ResourceType}
-     * @memberof FirewallGroupResourceOutAPI
+     * @memberof FirewallGroupResource
      */
     type: ResourceType;
 }
 
 /**
- * Check if a given object implements the FirewallGroupResourceOutAPI interface.
+ * Check if a given object implements the FirewallGroupResource interface.
  */
-export function instanceOfFirewallGroupResourceOutAPI(value: object): boolean {
+export function instanceOfFirewallGroupResource(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "type" in value;
@@ -51,11 +51,11 @@ export function instanceOfFirewallGroupResourceOutAPI(value: object): boolean {
     return isInstance;
 }
 
-export function FirewallGroupResourceOutAPIFromJSON(json: any): FirewallGroupResourceOutAPI {
-    return FirewallGroupResourceOutAPIFromJSONTyped(json, false);
+export function FirewallGroupResourceFromJSON(json: any): FirewallGroupResource {
+    return FirewallGroupResourceFromJSONTyped(json, false);
 }
 
-export function FirewallGroupResourceOutAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean): FirewallGroupResourceOutAPI {
+export function FirewallGroupResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): FirewallGroupResource {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -66,7 +66,7 @@ export function FirewallGroupResourceOutAPIFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function FirewallGroupResourceOutAPIToJSON(value?: FirewallGroupResourceOutAPI | null): any {
+export function FirewallGroupResourceToJSON(value?: FirewallGroupResource | null): any {
     if (value === undefined) {
         return undefined;
     }

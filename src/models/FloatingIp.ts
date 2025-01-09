@@ -27,7 +27,7 @@ import {
  */
 export interface FloatingIp {
     /**
-     * Идентификатор IP.
+     * ID IP.
      * @type {string}
      * @memberof FloatingIp
      */

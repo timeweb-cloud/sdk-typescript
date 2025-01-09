@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallGroupOutAPI } from './FirewallGroupOutAPI';
+import type { FirewallGroup } from './FirewallGroup';
 import {
-    FirewallGroupOutAPIFromJSON,
-    FirewallGroupOutAPIFromJSONTyped,
-    FirewallGroupOutAPIToJSON,
-} from './FirewallGroupOutAPI';
+    FirewallGroupFromJSON,
+    FirewallGroupFromJSONTyped,
+    FirewallGroupToJSON,
+} from './FirewallGroup';
 import type { Meta } from './Meta';
 import {
     MetaFromJSON,
@@ -33,7 +33,7 @@ import {
  */
 export interface FirewallGroupsOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof FirewallGroupsOutResponse
      */
@@ -45,11 +45,11 @@ export interface FirewallGroupsOutResponse {
      */
     meta: Meta;
     /**
-     * Массив объектов Групп правил
-     * @type {Array<FirewallGroupOutAPI>}
+     * 
+     * @type {Array<FirewallGroup>}
      * @memberof FirewallGroupsOutResponse
      */
-    groups: Array<FirewallGroupOutAPI>;
+    groups: Array<FirewallGroup>;
 }
 
 /**
@@ -75,7 +75,7 @@ export function FirewallGroupsOutResponseFromJSONTyped(json: any, ignoreDiscrimi
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
         'meta': MetaFromJSON(json['meta']),
-        'groups': ((json['groups'] as Array<any>).map(FirewallGroupOutAPIFromJSON)),
+        'groups': ((json['groups'] as Array<any>).map(FirewallGroupFromJSON)),
     };
 }
 
@@ -90,7 +90,7 @@ export function FirewallGroupsOutResponseToJSON(value?: FirewallGroupsOutRespons
         
         'response_id': value.responseId,
         'meta': MetaToJSON(value.meta),
-        'groups': ((value.groups as Array<any>).map(FirewallGroupOutAPIToJSON)),
+        'groups': ((value.groups as Array<any>).map(FirewallGroupToJSON)),
     };
 }
 

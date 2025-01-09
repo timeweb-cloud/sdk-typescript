@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Meta } from './Meta';
+import type { SchemasMeta } from './SchemasMeta';
 import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
+    SchemasMetaFromJSON,
+    SchemasMetaFromJSONTyped,
+    SchemasMetaToJSON,
+} from './SchemasMeta';
 import type { WorkerPresetOutApi } from './WorkerPresetOutApi';
 import {
     WorkerPresetOutApiFromJSON,
@@ -33,17 +33,17 @@ import {
  */
 export interface PresetsResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof PresetsResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {Meta}
+     * @type {SchemasMeta}
      * @memberof PresetsResponse
      */
-    meta: Meta;
+    meta: SchemasMeta;
     /**
      * Массив тарифов k8s
      * @type {Array<WorkerPresetOutApi>}
@@ -74,7 +74,7 @@ export function PresetsResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'meta': MetaFromJSON(json['meta']),
+        'meta': SchemasMetaFromJSON(json['meta']),
         'k8sPresets': ((json['k8s_presets'] as Array<any>).map(WorkerPresetOutApiFromJSON)),
     };
 }
@@ -89,7 +89,7 @@ export function PresetsResponseToJSON(value?: PresetsResponse | null): any {
     return {
         
         'response_id': value.responseId,
-        'meta': MetaToJSON(value.meta),
+        'meta': SchemasMetaToJSON(value.meta),
         'k8s_presets': ((value.k8sPresets as Array<any>).map(WorkerPresetOutApiToJSON)),
     };
 }

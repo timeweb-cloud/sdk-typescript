@@ -43,6 +43,12 @@ export interface CreateServerConfiguration {
      * @memberof CreateServerConfiguration
      */
     ram: number;
+    /**
+     * Количество видеокарт.
+     * @type {number}
+     * @memberof CreateServerConfiguration
+     */
+    gpu?: number;
 }
 
 /**
@@ -72,6 +78,7 @@ export function CreateServerConfigurationFromJSONTyped(json: any, ignoreDiscrimi
         'disk': json['disk'],
         'cpu': json['cpu'],
         'ram': json['ram'],
+        'gpu': !exists(json, 'gpu') ? undefined : json['gpu'],
     };
 }
 
@@ -88,6 +95,7 @@ export function CreateServerConfigurationToJSON(value?: CreateServerConfiguratio
         'disk': value.disk,
         'cpu': value.cpu,
         'ram': value.ram,
+        'gpu': value.gpu,
     };
 }
 

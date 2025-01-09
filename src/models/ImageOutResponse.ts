@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ImageOutAPI } from './ImageOutAPI';
+import type { Image } from './Image';
 import {
-    ImageOutAPIFromJSON,
-    ImageOutAPIFromJSONTyped,
-    ImageOutAPIToJSON,
-} from './ImageOutAPI';
+    ImageFromJSON,
+    ImageFromJSONTyped,
+    ImageToJSON,
+} from './Image';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface ImageOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof ImageOutResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {ImageOutAPI}
+     * @type {Image}
      * @memberof ImageOutResponse
      */
-    image: ImageOutAPI;
+    image: Image;
 }
 
 /**
@@ -61,7 +61,7 @@ export function ImageOutResponseFromJSONTyped(json: any, ignoreDiscriminator: bo
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'image': ImageOutAPIFromJSON(json['image']),
+        'image': ImageFromJSON(json['image']),
     };
 }
 
@@ -75,7 +75,7 @@ export function ImageOutResponseToJSON(value?: ImageOutResponse | null): any {
     return {
         
         'response_id': value.responseId,
-        'image': ImageOutAPIToJSON(value.image),
+        'image': ImageToJSON(value.image),
     };
 }
 

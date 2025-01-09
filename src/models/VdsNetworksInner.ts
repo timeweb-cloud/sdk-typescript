@@ -57,11 +57,23 @@ export interface VdsNetworksInner {
      */
     ips: Array<VdsNetworksInnerIpsInner> | null;
     /**
-     * Подключена ли DDoS-защита. Только для публичных сетей.
+     * Это логическое значение, которое показывает, подключена ли DDoS-защита. Только для публичных сетей.
      * @type {boolean}
      * @memberof VdsNetworksInner
      */
     isDdosGuard?: boolean;
+    /**
+     * Это логическое значение, которое показывает, примонтирован ли образ к серверу.
+     * @type {boolean}
+     * @memberof VdsNetworksInner
+     */
+    isImageMounted?: boolean;
+    /**
+     * Список заблокированных портов на сервере.
+     * @type {Array<number>}
+     * @memberof VdsNetworksInner
+     */
+    blockedPorts?: Array<number>;
 }
 
 
@@ -112,6 +124,8 @@ export function VdsNetworksInnerFromJSONTyped(json: any, ignoreDiscriminator: bo
         'bandwidth': !exists(json, 'bandwidth') ? undefined : json['bandwidth'],
         'ips': (json['ips'] === null ? null : (json['ips'] as Array<any>).map(VdsNetworksInnerIpsInnerFromJSON)),
         'isDdosGuard': !exists(json, 'is_ddos_guard') ? undefined : json['is_ddos_guard'],
+        'isImageMounted': !exists(json, 'is_image_mounted') ? undefined : json['is_image_mounted'],
+        'blockedPorts': !exists(json, 'blocked_ports') ? undefined : json['blocked_ports'],
     };
 }
 
@@ -130,6 +144,8 @@ export function VdsNetworksInnerToJSON(value?: VdsNetworksInner | null): any {
         'bandwidth': value.bandwidth,
         'ips': (value.ips === null ? null : (value.ips as Array<any>).map(VdsNetworksInnerIpsInnerToJSON)),
         'is_ddos_guard': value.isDdosGuard,
+        'is_image_mounted': value.isImageMounted,
+        'blocked_ports': value.blockedPorts,
     };
 }
 

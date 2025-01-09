@@ -177,7 +177,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
 
     /**
      * Чтобы удалить плавающий IP, отправьте DELETE-запрос на `/api/v1/floating-ips/{floating_ip_id}`
-     * Удаление плавающего IP по идентификатору
+     * Удаление плавающего IP по ID
      */
     async deleteFloatingIPRaw(requestParameters: DeleteFloatingIPRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.floatingIpId === null || requestParameters.floatingIpId === undefined) {
@@ -208,7 +208,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
 
     /**
      * Чтобы удалить плавающий IP, отправьте DELETE-запрос на `/api/v1/floating-ips/{floating_ip_id}`
-     * Удаление плавающего IP по идентификатору
+     * Удаление плавающего IP по ID
      */
     async deleteFloatingIP(requestParameters: DeleteFloatingIPRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteFloatingIPRaw(requestParameters, initOverrides);
@@ -331,7 +331,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
 
     /**
      * Чтобы изменить плавающий IP, отправьте PATCH-запрос на `/api/v1/floating-ips/{floating_ip_id}`
-     * Изменение плавающего IP по идентификатору
+     * Изменение плавающего IP по ID
      */
     async updateFloatingIPRaw(requestParameters: UpdateFloatingIPRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateFloatingIp201Response>> {
         if (requestParameters.floatingIpId === null || requestParameters.floatingIpId === undefined) {
@@ -369,7 +369,7 @@ export class FloatingIPApi extends runtime.BaseAPI {
 
     /**
      * Чтобы изменить плавающий IP, отправьте PATCH-запрос на `/api/v1/floating-ips/{floating_ip_id}`
-     * Изменение плавающего IP по идентификатору
+     * Изменение плавающего IP по ID
      */
     async updateFloatingIP(requestParameters: UpdateFloatingIPRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateFloatingIp201Response> {
         const response = await this.updateFloatingIPRaw(requestParameters, initOverrides);

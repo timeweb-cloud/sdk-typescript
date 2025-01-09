@@ -64,7 +64,9 @@ export interface CreateVpc {
  */
 export const CreateVpcLocationEnum = {
     Ru1: 'ru-1',
-    Pl1: 'pl-1'
+    Ru2: 'ru-2',
+    Pl1: 'pl-1',
+    Nl1: 'nl-1'
 } as const;
 export type CreateVpcLocationEnum = typeof CreateVpcLocationEnum[keyof typeof CreateVpcLocationEnum];
 

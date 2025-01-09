@@ -13,145 +13,92 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ImageStatus } from './ImageStatus';
+import type { Policy } from './Policy';
 import {
-    ImageStatusFromJSON,
-    ImageStatusFromJSONTyped,
-    ImageStatusToJSON,
-} from './ImageStatus';
-import type { OS } from './OS';
-import {
-    OSFromJSON,
-    OSFromJSONTyped,
-    OSToJSON,
-} from './OS';
+    PolicyFromJSON,
+    PolicyFromJSONTyped,
+    PolicyToJSON,
+} from './Policy';
 
 /**
  * 
  * @export
- * @interface ImageOutAPI
+ * @interface FirewallGroup
  */
-export interface ImageOutAPI {
+export interface FirewallGroup {
     /**
-     * Идентификатор образа
+     * ID группы правил.
      * @type {string}
-     * @memberof ImageOutAPI
+     * @memberof FirewallGroup
      */
     id: string;
     /**
-     * 
-     * @type {ImageStatus}
-     * @memberof ImageOutAPI
-     */
-    status: ImageStatus;
-    /**
-     * Дата и время создания
+     * Дата и время создания.
      * @type {Date}
-     * @memberof ImageOutAPI
+     * @memberof FirewallGroup
      */
     createdAt: Date;
     /**
-     * Дата и время удаления
+     * Дата и время последнего обновления.
      * @type {Date}
-     * @memberof ImageOutAPI
+     * @memberof FirewallGroup
      */
-    deletedAt: Date;
+    updatedAt: Date;
     /**
-     * Размер в мегабайтах
-     * @type {number}
-     * @memberof ImageOutAPI
-     */
-    size: number;
-    /**
-     * Имя образа
+     * Имя группы правил.
      * @type {string}
-     * @memberof ImageOutAPI
+     * @memberof FirewallGroup
      */
     name: string;
     /**
-     * Описание образа
+     * Описание группы правил.
      * @type {string}
-     * @memberof ImageOutAPI
+     * @memberof FirewallGroup
      */
     description: string;
     /**
-     * Идентификатор связанного с образом диска
-     * @type {number}
-     * @memberof ImageOutAPI
-     */
-    diskId: number;
-    /**
-     * Локация, в которой создан образ
-     * @type {string}
-     * @memberof ImageOutAPI
-     */
-    location?: string;
-    /**
      * 
-     * @type {OS}
-     * @memberof ImageOutAPI
+     * @type {Policy}
+     * @memberof FirewallGroup
      */
-    os: OS;
-    /**
-     * Процент создания образа
-     * @type {number}
-     * @memberof ImageOutAPI
-     */
-    progress: number;
-    /**
-     * Признак указывающий на то является ли образ кастомным
-     * @type {boolean}
-     * @memberof ImageOutAPI
-     */
-    isCustom: boolean;
+    policy: Policy;
 }
 
 /**
- * Check if a given object implements the ImageOutAPI interface.
+ * Check if a given object implements the FirewallGroup interface.
  */
-export function instanceOfImageOutAPI(value: object): boolean {
+export function instanceOfFirewallGroup(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "status" in value;
     isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "deletedAt" in value;
-    isInstance = isInstance && "size" in value;
+    isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "diskId" in value;
-    isInstance = isInstance && "os" in value;
-    isInstance = isInstance && "progress" in value;
-    isInstance = isInstance && "isCustom" in value;
+    isInstance = isInstance && "policy" in value;
 
     return isInstance;
 }
 
-export function ImageOutAPIFromJSON(json: any): ImageOutAPI {
-    return ImageOutAPIFromJSONTyped(json, false);
+export function FirewallGroupFromJSON(json: any): FirewallGroup {
+    return FirewallGroupFromJSONTyped(json, false);
 }
 
-export function ImageOutAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageOutAPI {
+export function FirewallGroupFromJSONTyped(json: any, ignoreDiscriminator: boolean): FirewallGroup {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'status': ImageStatusFromJSON(json['status']),
         'createdAt': (new Date(json['created_at'])),
-        'deletedAt': (new Date(json['deleted_at'])),
-        'size': json['size'],
+        'updatedAt': (new Date(json['updated_at'])),
         'name': json['name'],
         'description': json['description'],
-        'diskId': json['disk_id'],
-        'location': !exists(json, 'location') ? undefined : json['location'],
-        'os': OSFromJSON(json['os']),
-        'progress': json['progress'],
-        'isCustom': json['is_custom'],
+        'policy': PolicyFromJSON(json['policy']),
     };
 }
 
-export function ImageOutAPIToJSON(value?: ImageOutAPI | null): any {
+export function FirewallGroupToJSON(value?: FirewallGroup | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -161,17 +108,11 @@ export function ImageOutAPIToJSON(value?: ImageOutAPI | null): any {
     return {
         
         'id': value.id,
-        'status': ImageStatusToJSON(value.status),
         'created_at': (value.createdAt.toISOString()),
-        'deleted_at': (value.deletedAt.toISOString()),
-        'size': value.size,
+        'updated_at': (value.updatedAt.toISOString()),
         'name': value.name,
         'description': value.description,
-        'disk_id': value.diskId,
-        'location': value.location,
-        'os': OSToJSON(value.os),
-        'progress': value.progress,
-        'is_custom': value.isCustom,
+        'policy': PolicyToJSON(value.policy),
     };
 }
 

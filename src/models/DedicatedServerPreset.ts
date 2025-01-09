@@ -57,6 +57,12 @@ export interface DedicatedServerPreset {
      */
     isIpmiEnabled: boolean;
     /**
+     * Это логическое значение, которое показывает, готов ли выделенный сервер к моментальной выдаче.
+     * @type {boolean}
+     * @memberof DedicatedServerPreset
+     */
+    isPreInstalled: boolean;
+    /**
      * 
      * @type {DedicatedServerPresetCpu}
      * @memberof DedicatedServerPreset
@@ -96,7 +102,12 @@ export const DedicatedServerPresetLocationEnum = {
     Ru1: 'ru-1',
     Ru2: 'ru-2',
     Kz1: 'kz-1',
-    Pl1: 'pl-1'
+    Pl1: 'pl-1',
+    Nl1: 'nl-1',
+    Us2: 'us-2',
+    Tr1: 'tr-1',
+    De1: 'de-1',
+    Fi1: 'fi-1'
 } as const;
 export type DedicatedServerPresetLocationEnum = typeof DedicatedServerPresetLocationEnum[keyof typeof DedicatedServerPresetLocationEnum];
 
@@ -109,6 +120,7 @@ export function instanceOfDedicatedServerPreset(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "isIpmiEnabled" in value;
+    isInstance = isInstance && "isPreInstalled" in value;
     isInstance = isInstance && "cpu" in value;
     isInstance = isInstance && "disk" in value;
     isInstance = isInstance && "memory" in value;
@@ -130,6 +142,7 @@ export function DedicatedServerPresetFromJSONTyped(json: any, ignoreDiscriminato
         'id': json['id'],
         'description': json['description'],
         'isIpmiEnabled': json['is_ipmi_enabled'],
+        'isPreInstalled': json['is_pre_installed'],
         'cpu': DedicatedServerPresetCpuFromJSON(json['cpu']),
         'disk': DedicatedServerPresetDiskFromJSON(json['disk']),
         'price': !exists(json, 'price') ? undefined : json['price'],
@@ -150,6 +163,7 @@ export function DedicatedServerPresetToJSON(value?: DedicatedServerPreset | null
         'id': value.id,
         'description': value.description,
         'is_ipmi_enabled': value.isIpmiEnabled,
+        'is_pre_installed': value.isPreInstalled,
         'cpu': DedicatedServerPresetCpuToJSON(value.cpu),
         'disk': DedicatedServerPresetDiskToJSON(value.disk),
         'price': value.price,

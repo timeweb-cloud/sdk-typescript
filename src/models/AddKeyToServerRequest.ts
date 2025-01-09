@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface AddKeyToServerRequest {
     /**
-     * Массив уникальных идентификаторов SSH-ключей
+     * Массив ID SSH-ключей
      * @type {Array<number>}
      * @memberof AddKeyToServerRequest
      */

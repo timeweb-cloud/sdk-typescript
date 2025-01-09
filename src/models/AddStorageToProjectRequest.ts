@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface AddStorageToProjectRequest {
     /**
-     * Идентификатор добавляемого хранилища.
+     * ID добавляемого хранилища.
      * @type {number}
      * @memberof AddStorageToProjectRequest
      */

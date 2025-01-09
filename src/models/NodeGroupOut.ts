@@ -38,7 +38,7 @@ export interface NodeGroupOut {
      */
     createdAt: Date;
     /**
-     * Идентификатор тарифа мастер-ноды
+     * ID тарифа мастер-ноды
      * @type {number}
      * @memberof NodeGroupOut
      */

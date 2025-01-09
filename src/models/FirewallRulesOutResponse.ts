@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallRuleOutAPI } from './FirewallRuleOutAPI';
+import type { FirewallRule } from './FirewallRule';
 import {
-    FirewallRuleOutAPIFromJSON,
-    FirewallRuleOutAPIFromJSONTyped,
-    FirewallRuleOutAPIToJSON,
-} from './FirewallRuleOutAPI';
+    FirewallRuleFromJSON,
+    FirewallRuleFromJSONTyped,
+    FirewallRuleToJSON,
+} from './FirewallRule';
 import type { Meta } from './Meta';
 import {
     MetaFromJSON,
@@ -33,7 +33,7 @@ import {
  */
 export interface FirewallRulesOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof FirewallRulesOutResponse
      */
@@ -45,11 +45,11 @@ export interface FirewallRulesOutResponse {
      */
     meta: Meta;
     /**
-     * Массив объектов Firewall правил
-     * @type {Array<FirewallRuleOutAPI>}
+     * 
+     * @type {Array<FirewallRule>}
      * @memberof FirewallRulesOutResponse
      */
-    rules: Array<FirewallRuleOutAPI>;
+    rules: Array<FirewallRule>;
 }
 
 /**
@@ -75,7 +75,7 @@ export function FirewallRulesOutResponseFromJSONTyped(json: any, ignoreDiscrimin
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
         'meta': MetaFromJSON(json['meta']),
-        'rules': ((json['rules'] as Array<any>).map(FirewallRuleOutAPIFromJSON)),
+        'rules': ((json['rules'] as Array<any>).map(FirewallRuleFromJSON)),
     };
 }
 
@@ -90,7 +90,7 @@ export function FirewallRulesOutResponseToJSON(value?: FirewallRulesOutResponse 
         
         'response_id': value.responseId,
         'meta': MetaToJSON(value.meta),
-        'rules': ((value.rules as Array<any>).map(FirewallRuleOutAPIToJSON)),
+        'rules': ((value.rules as Array<any>).map(FirewallRuleToJSON)),
     };
 }
 

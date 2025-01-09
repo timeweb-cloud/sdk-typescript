@@ -27,7 +27,7 @@ import {
  */
 export interface UploadSuccessfulResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof UploadSuccessfulResponse
      */

@@ -20,13 +20,13 @@ import { exists, mapValues } from '../runtime';
  */
 export interface SshKeyUsedByInner {
     /**
-     * ID сервера
+     * ID сервер.а
      * @type {number}
      * @memberof SshKeyUsedByInner
      */
     id: number;
     /**
-     * Название сервера
+     * Название сервера.
      * @type {string}
      * @memberof SshKeyUsedByInner
      */

@@ -13,92 +13,45 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Policy } from './Policy';
-import {
-    PolicyFromJSON,
-    PolicyFromJSONTyped,
-    PolicyToJSON,
-} from './Policy';
-
 /**
  * 
  * @export
- * @interface FirewallGroupOutAPI
+ * @interface SchemasMeta
  */
-export interface FirewallGroupOutAPI {
+export interface SchemasMeta {
     /**
-     * Идентификатор группы правил
-     * @type {string}
-     * @memberof FirewallGroupOutAPI
+     * Число элементов в результате
+     * @type {number}
+     * @memberof SchemasMeta
      */
-    id: string;
-    /**
-     * Дата и время создания
-     * @type {Date}
-     * @memberof FirewallGroupOutAPI
-     */
-    createdAt: Date;
-    /**
-     * Дата и время последнего обновления
-     * @type {Date}
-     * @memberof FirewallGroupOutAPI
-     */
-    updatedAt: Date;
-    /**
-     * Имя группы правил
-     * @type {string}
-     * @memberof FirewallGroupOutAPI
-     */
-    name: string;
-    /**
-     * Описание группы правил
-     * @type {string}
-     * @memberof FirewallGroupOutAPI
-     */
-    description: string;
-    /**
-     * 
-     * @type {Policy}
-     * @memberof FirewallGroupOutAPI
-     */
-    policy: Policy;
+    total: number;
 }
 
 /**
- * Check if a given object implements the FirewallGroupOutAPI interface.
+ * Check if a given object implements the SchemasMeta interface.
  */
-export function instanceOfFirewallGroupOutAPI(value: object): boolean {
+export function instanceOfSchemasMeta(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "policy" in value;
+    isInstance = isInstance && "total" in value;
 
     return isInstance;
 }
 
-export function FirewallGroupOutAPIFromJSON(json: any): FirewallGroupOutAPI {
-    return FirewallGroupOutAPIFromJSONTyped(json, false);
+export function SchemasMetaFromJSON(json: any): SchemasMeta {
+    return SchemasMetaFromJSONTyped(json, false);
 }
 
-export function FirewallGroupOutAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean): FirewallGroupOutAPI {
+export function SchemasMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): SchemasMeta {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'createdAt': (new Date(json['created_at'])),
-        'updatedAt': (new Date(json['updated_at'])),
-        'name': json['name'],
-        'description': json['description'],
-        'policy': PolicyFromJSON(json['policy']),
+        'total': json['total'],
     };
 }
 
-export function FirewallGroupOutAPIToJSON(value?: FirewallGroupOutAPI | null): any {
+export function SchemasMetaToJSON(value?: SchemasMeta | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -107,12 +60,7 @@ export function FirewallGroupOutAPIToJSON(value?: FirewallGroupOutAPI | null): a
     }
     return {
         
-        'id': value.id,
-        'created_at': (value.createdAt.toISOString()),
-        'updated_at': (value.updatedAt.toISOString()),
-        'name': value.name,
-        'description': value.description,
-        'policy': PolicyToJSON(value.policy),
+        'total': value.total,
     };
 }
 

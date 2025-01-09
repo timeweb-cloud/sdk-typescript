@@ -163,6 +163,12 @@ export interface DedicatedServer {
      * @memberof DedicatedServer
      */
     autoinstallReady: number;
+    /**
+     * Пароль root сервера или пароль Администратора для серверов Windows.
+     * @type {string}
+     * @memberof DedicatedServer
+     */
+    password: string | null;
 }
 
 
@@ -183,7 +189,12 @@ export type DedicatedServerStatusEnum = typeof DedicatedServerStatusEnum[keyof t
 export const DedicatedServerLocationEnum = {
     Ru1: 'ru-1',
     Pl1: 'pl-1',
-    Kz1: 'kz-1'
+    Kz1: 'kz-1',
+    Nl1: 'nl-1',
+    Tr1: 'tr-1',
+    Us2: 'us-2',
+    De1: 'de-1',
+    Fi1: 'fi-1'
 } as const;
 export type DedicatedServerLocationEnum = typeof DedicatedServerLocationEnum[keyof typeof DedicatedServerLocationEnum];
 
@@ -217,6 +228,7 @@ export function instanceOfDedicatedServer(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "autoinstallReady" in value;
+    isInstance = isInstance && "password" in value;
 
     return isInstance;
 }
@@ -255,6 +267,7 @@ export function DedicatedServerFromJSONTyped(json: any, ignoreDiscriminator: boo
         'price': json['price'],
         'location': json['location'],
         'autoinstallReady': json['autoinstall_ready'],
+        'password': json['password'],
     };
 }
 
@@ -291,6 +304,7 @@ export function DedicatedServerToJSON(value?: DedicatedServer | null): any {
         'price': value.price,
         'location': value.location,
         'autoinstall_ready': value.autoinstallReady,
+        'password': value.password,
     };
 }
 

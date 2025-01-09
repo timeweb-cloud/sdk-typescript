@@ -43,6 +43,12 @@ export interface UpdateServerConfigurator {
      * @memberof UpdateServerConfigurator
      */
     ram?: number;
+    /**
+     * Количество видеокарт.
+     * @type {number}
+     * @memberof UpdateServerConfigurator
+     */
+    gpu?: number;
 }
 
 /**
@@ -68,6 +74,7 @@ export function UpdateServerConfiguratorFromJSONTyped(json: any, ignoreDiscrimin
         'disk': !exists(json, 'disk') ? undefined : json['disk'],
         'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
         'ram': !exists(json, 'ram') ? undefined : json['ram'],
+        'gpu': !exists(json, 'gpu') ? undefined : json['gpu'],
     };
 }
 
@@ -84,6 +91,7 @@ export function UpdateServerConfiguratorToJSON(value?: UpdateServerConfigurator 
         'disk': value.disk,
         'cpu': value.cpu,
         'ram': value.ram,
+        'gpu': value.gpu,
     };
 }
 

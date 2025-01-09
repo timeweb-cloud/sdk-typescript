@@ -20,19 +20,19 @@ import { exists, mapValues } from '../runtime';
  */
 export interface UpdateKeyRequest {
     /**
-     * Тело SSH-ключа
+     * Тело SSH-ключа.
      * @type {string}
      * @memberof UpdateKeyRequest
      */
     body?: string;
     /**
-     * Будет ли выбираться SSH-ключ по умолчанию при создании сервера
+     * Будет ли выбираться SSH-ключ по умолчанию при создании сервера.
      * @type {boolean}
      * @memberof UpdateKeyRequest
      */
     isDefault?: boolean;
     /**
-     * Название SSH-ключа
+     * Название SSH-ключа.
      * @type {string}
      * @memberof UpdateKeyRequest
      */

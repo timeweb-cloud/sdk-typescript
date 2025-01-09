@@ -16,122 +16,65 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface NodeOut
+ * @interface ComponentsSchemasBaseError
  */
-export interface NodeOut {
+export interface ComponentsSchemasBaseError {
     /**
-     * ID ноды
+     * 
      * @type {number}
-     * @memberof NodeOut
+     * @memberof ComponentsSchemasBaseError
      */
-    id: number;
+    statusCode: number;
     /**
-     * Дата и время создания ноды в формате ISO8601
-     * @type {Date}
-     * @memberof NodeOut
-     */
-    createdAt: Date;
-    /**
-     * Тип ноды
+     * 
      * @type {string}
-     * @memberof NodeOut
+     * @memberof ComponentsSchemasBaseError
      */
-    type: string;
+    errorCode: string;
     /**
-     * ID группы нод
-     * @type {number}
-     * @memberof NodeOut
-     */
-    groupId: number;
-    /**
-     * Статус
+     * 
      * @type {string}
-     * @memberof NodeOut
+     * @memberof ComponentsSchemasBaseError
      */
-    status: string;
+    message: string;
     /**
-     * ID тарифа ноды
-     * @type {number}
-     * @memberof NodeOut
-     */
-    presetId: number;
-    /**
-     * Количество ядер
-     * @type {number}
-     * @memberof NodeOut
-     */
-    cpu: number;
-    /**
-     * Количество памяти
-     * @type {number}
-     * @memberof NodeOut
-     */
-    ram: number;
-    /**
-     * Количество пространства
-     * @type {number}
-     * @memberof NodeOut
-     */
-    disk: number;
-    /**
-     * Пропускная способность сети
-     * @type {number}
-     * @memberof NodeOut
-     */
-    network: number;
-    /**
-     * Ip-адрес ноды
+     * 
      * @type {string}
-     * @memberof NodeOut
+     * @memberof ComponentsSchemasBaseError
      */
-    nodeIp: string;
+    responseId?: string;
 }
 
 /**
- * Check if a given object implements the NodeOut interface.
+ * Check if a given object implements the ComponentsSchemasBaseError interface.
  */
-export function instanceOfNodeOut(value: object): boolean {
+export function instanceOfComponentsSchemasBaseError(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "groupId" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "presetId" in value;
-    isInstance = isInstance && "cpu" in value;
-    isInstance = isInstance && "ram" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "network" in value;
-    isInstance = isInstance && "nodeIp" in value;
+    isInstance = isInstance && "statusCode" in value;
+    isInstance = isInstance && "errorCode" in value;
+    isInstance = isInstance && "message" in value;
 
     return isInstance;
 }
 
-export function NodeOutFromJSON(json: any): NodeOut {
-    return NodeOutFromJSONTyped(json, false);
+export function ComponentsSchemasBaseErrorFromJSON(json: any): ComponentsSchemasBaseError {
+    return ComponentsSchemasBaseErrorFromJSONTyped(json, false);
 }
 
-export function NodeOutFromJSONTyped(json: any, ignoreDiscriminator: boolean): NodeOut {
+export function ComponentsSchemasBaseErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComponentsSchemasBaseError {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'createdAt': (new Date(json['created_at'])),
-        'type': json['type'],
-        'groupId': json['group_id'],
-        'status': json['status'],
-        'presetId': json['preset_id'],
-        'cpu': json['cpu'],
-        'ram': json['ram'],
-        'disk': json['disk'],
-        'network': json['network'],
-        'nodeIp': json['node_ip'],
+        'statusCode': json['status_code'],
+        'errorCode': json['error_code'],
+        'message': json['message'],
+        'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
     };
 }
 
-export function NodeOutToJSON(value?: NodeOut | null): any {
+export function ComponentsSchemasBaseErrorToJSON(value?: ComponentsSchemasBaseError | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -140,17 +83,10 @@ export function NodeOutToJSON(value?: NodeOut | null): any {
     }
     return {
         
-        'id': value.id,
-        'created_at': (value.createdAt.toISOString()),
-        'type': value.type,
-        'group_id': value.groupId,
-        'status': value.status,
-        'preset_id': value.presetId,
-        'cpu': value.cpu,
-        'ram': value.ram,
-        'disk': value.disk,
-        'network': value.network,
-        'node_ip': value.nodeIp,
+        'status_code': value.statusCode,
+        'error_code': value.errorCode,
+        'message': value.message,
+        'response_id': value.responseId,
     };
 }
 

@@ -27,7 +27,7 @@ import {
  */
 export interface ResourcesResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof ResourcesResponse
      */

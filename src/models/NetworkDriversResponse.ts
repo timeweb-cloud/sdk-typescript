@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Meta } from './Meta';
+import type { SchemasMeta } from './SchemasMeta';
 import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
+    SchemasMetaFromJSON,
+    SchemasMetaFromJSONTyped,
+    SchemasMetaToJSON,
+} from './SchemasMeta';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface NetworkDriversResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof NetworkDriversResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {Meta}
+     * @type {SchemasMeta}
      * @memberof NetworkDriversResponse
      */
-    meta: Meta;
+    meta: SchemasMeta;
     /**
      * Массив сетевых драйверов k8s
      * @type {Array<string>}
@@ -68,7 +68,7 @@ export function NetworkDriversResponseFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'meta': MetaFromJSON(json['meta']),
+        'meta': SchemasMetaFromJSON(json['meta']),
         'networkDrivers': json['network_drivers'],
     };
 }
@@ -83,7 +83,7 @@ export function NetworkDriversResponseToJSON(value?: NetworkDriversResponse | nu
     return {
         
         'response_id': value.responseId,
-        'meta': MetaToJSON(value.meta),
+        'meta': SchemasMetaToJSON(value.meta),
         'network_drivers': value.networkDrivers,
     };
 }

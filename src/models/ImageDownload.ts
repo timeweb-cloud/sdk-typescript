@@ -13,104 +13,105 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallRuleDirection } from './FirewallRuleDirection';
+import type { URLType } from './URLType';
 import {
-    FirewallRuleDirectionFromJSON,
-    FirewallRuleDirectionFromJSONTyped,
-    FirewallRuleDirectionToJSON,
-} from './FirewallRuleDirection';
-import type { FirewallRuleProtocol } from './FirewallRuleProtocol';
+    URLTypeFromJSON,
+    URLTypeFromJSONTyped,
+    URLTypeToJSON,
+} from './URLType';
+import type { UrlStatus } from './UrlStatus';
 import {
-    FirewallRuleProtocolFromJSON,
-    FirewallRuleProtocolFromJSONTyped,
-    FirewallRuleProtocolToJSON,
-} from './FirewallRuleProtocol';
+    UrlStatusFromJSON,
+    UrlStatusFromJSONTyped,
+    UrlStatusToJSON,
+} from './UrlStatus';
 
 /**
  * 
  * @export
- * @interface FirewallRuleOutAPI
+ * @interface ImageDownload
  */
-export interface FirewallRuleOutAPI {
+export interface ImageDownload {
     /**
-     * Идентификатор правила
+     * ID ссылки.
      * @type {string}
-     * @memberof FirewallRuleOutAPI
+     * @memberof ImageDownload
      */
     id: string;
     /**
-     * Описание правила
+     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда была создана ссылка.
      * @type {string}
-     * @memberof FirewallRuleOutAPI
+     * @memberof ImageDownload
      */
-    description: string;
+    createdAt: string;
+    /**
+     * ID образа.
+     * @type {string}
+     * @memberof ImageDownload
+     */
+    image: string;
     /**
      * 
-     * @type {FirewallRuleDirection}
-     * @memberof FirewallRuleOutAPI
+     * @type {URLType}
+     * @memberof ImageDownload
      */
-    direction: FirewallRuleDirection;
+    type: URLType;
+    /**
+     * Ссылка на скачивание.
+     * @type {string}
+     * @memberof ImageDownload
+     */
+    url?: string;
     /**
      * 
-     * @type {FirewallRuleProtocol}
-     * @memberof FirewallRuleOutAPI
+     * @type {UrlStatus}
+     * @memberof ImageDownload
      */
-    protocol: FirewallRuleProtocol;
+    status: UrlStatus;
     /**
-     * Порт или диапазон портов, в случае tcp или udp
-     * @type {string}
-     * @memberof FirewallRuleOutAPI
+     * Прогресс загрузки образа.
+     * @type {number}
+     * @memberof ImageDownload
      */
-    port?: string;
-    /**
-     * Сетевой адрес или подсеть. Поддерживаются протоколы IPv4  и IPv6
-     * @type {string}
-     * @memberof FirewallRuleOutAPI
-     */
-    cidr?: string;
-    /**
-     * Идентификатор группы правил
-     * @type {string}
-     * @memberof FirewallRuleOutAPI
-     */
-    groupId: string;
+    progress: number;
 }
 
 /**
- * Check if a given object implements the FirewallRuleOutAPI interface.
+ * Check if a given object implements the ImageDownload interface.
  */
-export function instanceOfFirewallRuleOutAPI(value: object): boolean {
+export function instanceOfImageDownload(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "direction" in value;
-    isInstance = isInstance && "protocol" in value;
-    isInstance = isInstance && "groupId" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "image" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "progress" in value;
 
     return isInstance;
 }
 
-export function FirewallRuleOutAPIFromJSON(json: any): FirewallRuleOutAPI {
-    return FirewallRuleOutAPIFromJSONTyped(json, false);
+export function ImageDownloadFromJSON(json: any): ImageDownload {
+    return ImageDownloadFromJSONTyped(json, false);
 }
 
-export function FirewallRuleOutAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean): FirewallRuleOutAPI {
+export function ImageDownloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageDownload {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'description': json['description'],
-        'direction': FirewallRuleDirectionFromJSON(json['direction']),
-        'protocol': FirewallRuleProtocolFromJSON(json['protocol']),
-        'port': !exists(json, 'port') ? undefined : json['port'],
-        'cidr': !exists(json, 'cidr') ? undefined : json['cidr'],
-        'groupId': json['group_id'],
+        'createdAt': json['created_at'],
+        'image': json['image'],
+        'type': URLTypeFromJSON(json['type']),
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'status': UrlStatusFromJSON(json['status']),
+        'progress': json['progress'],
     };
 }
 
-export function FirewallRuleOutAPIToJSON(value?: FirewallRuleOutAPI | null): any {
+export function ImageDownloadToJSON(value?: ImageDownload | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -120,12 +121,12 @@ export function FirewallRuleOutAPIToJSON(value?: FirewallRuleOutAPI | null): any
     return {
         
         'id': value.id,
-        'description': value.description,
-        'direction': FirewallRuleDirectionToJSON(value.direction),
-        'protocol': FirewallRuleProtocolToJSON(value.protocol),
-        'port': value.port,
-        'cidr': value.cidr,
-        'group_id': value.groupId,
+        'created_at': value.createdAt,
+        'image': value.image,
+        'type': URLTypeToJSON(value.type),
+        'url': value.url,
+        'status': UrlStatusToJSON(value.status),
+        'progress': value.progress,
     };
 }
 

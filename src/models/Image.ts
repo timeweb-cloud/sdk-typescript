@@ -13,105 +13,185 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { URLType } from './URLType';
+import type { ImageStatus } from './ImageStatus';
 import {
-    URLTypeFromJSON,
-    URLTypeFromJSONTyped,
-    URLTypeToJSON,
-} from './URLType';
-import type { UrlStatus } from './UrlStatus';
+    ImageStatusFromJSON,
+    ImageStatusFromJSONTyped,
+    ImageStatusToJSON,
+} from './ImageStatus';
+import type { OS } from './OS';
 import {
-    UrlStatusFromJSON,
-    UrlStatusFromJSONTyped,
-    UrlStatusToJSON,
-} from './UrlStatus';
+    OSFromJSON,
+    OSFromJSONTyped,
+    OSToJSON,
+} from './OS';
 
 /**
  * 
  * @export
- * @interface ImageDownloadAPI
+ * @interface Image
  */
-export interface ImageDownloadAPI {
+export interface Image {
     /**
-     * ID ссылки
+     * ID образа.
      * @type {string}
-     * @memberof ImageDownloadAPI
+     * @memberof Image
      */
     id: string;
     /**
-     * Дата и время создания ссылки
-     * @type {Date}
-     * @memberof ImageDownloadAPI
-     */
-    createdAt: Date;
-    /**
-     * ID образа
-     * @type {string}
-     * @memberof ImageDownloadAPI
-     */
-    image: string;
-    /**
      * 
-     * @type {URLType}
-     * @memberof ImageDownloadAPI
+     * @type {ImageStatus}
+     * @memberof Image
      */
-    type: URLType;
+    status: ImageStatus;
     /**
-     * Ссылка на скачивание
+     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда был создан образ.
      * @type {string}
-     * @memberof ImageDownloadAPI
+     * @memberof Image
      */
-    url?: string;
+    createdAt: string;
     /**
-     * 
-     * @type {UrlStatus}
-     * @memberof ImageDownloadAPI
+     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда был удален образ.
+     * @type {string}
+     * @memberof Image
      */
-    status: UrlStatus;
+    deletedAt: string;
     /**
-     * Прогресс загрузки образа
+     * Размер физического диска в мегабайтах.
      * @type {number}
-     * @memberof ImageDownloadAPI
+     * @memberof Image
+     */
+    size: number;
+    /**
+     * Размер виртуального диска в мегабайтах.
+     * @type {number}
+     * @memberof Image
+     */
+    virtualSize: number;
+    /**
+     * Имя образа.
+     * @type {string}
+     * @memberof Image
+     */
+    name: string;
+    /**
+     * Описание образа.
+     * @type {string}
+     * @memberof Image
+     */
+    description: string;
+    /**
+     * ID связанного с образом диска.
+     * @type {number}
+     * @memberof Image
+     */
+    diskId: number;
+    /**
+     * Локация образа.
+     * @type {string}
+     * @memberof Image
+     */
+    location: ImageLocationEnum;
+    /**
+     * 
+     * @type {OS}
+     * @memberof Image
+     */
+    os: OS;
+    /**
+     * Процент создания образа.
+     * @type {number}
+     * @memberof Image
      */
     progress: number;
+    /**
+     * Логическое значение, которое показывает, является ли образ кастомным.
+     * @type {boolean}
+     * @memberof Image
+     */
+    isCustom: boolean;
+    /**
+     * Тип образа.
+     * @type {string}
+     * @memberof Image
+     */
+    type: ImageTypeEnum;
 }
 
+
 /**
- * Check if a given object implements the ImageDownloadAPI interface.
+ * @export
  */
-export function instanceOfImageDownloadAPI(value: object): boolean {
+export const ImageLocationEnum = {
+    Ru1: 'ru-1',
+    Ru2: 'ru-2',
+    Pl1: 'pl-1',
+    Kz1: 'kz-1',
+    Nl1: 'nl-1'
+} as const;
+export type ImageLocationEnum = typeof ImageLocationEnum[keyof typeof ImageLocationEnum];
+
+/**
+ * @export
+ */
+export const ImageTypeEnum = {
+    Qcow2: 'qcow2',
+    Iso: 'iso'
+} as const;
+export type ImageTypeEnum = typeof ImageTypeEnum[keyof typeof ImageTypeEnum];
+
+
+/**
+ * Check if a given object implements the Image interface.
+ */
+export function instanceOfImage(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "image" in value;
-    isInstance = isInstance && "type" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "deletedAt" in value;
+    isInstance = isInstance && "size" in value;
+    isInstance = isInstance && "virtualSize" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "diskId" in value;
+    isInstance = isInstance && "location" in value;
+    isInstance = isInstance && "os" in value;
     isInstance = isInstance && "progress" in value;
+    isInstance = isInstance && "isCustom" in value;
+    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
 
-export function ImageDownloadAPIFromJSON(json: any): ImageDownloadAPI {
-    return ImageDownloadAPIFromJSONTyped(json, false);
+export function ImageFromJSON(json: any): Image {
+    return ImageFromJSONTyped(json, false);
 }
 
-export function ImageDownloadAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageDownloadAPI {
+export function ImageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Image {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'createdAt': (new Date(json['created_at'])),
-        'image': json['image'],
-        'type': URLTypeFromJSON(json['type']),
-        'url': !exists(json, 'url') ? undefined : json['url'],
-        'status': UrlStatusFromJSON(json['status']),
+        'status': ImageStatusFromJSON(json['status']),
+        'createdAt': json['created_at'],
+        'deletedAt': json['deleted_at'],
+        'size': json['size'],
+        'virtualSize': json['virtual_size'],
+        'name': json['name'],
+        'description': json['description'],
+        'diskId': json['disk_id'],
+        'location': json['location'],
+        'os': OSFromJSON(json['os']),
         'progress': json['progress'],
+        'isCustom': json['is_custom'],
+        'type': json['type'],
     };
 }
 
-export function ImageDownloadAPIToJSON(value?: ImageDownloadAPI | null): any {
+export function ImageToJSON(value?: Image | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -121,12 +201,19 @@ export function ImageDownloadAPIToJSON(value?: ImageDownloadAPI | null): any {
     return {
         
         'id': value.id,
-        'created_at': (value.createdAt.toISOString()),
-        'image': value.image,
-        'type': URLTypeToJSON(value.type),
-        'url': value.url,
-        'status': UrlStatusToJSON(value.status),
+        'status': ImageStatusToJSON(value.status),
+        'created_at': value.createdAt,
+        'deleted_at': value.deletedAt,
+        'size': value.size,
+        'virtual_size': value.virtualSize,
+        'name': value.name,
+        'description': value.description,
+        'disk_id': value.diskId,
+        'location': value.location,
+        'os': OSToJSON(value.os),
         'progress': value.progress,
+        'is_custom': value.isCustom,
+        'type': value.type,
     };
 }
 

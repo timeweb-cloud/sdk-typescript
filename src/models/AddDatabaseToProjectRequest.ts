@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface AddDatabaseToProjectRequest {
     /**
-     * Идентификатор добавляемой базы данных.
+     * ID добавляемой базы данных.
      * @type {number}
      * @memberof AddDatabaseToProjectRequest
      */

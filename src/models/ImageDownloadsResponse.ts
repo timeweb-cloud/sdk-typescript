@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ImageDownloadAPI } from './ImageDownloadAPI';
+import type { ImageDownload } from './ImageDownload';
 import {
-    ImageDownloadAPIFromJSON,
-    ImageDownloadAPIFromJSONTyped,
-    ImageDownloadAPIToJSON,
-} from './ImageDownloadAPI';
+    ImageDownloadFromJSON,
+    ImageDownloadFromJSONTyped,
+    ImageDownloadToJSON,
+} from './ImageDownload';
 import type { Meta } from './Meta';
 import {
     MetaFromJSON,
@@ -33,7 +33,7 @@ import {
  */
 export interface ImageDownloadsResponse {
     /**
-     * ID запроса
+     * ID запроса.
      * @type {string}
      * @memberof ImageDownloadsResponse
      */
@@ -45,11 +45,11 @@ export interface ImageDownloadsResponse {
      */
     meta: Meta;
     /**
-     * Массив объектов "Ссылка на загрузку"
-     * @type {Array<ImageDownloadAPI>}
+     * 
+     * @type {Array<ImageDownload>}
      * @memberof ImageDownloadsResponse
      */
-    downloads: Array<ImageDownloadAPI>;
+    downloads: Array<ImageDownload>;
 }
 
 /**
@@ -75,7 +75,7 @@ export function ImageDownloadsResponseFromJSONTyped(json: any, ignoreDiscriminat
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
         'meta': MetaFromJSON(json['meta']),
-        'downloads': ((json['downloads'] as Array<any>).map(ImageDownloadAPIFromJSON)),
+        'downloads': ((json['downloads'] as Array<any>).map(ImageDownloadFromJSON)),
     };
 }
 
@@ -90,7 +90,7 @@ export function ImageDownloadsResponseToJSON(value?: ImageDownloadsResponse | nu
         
         'response_id': value.responseId,
         'meta': MetaToJSON(value.meta),
-        'downloads': ((value.downloads as Array<any>).map(ImageDownloadAPIToJSON)),
+        'downloads': ((value.downloads as Array<any>).map(ImageDownloadToJSON)),
     };
 }
 

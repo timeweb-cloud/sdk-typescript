@@ -135,7 +135,7 @@ export class VPCApi extends runtime.BaseAPI {
      * Чтобы удалить VPC, отправьте DELETE-запрос на `/api/v1/vpcs/{vpc_id}`
      * Удаление VPC по ID сети
      */
-    async deleteVPCRaw(requestParameters: DeleteVPCRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateVPC201Response>> {
+    async deleteVPCRaw(requestParameters: DeleteVPCRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.vpcId === null || requestParameters.vpcId === undefined) {
             throw new runtime.RequiredError('vpcId','Required parameter requestParameters.vpcId was null or undefined when calling deleteVPC.');
         }
@@ -159,16 +159,15 @@ export class VPCApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateVPC201ResponseFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Чтобы удалить VPC, отправьте DELETE-запрос на `/api/v1/vpcs/{vpc_id}`
      * Удаление VPC по ID сети
      */
-    async deleteVPC(requestParameters: DeleteVPCRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateVPC201Response> {
-        const response = await this.deleteVPCRaw(requestParameters, initOverrides);
-        return await response.value();
+    async deleteVPC(requestParameters: DeleteVPCRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteVPCRaw(requestParameters, initOverrides);
     }
 
     /**

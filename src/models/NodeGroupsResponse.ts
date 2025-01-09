@@ -13,18 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Meta } from './Meta';
-import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
 import type { NodeGroupOut } from './NodeGroupOut';
 import {
     NodeGroupOutFromJSON,
     NodeGroupOutFromJSONTyped,
     NodeGroupOutToJSON,
 } from './NodeGroupOut';
+import type { SchemasMeta } from './SchemasMeta';
+import {
+    SchemasMetaFromJSON,
+    SchemasMetaFromJSONTyped,
+    SchemasMetaToJSON,
+} from './SchemasMeta';
 
 /**
  * 
@@ -33,17 +33,17 @@ import {
  */
 export interface NodeGroupsResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof NodeGroupsResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {Meta}
+     * @type {SchemasMeta}
      * @memberof NodeGroupsResponse
      */
-    meta: Meta;
+    meta: SchemasMeta;
     /**
      * Массив объектов Группа нод
      * @type {Array<NodeGroupOut>}
@@ -74,7 +74,7 @@ export function NodeGroupsResponseFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'meta': MetaFromJSON(json['meta']),
+        'meta': SchemasMetaFromJSON(json['meta']),
         'nodeGroups': ((json['node_groups'] as Array<any>).map(NodeGroupOutFromJSON)),
     };
 }
@@ -89,7 +89,7 @@ export function NodeGroupsResponseToJSON(value?: NodeGroupsResponse | null): any
     return {
         
         'response_id': value.responseId,
-        'meta': MetaToJSON(value.meta),
+        'meta': SchemasMetaToJSON(value.meta),
         'node_groups': ((value.nodeGroups as Array<any>).map(NodeGroupOutToJSON)),
     };
 }

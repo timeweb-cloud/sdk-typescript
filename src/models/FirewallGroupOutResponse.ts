@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallGroupOutAPI } from './FirewallGroupOutAPI';
+import type { FirewallGroup } from './FirewallGroup';
 import {
-    FirewallGroupOutAPIFromJSON,
-    FirewallGroupOutAPIFromJSONTyped,
-    FirewallGroupOutAPIToJSON,
-} from './FirewallGroupOutAPI';
+    FirewallGroupFromJSON,
+    FirewallGroupFromJSONTyped,
+    FirewallGroupToJSON,
+} from './FirewallGroup';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface FirewallGroupOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof FirewallGroupOutResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {FirewallGroupOutAPI}
+     * @type {FirewallGroup}
      * @memberof FirewallGroupOutResponse
      */
-    group: FirewallGroupOutAPI;
+    group: FirewallGroup;
 }
 
 /**
@@ -61,7 +61,7 @@ export function FirewallGroupOutResponseFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'group': FirewallGroupOutAPIFromJSON(json['group']),
+        'group': FirewallGroupFromJSON(json['group']),
     };
 }
 
@@ -75,7 +75,7 @@ export function FirewallGroupOutResponseToJSON(value?: FirewallGroupOutResponse 
     return {
         
         'response_id': value.responseId,
-        'group': FirewallGroupOutAPIToJSON(value.group),
+        'group': FirewallGroupToJSON(value.group),
     };
 }
 

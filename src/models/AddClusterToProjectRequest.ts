@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface AddClusterToProjectRequest {
     /**
-     * Идентификатор добавляемого кластера.
+     * ID добавляемого кластера.
      * @type {number}
      * @memberof AddClusterToProjectRequest
      */

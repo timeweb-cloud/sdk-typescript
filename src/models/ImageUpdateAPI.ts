@@ -20,13 +20,13 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ImageUpdateAPI {
     /**
-     * Имя образа
+     * Имя образа.
      * @type {string}
      * @memberof ImageUpdateAPI
      */
     name?: string;
     /**
-     * Описание образа
+     * Описание образа.
      * @type {string}
      * @memberof ImageUpdateAPI
      */

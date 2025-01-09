@@ -20,13 +20,13 @@ import { exists, mapValues } from '../runtime';
  */
 export interface FirewallGroupInAPI {
     /**
-     * Имя группы правил
+     * Имя группы правил.
      * @type {string}
      * @memberof FirewallGroupInAPI
      */
     name: string;
     /**
-     * Описание группы правил
+     * Описание группы правил.
      * @type {string}
      * @memberof FirewallGroupInAPI
      */

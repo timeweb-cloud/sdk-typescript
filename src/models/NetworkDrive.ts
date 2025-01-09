@@ -33,7 +33,7 @@ import {
  */
 export interface NetworkDrive {
     /**
-     * Идентификатор сетевого диска.
+     * ID сетевого диска.
      * @type {string}
      * @memberof NetworkDrive
      */
@@ -87,7 +87,7 @@ export interface NetworkDrive {
      */
     type: NetworkDriveTypeEnum;
     /**
-     * Идентификатор тарифа.
+     * ID тарифа.
      * @type {number}
      * @memberof NetworkDrive
      */

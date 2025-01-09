@@ -33,25 +33,25 @@ import {
  */
 export interface ImageInAPI {
     /**
-     * Имя образа
+     * Имя образа.
      * @type {string}
      * @memberof ImageInAPI
      */
     name?: string;
     /**
-     * Описание образа
+     * Описание образа.
      * @type {string}
      * @memberof ImageInAPI
      */
     description?: string;
     /**
-     * Идентификатор диска, для которого создается образ
+     * ID диска, для которого создается образ.
      * @type {number}
      * @memberof ImageInAPI
      */
     diskId?: number;
     /**
-     * Cсылка для загрузки образа
+     * Ссылка для загрузки образа.
      * @type {string}
      * @memberof ImageInAPI
      */
@@ -61,13 +61,13 @@ export interface ImageInAPI {
      * @type {Location}
      * @memberof ImageInAPI
      */
-    location?: Location;
+    location: Location;
     /**
      * 
      * @type {OS}
      * @memberof ImageInAPI
      */
-    os?: OS;
+    os: OS;
 }
 
 /**
@@ -75,6 +75,8 @@ export interface ImageInAPI {
  */
 export function instanceOfImageInAPI(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "location" in value;
+    isInstance = isInstance && "os" in value;
 
     return isInstance;
 }
@@ -93,8 +95,8 @@ export function ImageInAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'description': !exists(json, 'description') ? undefined : json['description'],
         'diskId': !exists(json, 'disk_id') ? undefined : json['disk_id'],
         'uploadUrl': !exists(json, 'upload_url') ? undefined : json['upload_url'],
-        'location': !exists(json, 'location') ? undefined : LocationFromJSON(json['location']),
-        'os': !exists(json, 'os') ? undefined : OSFromJSON(json['os']),
+        'location': LocationFromJSON(json['location']),
+        'os': OSFromJSON(json['os']),
     };
 }
 

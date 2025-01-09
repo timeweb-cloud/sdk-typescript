@@ -38,7 +38,7 @@ export interface CreateNetworkDrive {
      */
     size: number;
     /**
-     * Идентификатор сетевого диска.
+     * ID сетевого диска.
      * @type {number}
      * @memberof CreateNetworkDrive
      */

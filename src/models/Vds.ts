@@ -63,13 +63,13 @@ export interface Vds {
      */
     id: number;
     /**
-     * Удобочитаемое имя, установленное для выделенного сервера.
+     * Удобочитаемое имя, установленное для сервера.
      * @type {string}
      * @memberof Vds
      */
     name: string;
     /**
-     * Комментарий к выделенному серверу.
+     * Комментарий к серверу.
      * @type {string}
      * @memberof Vds
      */
@@ -135,6 +135,24 @@ export interface Vds {
      */
     isDdosGuard: boolean;
     /**
+     * Это логическое значение, которое показывает, доступно ли подключение по SSH для поддержки.
+     * @type {boolean}
+     * @memberof Vds
+     */
+    isMasterSsh: boolean;
+    /**
+     * Это логическое значение, которое показывает, является ли CPU выделенным.
+     * @type {boolean}
+     * @memberof Vds
+     */
+    isDedicatedCpu: boolean;
+    /**
+     * Количество видеокарт сервера.
+     * @type {number}
+     * @memberof Vds
+     */
+    gpu: number;
+    /**
      * Количество ядер процессора сервера.
      * @type {number}
      * @memberof Vds
@@ -195,11 +213,11 @@ export interface Vds {
      */
     cloudInit: string | null;
     /**
-     * Включен ли QEMU-agent на сервере.
+     * Это логическое значение, которое показывает, включен ли QEMU-agent на сервере.
      * @type {boolean}
      * @memberof Vds
      */
-    isQemuAgent?: boolean;
+    isQemuAgent: boolean;
     /**
      * 
      * @type {AvailabilityZone}
@@ -215,8 +233,10 @@ export interface Vds {
 export const VdsLocationEnum = {
     Ru1: 'ru-1',
     Ru2: 'ru-2',
+    Ru3: 'ru-3',
     Pl1: 'pl-1',
-    Kz1: 'kz-1'
+    Kz1: 'kz-1',
+    Nl1: 'nl-1'
 } as const;
 export type VdsLocationEnum = typeof VdsLocationEnum[keyof typeof VdsLocationEnum];
 
@@ -274,6 +294,9 @@ export function instanceOfVds(value: object): boolean {
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "startAt" in value;
     isInstance = isInstance && "isDdosGuard" in value;
+    isInstance = isInstance && "isMasterSsh" in value;
+    isInstance = isInstance && "isDedicatedCpu" in value;
+    isInstance = isInstance && "gpu" in value;
     isInstance = isInstance && "cpu" in value;
     isInstance = isInstance && "cpuFrequency" in value;
     isInstance = isInstance && "ram" in value;
@@ -284,6 +307,7 @@ export function instanceOfVds(value: object): boolean {
     isInstance = isInstance && "image" in value;
     isInstance = isInstance && "networks" in value;
     isInstance = isInstance && "cloudInit" in value;
+    isInstance = isInstance && "isQemuAgent" in value;
     isInstance = isInstance && "availabilityZone" in value;
 
     return isInstance;
@@ -312,6 +336,9 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         'status': json['status'],
         'startAt': (json['start_at'] === null ? null : new Date(json['start_at'])),
         'isDdosGuard': json['is_ddos_guard'],
+        'isMasterSsh': json['is_master_ssh'],
+        'isDedicatedCpu': json['is_dedicated_cpu'],
+        'gpu': json['gpu'],
         'cpu': json['cpu'],
         'cpuFrequency': json['cpu_frequency'],
         'ram': json['ram'],
@@ -322,7 +349,7 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         'image': VdsImageFromJSON(json['image']),
         'networks': ((json['networks'] as Array<any>).map(VdsNetworksInnerFromJSON)),
         'cloudInit': json['cloud_init'],
-        'isQemuAgent': !exists(json, 'is_qemu_agent') ? undefined : json['is_qemu_agent'],
+        'isQemuAgent': json['is_qemu_agent'],
         'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
 }
@@ -349,6 +376,9 @@ export function VdsToJSON(value?: Vds | null): any {
         'status': value.status,
         'start_at': (value.startAt === null ? null : value.startAt.toISOString()),
         'is_ddos_guard': value.isDdosGuard,
+        'is_master_ssh': value.isMasterSsh,
+        'is_dedicated_cpu': value.isDedicatedCpu,
+        'gpu': value.gpu,
         'cpu': value.cpu,
         'cpu_frequency': value.cpuFrequency,
         'ram': value.ram,

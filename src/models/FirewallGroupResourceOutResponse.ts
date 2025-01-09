@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallGroupResourceOutAPI } from './FirewallGroupResourceOutAPI';
+import type { FirewallGroupResource } from './FirewallGroupResource';
 import {
-    FirewallGroupResourceOutAPIFromJSON,
-    FirewallGroupResourceOutAPIFromJSONTyped,
-    FirewallGroupResourceOutAPIToJSON,
-} from './FirewallGroupResourceOutAPI';
+    FirewallGroupResourceFromJSON,
+    FirewallGroupResourceFromJSONTyped,
+    FirewallGroupResourceToJSON,
+} from './FirewallGroupResource';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface FirewallGroupResourceOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof FirewallGroupResourceOutResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {FirewallGroupResourceOutAPI}
+     * @type {FirewallGroupResource}
      * @memberof FirewallGroupResourceOutResponse
      */
-    resource: FirewallGroupResourceOutAPI;
+    resource: FirewallGroupResource;
 }
 
 /**
@@ -61,7 +61,7 @@ export function FirewallGroupResourceOutResponseFromJSONTyped(json: any, ignoreD
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'resource': FirewallGroupResourceOutAPIFromJSON(json['resource']),
+        'resource': FirewallGroupResourceFromJSON(json['resource']),
     };
 }
 
@@ -75,7 +75,7 @@ export function FirewallGroupResourceOutResponseToJSON(value?: FirewallGroupReso
     return {
         
         'response_id': value.responseId,
-        'resource': FirewallGroupResourceOutAPIToJSON(value.resource),
+        'resource': FirewallGroupResourceToJSON(value.resource),
     };
 }
 

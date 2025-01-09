@@ -32,7 +32,7 @@ export interface UpdateProject {
      */
     description?: string | null;
     /**
-     * Идентификатор аватара пользователя. Описание методов работы с аватарами появится позднее.
+     * ID аватара пользователя. Описание методов работы с аватарами появится позднее.
      * @type {string}
      * @memberof UpdateProject
      */

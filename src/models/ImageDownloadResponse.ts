@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ImageDownloadAPI } from './ImageDownloadAPI';
+import type { ImageDownload } from './ImageDownload';
 import {
-    ImageDownloadAPIFromJSON,
-    ImageDownloadAPIFromJSONTyped,
-    ImageDownloadAPIToJSON,
-} from './ImageDownloadAPI';
+    ImageDownloadFromJSON,
+    ImageDownloadFromJSONTyped,
+    ImageDownloadToJSON,
+} from './ImageDownload';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface ImageDownloadResponse {
     /**
-     * ID запроса
+     * ID запроса.
      * @type {string}
      * @memberof ImageDownloadResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {ImageDownloadAPI}
+     * @type {ImageDownload}
      * @memberof ImageDownloadResponse
      */
-    download: ImageDownloadAPI;
+    download: ImageDownload;
 }
 
 /**
@@ -61,7 +61,7 @@ export function ImageDownloadResponseFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'download': ImageDownloadAPIFromJSON(json['download']),
+        'download': ImageDownloadFromJSON(json['download']),
     };
 }
 
@@ -75,7 +75,7 @@ export function ImageDownloadResponseToJSON(value?: ImageDownloadResponse | null
     return {
         
         'response_id': value.responseId,
-        'download': ImageDownloadAPIToJSON(value.download),
+        'download': ImageDownloadToJSON(value.download),
     };
 }
 

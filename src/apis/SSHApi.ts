@@ -181,7 +181,7 @@ export class SSHApi extends runtime.BaseAPI {
 
     /**
      * Чтобы удалить SSH-ключ, отправьте DELETE-запрос на `/api/v1/ssh-keys/{ssh_key_id}`
-     * Удаление SSH-ключа по уникальному идентификатору
+     * Удаление SSH-ключа по ID
      */
     async deleteKeyRaw(requestParameters: DeleteKeyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.sshKeyId === null || requestParameters.sshKeyId === undefined) {
@@ -212,7 +212,7 @@ export class SSHApi extends runtime.BaseAPI {
 
     /**
      * Чтобы удалить SSH-ключ, отправьте DELETE-запрос на `/api/v1/ssh-keys/{ssh_key_id}`
-     * Удаление SSH-ключа по уникальному идентификатору
+     * Удаление SSH-ключа по ID
      */
     async deleteKey(requestParameters: DeleteKeyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteKeyRaw(requestParameters, initOverrides);
@@ -263,7 +263,7 @@ export class SSHApi extends runtime.BaseAPI {
 
     /**
      * Чтобы получить SSH-ключ, отправьте GET-запрос на `/api/v1/ssh-keys/{ssh_key_id}`
-     * Получение SSH-ключа по уникальному идентификатору
+     * Получение SSH-ключа по ID
      */
     async getKeyRaw(requestParameters: GetKeyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKey200Response>> {
         if (requestParameters.sshKeyId === null || requestParameters.sshKeyId === undefined) {
@@ -294,7 +294,7 @@ export class SSHApi extends runtime.BaseAPI {
 
     /**
      * Чтобы получить SSH-ключ, отправьте GET-запрос на `/api/v1/ssh-keys/{ssh_key_id}`
-     * Получение SSH-ключа по уникальному идентификатору
+     * Получение SSH-ключа по ID
      */
     async getKey(requestParameters: GetKeyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKey200Response> {
         const response = await this.getKeyRaw(requestParameters, initOverrides);
@@ -339,7 +339,7 @@ export class SSHApi extends runtime.BaseAPI {
 
     /**
      * Чтобы изменить SSH-ключ, отправьте PATCH-запрос на `/api/v1/ssh-keys/{ssh_key_id}`
-     * Изменение SSH-ключа по уникальному идентификатору
+     * Изменение SSH-ключа по ID
      */
     async updateKeyRaw(requestParameters: UpdateKeyOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKey200Response>> {
         if (requestParameters.sshKeyId === null || requestParameters.sshKeyId === undefined) {
@@ -377,7 +377,7 @@ export class SSHApi extends runtime.BaseAPI {
 
     /**
      * Чтобы изменить SSH-ключ, отправьте PATCH-запрос на `/api/v1/ssh-keys/{ssh_key_id}`
-     * Изменение SSH-ключа по уникальному идентификатору
+     * Изменение SSH-ключа по ID
      */
     async updateKey(requestParameters: UpdateKeyOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKey200Response> {
         const response = await this.updateKeyRaw(requestParameters, initOverrides);

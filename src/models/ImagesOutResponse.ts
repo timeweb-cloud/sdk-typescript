@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ImageOutAPI } from './ImageOutAPI';
+import type { Image } from './Image';
 import {
-    ImageOutAPIFromJSON,
-    ImageOutAPIFromJSONTyped,
-    ImageOutAPIToJSON,
-} from './ImageOutAPI';
+    ImageFromJSON,
+    ImageFromJSONTyped,
+    ImageToJSON,
+} from './Image';
 import type { Meta } from './Meta';
 import {
     MetaFromJSON,
@@ -33,7 +33,7 @@ import {
  */
 export interface ImagesOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof ImagesOutResponse
      */
@@ -45,11 +45,11 @@ export interface ImagesOutResponse {
      */
     meta: Meta;
     /**
-     * Массив объектов Образ
-     * @type {Array<ImageOutAPI>}
+     * 
+     * @type {Array<Image>}
      * @memberof ImagesOutResponse
      */
-    images: Array<ImageOutAPI>;
+    images: Array<Image>;
 }
 
 /**
@@ -75,7 +75,7 @@ export function ImagesOutResponseFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
         'meta': MetaFromJSON(json['meta']),
-        'images': ((json['images'] as Array<any>).map(ImageOutAPIFromJSON)),
+        'images': ((json['images'] as Array<any>).map(ImageFromJSON)),
     };
 }
 
@@ -90,7 +90,7 @@ export function ImagesOutResponseToJSON(value?: ImagesOutResponse | null): any {
         
         'response_id': value.responseId,
         'meta': MetaToJSON(value.meta),
-        'images': ((value.images as Array<any>).map(ImageOutAPIToJSON)),
+        'images': ((value.images as Array<any>).map(ImageToJSON)),
     };
 }
 

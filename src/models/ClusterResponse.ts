@@ -27,7 +27,7 @@ import {
  */
 export interface ClusterResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof ClusterResponse
      */

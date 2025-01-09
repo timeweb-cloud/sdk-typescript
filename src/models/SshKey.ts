@@ -27,37 +27,37 @@ import {
  */
 export interface SshKey {
     /**
-     * ID SSH-ключа
+     * ID SSH-ключа.
      * @type {number}
      * @memberof SshKey
      */
     id: number;
     /**
-     * Название SSH-ключа
+     * Название SSH-ключа.
      * @type {string}
      * @memberof SshKey
      */
     name: string;
     /**
-     * Тело SSH-ключа
+     * Тело SSH-ключа.
      * @type {string}
      * @memberof SshKey
      */
     body: string;
     /**
-     * Дата создания ключа
+     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда был создан SSH-ключ.
      * @type {Date}
      * @memberof SshKey
      */
     createdAt: Date;
     /**
-     * Список серверов, которые используют SSH-ключ
+     * Список серверов, которые используют SSH-ключ.
      * @type {Array<SshKeyUsedByInner>}
      * @memberof SshKey
      */
     usedBy: Array<SshKeyUsedByInner>;
     /**
-     * Будет ли выбираться SSh-ключ по умолчанию при создании сервера
+     * Это логическое значение, которое показывает, будет ли выбираться SSH-ключ по умолчанию при создании сервера.
      * @type {boolean}
      * @memberof SshKey
      */

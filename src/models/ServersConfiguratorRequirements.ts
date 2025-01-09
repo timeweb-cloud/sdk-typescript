@@ -91,6 +91,24 @@ export interface ServersConfiguratorRequirements {
      * @memberof ServersConfiguratorRequirements
      */
     networkBandwidthMax: number;
+    /**
+     * Минимальное количество видеокарт
+     * @type {number}
+     * @memberof ServersConfiguratorRequirements
+     */
+    gpuMin: number | null;
+    /**
+     * Максимальное количество видеокарт
+     * @type {number}
+     * @memberof ServersConfiguratorRequirements
+     */
+    gpuMax: number | null;
+    /**
+     * Размер шага видеокарт
+     * @type {number}
+     * @memberof ServersConfiguratorRequirements
+     */
+    gpuStep: number | null;
 }
 
 /**
@@ -110,6 +128,9 @@ export function instanceOfServersConfiguratorRequirements(value: object): boolea
     isInstance = isInstance && "networkBandwidthMin" in value;
     isInstance = isInstance && "networkBandwidthStep" in value;
     isInstance = isInstance && "networkBandwidthMax" in value;
+    isInstance = isInstance && "gpuMin" in value;
+    isInstance = isInstance && "gpuMax" in value;
+    isInstance = isInstance && "gpuStep" in value;
 
     return isInstance;
 }
@@ -136,6 +157,9 @@ export function ServersConfiguratorRequirementsFromJSONTyped(json: any, ignoreDi
         'networkBandwidthMin': json['network_bandwidth_min'],
         'networkBandwidthStep': json['network_bandwidth_step'],
         'networkBandwidthMax': json['network_bandwidth_max'],
+        'gpuMin': json['gpu_min'],
+        'gpuMax': json['gpu_max'],
+        'gpuStep': json['gpu_step'],
     };
 }
 
@@ -160,6 +184,9 @@ export function ServersConfiguratorRequirementsToJSON(value?: ServersConfigurato
         'network_bandwidth_min': value.networkBandwidthMin,
         'network_bandwidth_step': value.networkBandwidthStep,
         'network_bandwidth_max': value.networkBandwidthMax,
+        'gpu_min': value.gpuMin,
+        'gpu_max': value.gpuMax,
+        'gpu_step': value.gpuStep,
     };
 }
 

@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface AddDedicatedServerToProjectRequest {
     /**
-     * Идентификатор добавляемого выделенного сервера.
+     * ID добавляемого выделенного сервера.
      * @type {number}
      * @memberof AddDedicatedServerToProjectRequest
      */

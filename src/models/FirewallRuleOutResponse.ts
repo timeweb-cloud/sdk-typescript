@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallRuleOutAPI } from './FirewallRuleOutAPI';
+import type { FirewallRule } from './FirewallRule';
 import {
-    FirewallRuleOutAPIFromJSON,
-    FirewallRuleOutAPIFromJSONTyped,
-    FirewallRuleOutAPIToJSON,
-} from './FirewallRuleOutAPI';
+    FirewallRuleFromJSON,
+    FirewallRuleFromJSONTyped,
+    FirewallRuleToJSON,
+} from './FirewallRule';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface FirewallRuleOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof FirewallRuleOutResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {FirewallRuleOutAPI}
+     * @type {FirewallRule}
      * @memberof FirewallRuleOutResponse
      */
-    rule: FirewallRuleOutAPI;
+    rule: FirewallRule;
 }
 
 /**
@@ -61,7 +61,7 @@ export function FirewallRuleOutResponseFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'rule': FirewallRuleOutAPIFromJSON(json['rule']),
+        'rule': FirewallRuleFromJSON(json['rule']),
     };
 }
 
@@ -75,7 +75,7 @@ export function FirewallRuleOutResponseToJSON(value?: FirewallRuleOutResponse | 
     return {
         
         'response_id': value.responseId,
-        'rule': FirewallRuleOutAPIToJSON(value.rule),
+        'rule': FirewallRuleToJSON(value.rule),
     };
 }
 

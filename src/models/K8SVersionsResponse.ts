@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Meta } from './Meta';
+import type { SchemasMeta } from './SchemasMeta';
 import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
+    SchemasMetaFromJSON,
+    SchemasMetaFromJSONTyped,
+    SchemasMetaToJSON,
+} from './SchemasMeta';
 
 /**
  * 
@@ -27,17 +27,17 @@ import {
  */
 export interface K8SVersionsResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof K8SVersionsResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {Meta}
+     * @type {SchemasMeta}
      * @memberof K8SVersionsResponse
      */
-    meta: Meta;
+    meta: SchemasMeta;
     /**
      * Массив версий k8s
      * @type {Array<string>}
@@ -68,7 +68,7 @@ export function K8SVersionsResponseFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'meta': MetaFromJSON(json['meta']),
+        'meta': SchemasMetaFromJSON(json['meta']),
         'k8sVersions': json['k8s_versions'],
     };
 }
@@ -83,7 +83,7 @@ export function K8SVersionsResponseToJSON(value?: K8SVersionsResponse | null): a
     return {
         
         'response_id': value.responseId,
-        'meta': MetaToJSON(value.meta),
+        'meta': SchemasMetaToJSON(value.meta),
         'k8s_versions': value.k8sVersions,
     };
 }

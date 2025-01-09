@@ -27,7 +27,7 @@ import {
  */
 export interface NodeGroupResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof NodeGroupResponse
      */

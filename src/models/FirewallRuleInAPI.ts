@@ -33,7 +33,7 @@ import {
  */
 export interface FirewallRuleInAPI {
     /**
-     * Описание правила
+     * Описание правила.
      * @type {string}
      * @memberof FirewallRuleInAPI
      */
@@ -45,7 +45,7 @@ export interface FirewallRuleInAPI {
      */
     direction: FirewallRuleDirection;
     /**
-     * Порт или диапазон портов, в случае tcp или udp
+     * Порт или диапазон портов, в случае tcp или udp.
      * @type {string}
      * @memberof FirewallRuleInAPI
      */
@@ -57,7 +57,7 @@ export interface FirewallRuleInAPI {
      */
     protocol: FirewallRuleProtocol;
     /**
-     * Сетевой адрес или подсеть. Поддерживаются протоколы IPv4  и IPv6
+     * Сетевой адрес или подсеть. Поддерживаются протоколы IPv4  и IPv.6
      * @type {string}
      * @memberof FirewallRuleInAPI
      */

@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { FirewallGroupResourceOutAPI } from './FirewallGroupResourceOutAPI';
+import type { FirewallGroupResource } from './FirewallGroupResource';
 import {
-    FirewallGroupResourceOutAPIFromJSON,
-    FirewallGroupResourceOutAPIFromJSONTyped,
-    FirewallGroupResourceOutAPIToJSON,
-} from './FirewallGroupResourceOutAPI';
+    FirewallGroupResourceFromJSON,
+    FirewallGroupResourceFromJSONTyped,
+    FirewallGroupResourceToJSON,
+} from './FirewallGroupResource';
 import type { Meta } from './Meta';
 import {
     MetaFromJSON,
@@ -33,7 +33,7 @@ import {
  */
 export interface FirewallGroupResourcesOutResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса.
      * @type {string}
      * @memberof FirewallGroupResourcesOutResponse
      */
@@ -46,10 +46,10 @@ export interface FirewallGroupResourcesOutResponse {
     meta: Meta;
     /**
      * 
-     * @type {Array<FirewallGroupResourceOutAPI>}
+     * @type {Array<FirewallGroupResource>}
      * @memberof FirewallGroupResourcesOutResponse
      */
-    resources: Array<FirewallGroupResourceOutAPI>;
+    resources: Array<FirewallGroupResource>;
 }
 
 /**
@@ -75,7 +75,7 @@ export function FirewallGroupResourcesOutResponseFromJSONTyped(json: any, ignore
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
         'meta': MetaFromJSON(json['meta']),
-        'resources': ((json['resources'] as Array<any>).map(FirewallGroupResourceOutAPIFromJSON)),
+        'resources': ((json['resources'] as Array<any>).map(FirewallGroupResourceFromJSON)),
     };
 }
 
@@ -90,7 +90,7 @@ export function FirewallGroupResourcesOutResponseToJSON(value?: FirewallGroupRes
         
         'response_id': value.responseId,
         'meta': MetaToJSON(value.meta),
-        'resources': ((value.resources as Array<any>).map(FirewallGroupResourceOutAPIToJSON)),
+        'resources': ((value.resources as Array<any>).map(FirewallGroupResourceToJSON)),
     };
 }
 

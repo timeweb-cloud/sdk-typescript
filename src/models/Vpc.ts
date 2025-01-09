@@ -61,13 +61,25 @@ export interface Vpc {
      * @type {string}
      * @memberof Vpc
      */
-    description?: string;
+    description: string;
     /**
      * 
      * @type {AvailabilityZone}
      * @memberof Vpc
      */
     availabilityZone: AvailabilityZone;
+    /**
+     * Публичный IP-адрес сети.
+     * @type {string}
+     * @memberof Vpc
+     */
+    publicIp: string | null;
+    /**
+     * Тип сети.
+     * @type {string}
+     * @memberof Vpc
+     */
+    type: VpcTypeEnum;
 }
 
 
@@ -76,9 +88,20 @@ export interface Vpc {
  */
 export const VpcLocationEnum = {
     Ru1: 'ru-1',
-    Pl1: 'pl-1'
+    Ru2: 'ru-2',
+    Pl1: 'pl-1',
+    Nl1: 'nl-1'
 } as const;
 export type VpcLocationEnum = typeof VpcLocationEnum[keyof typeof VpcLocationEnum];
+
+/**
+ * @export
+ */
+export const VpcTypeEnum = {
+    Bgp: 'bgp',
+    Ovn: 'ovn'
+} as const;
+export type VpcTypeEnum = typeof VpcTypeEnum[keyof typeof VpcTypeEnum];
 
 
 /**
@@ -91,7 +114,10 @@ export function instanceOfVpc(value: object): boolean {
     isInstance = isInstance && "subnetV4" in value;
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "availabilityZone" in value;
+    isInstance = isInstance && "publicIp" in value;
+    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
@@ -111,8 +137,10 @@ export function VpcFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vpc {
         'subnetV4': json['subnet_v4'],
         'location': json['location'],
         'createdAt': (new Date(json['created_at'])),
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'],
         'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
+        'publicIp': json['public_ip'],
+        'type': json['type'],
     };
 }
 
@@ -132,6 +160,8 @@ export function VpcToJSON(value?: Vpc | null): any {
         'created_at': (value.createdAt.toISOString()),
         'description': value.description,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'public_ip': value.publicIp,
+        'type': value.type,
     };
 }
 

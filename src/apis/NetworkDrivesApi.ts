@@ -409,7 +409,7 @@ export class NetworkDrivesApi extends runtime.BaseAPI {
 
     /**
      * Чтобы изменить сетевой диск, отправьте PATCH-запрос на `/api/v1/network-drives/{network_drive_id}`
-     * Изменение сетевого диска по идентификатору
+     * Изменение сетевого диска по ID
      */
     async updateNetworkDriveRaw(requestParameters: UpdateNetworkDriveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateNetworkDrive201Response>> {
         if (requestParameters.networkDriveId === null || requestParameters.networkDriveId === undefined) {
@@ -447,7 +447,7 @@ export class NetworkDrivesApi extends runtime.BaseAPI {
 
     /**
      * Чтобы изменить сетевой диск, отправьте PATCH-запрос на `/api/v1/network-drives/{network_drive_id}`
-     * Изменение сетевого диска по идентификатору
+     * Изменение сетевого диска по ID
      */
     async updateNetworkDrive(requestParameters: UpdateNetworkDriveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateNetworkDrive201Response> {
         const response = await this.updateNetworkDriveRaw(requestParameters, initOverrides);

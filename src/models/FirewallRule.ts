@@ -13,125 +13,104 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FirewallRuleDirection } from './FirewallRuleDirection';
+import {
+    FirewallRuleDirectionFromJSON,
+    FirewallRuleDirectionFromJSONTyped,
+    FirewallRuleDirectionToJSON,
+} from './FirewallRuleDirection';
+import type { FirewallRuleProtocol } from './FirewallRuleProtocol';
+import {
+    FirewallRuleProtocolFromJSON,
+    FirewallRuleProtocolFromJSONTyped,
+    FirewallRuleProtocolToJSON,
+} from './FirewallRuleProtocol';
+
 /**
  * 
  * @export
- * @interface NodeOut
+ * @interface FirewallRule
  */
-export interface NodeOut {
+export interface FirewallRule {
     /**
-     * ID ноды
-     * @type {number}
-     * @memberof NodeOut
-     */
-    id: number;
-    /**
-     * Дата и время создания ноды в формате ISO8601
-     * @type {Date}
-     * @memberof NodeOut
-     */
-    createdAt: Date;
-    /**
-     * Тип ноды
+     * ID правила.
      * @type {string}
-     * @memberof NodeOut
+     * @memberof FirewallRule
      */
-    type: string;
+    id: string;
     /**
-     * ID группы нод
-     * @type {number}
-     * @memberof NodeOut
-     */
-    groupId: number;
-    /**
-     * Статус
+     * Описание правила.
      * @type {string}
-     * @memberof NodeOut
+     * @memberof FirewallRule
      */
-    status: string;
+    description: string;
     /**
-     * ID тарифа ноды
-     * @type {number}
-     * @memberof NodeOut
+     * 
+     * @type {FirewallRuleDirection}
+     * @memberof FirewallRule
      */
-    presetId: number;
+    direction: FirewallRuleDirection;
     /**
-     * Количество ядер
-     * @type {number}
-     * @memberof NodeOut
+     * 
+     * @type {FirewallRuleProtocol}
+     * @memberof FirewallRule
      */
-    cpu: number;
+    protocol: FirewallRuleProtocol;
     /**
-     * Количество памяти
-     * @type {number}
-     * @memberof NodeOut
-     */
-    ram: number;
-    /**
-     * Количество пространства
-     * @type {number}
-     * @memberof NodeOut
-     */
-    disk: number;
-    /**
-     * Пропускная способность сети
-     * @type {number}
-     * @memberof NodeOut
-     */
-    network: number;
-    /**
-     * Ip-адрес ноды
+     * Порт или диапазон портов, в случае tcp или udp.
      * @type {string}
-     * @memberof NodeOut
+     * @memberof FirewallRule
      */
-    nodeIp: string;
+    port?: string;
+    /**
+     * Сетевой адрес или подсеть. Поддерживаются протоколы IPv4  и IPv6.
+     * @type {string}
+     * @memberof FirewallRule
+     */
+    cidr?: string;
+    /**
+     * ID группы правил.
+     * @type {string}
+     * @memberof FirewallRule
+     */
+    groupId: string;
 }
 
 /**
- * Check if a given object implements the NodeOut interface.
+ * Check if a given object implements the FirewallRule interface.
  */
-export function instanceOfNodeOut(value: object): boolean {
+export function instanceOfFirewallRule(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "direction" in value;
+    isInstance = isInstance && "protocol" in value;
     isInstance = isInstance && "groupId" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "presetId" in value;
-    isInstance = isInstance && "cpu" in value;
-    isInstance = isInstance && "ram" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "network" in value;
-    isInstance = isInstance && "nodeIp" in value;
 
     return isInstance;
 }
 
-export function NodeOutFromJSON(json: any): NodeOut {
-    return NodeOutFromJSONTyped(json, false);
+export function FirewallRuleFromJSON(json: any): FirewallRule {
+    return FirewallRuleFromJSONTyped(json, false);
 }
 
-export function NodeOutFromJSONTyped(json: any, ignoreDiscriminator: boolean): NodeOut {
+export function FirewallRuleFromJSONTyped(json: any, ignoreDiscriminator: boolean): FirewallRule {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'createdAt': (new Date(json['created_at'])),
-        'type': json['type'],
+        'description': json['description'],
+        'direction': FirewallRuleDirectionFromJSON(json['direction']),
+        'protocol': FirewallRuleProtocolFromJSON(json['protocol']),
+        'port': !exists(json, 'port') ? undefined : json['port'],
+        'cidr': !exists(json, 'cidr') ? undefined : json['cidr'],
         'groupId': json['group_id'],
-        'status': json['status'],
-        'presetId': json['preset_id'],
-        'cpu': json['cpu'],
-        'ram': json['ram'],
-        'disk': json['disk'],
-        'network': json['network'],
-        'nodeIp': json['node_ip'],
     };
 }
 
-export function NodeOutToJSON(value?: NodeOut | null): any {
+export function FirewallRuleToJSON(value?: FirewallRule | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -141,16 +120,12 @@ export function NodeOutToJSON(value?: NodeOut | null): any {
     return {
         
         'id': value.id,
-        'created_at': (value.createdAt.toISOString()),
-        'type': value.type,
+        'description': value.description,
+        'direction': FirewallRuleDirectionToJSON(value.direction),
+        'protocol': FirewallRuleProtocolToJSON(value.protocol),
+        'port': value.port,
+        'cidr': value.cidr,
         'group_id': value.groupId,
-        'status': value.status,
-        'preset_id': value.presetId,
-        'cpu': value.cpu,
-        'ram': value.ram,
-        'disk': value.disk,
-        'network': value.network,
-        'node_ip': value.nodeIp,
     };
 }
 

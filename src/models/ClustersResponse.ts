@@ -19,12 +19,12 @@ import {
     ClusterOutFromJSONTyped,
     ClusterOutToJSON,
 } from './ClusterOut';
-import type { Meta } from './Meta';
+import type { SchemasMeta } from './SchemasMeta';
 import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
+    SchemasMetaFromJSON,
+    SchemasMetaFromJSONTyped,
+    SchemasMetaToJSON,
+} from './SchemasMeta';
 
 /**
  * 
@@ -33,17 +33,17 @@ import {
  */
 export interface ClustersResponse {
     /**
-     * Идентификатор запроса
+     * ID запроса
      * @type {string}
      * @memberof ClustersResponse
      */
     responseId?: string;
     /**
      * 
-     * @type {Meta}
+     * @type {SchemasMeta}
      * @memberof ClustersResponse
      */
-    meta: Meta;
+    meta: SchemasMeta;
     /**
      * Массив объектов Кластер
      * @type {Array<ClusterOut>}
@@ -74,7 +74,7 @@ export function ClustersResponseFromJSONTyped(json: any, ignoreDiscriminator: bo
     return {
         
         'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
-        'meta': MetaFromJSON(json['meta']),
+        'meta': SchemasMetaFromJSON(json['meta']),
         'clusters': ((json['clusters'] as Array<any>).map(ClusterOutFromJSON)),
     };
 }
@@ -89,7 +89,7 @@ export function ClustersResponseToJSON(value?: ClustersResponse | null): any {
     return {
         
         'response_id': value.responseId,
-        'meta': MetaToJSON(value.meta),
+        'meta': SchemasMetaToJSON(value.meta),
         'clusters': ((value.clusters as Array<any>).map(ClusterOutToJSON)),
     };
 }

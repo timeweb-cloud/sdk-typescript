@@ -39,7 +39,7 @@ export interface ImageUrlIn {
      */
     type?: URLType;
     /**
-     * Имя файла для загрузки в облачное хранилище
+     * Имя файла для загрузки в облачное хранилище.
      * @type {string}
      * @memberof ImageUrlIn
      */

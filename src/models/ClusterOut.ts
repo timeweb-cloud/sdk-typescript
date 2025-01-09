@@ -98,7 +98,7 @@ export interface ClusterOut {
      */
     availabilityZone?: ClusterOutAvailabilityZoneEnum;
     /**
-     * Идентификатор проекта
+     * ID проекта
      * @type {number}
      * @memberof ClusterOut
      */

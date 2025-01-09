@@ -111,7 +111,7 @@ export interface CreateBalancer {
      */
     rise: number;
     /**
-     * Идентификатор тарифа.
+     * ID тарифа.
      * @type {number}
      * @memberof CreateBalancer
      */
