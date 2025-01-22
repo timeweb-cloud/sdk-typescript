@@ -153,7 +153,14 @@ export const DatabaseClusterStatusEnum = {
     Started: 'started',
     Starting: 'starting',
     Stopped: 'stopped',
-    NoPaid: 'no_paid'
+    NoPaid: 'no_paid',
+    LanTransfer: 'lan_transfer',
+    Error: 'error',
+    Blocked: 'blocked',
+    BackupRecovery: 'backup_recovery',
+    Rebooting: 'rebooting',
+    TurningOff: 'turning_off',
+    TurningOn: 'turning_on'
 } as const;
 export type DatabaseClusterStatusEnum = typeof DatabaseClusterStatusEnum[keyof typeof DatabaseClusterStatusEnum];
 
