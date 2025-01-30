@@ -44,6 +44,12 @@ export interface DnsRecord {
      * @memberof DnsRecord
      */
     data: DnsRecordData;
+    /**
+     * Время жизни DNS-записи.
+     * @type {number}
+     * @memberof DnsRecord
+     */
+    ttl?: number | null;
 }
 
 
@@ -85,6 +91,7 @@ export function DnsRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'type': json['type'],
         'id': !exists(json, 'id') ? undefined : json['id'],
         'data': DnsRecordDataFromJSON(json['data']),
+        'ttl': !exists(json, 'ttl') ? undefined : json['ttl'],
     };
 }
 
@@ -100,6 +107,7 @@ export function DnsRecordToJSON(value?: DnsRecord | null): any {
         'type': value.type,
         'id': value.id,
         'data': DnsRecordDataToJSON(value.data),
+        'ttl': value.ttl,
     };
 }
 

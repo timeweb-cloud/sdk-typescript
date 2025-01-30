@@ -43,6 +43,12 @@ export interface CreateDns {
      * @memberof CreateDns
      */
     value: string;
+    /**
+     * Время жизни DNS-записи.
+     * @type {number}
+     * @memberof CreateDns
+     */
+    ttl?: number | null;
 }
 
 
@@ -85,6 +91,7 @@ export function CreateDnsFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'subdomain': !exists(json, 'subdomain') ? undefined : json['subdomain'],
         'type': json['type'],
         'value': json['value'],
+        'ttl': !exists(json, 'ttl') ? undefined : json['ttl'],
     };
 }
 
@@ -101,6 +108,7 @@ export function CreateDnsToJSON(value?: CreateDns | null): any {
         'subdomain': value.subdomain,
         'type': value.type,
         'value': value.value,
+        'ttl': value.ttl,
     };
 }
 
