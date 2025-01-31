@@ -49,7 +49,7 @@ export interface DnsRecord {
      * @type {number}
      * @memberof DnsRecord
      */
-    ttl?: number | null;
+    ttl?: number;
 }
 
 

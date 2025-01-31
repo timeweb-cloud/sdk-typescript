@@ -48,7 +48,7 @@ export interface CreateDns {
      * @type {number}
      * @memberof CreateDns
      */
-    ttl?: number | null;
+    ttl?: number;
 }
 
 
