@@ -76,7 +76,6 @@ export const CreateApiKeyRolesEnum = {
     Domainswrite: 'domains:write',
     Administratorswrite: 'administrators:write',
     Firewallread: 'firewall:read',
-    Firewallread: 'firewall:read',
     Financeswrite: 'finances:write',
     Supportread: 'support:read',
     Supportwrite: 'support:write',
