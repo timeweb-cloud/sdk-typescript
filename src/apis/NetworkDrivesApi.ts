@@ -350,7 +350,7 @@ export class NetworkDrivesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/network-drives/{network_drive_id}/bind`.replace(`{${"network-drive-id"}}`, encodeURIComponent(String(requestParameters.networkDriveId))),
+            path: `/api/v1/network-drives/{network_drive_id}/mount`.replace(`{${"network-drive-id"}}`, encodeURIComponent(String(requestParameters.networkDriveId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -390,7 +390,7 @@ export class NetworkDrivesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/network-drives/{network_drive_id}/unbind`.replace(`{${"network-drive-id"}}`, encodeURIComponent(String(requestParameters.networkDriveId))),
+            path: `/api/v1/network-drives/{network_drive_id}/unmount`.replace(`{${"network-drive-id"}}`, encodeURIComponent(String(requestParameters.networkDriveId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
