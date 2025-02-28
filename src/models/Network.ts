@@ -35,6 +35,12 @@ export interface Network {
      * IP-адрес в сети.
      * @type {string}
      * @memberof Network
+     */
+    localIp?: string;
+    /**
+     * IP-адрес в сети.
+     * @type {string}
+     * @memberof Network
      * @deprecated
      */
     ip?: string;
@@ -62,6 +68,7 @@ export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): N
         
         'id': json['id'],
         'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
+        'localIp': !exists(json, 'local_ip') ? undefined : json['local_ip'],
         'ip': !exists(json, 'ip') ? undefined : json['ip'],
     };
 }
@@ -77,6 +84,7 @@ export function NetworkToJSON(value?: Network | null): any {
         
         'id': value.id,
         'floating_ip': value.floatingIp,
+        'local_ip': value.localIp,
         'ip': value.ip,
     };
 }

@@ -80,6 +80,12 @@ export interface Vpc {
      * @memberof Vpc
      */
     type: VpcTypeEnum;
+    /**
+     * Занятые адреса в сети
+     * @type {Array<string>}
+     * @memberof Vpc
+     */
+    busyAddress: Array<string>;
 }
 
 
@@ -118,6 +124,7 @@ export function instanceOfVpc(value: object): boolean {
     isInstance = isInstance && "availabilityZone" in value;
     isInstance = isInstance && "publicIp" in value;
     isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "busyAddress" in value;
 
     return isInstance;
 }
@@ -141,6 +148,7 @@ export function VpcFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vpc {
         'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
         'publicIp': json['public_ip'],
         'type': json['type'],
+        'busyAddress': json['busy_address'],
     };
 }
 
@@ -162,6 +170,7 @@ export function VpcToJSON(value?: Vpc | null): any {
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
         'public_ip': value.publicIp,
         'type': value.type,
+        'busy_address': value.busyAddress,
     };
 }
 

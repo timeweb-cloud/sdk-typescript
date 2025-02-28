@@ -49,7 +49,7 @@ export interface CreateServer {
      * @type {boolean}
      * @memberof CreateServer
      */
-    isDdosGuard: boolean;
+    isDdosGuard?: boolean;
     /**
      * ID операционной системы, которая будет установлена на облачный сервер. Нельзя передавать вместе с `image_id`.
      * @type {number}
@@ -79,7 +79,7 @@ export interface CreateServer {
      * @type {number}
      * @memberof CreateServer
      */
-    bandwidth: number;
+    bandwidth?: number;
     /**
      * Имя облачного сервера. Максимальная длина — 255 символов, имя должно быть уникальным.
      * @type {string}
@@ -136,8 +136,6 @@ export interface CreateServer {
  */
 export function instanceOfCreateServer(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "isDdosGuard" in value;
-    isInstance = isInstance && "bandwidth" in value;
     isInstance = isInstance && "name" in value;
 
     return isInstance;
@@ -154,12 +152,12 @@ export function CreateServerFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         '_configuration': !exists(json, 'configuration') ? undefined : CreateServerConfigurationFromJSON(json['configuration']),
-        'isDdosGuard': json['is_ddos_guard'],
+        'isDdosGuard': !exists(json, 'is_ddos_guard') ? undefined : json['is_ddos_guard'],
         'osId': !exists(json, 'os_id') ? undefined : json['os_id'],
         'imageId': !exists(json, 'image_id') ? undefined : json['image_id'],
         'softwareId': !exists(json, 'software_id') ? undefined : json['software_id'],
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
-        'bandwidth': json['bandwidth'],
+        'bandwidth': !exists(json, 'bandwidth') ? undefined : json['bandwidth'],
         'name': json['name'],
         'avatarId': !exists(json, 'avatar_id') ? undefined : json['avatar_id'],
         'comment': !exists(json, 'comment') ? undefined : json['comment'],
