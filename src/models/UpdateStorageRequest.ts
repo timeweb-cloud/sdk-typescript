@@ -31,6 +31,12 @@ export interface UpdateStorageRequest {
      * @memberof UpdateStorageRequest
      */
     bucketType?: UpdateStorageRequestBucketTypeEnum;
+    /**
+     * Комментарий к хранилищу.
+     * @type {string}
+     * @memberof UpdateStorageRequest
+     */
+    description?: string;
 }
 
 
@@ -65,6 +71,7 @@ export function UpdateStorageRequestFromJSONTyped(json: any, ignoreDiscriminator
         
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
         'bucketType': !exists(json, 'bucket_type') ? undefined : json['bucket_type'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
 
@@ -79,6 +86,7 @@ export function UpdateStorageRequestToJSON(value?: UpdateStorageRequest | null):
         
         'preset_id': value.presetId,
         'bucket_type': value.bucketType,
+        'description': value.description,
     };
 }
 

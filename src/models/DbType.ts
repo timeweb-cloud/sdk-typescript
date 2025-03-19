@@ -19,7 +19,7 @@
  */
 export const DbType = {
     Mysql: 'mysql',
-    Mysql5: 'mysql5',
+    Mysql84: 'mysql8_4',
     Postgres14: 'postgres14',
     Postgres15: 'postgres15',
     Postgres16: 'postgres16',
@@ -33,7 +33,9 @@ export const DbType = {
     Opensearch: 'opensearch',
     Kafka: 'kafka',
     Rabbitmq: 'rabbitmq',
-    Clickhouse: 'clickhouse'
+    Clickhouse: 'clickhouse',
+    Clickhouse24: 'clickhouse24',
+    Clickhouse25: 'clickhouse25'
 } as const;
 export type DbType = typeof DbType[keyof typeof DbType];
 

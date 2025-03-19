@@ -26,6 +26,12 @@ export interface CreateStorageRequest {
      */
     name: string;
     /**
+     * Комментарий к хранилищу.
+     * @type {string}
+     * @memberof CreateStorageRequest
+     */
+    description?: string;
+    /**
      * Тип хранилища.
      * @type {string}
      * @memberof CreateStorageRequest
@@ -73,6 +79,7 @@ export function CreateStorageRequestFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'name': json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'type': json['type'],
         'presetId': json['preset_id'],
     };
@@ -88,6 +95,7 @@ export function CreateStorageRequestToJSON(value?: CreateStorageRequest | null):
     return {
         
         'name': value.name,
+        'description': value.description,
         'type': value.type,
         'preset_id': value.presetId,
     };

@@ -51,6 +51,12 @@ export interface DatabaseType {
      */
     isAvailableReplication: boolean;
     /**
+     * Устарела ли версия базы.
+     * @type {boolean}
+     * @memberof DatabaseType
+     */
+    isDeprecated: boolean;
+    /**
      * 
      * @type {DatabaseTypeRequirements}
      * @memberof DatabaseType
@@ -67,6 +73,7 @@ export function instanceOfDatabaseType(value: object): boolean {
     isInstance = isInstance && "version" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "isAvailableReplication" in value;
+    isInstance = isInstance && "isDeprecated" in value;
 
     return isInstance;
 }
@@ -85,6 +92,7 @@ export function DatabaseTypeFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'version': json['version'],
         'type': json['type'],
         'isAvailableReplication': json['is_available_replication'],
+        'isDeprecated': json['is_deprecated'],
         'requirements': !exists(json, 'requirements') ? undefined : DatabaseTypeRequirementsFromJSON(json['requirements']),
     };
 }
@@ -102,6 +110,7 @@ export function DatabaseTypeToJSON(value?: DatabaseType | null): any {
         'version': value.version,
         'type': value.type,
         'is_available_replication': value.isAvailableReplication,
+        'is_deprecated': value.isDeprecated,
         'requirements': DatabaseTypeRequirementsToJSON(value.requirements),
     };
 }

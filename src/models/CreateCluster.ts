@@ -87,7 +87,7 @@ export interface CreateCluster {
      */
     instance?: CreateClusterInstance;
     /**
-     * Тип хеширования базы данных (mysql5 | mysql | postgres).
+     * Тип хеширования базы данных (mysql | postgres).
      * @type {string}
      * @memberof CreateCluster
      */

@@ -39,6 +39,12 @@ export interface Bucket {
      */
     name: string;
     /**
+     * Комментарий к хранилищу.
+     * @type {string}
+     * @memberof Bucket
+     */
+    description?: string;
+    /**
      * 
      * @type {BucketDiskStats}
      * @memberof Bucket
@@ -147,6 +153,7 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         
         'id': json['id'],
         'name': json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'diskStats': BucketDiskStatsFromJSON(json['disk_stats']),
         'type': json['type'],
         'presetId': json['preset_id'],
@@ -170,6 +177,7 @@ export function BucketToJSON(value?: Bucket | null): any {
         
         'id': value.id,
         'name': value.name,
+        'description': value.description,
         'disk_stats': BucketDiskStatsToJSON(value.diskStats),
         'type': value.type,
         'preset_id': value.presetId,
