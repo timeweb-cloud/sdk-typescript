@@ -67,7 +67,7 @@ export interface Bucket {
      * @type {number}
      * @memberof Bucket
      */
-    configuratorId: number;
+    configuratorId: number | null;
     /**
      * Статус хранилища.
      * @type {string}
@@ -109,7 +109,7 @@ export interface Bucket {
      * @type {Date}
      * @memberof Bucket
      */
-    movedInQuarantineAt: Date;
+    movedInQuarantineAt: Date | null;
     /**
      * Класс хранилища.
      * @type {string}
@@ -194,7 +194,7 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         'hostname': json['hostname'],
         'accessKey': json['access_key'],
         'secretKey': json['secret_key'],
-        'movedInQuarantineAt': (new Date(json['moved_in_quarantine_at'])),
+        'movedInQuarantineAt': (json['moved_in_quarantine_at'] === null ? null : new Date(json['moved_in_quarantine_at'])),
         'storageClass': json['storage_class'],
     };
 }
@@ -221,7 +221,7 @@ export function BucketToJSON(value?: Bucket | null): any {
         'hostname': value.hostname,
         'access_key': value.accessKey,
         'secret_key': value.secretKey,
-        'moved_in_quarantine_at': (value.movedInQuarantineAt.toISOString()),
+        'moved_in_quarantine_at': (value.movedInQuarantineAt === null ? null : value.movedInQuarantineAt.toISOString()),
         'storage_class': value.storageClass,
     };
 }
