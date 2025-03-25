@@ -24,7 +24,13 @@ export interface DeleteServiceResponse {
      * @type {string}
      * @memberof DeleteServiceResponse
      */
-    hash: string;
+    hash?: string;
+    /**
+     * Флаг, указывающий на то, что сервис был перемещен в карантин или был удален немедленно.
+     * @type {boolean}
+     * @memberof DeleteServiceResponse
+     */
+    isMovedInQuarantine?: boolean;
 }
 
 /**
@@ -32,7 +38,6 @@ export interface DeleteServiceResponse {
  */
 export function instanceOfDeleteServiceResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "hash" in value;
 
     return isInstance;
 }
@@ -47,7 +52,8 @@ export function DeleteServiceResponseFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'hash': json['hash'],
+        'hash': !exists(json, 'hash') ? undefined : json['hash'],
+        'isMovedInQuarantine': !exists(json, 'is_moved_in_quarantine') ? undefined : json['is_moved_in_quarantine'],
     };
 }
 
@@ -61,6 +67,7 @@ export function DeleteServiceResponseToJSON(value?: DeleteServiceResponse | null
     return {
         
         'hash': value.hash,
+        'is_moved_in_quarantine': value.isMovedInQuarantine,
     };
 }
 

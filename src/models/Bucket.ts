@@ -63,6 +63,12 @@ export interface Bucket {
      */
     presetId: number | null;
     /**
+     * ID конфигуратора хранилища.
+     * @type {number}
+     * @memberof Bucket
+     */
+    configuratorId: number;
+    /**
      * Статус хранилища.
      * @type {string}
      * @memberof Bucket
@@ -98,6 +104,18 @@ export interface Bucket {
      * @memberof Bucket
      */
     secretKey: string;
+    /**
+     * Дата перемещения в карантин.
+     * @type {Date}
+     * @memberof Bucket
+     */
+    movedInQuarantineAt: Date;
+    /**
+     * Класс хранилища.
+     * @type {string}
+     * @memberof Bucket
+     */
+    storageClass: BucketStorageClassEnum;
 }
 
 
@@ -120,6 +138,15 @@ export const BucketStatusEnum = {
 } as const;
 export type BucketStatusEnum = typeof BucketStatusEnum[keyof typeof BucketStatusEnum];
 
+/**
+ * @export
+ */
+export const BucketStorageClassEnum = {
+    Cold: 'cold',
+    Hot: 'hot'
+} as const;
+export type BucketStorageClassEnum = typeof BucketStorageClassEnum[keyof typeof BucketStorageClassEnum];
+
 
 /**
  * Check if a given object implements the Bucket interface.
@@ -131,12 +158,15 @@ export function instanceOfBucket(value: object): boolean {
     isInstance = isInstance && "diskStats" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "presetId" in value;
+    isInstance = isInstance && "configuratorId" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "objectAmount" in value;
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "hostname" in value;
     isInstance = isInstance && "accessKey" in value;
     isInstance = isInstance && "secretKey" in value;
+    isInstance = isInstance && "movedInQuarantineAt" in value;
+    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
@@ -157,12 +187,15 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         'diskStats': BucketDiskStatsFromJSON(json['disk_stats']),
         'type': json['type'],
         'presetId': json['preset_id'],
+        'configuratorId': json['configurator_id'],
         'status': json['status'],
         'objectAmount': json['object_amount'],
         'location': json['location'],
         'hostname': json['hostname'],
         'accessKey': json['access_key'],
         'secretKey': json['secret_key'],
+        'movedInQuarantineAt': (new Date(json['moved_in_quarantine_at'])),
+        'storageClass': json['storage_class'],
     };
 }
 
@@ -181,12 +214,15 @@ export function BucketToJSON(value?: Bucket | null): any {
         'disk_stats': BucketDiskStatsToJSON(value.diskStats),
         'type': value.type,
         'preset_id': value.presetId,
+        'configurator_id': value.configuratorId,
         'status': value.status,
         'object_amount': value.objectAmount,
         'location': value.location,
         'hostname': value.hostname,
         'access_key': value.accessKey,
         'secret_key': value.secretKey,
+        'moved_in_quarantine_at': (value.movedInQuarantineAt.toISOString()),
+        'storage_class': value.storageClass,
     };
 }
 

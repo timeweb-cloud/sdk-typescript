@@ -26,6 +26,12 @@ export interface UpdateStorageRequest {
      */
     presetId?: number;
     /**
+     * ID конфигуратора хранилища.
+     * @type {number}
+     * @memberof UpdateStorageRequest
+     */
+    configuratorId?: number;
+    /**
      * Тип хранилища.
      * @type {string}
      * @memberof UpdateStorageRequest
@@ -70,6 +76,7 @@ export function UpdateStorageRequestFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        'configuratorId': !exists(json, 'configurator_id') ? undefined : json['configurator_id'],
         'bucketType': !exists(json, 'bucket_type') ? undefined : json['bucket_type'],
         'description': !exists(json, 'description') ? undefined : json['description'],
     };
@@ -85,6 +92,7 @@ export function UpdateStorageRequestToJSON(value?: UpdateStorageRequest | null):
     return {
         
         'preset_id': value.presetId,
+        'configurator_id': value.configuratorId,
         'bucket_type': value.bucketType,
         'description': value.description,
     };
