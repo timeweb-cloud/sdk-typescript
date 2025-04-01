@@ -87,9 +87,10 @@ export interface CreateServer {
      */
     name: string;
     /**
-     * ID аватара сервера. Описание методов работы с аватарами появится позднее.
+     * ID аватара сервера.
      * @type {string}
      * @memberof CreateServer
+     * @deprecated
      */
     avatarId?: string;
     /**

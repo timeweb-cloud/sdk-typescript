@@ -177,11 +177,18 @@ export interface Vds {
      */
     disks: Array<VdsDisksInner>;
     /**
-     * ID аватара сервера. Описание методов работы с аватарами появится позднее.
+     * ID аватара сервера.
+     * @type {string}
+     * @memberof Vds
+     * @deprecated
+     */
+    avatarId: string | null;
+    /**
+     * Ссылка на аватар сервера.
      * @type {string}
      * @memberof Vds
      */
-    avatarId: string | null;
+    avatarLink: string | null;
     /**
      * Пароль от VNC.
      * @type {string}
@@ -302,6 +309,7 @@ export function instanceOfVds(value: object): boolean {
     isInstance = isInstance && "ram" in value;
     isInstance = isInstance && "disks" in value;
     isInstance = isInstance && "avatarId" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "vncPass" in value;
     isInstance = isInstance && "rootPass" in value;
     isInstance = isInstance && "image" in value;
@@ -344,6 +352,7 @@ export function VdsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vds {
         'ram': json['ram'],
         'disks': ((json['disks'] as Array<any>).map(VdsDisksInnerFromJSON)),
         'avatarId': json['avatar_id'],
+        'avatarLink': json['avatar_link'],
         'vncPass': json['vnc_pass'],
         'rootPass': json['root_pass'],
         'image': VdsImageFromJSON(json['image']),
@@ -384,6 +393,7 @@ export function VdsToJSON(value?: Vds | null): any {
         'ram': value.ram,
         'disks': ((value.disks as Array<any>).map(VdsDisksInnerToJSON)),
         'avatar_id': value.avatarId,
+        'avatar_link': value.avatarLink,
         'vnc_pass': value.vncPass,
         'root_pass': value.rootPass,
         'image': VdsImageToJSON(value.image),
