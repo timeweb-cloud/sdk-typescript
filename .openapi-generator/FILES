@@ -282,6 +282,7 @@ src/models/GetServerStatistics200ResponseCpuInner.ts
 src/models/GetServerStatistics200ResponseDiskInner.ts
 src/models/GetServerStatistics200ResponseNetworkTrafficInner.ts
 src/models/GetServerStatistics200ResponseRamInner.ts
+src/models/GetServerStatisticsNew200Response.ts
 src/models/GetServers200Response.ts
 src/models/GetServersPresets200Response.ts
 src/models/GetSoftware200Response.ts
@@ -379,6 +380,9 @@ src/models/ServersOsRequirements.ts
 src/models/ServersPreset.ts
 src/models/ServersSoftware.ts
 src/models/ServersSoftwareRequirements.ts
+src/models/ServersStatistics.ts
+src/models/ServersStatisticsListInner.ts
+src/models/ServersStatisticsMeta.ts
 src/models/SetLabels.ts
 src/models/SettingCondition.ts
 src/models/SpamFilterIsDisabled.ts

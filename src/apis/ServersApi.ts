@@ -42,6 +42,7 @@ import type {
   GetServerIPs200Response,
   GetServerLogs200Response,
   GetServerStatistics200Response,
+  GetServerStatisticsNew200Response,
   GetServers200Response,
   GetServersPresets200Response,
   GetSoftware200Response,
@@ -109,6 +110,8 @@ import {
     GetServerLogs200ResponseToJSON,
     GetServerStatistics200ResponseFromJSON,
     GetServerStatistics200ResponseToJSON,
+    GetServerStatisticsNew200ResponseFromJSON,
+    GetServerStatisticsNew200ResponseToJSON,
     GetServers200ResponseFromJSON,
     GetServers200ResponseToJSON,
     GetServersPresets200ResponseFromJSON,
@@ -223,6 +226,13 @@ export interface GetServerStatisticsRequest {
     serverId: number;
     dateFrom: string;
     dateTo: string;
+}
+
+export interface GetServerStatisticsNewRequest {
+    serverId: number;
+    timeFrom: string;
+    period: string;
+    keys: GetServerStatisticsNewKeysEnum;
 }
 
 export interface GetServersRequest {
@@ -1195,6 +1205,58 @@ export class ServersApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы получить статистику сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/{time_from}/{period}/{keys}`.
+     * Получение статистики сервера
+     */
+    async getServerStatisticsNewRaw(requestParameters: GetServerStatisticsNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetServerStatisticsNew200Response>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling getServerStatisticsNew.');
+        }
+
+        if (requestParameters.timeFrom === null || requestParameters.timeFrom === undefined) {
+            throw new runtime.RequiredError('timeFrom','Required parameter requestParameters.timeFrom was null or undefined when calling getServerStatisticsNew.');
+        }
+
+        if (requestParameters.period === null || requestParameters.period === undefined) {
+            throw new runtime.RequiredError('period','Required parameter requestParameters.period was null or undefined when calling getServerStatisticsNew.');
+        }
+
+        if (requestParameters.keys === null || requestParameters.keys === undefined) {
+            throw new runtime.RequiredError('keys','Required parameter requestParameters.keys was null or undefined when calling getServerStatisticsNew.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/statistics/{time_from}/{period}/{keys}`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))).replace(`{${"time_from"}}`, encodeURIComponent(String(requestParameters.timeFrom))).replace(`{${"period"}}`, encodeURIComponent(String(requestParameters.period))).replace(`{${"keys"}}`, encodeURIComponent(String(requestParameters.keys))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetServerStatisticsNew200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить статистику сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/{time_from}/{period}/{keys}`.
+     * Получение статистики сервера
+     */
+    async getServerStatisticsNew(requestParameters: GetServerStatisticsNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetServerStatisticsNew200Response> {
+        const response = await this.getServerStatisticsNewRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы получить список серверов, отправьте GET-запрос на `/api/v1/servers`.   Тело ответа будет представлять собой объект JSON с ключом `servers`.
      * Получение списка серверов
      */
@@ -1969,3 +2031,12 @@ export const GetServerLogsOrderEnum = {
     Desc: 'desc'
 } as const;
 export type GetServerLogsOrderEnum = typeof GetServerLogsOrderEnum[keyof typeof GetServerLogsOrderEnum];
+/**
+ * @export
+ */
+export const GetServerStatisticsNewKeysEnum = {
+    SystemCpuUtil: 'system.cpu.util',
+    NetworkRequest: 'network.request',
+    NetworkResponse: 'network.response'
+} as const;
+export type GetServerStatisticsNewKeysEnum = typeof GetServerStatisticsNewKeysEnum[keyof typeof GetServerStatisticsNewKeysEnum];
