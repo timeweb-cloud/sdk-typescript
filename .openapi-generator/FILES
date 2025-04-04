@@ -135,6 +135,7 @@ src/models/CreateServerDisk201Response.ts
 src/models/CreateServerDiskBackup201Response.ts
 src/models/CreateServerDiskBackupRequest.ts
 src/models/CreateServerDiskRequest.ts
+src/models/CreateServerNetwork.ts
 src/models/CreateStorage201Response.ts
 src/models/CreateStorageRequest.ts
 src/models/CreateToken201Response.ts

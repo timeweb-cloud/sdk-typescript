@@ -13,164 +13,73 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { AvailabilityZone } from './AvailabilityZone';
-import {
-    AvailabilityZoneFromJSON,
-    AvailabilityZoneFromJSONTyped,
-    AvailabilityZoneToJSON,
-} from './AvailabilityZone';
-import type { CreateServerConfiguration } from './CreateServerConfiguration';
-import {
-    CreateServerConfigurationFromJSON,
-    CreateServerConfigurationFromJSONTyped,
-    CreateServerConfigurationToJSON,
-} from './CreateServerConfiguration';
-import type { CreateServerNetwork } from './CreateServerNetwork';
-import {
-    CreateServerNetworkFromJSON,
-    CreateServerNetworkFromJSONTyped,
-    CreateServerNetworkToJSON,
-} from './CreateServerNetwork';
-
 /**
- * 
+ * Параметры конфигурации приватной сети сервера
  * @export
- * @interface CreateServer
+ * @interface CreateServerNetwork
  */
-export interface CreateServer {
+export interface CreateServerNetwork {
     /**
-     * 
-     * @type {CreateServerConfiguration}
-     * @memberof CreateServer
-     */
-    _configuration?: CreateServerConfiguration;
-    /**
-     * Защита от DDoS. Серверу выдается защищенный IP-адрес с защитой уровня L3 / L4. Для включения защиты уровня L7 необходимо создать тикет в техническую поддержку.
-     * @type {boolean}
-     * @memberof CreateServer
-     */
-    isDdosGuard?: boolean;
-    /**
-     * ID операционной системы, которая будет установлена на облачный сервер. Нельзя передавать вместе с `image_id`.
-     * @type {number}
-     * @memberof CreateServer
-     */
-    osId?: number;
-    /**
-     * ID образа, который будет установлен на облачный сервер. Нельзя передавать вместе с `os_id`.
+     * ID сети
      * @type {string}
-     * @memberof CreateServer
+     * @memberof CreateServerNetwork
      */
-    imageId?: string;
+    id?: string;
     /**
-     * ID программного обеспечения сервера.
-     * @type {number}
-     * @memberof CreateServer
-     */
-    softwareId?: number;
-    /**
-     * ID тарифа сервера. Нельзя передавать вместе с ключом `configurator`.
-     * @type {number}
-     * @memberof CreateServer
-     */
-    presetId?: number;
-    /**
-     * Пропускная способность тарифа. Доступные значения от 100 до 1000 с шагом 100.
-     * @type {number}
-     * @memberof CreateServer
-     */
-    bandwidth?: number;
-    /**
-     * Имя облачного сервера. Максимальная длина — 255 символов, имя должно быть уникальным.
+     * Публичный IP
      * @type {string}
-     * @memberof CreateServer
+     * @memberof CreateServerNetwork
      */
-    name: string;
+    floatingIp?: string;
     /**
-     * ID аватара сервера.
+     * Приватный IP
      * @type {string}
-     * @memberof CreateServer
+     * @memberof CreateServerNetwork
+     */
+    localIp?: string;
+    /**
+     * Приватный IP
+     * @type {string}
+     * @memberof CreateServerNetwork
      * @deprecated
      */
-    avatarId?: string;
+    ip?: string;
     /**
-     * Комментарий к облачному серверу. Максимальная длина — 255 символов.
-     * @type {string}
-     * @memberof CreateServer
+     * Массив ID сетевых дисков
+     * @type {Array<string>}
+     * @memberof CreateServerNetwork
      */
-    comment?: string;
-    /**
-     * Список SSH-ключей.
-     * @type {Array<number>}
-     * @memberof CreateServer
-     */
-    sshKeysIds?: Array<number>;
-    /**
-     * Локальная сеть.
-     * @type {boolean}
-     * @memberof CreateServer
-     * @deprecated
-     */
-    isLocalNetwork?: boolean;
-    /**
-     * 
-     * @type {CreateServerNetwork}
-     * @memberof CreateServer
-     */
-    network?: CreateServerNetwork;
-    /**
-     * Cloud-init скрипт
-     * @type {string}
-     * @memberof CreateServer
-     */
-    cloudInit?: string;
-    /**
-     * 
-     * @type {AvailabilityZone}
-     * @memberof CreateServer
-     */
-    availabilityZone?: AvailabilityZone;
+    networkDriveIds?: Array<string>;
 }
 
 /**
- * Check if a given object implements the CreateServer interface.
+ * Check if a given object implements the CreateServerNetwork interface.
  */
-export function instanceOfCreateServer(value: object): boolean {
+export function instanceOfCreateServerNetwork(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
 
     return isInstance;
 }
 
-export function CreateServerFromJSON(json: any): CreateServer {
-    return CreateServerFromJSONTyped(json, false);
+export function CreateServerNetworkFromJSON(json: any): CreateServerNetwork {
+    return CreateServerNetworkFromJSONTyped(json, false);
 }
 
-export function CreateServerFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateServer {
+export function CreateServerNetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateServerNetwork {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        '_configuration': !exists(json, 'configuration') ? undefined : CreateServerConfigurationFromJSON(json['configuration']),
-        'isDdosGuard': !exists(json, 'is_ddos_guard') ? undefined : json['is_ddos_guard'],
-        'osId': !exists(json, 'os_id') ? undefined : json['os_id'],
-        'imageId': !exists(json, 'image_id') ? undefined : json['image_id'],
-        'softwareId': !exists(json, 'software_id') ? undefined : json['software_id'],
-        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
-        'bandwidth': !exists(json, 'bandwidth') ? undefined : json['bandwidth'],
-        'name': json['name'],
-        'avatarId': !exists(json, 'avatar_id') ? undefined : json['avatar_id'],
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
-        'sshKeysIds': !exists(json, 'ssh_keys_ids') ? undefined : json['ssh_keys_ids'],
-        'isLocalNetwork': !exists(json, 'is_local_network') ? undefined : json['is_local_network'],
-        'network': !exists(json, 'network') ? undefined : CreateServerNetworkFromJSON(json['network']),
-        'cloudInit': !exists(json, 'cloud_init') ? undefined : json['cloud_init'],
-        'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'floatingIp': !exists(json, 'floating_ip') ? undefined : json['floating_ip'],
+        'localIp': !exists(json, 'local_ip') ? undefined : json['local_ip'],
+        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'networkDriveIds': !exists(json, 'network_drive_ids') ? undefined : json['network_drive_ids'],
     };
 }
 
-export function CreateServerToJSON(value?: CreateServer | null): any {
+export function CreateServerNetworkToJSON(value?: CreateServerNetwork | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -179,21 +88,11 @@ export function CreateServerToJSON(value?: CreateServer | null): any {
     }
     return {
         
-        'configuration': CreateServerConfigurationToJSON(value._configuration),
-        'is_ddos_guard': value.isDdosGuard,
-        'os_id': value.osId,
-        'image_id': value.imageId,
-        'software_id': value.softwareId,
-        'preset_id': value.presetId,
-        'bandwidth': value.bandwidth,
-        'name': value.name,
-        'avatar_id': value.avatarId,
-        'comment': value.comment,
-        'ssh_keys_ids': value.sshKeysIds,
-        'is_local_network': value.isLocalNetwork,
-        'network': CreateServerNetworkToJSON(value.network),
-        'cloud_init': value.cloudInit,
-        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'id': value.id,
+        'floating_ip': value.floatingIp,
+        'local_ip': value.localIp,
+        'ip': value.ip,
+        'network_drive_ids': value.networkDriveIds,
     };
 }
 

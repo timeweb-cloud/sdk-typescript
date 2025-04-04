@@ -111,6 +111,7 @@ export * from './CreateServerDisk201Response';
 export * from './CreateServerDiskBackup201Response';
 export * from './CreateServerDiskBackupRequest';
 export * from './CreateServerDiskRequest';
+export * from './CreateServerNetwork';
 export * from './CreateStorage201Response';
 export * from './CreateStorageRequest';
 export * from './CreateToken201Response';
