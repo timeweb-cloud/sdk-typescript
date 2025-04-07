@@ -1205,7 +1205,7 @@ export class ServersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить статистику сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/{time_from}/{period}/{keys}`.
+     * Чтобы получить статистику сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/statistics/{time_from}/{period}/{keys}`.
      * Получение статистики сервера
      */
     async getServerStatisticsNewRaw(requestParameters: GetServerStatisticsNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetServerStatisticsNew200Response>> {
@@ -1248,7 +1248,7 @@ export class ServersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить статистику сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/{time_from}/{period}/{keys}`.
+     * Чтобы получить статистику сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/statistics/{time_from}/{period}/{keys}`.
      * Получение статистики сервера
      */
     async getServerStatisticsNew(requestParameters: GetServerStatisticsNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetServerStatisticsNew200Response> {
