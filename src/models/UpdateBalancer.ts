@@ -97,6 +97,36 @@ export interface UpdateBalancer {
      * @memberof UpdateBalancer
      */
     rise?: number;
+    /**
+     * Максимальное количество соединений.
+     * @type {number}
+     * @memberof UpdateBalancer
+     */
+    maxconn?: number;
+    /**
+     * Таймаут подключения.
+     * @type {number}
+     * @memberof UpdateBalancer
+     */
+    connectTimeout?: number;
+    /**
+     * Таймаут клиента.
+     * @type {number}
+     * @memberof UpdateBalancer
+     */
+    clientTimeout?: number;
+    /**
+     * Таймаут сервера.
+     * @type {number}
+     * @memberof UpdateBalancer
+     */
+    serverTimeout?: number;
+    /**
+     * Таймаут HTTP запроса.
+     * @type {number}
+     * @memberof UpdateBalancer
+     */
+    httprequestTimeout?: number;
 }
 
 
@@ -153,6 +183,11 @@ export function UpdateBalancerFromJSONTyped(json: any, ignoreDiscriminator: bool
         'timeout': !exists(json, 'timeout') ? undefined : json['timeout'],
         'fall': !exists(json, 'fall') ? undefined : json['fall'],
         'rise': !exists(json, 'rise') ? undefined : json['rise'],
+        'maxconn': !exists(json, 'maxconn') ? undefined : json['maxconn'],
+        'connectTimeout': !exists(json, 'connect_timeout') ? undefined : json['connect_timeout'],
+        'clientTimeout': !exists(json, 'client_timeout') ? undefined : json['client_timeout'],
+        'serverTimeout': !exists(json, 'server_timeout') ? undefined : json['server_timeout'],
+        'httprequestTimeout': !exists(json, 'httprequest_timeout') ? undefined : json['httprequest_timeout'],
     };
 }
 
@@ -178,6 +213,11 @@ export function UpdateBalancerToJSON(value?: UpdateBalancer | null): any {
         'timeout': value.timeout,
         'fall': value.fall,
         'rise': value.rise,
+        'maxconn': value.maxconn,
+        'connect_timeout': value.connectTimeout,
+        'client_timeout': value.clientTimeout,
+        'server_timeout': value.serverTimeout,
+        'httprequest_timeout': value.httprequestTimeout,
     };
 }
 

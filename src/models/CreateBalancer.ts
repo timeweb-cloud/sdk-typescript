@@ -111,6 +111,36 @@ export interface CreateBalancer {
      */
     rise: number;
     /**
+     * Максимальное количество соединений.
+     * @type {number}
+     * @memberof CreateBalancer
+     */
+    maxconn?: number;
+    /**
+     * Таймаут подключения.
+     * @type {number}
+     * @memberof CreateBalancer
+     */
+    connectTimeout?: number;
+    /**
+     * Таймаут клиента.
+     * @type {number}
+     * @memberof CreateBalancer
+     */
+    clientTimeout?: number;
+    /**
+     * Таймаут сервера.
+     * @type {number}
+     * @memberof CreateBalancer
+     */
+    serverTimeout?: number;
+    /**
+     * Таймаут HTTP запроса.
+     * @type {number}
+     * @memberof CreateBalancer
+     */
+    httprequestTimeout?: number;
+    /**
      * ID тарифа.
      * @type {number}
      * @memberof CreateBalancer
@@ -198,6 +228,11 @@ export function CreateBalancerFromJSONTyped(json: any, ignoreDiscriminator: bool
         'timeout': json['timeout'],
         'fall': json['fall'],
         'rise': json['rise'],
+        'maxconn': !exists(json, 'maxconn') ? undefined : json['maxconn'],
+        'connectTimeout': !exists(json, 'connect_timeout') ? undefined : json['connect_timeout'],
+        'clientTimeout': !exists(json, 'client_timeout') ? undefined : json['client_timeout'],
+        'serverTimeout': !exists(json, 'server_timeout') ? undefined : json['server_timeout'],
+        'httprequestTimeout': !exists(json, 'httprequest_timeout') ? undefined : json['httprequest_timeout'],
         'presetId': json['preset_id'],
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
@@ -226,6 +261,11 @@ export function CreateBalancerToJSON(value?: CreateBalancer | null): any {
         'timeout': value.timeout,
         'fall': value.fall,
         'rise': value.rise,
+        'maxconn': value.maxconn,
+        'connect_timeout': value.connectTimeout,
+        'client_timeout': value.clientTimeout,
+        'server_timeout': value.serverTimeout,
+        'httprequest_timeout': value.httprequestTimeout,
         'preset_id': value.presetId,
         'network': NetworkToJSON(value.network),
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),

@@ -111,6 +111,36 @@ export interface Balancer {
      */
     rise: number;
     /**
+     * Максимальное количество соединений.
+     * @type {number}
+     * @memberof Balancer
+     */
+    maxconn: number;
+    /**
+     * Таймаут подключения.
+     * @type {number}
+     * @memberof Balancer
+     */
+    connectTimeout: number;
+    /**
+     * Таймаут клиента.
+     * @type {number}
+     * @memberof Balancer
+     */
+    clientTimeout: number;
+    /**
+     * Таймаут сервера.
+     * @type {number}
+     * @memberof Balancer
+     */
+    serverTimeout: number;
+    /**
+     * Таймаут HTTP запроса.
+     * @type {number}
+     * @memberof Balancer
+     */
+    httprequestTimeout: number;
+    /**
      * ID тарифа.
      * @type {number}
      * @memberof Balancer
@@ -232,6 +262,11 @@ export function instanceOfBalancer(value: object): boolean {
     isInstance = isInstance && "port" in value;
     isInstance = isInstance && "proto" in value;
     isInstance = isInstance && "rise" in value;
+    isInstance = isInstance && "maxconn" in value;
+    isInstance = isInstance && "connectTimeout" in value;
+    isInstance = isInstance && "clientTimeout" in value;
+    isInstance = isInstance && "serverTimeout" in value;
+    isInstance = isInstance && "httprequestTimeout" in value;
     isInstance = isInstance && "presetId" in value;
     isInstance = isInstance && "isSsl" in value;
     isInstance = isInstance && "status" in value;
@@ -269,6 +304,11 @@ export function BalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'port': json['port'],
         'proto': json['proto'],
         'rise': json['rise'],
+        'maxconn': json['maxconn'],
+        'connectTimeout': json['connect_timeout'],
+        'clientTimeout': json['client_timeout'],
+        'serverTimeout': json['server_timeout'],
+        'httprequestTimeout': json['httprequest_timeout'],
         'presetId': json['preset_id'],
         'isSsl': json['is_ssl'],
         'status': json['status'],
@@ -304,6 +344,11 @@ export function BalancerToJSON(value?: Balancer | null): any {
         'port': value.port,
         'proto': value.proto,
         'rise': value.rise,
+        'maxconn': value.maxconn,
+        'connect_timeout': value.connectTimeout,
+        'client_timeout': value.clientTimeout,
+        'server_timeout': value.serverTimeout,
+        'httprequest_timeout': value.httprequestTimeout,
         'preset_id': value.presetId,
         'is_ssl': value.isSsl,
         'status': value.status,
