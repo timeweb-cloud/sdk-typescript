@@ -87,6 +87,12 @@ export interface DatabaseCluster {
      */
     hashType: DatabaseClusterHashTypeEnum;
     /**
+     * Ссылка на аватар для базы данных.
+     * @type {string}
+     * @memberof DatabaseCluster
+     */
+    avatarLink: string | null;
+    /**
      * Порт
      * @type {number}
      * @memberof DatabaseCluster
@@ -177,6 +183,7 @@ export function instanceOfDatabaseCluster(value: object): boolean {
     isInstance = isInstance && "networks" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "hashType" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "port" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "presetId" in value;
@@ -204,6 +211,7 @@ export function DatabaseClusterFromJSONTyped(json: any, ignoreDiscriminator: boo
         'networks': ((json['networks'] as Array<any>).map(DatabaseClusterNetworksInnerFromJSON)),
         'type': DbTypeFromJSON(json['type']),
         'hashType': json['hash_type'],
+        'avatarLink': json['avatar_link'],
         'port': json['port'],
         'status': json['status'],
         'presetId': json['preset_id'],
@@ -229,6 +237,7 @@ export function DatabaseClusterToJSON(value?: DatabaseCluster | null): any {
         'networks': ((value.networks as Array<any>).map(DatabaseClusterNetworksInnerToJSON)),
         'type': DbTypeToJSON(value.type),
         'hash_type': value.hashType,
+        'avatar_link': value.avatarLink,
         'port': value.port,
         'status': value.status,
         'preset_id': value.presetId,

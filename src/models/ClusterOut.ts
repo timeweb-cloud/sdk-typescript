@@ -62,6 +62,12 @@ export interface ClusterOut {
      */
     networkDriver: ClusterOutNetworkDriverEnum;
     /**
+     * Ссылка на аватар кластера.
+     * @type {string}
+     * @memberof ClusterOut
+     */
+    avatarLink: string | null;
+    /**
      * Логическое значение, показывающее, включен ли Ingress
      * @type {boolean}
      * @memberof ClusterOut
@@ -140,6 +146,7 @@ export function instanceOfClusterOut(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "k8sVersion" in value;
     isInstance = isInstance && "networkDriver" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "ingress" in value;
     isInstance = isInstance && "presetId" in value;
 
@@ -163,6 +170,7 @@ export function ClusterOutFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'description': json['description'],
         'k8sVersion': json['k8s_version'],
         'networkDriver': json['network_driver'],
+        'avatarLink': json['avatar_link'],
         'ingress': json['ingress'],
         'presetId': json['preset_id'],
         'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
@@ -189,6 +197,7 @@ export function ClusterOutToJSON(value?: ClusterOut | null): any {
         'description': value.description,
         'k8s_version': value.k8sVersion,
         'network_driver': value.networkDriver,
+        'avatar_link': value.avatarLink,
         'ingress': value.ingress,
         'preset_id': value.presetId,
         'cpu': value.cpu,

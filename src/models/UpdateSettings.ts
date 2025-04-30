@@ -23,97 +23,97 @@ import {
 /**
  * 
  * @export
- * @interface UpdeteSettings
+ * @interface UpdateSettings
  */
-export interface UpdeteSettings {
+export interface UpdateSettings {
     /**
      * Автоматический деплой.
      * @type {boolean}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     isAutoDeploy?: boolean;
     /**
      * Команда сборки приложения.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     buildCmd?: string;
     /**
      * Переменные окружения приложения. Объект с ключами и значениями типа string.
      * @type {object}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     envs?: object;
     /**
      * Название ветки репозитория из которой необходимо собрать приложение.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     branchName?: string;
     /**
      * Хэш коммита.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     commitSha?: string;
     /**
      * Версия окружения.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     envVersion?: string;
     /**
      * Путь к директории с индексным файлом. Используется для приложений `type: frontend`. Не используется для приложений `type: backend`. Значение всегда должно начинаться с `/`.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     indexDir?: string;
     /**
      * Команда для запуска приложения. Используется для приложений `type: backend`. Не используется для приложений `type: frontend`.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     runCmd?: string;
     /**
      * 
      * @type {Frameworks}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     framework?: Frameworks;
     /**
      * Имя приложения.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     name?: string;
     /**
      * Комментарий к приложению.
      * @type {string}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     comment?: string;
     /**
      * ID тарифа.
      * @type {number}
-     * @memberof UpdeteSettings
+     * @memberof UpdateSettings
      */
     presetId?: number;
 }
 
 /**
- * Check if a given object implements the UpdeteSettings interface.
+ * Check if a given object implements the UpdateSettings interface.
  */
-export function instanceOfUpdeteSettings(value: object): boolean {
+export function instanceOfUpdateSettings(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function UpdeteSettingsFromJSON(json: any): UpdeteSettings {
-    return UpdeteSettingsFromJSONTyped(json, false);
+export function UpdateSettingsFromJSON(json: any): UpdateSettings {
+    return UpdateSettingsFromJSONTyped(json, false);
 }
 
-export function UpdeteSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdeteSettings {
+export function UpdateSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateSettings {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -134,7 +134,7 @@ export function UpdeteSettingsFromJSONTyped(json: any, ignoreDiscriminator: bool
     };
 }
 
-export function UpdeteSettingsToJSON(value?: UpdeteSettings | null): any {
+export function UpdateSettingsToJSON(value?: UpdateSettings | null): any {
     if (value === undefined) {
         return undefined;
     }

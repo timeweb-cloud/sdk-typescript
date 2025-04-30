@@ -171,6 +171,12 @@ export interface App {
      */
     buildCmd: string;
     /**
+     * Ссылка на аватар приложения.
+     * @type {string}
+     * @memberof App
+     */
+    avatarLink: string | null;
+    /**
      * Команда для запуска приложения. Определена для приложений `type: backend`. Для приложений `type: frontend` всегда null.
      * @type {string}
      * @memberof App
@@ -268,6 +274,7 @@ export function instanceOfApp(value: object): boolean {
     isInstance = isInstance && "presetId" in value;
     isInstance = isInstance && "indexDir" in value;
     isInstance = isInstance && "buildCmd" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "runCmd" in value;
     isInstance = isInstance && "_configuration" in value;
     isInstance = isInstance && "diskStatus" in value;
@@ -307,6 +314,7 @@ export function AppFromJSONTyped(json: any, ignoreDiscriminator: boolean): App {
         'presetId': json['preset_id'],
         'indexDir': json['index_dir'],
         'buildCmd': json['build_cmd'],
+        'avatarLink': json['avatar_link'],
         'runCmd': json['run_cmd'],
         '_configuration': AppConfigurationFromJSON(json['configuration']),
         'diskStatus': AppDiskStatusFromJSON(json['disk_status']),
@@ -344,6 +352,7 @@ export function AppToJSON(value?: App | null): any {
         'preset_id': value.presetId,
         'index_dir': value.indexDir,
         'build_cmd': value.buildCmd,
+        'avatar_link': value.avatarLink,
         'run_cmd': value.runCmd,
         'configuration': AppConfigurationToJSON(value._configuration),
         'disk_status': AppDiskStatusToJSON(value.diskStatus),

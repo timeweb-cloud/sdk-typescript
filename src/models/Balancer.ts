@@ -171,6 +171,12 @@ export interface Balancer {
      */
     timeout: number;
     /**
+     * Ссылка на аватар балансировщика.
+     * @type {string}
+     * @memberof Balancer
+     */
+    avatarLink: string | null;
+    /**
      * Это логическое значение, которое показывает, выступает ли балансировщик в качестве прокси.
      * @type {boolean}
      * @memberof Balancer
@@ -272,6 +278,7 @@ export function instanceOfBalancer(value: object): boolean {
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "isSticky" in value;
     isInstance = isInstance && "timeout" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "isUseProxy" in value;
     isInstance = isInstance && "rules" in value;
     isInstance = isInstance && "ips" in value;
@@ -314,6 +321,7 @@ export function BalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'status': json['status'],
         'isSticky': json['is_sticky'],
         'timeout': json['timeout'],
+        'avatarLink': json['avatar_link'],
         'isUseProxy': json['is_use_proxy'],
         'rules': ((json['rules'] as Array<any>).map(RuleFromJSON)),
         'ips': json['ips'],
@@ -354,6 +362,7 @@ export function BalancerToJSON(value?: Balancer | null): any {
         'status': value.status,
         'is_sticky': value.isSticky,
         'timeout': value.timeout,
+        'avatar_link': value.avatarLink,
         'is_use_proxy': value.isUseProxy,
         'rules': ((value.rules as Array<any>).map(RuleToJSON)),
         'ips': value.ips,

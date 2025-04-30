@@ -41,7 +41,7 @@ import type {
   GetRepositories200Response,
   GetServerStatistics200Response,
   UpdateAppSettings200Response,
-  UpdeteSettings,
+  UpdateSettings,
 } from '../models/index';
 import {
     AddGithubFromJSON,
@@ -96,8 +96,8 @@ import {
     GetServerStatistics200ResponseToJSON,
     UpdateAppSettings200ResponseFromJSON,
     UpdateAppSettings200ResponseToJSON,
-    UpdeteSettingsFromJSON,
-    UpdeteSettingsToJSON,
+    UpdateSettingsFromJSON,
+    UpdateSettingsToJSON,
 } from '../models/index';
 
 export interface AddProviderRequest {
@@ -182,7 +182,7 @@ export interface GetRepositoriesRequest {
 
 export interface UpdateAppSettingsRequest {
     appId: string;
-    updeteSettings: UpdeteSettings;
+    updateSettings: UpdateSettings;
 }
 
 export interface UpdateAppStateRequest {
@@ -1023,8 +1023,8 @@ export class AppsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('appId','Required parameter requestParameters.appId was null or undefined when calling updateAppSettings.');
         }
 
-        if (requestParameters.updeteSettings === null || requestParameters.updeteSettings === undefined) {
-            throw new runtime.RequiredError('updeteSettings','Required parameter requestParameters.updeteSettings was null or undefined when calling updateAppSettings.');
+        if (requestParameters.updateSettings === null || requestParameters.updateSettings === undefined) {
+            throw new runtime.RequiredError('updateSettings','Required parameter requestParameters.updateSettings was null or undefined when calling updateAppSettings.');
         }
 
         const queryParameters: any = {};
@@ -1046,7 +1046,7 @@ export class AppsApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdeteSettingsToJSON(requestParameters.updeteSettings),
+            body: UpdateSettingsToJSON(requestParameters.updateSettings),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UpdateAppSettings200ResponseFromJSON(jsonValue));

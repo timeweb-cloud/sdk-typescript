@@ -429,12 +429,12 @@ src/models/UpdateServerDiskRequest.ts
 src/models/UpdateServerIPRequest.ts
 src/models/UpdateServerNATRequest.ts
 src/models/UpdateServerOSBootModeRequest.ts
+src/models/UpdateSettings.ts
 src/models/UpdateStorageRequest.ts
 src/models/UpdateStorageUser200Response.ts
 src/models/UpdateStorageUserRequest.ts
 src/models/UpdateToken200Response.ts
 src/models/UpdateVpc.ts
-src/models/UpdeteSettings.ts
 src/models/UploadSuccessful.ts
 src/models/UploadSuccessfulResponse.ts
 src/models/UrlStatus.ts

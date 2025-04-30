@@ -69,6 +69,12 @@ export interface Bucket {
      */
     configuratorId: number | null;
     /**
+     * Ссылка на аватар хранилища.
+     * @type {string}
+     * @memberof Bucket
+     */
+    avatarLink: string | null;
+    /**
      * Статус хранилища.
      * @type {string}
      * @memberof Bucket
@@ -159,6 +165,7 @@ export function instanceOfBucket(value: object): boolean {
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "presetId" in value;
     isInstance = isInstance && "configuratorId" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "objectAmount" in value;
     isInstance = isInstance && "location" in value;
@@ -188,6 +195,7 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         'type': json['type'],
         'presetId': json['preset_id'],
         'configuratorId': json['configurator_id'],
+        'avatarLink': json['avatar_link'],
         'status': json['status'],
         'objectAmount': json['object_amount'],
         'location': json['location'],
@@ -215,6 +223,7 @@ export function BucketToJSON(value?: Bucket | null): any {
         'type': value.type,
         'preset_id': value.presetId,
         'configurator_id': value.configuratorId,
+        'avatar_link': value.avatarLink,
         'status': value.status,
         'object_amount': value.objectAmount,
         'location': value.location,

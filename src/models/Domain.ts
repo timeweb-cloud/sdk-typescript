@@ -69,6 +69,12 @@ export interface Domain {
      */
     id: number;
     /**
+     * Ссылка на аватар домена.
+     * @type {string}
+     * @memberof Domain
+     */
+    avatarLink: string | null;
+    /**
      * Это логическое значение, которое показывает, включено ли автопродление домена.
      * @type {boolean}
      * @memberof Domain
@@ -191,6 +197,7 @@ export function instanceOfDomain(value: object): boolean {
     isInstance = isInstance && "expiration" in value;
     isInstance = isInstance && "fqdn" in value;
     isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "isAutoprolongEnabled" in value;
     isInstance = isInstance && "isPremium" in value;
     isInstance = isInstance && "isProlongAllowed" in value;
@@ -224,6 +231,7 @@ export function DomainFromJSONTyped(json: any, ignoreDiscriminator: boolean): Do
         'expiration': json['expiration'],
         'fqdn': json['fqdn'],
         'id': json['id'],
+        'avatarLink': json['avatar_link'],
         'isAutoprolongEnabled': json['is_autoprolong_enabled'],
         'isPremium': json['is_premium'],
         'isProlongAllowed': json['is_prolong_allowed'],
@@ -255,6 +263,7 @@ export function DomainToJSON(value?: Domain | null): any {
         'expiration': value.expiration,
         'fqdn': value.fqdn,
         'id': value.id,
+        'avatar_link': value.avatarLink,
         'is_autoprolong_enabled': value.isAutoprolongEnabled,
         'is_premium': value.isPremium,
         'is_prolong_allowed': value.isProlongAllowed,
