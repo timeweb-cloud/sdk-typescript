@@ -38,7 +38,7 @@ export interface AddGithub {
  * @export
  */
 export const AddGithubProviderTypeEnum = {
-    Github: 'Github'
+    Github: 'github'
 } as const;
 export type AddGithubProviderTypeEnum = typeof AddGithubProviderTypeEnum[keyof typeof AddGithubProviderTypeEnum];
 

@@ -116,6 +116,18 @@ export interface CreateApp {
      * @memberof CreateApp
      */
     runCmd?: string;
+    /**
+     * Системные зависимости.
+     * @type {Array<string>}
+     * @memberof CreateApp
+     */
+    systemDependencies?: Array<string>;
+    /**
+     * ID проекта.
+     * @type {number}
+     * @memberof CreateApp
+     */
+    projectId?: number;
 }
 
 
@@ -174,6 +186,8 @@ export function CreateAppFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'framework': FrameworksFromJSON(json['framework']),
         'indexDir': !exists(json, 'index_dir') ? undefined : json['index_dir'],
         'runCmd': !exists(json, 'run_cmd') ? undefined : json['run_cmd'],
+        'systemDependencies': !exists(json, 'system_dependencies') ? undefined : json['system_dependencies'],
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
     };
 }
 
@@ -201,6 +215,8 @@ export function CreateAppToJSON(value?: CreateApp | null): any {
         'framework': FrameworksToJSON(value.framework),
         'index_dir': value.indexDir,
         'run_cmd': value.runCmd,
+        'system_dependencies': value.systemDependencies,
+        'project_id': value.projectId,
     };
 }
 

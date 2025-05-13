@@ -38,7 +38,7 @@ export interface AddGitlab {
  * @export
  */
 export const AddGitlabProviderTypeEnum = {
-    Gitlab: 'Gitlab'
+    Gitlab: 'gitlab'
 } as const;
 export type AddGitlabProviderTypeEnum = typeof AddGitlabProviderTypeEnum[keyof typeof AddGitlabProviderTypeEnum];
 
