@@ -37,6 +37,12 @@ export interface DedicatedServerPresetCpu {
      * @memberof DedicatedServerPresetCpu
      */
     count: number;
+    /**
+     * Производитель процессора выделенного сервера.
+     * @type {string}
+     * @memberof DedicatedServerPresetCpu
+     */
+    vendor: string;
 }
 
 /**
@@ -47,6 +53,7 @@ export function instanceOfDedicatedServerPresetCpu(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "descriptionShort" in value;
     isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "vendor" in value;
 
     return isInstance;
 }
@@ -64,6 +71,7 @@ export function DedicatedServerPresetCpuFromJSONTyped(json: any, ignoreDiscrimin
         'description': json['description'],
         'descriptionShort': json['description_short'],
         'count': json['count'],
+        'vendor': json['vendor'],
     };
 }
 
@@ -79,6 +87,7 @@ export function DedicatedServerPresetCpuToJSON(value?: DedicatedServerPresetCpu 
         'description': value.description,
         'description_short': value.descriptionShort,
         'count': value.count,
+        'vendor': value.vendor,
     };
 }
 

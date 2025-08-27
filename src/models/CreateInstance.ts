@@ -26,7 +26,7 @@ export interface CreateInstance {
      */
     name: string;
     /**
-     * Описанеие инстанса базы данных
+     * Описание инстанса базы данных
      * @type {string}
      * @memberof CreateInstance
      */

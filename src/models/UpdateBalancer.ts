@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface UpdateBalancer {
     /**
-     * Удобочитаемое имя, установленное для балансировщика.
+     * Удобочитаемое имя, установленное для балансировщика. Должно быть уникальным в рамках аккаунта
      * @type {string}
      * @memberof UpdateBalancer
      */

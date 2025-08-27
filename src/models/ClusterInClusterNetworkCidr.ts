@@ -13,112 +13,51 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { S3ObjectOwner } from './S3ObjectOwner';
-import {
-    S3ObjectOwnerFromJSON,
-    S3ObjectOwnerFromJSONTyped,
-    S3ObjectOwnerToJSON,
-} from './S3ObjectOwner';
-
 /**
- * An object consists of data and its descriptive metadata.
+ * Определяет сетевые диапазоны (CIDR) для подов (pods_network) и сервисов (services_network) в Kubernetes-кластере.
  * @export
- * @interface S3Object
+ * @interface ClusterInClusterNetworkCidr
  */
-export interface S3Object {
+export interface ClusterInClusterNetworkCidr {
     /**
-     * Название файла или папки.
+     * Диапазон адресов подов. Подсеть должна принадлежать диапазонам 10.0.0.0/x, 192.168.0.0/x, 172.16.0.0/x. Максимальный размер для подов CIDR 10.0.0.0/x - /8, 192.168.0.0/x - /16, 172.16.0.0/x - /12, минимальный CIDR в этих диапазонах - /28.
      * @type {string}
-     * @memberof S3Object
+     * @memberof ClusterInClusterNetworkCidr
      */
-    key?: string;
+    podsNetwork?: string;
     /**
-     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда была сделана последняя модификация файла или папки.
-     * @type {Date}
-     * @memberof S3Object
-     */
-    lastModified?: Date;
-    /**
-     * Тег.
+     * Диапазон адресов сервисов. Подсеть должна принадлежать диапазонам 10.0.0.0/x, 192.168.0.0/x, 172.16.0.0/x. Максимальный размер CIDR для сервисов 10.0.0.0/x - /12, 192.168.0.0/x - /16, 172.16.0.0/x - /12, минимальный CIDR в этих диапазонах - /28.
      * @type {string}
-     * @memberof S3Object
+     * @memberof ClusterInClusterNetworkCidr
      */
-    etag?: string;
-    /**
-     * Размер (в байтах) файла или папки.
-     * @type {number}
-     * @memberof S3Object
-     */
-    size?: number;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof S3Object
-     */
-    storageClass?: string;
-    /**
-     * Алгоритм
-     * @type {Array<string>}
-     * @memberof S3Object
-     */
-    checksumAlgorithm?: Array<string>;
-    /**
-     * 
-     * @type {S3ObjectOwner}
-     * @memberof S3Object
-     */
-    owner?: S3ObjectOwner;
-    /**
-     * Тип (файл или папка).
-     * @type {string}
-     * @memberof S3Object
-     */
-    type: S3ObjectTypeEnum;
+    servicesNetwork?: string;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the ClusterInClusterNetworkCidr interface.
  */
-export const S3ObjectTypeEnum = {
-    File: 'file',
-    Directory: 'directory'
-} as const;
-export type S3ObjectTypeEnum = typeof S3ObjectTypeEnum[keyof typeof S3ObjectTypeEnum];
-
-
-/**
- * Check if a given object implements the S3Object interface.
- */
-export function instanceOfS3Object(value: object): boolean {
+export function instanceOfClusterInClusterNetworkCidr(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
 
-export function S3ObjectFromJSON(json: any): S3Object {
-    return S3ObjectFromJSONTyped(json, false);
+export function ClusterInClusterNetworkCidrFromJSON(json: any): ClusterInClusterNetworkCidr {
+    return ClusterInClusterNetworkCidrFromJSONTyped(json, false);
 }
 
-export function S3ObjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): S3Object {
+export function ClusterInClusterNetworkCidrFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterInClusterNetworkCidr {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'key': !exists(json, 'key') ? undefined : json['key'],
-        'lastModified': !exists(json, 'last_modified') ? undefined : (new Date(json['last_modified'])),
-        'etag': !exists(json, 'etag') ? undefined : json['etag'],
-        'size': !exists(json, 'size') ? undefined : json['size'],
-        'storageClass': !exists(json, 'storage_class') ? undefined : json['storage_class'],
-        'checksumAlgorithm': !exists(json, 'checksum_algorithm') ? undefined : json['checksum_algorithm'],
-        'owner': !exists(json, 'owner') ? undefined : S3ObjectOwnerFromJSON(json['owner']),
-        'type': json['type'],
+        'podsNetwork': !exists(json, 'pods_network') ? undefined : json['pods_network'],
+        'servicesNetwork': !exists(json, 'services_network') ? undefined : json['services_network'],
     };
 }
 
-export function S3ObjectToJSON(value?: S3Object | null): any {
+export function ClusterInClusterNetworkCidrToJSON(value?: ClusterInClusterNetworkCidr | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -127,14 +66,8 @@ export function S3ObjectToJSON(value?: S3Object | null): any {
     }
     return {
         
-        'key': value.key,
-        'last_modified': value.lastModified === undefined ? undefined : (value.lastModified.toISOString()),
-        'etag': value.etag,
-        'size': value.size,
-        'storage_class': value.storageClass,
-        'checksum_algorithm': value.checksumAlgorithm,
-        'owner': S3ObjectOwnerToJSON(value.owner),
-        'type': value.type,
+        'pods_network': value.podsNetwork,
+        'services_network': value.servicesNetwork,
     };
 }
 

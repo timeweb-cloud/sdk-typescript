@@ -14,52 +14,43 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Репликация
  * @export
- * @interface RenameStorageFileRequest
+ * @interface DbReplication
  */
-export interface RenameStorageFileRequest {
+export interface DbReplication {
     /**
-     * Новое название файла или папки. Названия папок должны быть указаны с "/" в конце, например: "dirname/".
-     * @type {string}
-     * @memberof RenameStorageFileRequest
+     * Количество реплик.
+     * @type {number}
+     * @memberof DbReplication
      */
-    newFilename: string;
-    /**
-     * Старое название файла или папки. Названия папок должны быть указаны с "/" в конце, например: "dirname/".
-     * @type {string}
-     * @memberof RenameStorageFileRequest
-     */
-    oldFilename: string;
+    count?: number;
 }
 
 /**
- * Check if a given object implements the RenameStorageFileRequest interface.
+ * Check if a given object implements the DbReplication interface.
  */
-export function instanceOfRenameStorageFileRequest(value: object): boolean {
+export function instanceOfDbReplication(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "newFilename" in value;
-    isInstance = isInstance && "oldFilename" in value;
 
     return isInstance;
 }
 
-export function RenameStorageFileRequestFromJSON(json: any): RenameStorageFileRequest {
-    return RenameStorageFileRequestFromJSONTyped(json, false);
+export function DbReplicationFromJSON(json: any): DbReplication {
+    return DbReplicationFromJSONTyped(json, false);
 }
 
-export function RenameStorageFileRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RenameStorageFileRequest {
+export function DbReplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean): DbReplication {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'newFilename': json['new_filename'],
-        'oldFilename': json['old_filename'],
+        'count': !exists(json, 'count') ? undefined : json['count'],
     };
 }
 
-export function RenameStorageFileRequestToJSON(value?: RenameStorageFileRequest | null): any {
+export function DbReplicationToJSON(value?: DbReplication | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +59,7 @@ export function RenameStorageFileRequestToJSON(value?: RenameStorageFileRequest 
     }
     return {
         
-        'new_filename': value.newFilename,
-        'old_filename': value.oldFilename,
+        'count': value.count,
     };
 }
 

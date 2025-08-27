@@ -24,18 +24,17 @@ export const DbType = {
     Postgres15: 'postgres15',
     Postgres16: 'postgres16',
     Postgres17: 'postgres17',
-    Redis: 'redis',
     Redis7: 'redis7',
-    Mongodb4: 'mongodb4',
-    Mongodb: 'mongodb',
-    Mongodb6: 'mongodb6',
+    Redis81: 'redis8_1',
     Mongodb7: 'mongodb7',
+    Mongodb80: 'mongodb8_0',
     Opensearch: 'opensearch',
-    Kafka: 'kafka',
-    Rabbitmq: 'rabbitmq',
+    Opensearch219: 'opensearch2_19',
     Clickhouse: 'clickhouse',
     Clickhouse24: 'clickhouse24',
-    Clickhouse25: 'clickhouse25'
+    Clickhouse25: 'clickhouse25',
+    Kafka: 'kafka',
+    Rabbitmq40: 'rabbitmq4_0'
 } as const;
 export type DbType = typeof DbType[keyof typeof DbType];
 

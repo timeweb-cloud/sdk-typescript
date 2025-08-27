@@ -4,6 +4,7 @@ export * from './APIKeysApi';
 export * from './AccountApi';
 export * from './AppsApi';
 export * from './BalancersApi';
+export * from './ContainerRegistryApi';
 export * from './DatabasesApi';
 export * from './DedicatedServersApi';
 export * from './DomainsApi';

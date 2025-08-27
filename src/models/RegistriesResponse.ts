@@ -13,53 +13,58 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { RegistryOut } from './RegistryOut';
+import {
+    RegistryOutFromJSON,
+    RegistryOutFromJSONTyped,
+    RegistryOutToJSON,
+} from './RegistryOut';
+
 /**
  * 
  * @export
- * @interface CopyStorageFileRequest
+ * @interface RegistriesResponse
  */
-export interface CopyStorageFileRequest {
+export interface RegistriesResponse {
     /**
-     * Новый путь до файлов.
+     * ID запроса
      * @type {string}
-     * @memberof CopyStorageFileRequest
+     * @memberof RegistriesResponse
      */
-    destination: string;
+    responseId?: string;
     /**
-     * 
-     * @type {Array<string>}
-     * @memberof CopyStorageFileRequest
+     * Реестр контейнеров
+     * @type {Array<RegistryOut>}
+     * @memberof RegistriesResponse
      */
-    source: Array<string>;
+    containerRegistryList?: Array<RegistryOut>;
 }
 
 /**
- * Check if a given object implements the CopyStorageFileRequest interface.
+ * Check if a given object implements the RegistriesResponse interface.
  */
-export function instanceOfCopyStorageFileRequest(value: object): boolean {
+export function instanceOfRegistriesResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "destination" in value;
-    isInstance = isInstance && "source" in value;
 
     return isInstance;
 }
 
-export function CopyStorageFileRequestFromJSON(json: any): CopyStorageFileRequest {
-    return CopyStorageFileRequestFromJSONTyped(json, false);
+export function RegistriesResponseFromJSON(json: any): RegistriesResponse {
+    return RegistriesResponseFromJSONTyped(json, false);
 }
 
-export function CopyStorageFileRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CopyStorageFileRequest {
+export function RegistriesResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegistriesResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'destination': json['destination'],
-        'source': json['source'],
+        'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
+        'containerRegistryList': !exists(json, 'container_registry_list') ? undefined : ((json['container_registry_list'] as Array<any>).map(RegistryOutFromJSON)),
     };
 }
 
-export function CopyStorageFileRequestToJSON(value?: CopyStorageFileRequest | null): any {
+export function RegistriesResponseToJSON(value?: RegistriesResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +73,8 @@ export function CopyStorageFileRequestToJSON(value?: CopyStorageFileRequest | nu
     }
     return {
         
-        'destination': value.destination,
-        'source': value.source,
+        'response_id': value.responseId,
+        'container_registry_list': value.containerRegistryList === undefined ? undefined : ((value.containerRegistryList as Array<any>).map(RegistryOutToJSON)),
     };
 }
 

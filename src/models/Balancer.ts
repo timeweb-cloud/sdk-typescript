@@ -19,6 +19,12 @@ import {
     AvailabilityZoneFromJSONTyped,
     AvailabilityZoneToJSON,
 } from './AvailabilityZone';
+import type { BalancerNetworksInner } from './BalancerNetworksInner';
+import {
+    BalancerNetworksInnerFromJSON,
+    BalancerNetworksInnerFromJSONTyped,
+    BalancerNetworksInnerToJSON,
+} from './BalancerNetworksInner';
 import type { Rule } from './Rule';
 import {
     RuleFromJSON,
@@ -38,6 +44,12 @@ export interface Balancer {
      * @memberof Balancer
      */
     id: number;
+    /**
+     * ID пользователя.
+     * @type {string}
+     * @memberof Balancer
+     */
+    accountId?: string;
     /**
      * Алгоритм переключений балансировщика.
      * @type {string}
@@ -206,6 +218,18 @@ export interface Balancer {
      * @memberof Balancer
      */
     availabilityZone: AvailabilityZone;
+    /**
+     * ID проекта
+     * @type {number}
+     * @memberof Balancer
+     */
+    projectId: number;
+    /**
+     * Список сетей сервера.
+     * @type {Array<BalancerNetworksInner>}
+     * @memberof Balancer
+     */
+    networks: Array<BalancerNetworksInner>;
 }
 
 
@@ -284,6 +308,8 @@ export function instanceOfBalancer(value: object): boolean {
     isInstance = isInstance && "ips" in value;
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "availabilityZone" in value;
+    isInstance = isInstance && "projectId" in value;
+    isInstance = isInstance && "networks" in value;
 
     return isInstance;
 }
@@ -299,6 +325,7 @@ export function BalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     return {
         
         'id': json['id'],
+        'accountId': !exists(json, 'account_id') ? undefined : json['account_id'],
         'algo': json['algo'],
         'createdAt': (new Date(json['created_at'])),
         'fall': json['fall'],
@@ -327,6 +354,8 @@ export function BalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'ips': json['ips'],
         'location': json['location'],
         'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
+        'projectId': json['project_id'],
+        'networks': ((json['networks'] as Array<any>).map(BalancerNetworksInnerFromJSON)),
     };
 }
 
@@ -340,6 +369,7 @@ export function BalancerToJSON(value?: Balancer | null): any {
     return {
         
         'id': value.id,
+        'account_id': value.accountId,
         'algo': value.algo,
         'created_at': (value.createdAt.toISOString()),
         'fall': value.fall,
@@ -368,6 +398,8 @@ export function BalancerToJSON(value?: Balancer | null): any {
         'ips': value.ips,
         'location': value.location,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'project_id': value.projectId,
+        'networks': ((value.networks as Array<any>).map(BalancerNetworksInnerToJSON)),
     };
 }
 

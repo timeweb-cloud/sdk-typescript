@@ -14,44 +14,68 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Параметры конфигурации мастер-ноды. Нельзя передавать вместе с `preset_id`.
  * @export
- * @interface DeleteStorageFileRequest
+ * @interface ClusterInConfiguration
  */
-export interface DeleteStorageFileRequest {
+export interface ClusterInConfiguration {
     /**
-     * 
-     * @type {Array<string>}
-     * @memberof DeleteStorageFileRequest
+     * ID конфигуратора мастер-ноды
+     * @type {number}
+     * @memberof ClusterInConfiguration
      */
-    source: Array<string>;
+    configuratorId: number;
+    /**
+     * Размер диска в МБ
+     * @type {number}
+     * @memberof ClusterInConfiguration
+     */
+    disk: number;
+    /**
+     * Количество ядер процессора
+     * @type {number}
+     * @memberof ClusterInConfiguration
+     */
+    cpu: number;
+    /**
+     * Размер ОЗУ сервера в МБ
+     * @type {number}
+     * @memberof ClusterInConfiguration
+     */
+    ram: number;
 }
 
 /**
- * Check if a given object implements the DeleteStorageFileRequest interface.
+ * Check if a given object implements the ClusterInConfiguration interface.
  */
-export function instanceOfDeleteStorageFileRequest(value: object): boolean {
+export function instanceOfClusterInConfiguration(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "source" in value;
+    isInstance = isInstance && "configuratorId" in value;
+    isInstance = isInstance && "disk" in value;
+    isInstance = isInstance && "cpu" in value;
+    isInstance = isInstance && "ram" in value;
 
     return isInstance;
 }
 
-export function DeleteStorageFileRequestFromJSON(json: any): DeleteStorageFileRequest {
-    return DeleteStorageFileRequestFromJSONTyped(json, false);
+export function ClusterInConfigurationFromJSON(json: any): ClusterInConfiguration {
+    return ClusterInConfigurationFromJSONTyped(json, false);
 }
 
-export function DeleteStorageFileRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DeleteStorageFileRequest {
+export function ClusterInConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterInConfiguration {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'source': json['source'],
+        'configuratorId': json['configurator_id'],
+        'disk': json['disk'],
+        'cpu': json['cpu'],
+        'ram': json['ram'],
     };
 }
 
-export function DeleteStorageFileRequestToJSON(value?: DeleteStorageFileRequest | null): any {
+export function ClusterInConfigurationToJSON(value?: ClusterInConfiguration | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -60,7 +84,10 @@ export function DeleteStorageFileRequestToJSON(value?: DeleteStorageFileRequest 
     }
     return {
         
-        'source': value.source,
+        'configurator_id': value.configuratorId,
+        'disk': value.disk,
+        'cpu': value.cpu,
+        'ram': value.ram,
     };
 }
 

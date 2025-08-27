@@ -188,7 +188,7 @@ export type DbHashTypeEnum = typeof DbHashTypeEnum[keyof typeof DbHashTypeEnum];
 export const DbStatusEnum = {
     Started: 'started',
     Starting: 'starting',
-    Stoped: 'stoped',
+    Stopped: 'stopped',
     NoPaid: 'no_paid'
 } as const;
 export type DbStatusEnum = typeof DbStatusEnum[keyof typeof DbStatusEnum];

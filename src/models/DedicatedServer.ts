@@ -169,6 +169,30 @@ export interface DedicatedServer {
      * @memberof DedicatedServer
      */
     password: string | null;
+    /**
+     * Ссылка на аватар сервера.
+     * @type {string}
+     * @memberof DedicatedServer
+     */
+    avatarLink: string | null;
+    /**
+     * Это логическое значение, которое показывает, готов ли выделенный сервер к моментальной выдаче.
+     * @type {boolean}
+     * @memberof DedicatedServer
+     */
+    isPreInstalled: boolean;
+    /**
+     * ID тарифа сервера.
+     * @type {number}
+     * @memberof DedicatedServer
+     */
+    presetId: number;
+    /**
+     * ID проекта
+     * @type {number}
+     * @memberof DedicatedServer
+     */
+    projectId: number;
 }
 
 
@@ -229,6 +253,10 @@ export function instanceOfDedicatedServer(value: object): boolean {
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "autoinstallReady" in value;
     isInstance = isInstance && "password" in value;
+    isInstance = isInstance && "avatarLink" in value;
+    isInstance = isInstance && "isPreInstalled" in value;
+    isInstance = isInstance && "presetId" in value;
+    isInstance = isInstance && "projectId" in value;
 
     return isInstance;
 }
@@ -268,6 +296,10 @@ export function DedicatedServerFromJSONTyped(json: any, ignoreDiscriminator: boo
         'location': json['location'],
         'autoinstallReady': json['autoinstall_ready'],
         'password': json['password'],
+        'avatarLink': json['avatar_link'],
+        'isPreInstalled': json['is_pre_installed'],
+        'presetId': json['preset_id'],
+        'projectId': json['project_id'],
     };
 }
 
@@ -305,6 +337,10 @@ export function DedicatedServerToJSON(value?: DedicatedServer | null): any {
         'location': value.location,
         'autoinstall_ready': value.autoinstallReady,
         'password': value.password,
+        'avatar_link': value.avatarLink,
+        'is_pre_installed': value.isPreInstalled,
+        'preset_id': value.presetId,
+        'project_id': value.projectId,
     };
 }
 

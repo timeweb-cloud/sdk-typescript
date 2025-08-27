@@ -7,6 +7,7 @@ src/apis/APIKeysApi.ts
 src/apis/AccountApi.ts
 src/apis/AppsApi.ts
 src/apis/BalancersApi.ts
+src/apis/ContainerRegistryApi.ts
 src/apis/DatabasesApi.ts
 src/apis/DedicatedServersApi.ts
 src/apis/DomainsApi.ts
@@ -69,6 +70,8 @@ src/models/AvailableFrameworksBackendFrameworksInner.ts
 src/models/AvailableFrameworksFrontendFrameworksInner.ts
 src/models/Backup.ts
 src/models/Balancer.ts
+src/models/BalancerNetworksInner.ts
+src/models/BalancerNetworksInnerIpsInner.ts
 src/models/BaseError.ts
 src/models/BindFloatingIp.ts
 src/models/Bonus.ts
@@ -76,9 +79,15 @@ src/models/Branch.ts
 src/models/Bucket.ts
 src/models/BucketDiskStats.ts
 src/models/BucketUser.ts
+src/models/BucketWebsiteConfig.ts
+src/models/BucketWebsiteConfigErrorPagesInner.ts
 src/models/CheckDomain200Response.ts
 src/models/ClusterEdit.ts
 src/models/ClusterIn.ts
+src/models/ClusterInClusterNetworkCidr.ts
+src/models/ClusterInConfiguration.ts
+src/models/ClusterInMaintenanceSlot.ts
+src/models/ClusterInOidcProvider.ts
 src/models/ClusterOut.ts
 src/models/ClusterResponse.ts
 src/models/Clusterk8s.ts
@@ -86,7 +95,8 @@ src/models/ClustersResponse.ts
 src/models/Commit.ts
 src/models/ComponentsSchemasBaseError.ts
 src/models/ConfigParameters.ts
-src/models/CopyStorageFileRequest.ts
+src/models/ContainerRegistryPresetsInner.ts
+src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
 src/models/CreateApiKey.ts
 src/models/CreateApp.ts
@@ -116,7 +126,6 @@ src/models/CreateDomainMailboxRequest.ts
 src/models/CreateDomainRequest201Response.ts
 src/models/CreateFloatingIp.ts
 src/models/CreateFloatingIp201Response.ts
-src/models/CreateFolderInStorageRequest.ts
 src/models/CreateInstance.ts
 src/models/CreateKey201Response.ts
 src/models/CreateKeyRequest.ts
@@ -138,6 +147,7 @@ src/models/CreateServerDiskRequest.ts
 src/models/CreateServerNetwork.ts
 src/models/CreateStorage201Response.ts
 src/models/CreateStorageRequest.ts
+src/models/CreateStorageRequestConfigurator.ts
 src/models/CreateToken201Response.ts
 src/models/CreateVPC201Response.ts
 src/models/CreateVpc.ts
@@ -145,7 +155,7 @@ src/models/CreatedApiKey.ts
 src/models/DatabaseAdmin.ts
 src/models/DatabaseAdminInstancesInner.ts
 src/models/DatabaseCluster.ts
-src/models/DatabaseClusterDiskStats.ts
+src/models/DatabaseClusterDisk.ts
 src/models/DatabaseClusterNetworksInner.ts
 src/models/DatabaseClusterNetworksInnerIpsInner.ts
 src/models/DatabaseInstance.ts
@@ -153,6 +163,7 @@ src/models/DatabaseType.ts
 src/models/DatabaseTypeRequirements.ts
 src/models/Db.ts
 src/models/DbDiskStats.ts
+src/models/DbReplication.ts
 src/models/DbType.ts
 src/models/DedicatedServer.ts
 src/models/DedicatedServerAdditionalService.ts
@@ -172,7 +183,6 @@ src/models/DeleteServer200Response.ts
 src/models/DeleteServerIPRequest.ts
 src/models/DeleteServiceResponse.ts
 src/models/DeleteStorage200Response.ts
-src/models/DeleteStorageFileRequest.ts
 src/models/Deploy.ts
 src/models/DeploySettingsInner.ts
 src/models/DeployStatus.ts
@@ -287,7 +297,6 @@ src/models/GetServerStatisticsNew200Response.ts
 src/models/GetServers200Response.ts
 src/models/GetServersPresets200Response.ts
 src/models/GetSoftware200Response.ts
-src/models/GetStorageFilesList200Response.ts
 src/models/GetStorageSubdomains200Response.ts
 src/models/GetStorageTransferStatus200Response.ts
 src/models/GetStorageUsers200Response.ts
@@ -309,6 +318,7 @@ src/models/ImageUpdateAPI.ts
 src/models/ImageUrlAuth.ts
 src/models/ImageUrlIn.ts
 src/models/ImagesOutResponse.ts
+src/models/IncreaseNodes.ts
 src/models/Invoice.ts
 src/models/K8SVersionsResponse.ts
 src/models/Location.ts
@@ -320,6 +330,7 @@ src/models/MailboxForwardingOutgoing.ts
 src/models/MailboxSpamFilter.ts
 src/models/MasterPresetOutApi.ts
 src/models/Meta.ts
+src/models/Meta1.ts
 src/models/MountNetworkDrive.ts
 src/models/Network.ts
 src/models/NetworkDrive.ts
@@ -329,7 +340,6 @@ src/models/NetworkDrivePresetRead.ts
 src/models/NetworkDrivePresetWrite.ts
 src/models/NetworkDriveServiceListInner.ts
 src/models/NetworkDriversResponse.ts
-src/models/NodeCount.ts
 src/models/NodeGroupIn.ts
 src/models/NodeGroupInConfiguration.ts
 src/models/NodeGroupOut.ts
@@ -354,10 +364,18 @@ src/models/ProjectResource.ts
 src/models/Provider.ts
 src/models/Providers.ts
 src/models/Quota.ts
+src/models/ReduceNodes.ts
 src/models/RefreshApiKey.ts
+src/models/RegistriesResponse.ts
+src/models/RegistryEdit.ts
+src/models/RegistryIn.ts
+src/models/RegistryInConfiguration.ts
+src/models/RegistryOut.ts
+src/models/RegistryOutDiskStats.ts
+src/models/RegistryResponse.ts
 src/models/RemoveCountries.ts
 src/models/RemoveIps.ts
-src/models/RenameStorageFileRequest.ts
+src/models/RepositoriesResponse.ts
 src/models/Repository.ts
 src/models/Resource.ts
 src/models/ResourceTransfer.ts
@@ -365,11 +383,10 @@ src/models/ResourceType.ts
 src/models/Resources.ts
 src/models/ResourcesResponse.ts
 src/models/Rule.ts
-src/models/S3Object.ts
-src/models/S3ObjectOwner.ts
 src/models/S3Subdomain.ts
 src/models/SchemasBaseError.ts
 src/models/SchemasMeta.ts
+src/models/SchemasPresetsResponse.ts
 src/models/ServerBackup.ts
 src/models/ServerDisk.ts
 src/models/ServerIp.ts
@@ -393,6 +410,7 @@ src/models/SshKeyUsedByInner.ts
 src/models/Status.ts
 src/models/StatusCompanyInfo.ts
 src/models/Subdomain.ts
+src/models/Tags.ts
 src/models/TopLevelDomain.ts
 src/models/TopLevelDomainAllowedBuyPeriodsInner.ts
 src/models/TransferStatus.ts
@@ -431,6 +449,7 @@ src/models/UpdateServerNATRequest.ts
 src/models/UpdateServerOSBootModeRequest.ts
 src/models/UpdateSettings.ts
 src/models/UpdateStorageRequest.ts
+src/models/UpdateStorageRequestConfigurator.ts
 src/models/UpdateStorageUser200Response.ts
 src/models/UpdateStorageUserRequest.ts
 src/models/UpdateToken200Response.ts

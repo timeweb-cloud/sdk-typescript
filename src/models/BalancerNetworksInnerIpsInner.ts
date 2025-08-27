@@ -14,119 +14,61 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface BalancerNetworksInnerIpsInner
  */
-export interface PresetsStorage {
+export interface BalancerNetworksInnerIpsInner {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    id: number;
-    /**
-     * Описание тарифа.
+     * Тип IP-адреса сети
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof BalancerNetworksInnerIpsInner
      */
-    description: string;
+    type?: BalancerNetworksInnerIpsInnerTypeEnum;
     /**
-     * Краткое описание тарифа.
+     * IP-адрес сети.
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof BalancerNetworksInnerIpsInner
      */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    ip?: string;
 }
 
 
 /**
  * @export
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
+export const BalancerNetworksInnerIpsInnerTypeEnum = {
+    Ipv4: 'ipv4',
+    Ipv6: 'ipv6'
 } as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
+export type BalancerNetworksInnerIpsInnerTypeEnum = typeof BalancerNetworksInnerIpsInnerTypeEnum[keyof typeof BalancerNetworksInnerIpsInnerTypeEnum];
 
 
 /**
- * Check if a given object implements the PresetsStorage interface.
+ * Check if a given object implements the BalancerNetworksInnerIpsInner interface.
  */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfBalancerNetworksInnerIpsInner(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function BalancerNetworksInnerIpsInnerFromJSON(json: any): BalancerNetworksInnerIpsInner {
+    return BalancerNetworksInnerIpsInnerFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function BalancerNetworksInnerIpsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): BalancerNetworksInnerIpsInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'ip': !exists(json, 'ip') ? undefined : json['ip'],
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function BalancerNetworksInnerIpsInnerToJSON(value?: BalancerNetworksInnerIpsInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +77,8 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'type': value.type,
+        'ip': value.ip,
     };
 }
 

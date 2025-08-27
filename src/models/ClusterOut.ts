@@ -129,7 +129,8 @@ export type ClusterOutNetworkDriverEnum = typeof ClusterOutNetworkDriverEnum[key
 export const ClusterOutAvailabilityZoneEnum = {
     Spb3: 'spb-3',
     Msk1: 'msk-1',
-    Ams1: 'ams-1'
+    Ams1: 'ams-1',
+    Fra1: 'fra-1'
 } as const;
 export type ClusterOutAvailabilityZoneEnum = typeof ClusterOutAvailabilityZoneEnum[keyof typeof ClusterOutAvailabilityZoneEnum];
 

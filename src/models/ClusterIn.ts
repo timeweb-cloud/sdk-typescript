@@ -13,6 +13,30 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ClusterInClusterNetworkCidr } from './ClusterInClusterNetworkCidr';
+import {
+    ClusterInClusterNetworkCidrFromJSON,
+    ClusterInClusterNetworkCidrFromJSONTyped,
+    ClusterInClusterNetworkCidrToJSON,
+} from './ClusterInClusterNetworkCidr';
+import type { ClusterInConfiguration } from './ClusterInConfiguration';
+import {
+    ClusterInConfigurationFromJSON,
+    ClusterInConfigurationFromJSONTyped,
+    ClusterInConfigurationToJSON,
+} from './ClusterInConfiguration';
+import type { ClusterInMaintenanceSlot } from './ClusterInMaintenanceSlot';
+import {
+    ClusterInMaintenanceSlotFromJSON,
+    ClusterInMaintenanceSlotFromJSONTyped,
+    ClusterInMaintenanceSlotToJSON,
+} from './ClusterInMaintenanceSlot';
+import type { ClusterInOidcProvider } from './ClusterInOidcProvider';
+import {
+    ClusterInOidcProviderFromJSON,
+    ClusterInOidcProviderFromJSONTyped,
+    ClusterInOidcProviderToJSON,
+} from './ClusterInOidcProvider';
 import type { NodeGroupIn } from './NodeGroupIn';
 import {
     NodeGroupInFromJSON,
@@ -69,11 +93,23 @@ export interface ClusterIn {
      */
     isK8sDashboard?: boolean;
     /**
-     * ID тарифа мастер-ноды
+     * ID тарифа мастер-ноды. Нельзя передавать вместе с `configuration`
      * @type {number}
      * @memberof ClusterIn
      */
-    presetId: number;
+    presetId?: number;
+    /**
+     * 
+     * @type {ClusterInConfiguration}
+     * @memberof ClusterIn
+     */
+    _configuration?: ClusterInConfiguration;
+    /**
+     * Количество мастер нод
+     * @type {number}
+     * @memberof ClusterIn
+     */
+    masterNodesCount?: number;
     /**
      * Группы воркеров в кластере
      * @type {Array<NodeGroupIn>}
@@ -92,6 +128,24 @@ export interface ClusterIn {
      * @memberof ClusterIn
      */
     projectId?: number;
+    /**
+     * 
+     * @type {ClusterInMaintenanceSlot}
+     * @memberof ClusterIn
+     */
+    maintenanceSlot?: ClusterInMaintenanceSlot;
+    /**
+     * 
+     * @type {ClusterInOidcProvider}
+     * @memberof ClusterIn
+     */
+    oidcProvider?: ClusterInOidcProvider;
+    /**
+     * 
+     * @type {ClusterInClusterNetworkCidr}
+     * @memberof ClusterIn
+     */
+    clusterNetworkCidr?: ClusterInClusterNetworkCidr;
 }
 
 
@@ -101,7 +155,8 @@ export interface ClusterIn {
 export const ClusterInAvailabilityZoneEnum = {
     Spb3: 'spb-3',
     Msk1: 'msk-1',
-    Ams1: 'ams-1'
+    Ams1: 'ams-1',
+    Fra1: 'fra-1'
 } as const;
 export type ClusterInAvailabilityZoneEnum = typeof ClusterInAvailabilityZoneEnum[keyof typeof ClusterInAvailabilityZoneEnum];
 
@@ -125,7 +180,6 @@ export function instanceOfClusterIn(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "k8sVersion" in value;
     isInstance = isInstance && "networkDriver" in value;
-    isInstance = isInstance && "presetId" in value;
 
     return isInstance;
 }
@@ -147,10 +201,15 @@ export function ClusterInFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'networkDriver': json['network_driver'],
         'isIngress': !exists(json, 'is_ingress') ? undefined : json['is_ingress'],
         'isK8sDashboard': !exists(json, 'is_k8s_dashboard') ? undefined : json['is_k8s_dashboard'],
-        'presetId': json['preset_id'],
+        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        '_configuration': !exists(json, 'configuration') ? undefined : ClusterInConfigurationFromJSON(json['configuration']),
+        'masterNodesCount': !exists(json, 'master_nodes_count') ? undefined : json['master_nodes_count'],
         'workerGroups': !exists(json, 'worker_groups') ? undefined : ((json['worker_groups'] as Array<any>).map(NodeGroupInFromJSON)),
         'networkId': !exists(json, 'network_id') ? undefined : json['network_id'],
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'maintenanceSlot': !exists(json, 'maintenance_slot') ? undefined : ClusterInMaintenanceSlotFromJSON(json['maintenance_slot']),
+        'oidcProvider': !exists(json, 'oidc_provider') ? undefined : ClusterInOidcProviderFromJSON(json['oidc_provider']),
+        'clusterNetworkCidr': !exists(json, 'cluster_network_cidr') ? undefined : ClusterInClusterNetworkCidrFromJSON(json['cluster_network_cidr']),
     };
 }
 
@@ -171,9 +230,14 @@ export function ClusterInToJSON(value?: ClusterIn | null): any {
         'is_ingress': value.isIngress,
         'is_k8s_dashboard': value.isK8sDashboard,
         'preset_id': value.presetId,
+        'configuration': ClusterInConfigurationToJSON(value._configuration),
+        'master_nodes_count': value.masterNodesCount,
         'worker_groups': value.workerGroups === undefined ? undefined : ((value.workerGroups as Array<any>).map(NodeGroupInToJSON)),
         'network_id': value.networkId,
         'project_id': value.projectId,
+        'maintenance_slot': ClusterInMaintenanceSlotToJSON(value.maintenanceSlot),
+        'oidc_provider': ClusterInOidcProviderToJSON(value.oidcProvider),
+        'cluster_network_cidr': ClusterInClusterNetworkCidrToJSON(value.clusterNetworkCidr),
     };
 }
 

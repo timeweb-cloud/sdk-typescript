@@ -13,45 +13,60 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Tags } from './Tags';
+import {
+    TagsFromJSON,
+    TagsFromJSONTyped,
+    TagsToJSON,
+} from './Tags';
+
 /**
  * 
  * @export
- * @interface CreateFolderInStorageRequest
+ * @interface ContainerRegistryRepositoriesInner
  */
-export interface CreateFolderInStorageRequest {
+export interface ContainerRegistryRepositoriesInner {
     /**
-     * Название директории.
+     * Название репозитория
      * @type {string}
-     * @memberof CreateFolderInStorageRequest
+     * @memberof ContainerRegistryRepositoriesInner
      */
-    dirName: string;
+    name: string;
+    /**
+     * 
+     * @type {Tags}
+     * @memberof ContainerRegistryRepositoriesInner
+     */
+    tags: Tags;
 }
 
 /**
- * Check if a given object implements the CreateFolderInStorageRequest interface.
+ * Check if a given object implements the ContainerRegistryRepositoriesInner interface.
  */
-export function instanceOfCreateFolderInStorageRequest(value: object): boolean {
+export function instanceOfContainerRegistryRepositoriesInner(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "dirName" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
 
-export function CreateFolderInStorageRequestFromJSON(json: any): CreateFolderInStorageRequest {
-    return CreateFolderInStorageRequestFromJSONTyped(json, false);
+export function ContainerRegistryRepositoriesInnerFromJSON(json: any): ContainerRegistryRepositoriesInner {
+    return ContainerRegistryRepositoriesInnerFromJSONTyped(json, false);
 }
 
-export function CreateFolderInStorageRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateFolderInStorageRequest {
+export function ContainerRegistryRepositoriesInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContainerRegistryRepositoriesInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'dirName': json['dir_name'],
+        'name': json['name'],
+        'tags': TagsFromJSON(json['tags']),
     };
 }
 
-export function CreateFolderInStorageRequestToJSON(value?: CreateFolderInStorageRequest | null): any {
+export function ContainerRegistryRepositoriesInnerToJSON(value?: ContainerRegistryRepositoriesInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -60,7 +75,8 @@ export function CreateFolderInStorageRequestToJSON(value?: CreateFolderInStorage
     }
     return {
         
-        'dir_name': value.dirName,
+        'name': value.name,
+        'tags': TagsToJSON(value.tags),
     };
 }
 

@@ -33,7 +33,7 @@ import {
  */
 export interface CreateBalancer {
     /**
-     * Удобочитаемое имя, установленное для балансировщика.
+     * Удобочитаемое имя, установленное для балансировщика. Должно быть уникальным в рамках аккаунта
      * @type {string}
      * @memberof CreateBalancer
      */
@@ -158,6 +158,12 @@ export interface CreateBalancer {
      * @memberof CreateBalancer
      */
     availabilityZone?: AvailabilityZone;
+    /**
+     * ID проекта
+     * @type {number}
+     * @memberof CreateBalancer
+     */
+    projectId?: number;
 }
 
 
@@ -236,6 +242,7 @@ export function CreateBalancerFromJSONTyped(json: any, ignoreDiscriminator: bool
         'presetId': json['preset_id'],
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
     };
 }
 
@@ -269,6 +276,7 @@ export function CreateBalancerToJSON(value?: CreateBalancer | null): any {
         'preset_id': value.presetId,
         'network': NetworkToJSON(value.network),
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'project_id': value.projectId,
     };
 }
 

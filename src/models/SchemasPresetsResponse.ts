@@ -13,66 +13,59 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Meta } from './Meta';
+import type { ContainerRegistryPresetsInner } from './ContainerRegistryPresetsInner';
 import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
-import type { S3Object } from './S3Object';
-import {
-    S3ObjectFromJSON,
-    S3ObjectFromJSONTyped,
-    S3ObjectToJSON,
-} from './S3Object';
+    ContainerRegistryPresetsInnerFromJSON,
+    ContainerRegistryPresetsInnerFromJSONTyped,
+    ContainerRegistryPresetsInnerToJSON,
+} from './ContainerRegistryPresetsInner';
 
 /**
  * 
  * @export
- * @interface GetStorageFilesList200Response
+ * @interface SchemasPresetsResponse
  */
-export interface GetStorageFilesList200Response {
+export interface SchemasPresetsResponse {
     /**
-     * 
-     * @type {Array<S3Object>}
-     * @memberof GetStorageFilesList200Response
+     * ID запроса
+     * @type {string}
+     * @memberof SchemasPresetsResponse
      */
-    files: Array<S3Object>;
+    responseId?: string;
     /**
-     * 
-     * @type {Meta}
-     * @memberof GetStorageFilesList200Response
+     * Массив тарифов container registry
+     * @type {Array<ContainerRegistryPresetsInner>}
+     * @memberof SchemasPresetsResponse
      */
-    meta: Meta;
+    containerRegistryPresets: Array<ContainerRegistryPresetsInner>;
 }
 
 /**
- * Check if a given object implements the GetStorageFilesList200Response interface.
+ * Check if a given object implements the SchemasPresetsResponse interface.
  */
-export function instanceOfGetStorageFilesList200Response(value: object): boolean {
+export function instanceOfSchemasPresetsResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "files" in value;
-    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "containerRegistryPresets" in value;
 
     return isInstance;
 }
 
-export function GetStorageFilesList200ResponseFromJSON(json: any): GetStorageFilesList200Response {
-    return GetStorageFilesList200ResponseFromJSONTyped(json, false);
+export function SchemasPresetsResponseFromJSON(json: any): SchemasPresetsResponse {
+    return SchemasPresetsResponseFromJSONTyped(json, false);
 }
 
-export function GetStorageFilesList200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetStorageFilesList200Response {
+export function SchemasPresetsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SchemasPresetsResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'files': ((json['files'] as Array<any>).map(S3ObjectFromJSON)),
-        'meta': MetaFromJSON(json['meta']),
+        'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
+        'containerRegistryPresets': ((json['container_registry_presets'] as Array<any>).map(ContainerRegistryPresetsInnerFromJSON)),
     };
 }
 
-export function GetStorageFilesList200ResponseToJSON(value?: GetStorageFilesList200Response | null): any {
+export function SchemasPresetsResponseToJSON(value?: SchemasPresetsResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -81,8 +74,8 @@ export function GetStorageFilesList200ResponseToJSON(value?: GetStorageFilesList
     }
     return {
         
-        'files': ((value.files as Array<any>).map(S3ObjectToJSON)),
-        'meta': MetaToJSON(value.meta),
+        'response_id': value.responseId,
+        'container_registry_presets': ((value.containerRegistryPresets as Array<any>).map(ContainerRegistryPresetsInnerToJSON)),
     };
 }
 

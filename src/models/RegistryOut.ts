@@ -13,120 +13,116 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { RegistryOutDiskStats } from './RegistryOutDiskStats';
+import {
+    RegistryOutDiskStatsFromJSON,
+    RegistryOutDiskStatsFromJSONTyped,
+    RegistryOutDiskStatsToJSON,
+} from './RegistryOutDiskStats';
+
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface RegistryOut
  */
-export interface PresetsStorage {
+export interface RegistryOut {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
+     * ID реестра
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryOut
      */
     id: number;
     /**
-     * Описание тарифа.
+     * Название реестра
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof RegistryOut
+     */
+    name: string;
+    /**
+     * Описание
+     * @type {string}
+     * @memberof RegistryOut
      */
     description: string;
     /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
+     * ID тарифа
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryOut
      */
-    disk: number;
+    presetId: number;
     /**
-     * Стоимость тарифа хранилища.
+     * ID конфигуратора
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryOut
      */
-    price: number;
+    configuratorId: number;
     /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
+     * ID проекта
+     * @type {number}
+     * @memberof RegistryOut
      */
-    location: PresetsStorageLocationEnum;
+    projectId: number;
     /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
+     * Дата и время создания реестра в формате ISO8601
+     * @type {Date}
+     * @memberof RegistryOut
      */
-    tags: Array<string>;
+    createdAt: Date;
     /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
+     * Дата и время обновления реестра в формате ISO8601
+     * @type {Date}
+     * @memberof RegistryOut
      */
-    storageClass: PresetsStorageStorageClassEnum;
+    updatedAt: Date;
+    /**
+     * 
+     * @type {RegistryOutDiskStats}
+     * @memberof RegistryOut
+     */
+    diskStats: RegistryOutDiskStats;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the RegistryOut interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfRegistryOut(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
+    isInstance = isInstance && "presetId" in value;
+    isInstance = isInstance && "configuratorId" in value;
+    isInstance = isInstance && "projectId" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "updatedAt" in value;
+    isInstance = isInstance && "diskStats" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function RegistryOutFromJSON(json: any): RegistryOut {
+    return RegistryOutFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function RegistryOutFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegistryOut {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
+        'name': json['name'],
         'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'presetId': json['preset_id'],
+        'configuratorId': json['configurator_id'],
+        'projectId': json['project_id'],
+        'createdAt': (new Date(json['created_at'])),
+        'updatedAt': (new Date(json['updated_at'])),
+        'diskStats': RegistryOutDiskStatsFromJSON(json['disk_stats']),
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function RegistryOutToJSON(value?: RegistryOut | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -136,13 +132,14 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     return {
         
         'id': value.id,
+        'name': value.name,
         'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'preset_id': value.presetId,
+        'configurator_id': value.configuratorId,
+        'project_id': value.projectId,
+        'created_at': (value.createdAt.toISOString()),
+        'updated_at': (value.updatedAt.toISOString()),
+        'disk_stats': RegistryOutDiskStatsToJSON(value.diskStats),
     };
 }
 

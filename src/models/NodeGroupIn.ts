@@ -80,6 +80,12 @@ export interface NodeGroupIn {
      * @memberof NodeGroupIn
      */
     maxSize?: number;
+    /**
+     * Автоматическое восстановление работоспособности вышедших из строя узлов
+     * @type {boolean}
+     * @memberof NodeGroupIn
+     */
+    isAutohealing?: boolean;
 }
 
 /**
@@ -111,6 +117,7 @@ export function NodeGroupInFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'isAutoscaling': !exists(json, 'is_autoscaling') ? undefined : json['is_autoscaling'],
         'minSize': !exists(json, 'min-size') ? undefined : json['min-size'],
         'maxSize': !exists(json, 'max-size') ? undefined : json['max-size'],
+        'isAutohealing': !exists(json, 'is_autohealing') ? undefined : json['is_autohealing'],
     };
 }
 
@@ -131,6 +138,7 @@ export function NodeGroupInToJSON(value?: NodeGroupIn | null): any {
         'is_autoscaling': value.isAutoscaling,
         'min-size': value.minSize,
         'max-size': value.maxSize,
+        'is_autohealing': value.isAutohealing,
     };
 }
 

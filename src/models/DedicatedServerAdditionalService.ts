@@ -50,7 +50,7 @@ export interface DedicatedServerAdditionalService {
      */
     shortDescription: string;
     /**
-     * Уникально имя дополнительной услуги выделенного сервера.
+     * Уникальное имя дополнительной услуги выделенного сервера.
      * @type {string}
      * @memberof DedicatedServerAdditionalService
      */

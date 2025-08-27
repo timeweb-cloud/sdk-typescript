@@ -38,7 +38,7 @@ export interface CreateAdmin {
      */
     host?: string;
     /**
-     * ID инстанса базы данных для приминения привилегий. В данных момент поле доступно только для кластеров MySQL. Если поле не передано, то привилегии будут применены ко всем инстансам
+     * ID инстанса базы данных для применения привилегий. В данных момент поле доступно только для кластеров MySQL. Если поле не передано, то привилегии будут применены ко всем инстансам
      * @type {number}
      * @memberof CreateAdmin
      */
@@ -83,7 +83,10 @@ export const CreateAdminPrivilegesEnum = {
     ReadWrite: 'readWrite',
     AlterRoutine: 'ALTER_ROUTINE',
     CreateRoutine: 'CREATE_ROUTINE',
-    Transaction: 'TRANSACTION'
+    Transaction: 'TRANSACTION',
+    SlowLog: 'SLOW_LOG',
+    Trigger: 'TRIGGER',
+    CreateTemporaryTables: 'CREATE_TEMPORARY_TABLES'
 } as const;
 export type CreateAdminPrivilegesEnum = typeof CreateAdminPrivilegesEnum[keyof typeof CreateAdminPrivilegesEnum];
 

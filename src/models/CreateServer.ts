@@ -81,7 +81,7 @@ export interface CreateServer {
      */
     bandwidth?: number;
     /**
-     * Имя облачного сервера. Максимальная длина — 255 символов, имя должно быть уникальным.
+     * Имя облачного сервера. Максимальная длина — 255 символов.
      * @type {string}
      * @memberof CreateServer
      */
@@ -130,6 +130,12 @@ export interface CreateServer {
      * @memberof CreateServer
      */
     availabilityZone?: AvailabilityZone;
+    /**
+     * ID проекта.
+     * @type {number}
+     * @memberof CreateServer
+     */
+    projectId?: number;
 }
 
 /**
@@ -167,6 +173,7 @@ export function CreateServerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'network': !exists(json, 'network') ? undefined : CreateServerNetworkFromJSON(json['network']),
         'cloudInit': !exists(json, 'cloud_init') ? undefined : json['cloud_init'],
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
     };
 }
 
@@ -194,6 +201,7 @@ export function CreateServerToJSON(value?: CreateServer | null): any {
         'network': CreateServerNetworkToJSON(value.network),
         'cloud_init': value.cloudInit,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'project_id': value.projectId,
     };
 }
 

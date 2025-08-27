@@ -51,7 +51,7 @@ export interface DatabaseAdmin {
      */
     password: string;
     /**
-     * Описанеие пользователя базы данных
+     * Описание пользователя базы данных
      * @type {string}
      * @memberof DatabaseAdmin
      */

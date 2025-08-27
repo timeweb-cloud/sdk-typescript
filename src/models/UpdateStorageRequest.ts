@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { UpdateStorageRequestConfigurator } from './UpdateStorageRequestConfigurator';
+import {
+    UpdateStorageRequestConfiguratorFromJSON,
+    UpdateStorageRequestConfiguratorFromJSONTyped,
+    UpdateStorageRequestConfiguratorToJSON,
+} from './UpdateStorageRequestConfigurator';
+
 /**
  * 
  * @export
@@ -26,11 +33,11 @@ export interface UpdateStorageRequest {
      */
     presetId?: number;
     /**
-     * ID конфигуратора хранилища.
-     * @type {number}
+     * 
+     * @type {UpdateStorageRequestConfigurator}
      * @memberof UpdateStorageRequest
      */
-    configuratorId?: number;
+    configurator?: UpdateStorageRequestConfigurator;
     /**
      * Тип хранилища.
      * @type {string}
@@ -76,7 +83,7 @@ export function UpdateStorageRequestFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
-        'configuratorId': !exists(json, 'configurator_id') ? undefined : json['configurator_id'],
+        'configurator': !exists(json, 'configurator') ? undefined : UpdateStorageRequestConfiguratorFromJSON(json['configurator']),
         'bucketType': !exists(json, 'bucket_type') ? undefined : json['bucket_type'],
         'description': !exists(json, 'description') ? undefined : json['description'],
     };
@@ -92,7 +99,7 @@ export function UpdateStorageRequestToJSON(value?: UpdateStorageRequest | null):
     return {
         
         'preset_id': value.presetId,
-        'configurator_id': value.configuratorId,
+        'configurator': UpdateStorageRequestConfiguratorToJSON(value.configurator),
         'bucket_type': value.bucketType,
         'description': value.description,
     };

@@ -26,14 +26,15 @@ import type {
   GetFinances429Response,
   GetFinances500Response,
   GetImage404Response,
+  IncreaseNodes,
   K8SVersionsResponse,
   NetworkDriversResponse,
-  NodeCount,
   NodeGroupIn,
   NodeGroupResponse,
   NodeGroupsResponse,
   NodesResponse,
   PresetsResponse,
+  ReduceNodes,
   ResourcesResponse,
 } from '../models/index';
 import {
@@ -59,12 +60,12 @@ import {
     GetFinances500ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
+    IncreaseNodesFromJSON,
+    IncreaseNodesToJSON,
     K8SVersionsResponseFromJSON,
     K8SVersionsResponseToJSON,
     NetworkDriversResponseFromJSON,
     NetworkDriversResponseToJSON,
-    NodeCountFromJSON,
-    NodeCountToJSON,
     NodeGroupInFromJSON,
     NodeGroupInToJSON,
     NodeGroupResponseFromJSON,
@@ -75,6 +76,8 @@ import {
     NodesResponseToJSON,
     PresetsResponseFromJSON,
     PresetsResponseToJSON,
+    ReduceNodesFromJSON,
+    ReduceNodesToJSON,
     ResourcesResponseFromJSON,
     ResourcesResponseToJSON,
 } from '../models/index';
@@ -144,13 +147,13 @@ export interface GetClustersRequest {
 export interface IncreaseCountOfNodesInGroupRequest {
     clusterId: number;
     groupId: number;
-    nodeCount: NodeCount;
+    increaseNodes: IncreaseNodes;
 }
 
 export interface ReduceCountOfNodesInGroupRequest {
     clusterId: number;
     groupId: number;
-    nodeCount: NodeCount;
+    reduceNodes: ReduceNodes;
 }
 
 export interface UpdateClusterRequest {
@@ -852,8 +855,8 @@ export class KubernetesApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling increaseCountOfNodesInGroup.');
         }
 
-        if (requestParameters.nodeCount === null || requestParameters.nodeCount === undefined) {
-            throw new runtime.RequiredError('nodeCount','Required parameter requestParameters.nodeCount was null or undefined when calling increaseCountOfNodesInGroup.');
+        if (requestParameters.increaseNodes === null || requestParameters.increaseNodes === undefined) {
+            throw new runtime.RequiredError('increaseNodes','Required parameter requestParameters.increaseNodes was null or undefined when calling increaseCountOfNodesInGroup.');
         }
 
         const queryParameters: any = {};
@@ -875,7 +878,7 @@ export class KubernetesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: NodeCountToJSON(requestParameters.nodeCount),
+            body: IncreaseNodesToJSON(requestParameters.increaseNodes),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => NodesResponseFromJSON(jsonValue));
@@ -903,8 +906,8 @@ export class KubernetesApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling reduceCountOfNodesInGroup.');
         }
 
-        if (requestParameters.nodeCount === null || requestParameters.nodeCount === undefined) {
-            throw new runtime.RequiredError('nodeCount','Required parameter requestParameters.nodeCount was null or undefined when calling reduceCountOfNodesInGroup.');
+        if (requestParameters.reduceNodes === null || requestParameters.reduceNodes === undefined) {
+            throw new runtime.RequiredError('reduceNodes','Required parameter requestParameters.reduceNodes was null or undefined when calling reduceCountOfNodesInGroup.');
         }
 
         const queryParameters: any = {};
@@ -926,7 +929,7 @@ export class KubernetesApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-            body: NodeCountToJSON(requestParameters.nodeCount),
+            body: ReduceNodesToJSON(requestParameters.reduceNodes),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

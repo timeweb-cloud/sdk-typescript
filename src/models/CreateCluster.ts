@@ -43,6 +43,12 @@ import {
     CreateDbAutoBackupsFromJSONTyped,
     CreateDbAutoBackupsToJSON,
 } from './CreateDbAutoBackups';
+import type { DbReplication } from './DbReplication';
+import {
+    DbReplicationFromJSON,
+    DbReplicationFromJSONTyped,
+    DbReplicationToJSON,
+} from './DbReplication';
 import type { DbType } from './DbType';
 import {
     DbTypeFromJSON,
@@ -93,17 +99,35 @@ export interface CreateCluster {
      */
     hashType?: CreateClusterHashTypeEnum;
     /**
-     * ID тарифа.
+     * ID тарифа. Нельзя передавать вместе с `configurator_id`
      * @type {number}
      * @memberof CreateCluster
      */
-    presetId: number;
+    presetId?: number;
+    /**
+     * ID конфигуратора. Нельзя передавать вместе с `preset_id`
+     * @type {number}
+     * @memberof CreateCluster
+     */
+    configuratorId?: number;
+    /**
+     * ID проекта.
+     * @type {number}
+     * @memberof CreateCluster
+     */
+    projectId?: number;
     /**
      * 
      * @type {ConfigParameters}
      * @memberof CreateCluster
      */
     configParameters?: ConfigParameters;
+    /**
+     * 
+     * @type {DbReplication}
+     * @memberof CreateCluster
+     */
+    replication?: DbReplication;
     /**
      * 
      * @type {Network}
@@ -148,7 +172,6 @@ export function instanceOfCreateCluster(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "presetId" in value;
 
     return isInstance;
 }
@@ -168,8 +191,11 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'admin': !exists(json, 'admin') ? undefined : CreateClusterAdminFromJSON(json['admin']),
         'instance': !exists(json, 'instance') ? undefined : CreateClusterInstanceFromJSON(json['instance']),
         'hashType': !exists(json, 'hash_type') ? undefined : json['hash_type'],
-        'presetId': json['preset_id'],
+        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        'configuratorId': !exists(json, 'configurator_id') ? undefined : json['configurator_id'],
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
         'configParameters': !exists(json, 'config_parameters') ? undefined : ConfigParametersFromJSON(json['config_parameters']),
+        'replication': !exists(json, 'replication') ? undefined : DbReplicationFromJSON(json['replication']),
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'description': !exists(json, 'description') ? undefined : json['description'],
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
@@ -192,7 +218,10 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
         'instance': CreateClusterInstanceToJSON(value.instance),
         'hash_type': value.hashType,
         'preset_id': value.presetId,
+        'configurator_id': value.configuratorId,
+        'project_id': value.projectId,
         'config_parameters': ConfigParametersToJSON(value.configParameters),
+        'replication': DbReplicationToJSON(value.replication),
         'network': NetworkToJSON(value.network),
         'description': value.description,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),

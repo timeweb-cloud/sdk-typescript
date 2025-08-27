@@ -13,120 +13,59 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { RegistryOut } from './RegistryOut';
+import {
+    RegistryOutFromJSON,
+    RegistryOutFromJSONTyped,
+    RegistryOutToJSON,
+} from './RegistryOut';
+
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface RegistryResponse
  */
-export interface PresetsStorage {
+export interface RegistryResponse {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    id: number;
-    /**
-     * Описание тарифа.
+     * ID запроса
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof RegistryResponse
      */
-    description: string;
+    responseId?: string;
     /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
+     * 
+     * @type {RegistryOut}
+     * @memberof RegistryResponse
      */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    containerRegistry: RegistryOut;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the RegistryResponse interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfRegistryResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
+    isInstance = isInstance && "containerRegistry" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function RegistryResponseFromJSON(json: any): RegistryResponse {
+    return RegistryResponseFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function RegistryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegistryResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
+        'containerRegistry': RegistryOutFromJSON(json['container_registry']),
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function RegistryResponseToJSON(value?: RegistryResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +74,8 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'response_id': value.responseId,
+        'container_registry': RegistryOutToJSON(value.containerRegistry),
     };
 }
 

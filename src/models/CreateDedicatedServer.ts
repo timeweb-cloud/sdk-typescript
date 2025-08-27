@@ -24,7 +24,7 @@ export interface CreateDedicatedServer {
      * @type {number}
      * @memberof CreateDedicatedServer
      */
-    planId: number;
+    planId?: number;
     /**
      * ID тарифа выделенного сервера.
      * @type {number}
@@ -99,7 +99,6 @@ export type CreateDedicatedServerPaymentPeriodEnum = typeof CreateDedicatedServe
  */
 export function instanceOfCreateDedicatedServer(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "planId" in value;
     isInstance = isInstance && "presetId" in value;
     isInstance = isInstance && "paymentPeriod" in value;
     isInstance = isInstance && "name" in value;
@@ -117,7 +116,7 @@ export function CreateDedicatedServerFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'planId': json['plan_id'],
+        'planId': !exists(json, 'plan_id') ? undefined : json['plan_id'],
         'presetId': json['preset_id'],
         'osId': !exists(json, 'os_id') ? undefined : json['os_id'],
         'cpId': !exists(json, 'cp_id') ? undefined : json['cp_id'],

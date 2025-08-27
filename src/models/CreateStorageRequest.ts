@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CreateStorageRequestConfigurator } from './CreateStorageRequestConfigurator';
+import {
+    CreateStorageRequestConfiguratorFromJSON,
+    CreateStorageRequestConfiguratorFromJSONTyped,
+    CreateStorageRequestConfiguratorToJSON,
+} from './CreateStorageRequestConfigurator';
+
 /**
  * 
  * @export
@@ -38,11 +45,23 @@ export interface CreateStorageRequest {
      */
     type: CreateStorageRequestTypeEnum;
     /**
-     * ID тарифа.
+     * ID тарифа. Нельзя передавать вместе с `configurator`.
      * @type {number}
      * @memberof CreateStorageRequest
      */
-    presetId: number;
+    presetId?: number;
+    /**
+     * 
+     * @type {CreateStorageRequestConfigurator}
+     * @memberof CreateStorageRequest
+     */
+    configurator?: CreateStorageRequestConfigurator;
+    /**
+     * ID проекта.
+     * @type {number}
+     * @memberof CreateStorageRequest
+     */
+    projectId?: number;
 }
 
 
@@ -63,7 +82,6 @@ export function instanceOfCreateStorageRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "presetId" in value;
 
     return isInstance;
 }
@@ -81,7 +99,9 @@ export function CreateStorageRequestFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'type': json['type'],
-        'presetId': json['preset_id'],
+        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        'configurator': !exists(json, 'configurator') ? undefined : CreateStorageRequestConfiguratorFromJSON(json['configurator']),
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
     };
 }
 
@@ -98,6 +118,8 @@ export function CreateStorageRequestToJSON(value?: CreateStorageRequest | null):
         'description': value.description,
         'type': value.type,
         'preset_id': value.presetId,
+        'configurator': CreateStorageRequestConfiguratorToJSON(value.configurator),
+        'project_id': value.projectId,
     };
 }
 

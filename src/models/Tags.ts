@@ -14,44 +14,60 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Теги
  * @export
- * @interface NodeCount
+ * @interface Tags
  */
-export interface NodeCount {
+export interface Tags {
     /**
-     * Количество нод
-     * @type {number}
-     * @memberof NodeCount
+     * Тег
+     * @type {string}
+     * @memberof Tags
      */
-    count: number;
+    tag: string;
+    /**
+     * Digest
+     * @type {string}
+     * @memberof Tags
+     */
+    digest: string;
+    /**
+     * Размер
+     * @type {number}
+     * @memberof Tags
+     */
+    size: number;
 }
 
 /**
- * Check if a given object implements the NodeCount interface.
+ * Check if a given object implements the Tags interface.
  */
-export function instanceOfNodeCount(value: object): boolean {
+export function instanceOfTags(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "tag" in value;
+    isInstance = isInstance && "digest" in value;
+    isInstance = isInstance && "size" in value;
 
     return isInstance;
 }
 
-export function NodeCountFromJSON(json: any): NodeCount {
-    return NodeCountFromJSONTyped(json, false);
+export function TagsFromJSON(json: any): Tags {
+    return TagsFromJSONTyped(json, false);
 }
 
-export function NodeCountFromJSONTyped(json: any, ignoreDiscriminator: boolean): NodeCount {
+export function TagsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tags {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'count': json['count'],
+        'tag': json['tag'],
+        'digest': json['digest'],
+        'size': json['size'],
     };
 }
 
-export function NodeCountToJSON(value?: NodeCount | null): any {
+export function TagsToJSON(value?: Tags | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -60,7 +76,9 @@ export function NodeCountToJSON(value?: NodeCount | null): any {
     }
     return {
         
-        'count': value.count,
+        'tag': value.tag,
+        'digest': value.digest,
+        'size': value.size,
     };
 }
 

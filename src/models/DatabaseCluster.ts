@@ -19,12 +19,12 @@ import {
     ConfigParametersFromJSONTyped,
     ConfigParametersToJSON,
 } from './ConfigParameters';
-import type { DatabaseClusterDiskStats } from './DatabaseClusterDiskStats';
+import type { DatabaseClusterDisk } from './DatabaseClusterDisk';
 import {
-    DatabaseClusterDiskStatsFromJSON,
-    DatabaseClusterDiskStatsFromJSONTyped,
-    DatabaseClusterDiskStatsToJSON,
-} from './DatabaseClusterDiskStats';
+    DatabaseClusterDiskFromJSON,
+    DatabaseClusterDiskFromJSONTyped,
+    DatabaseClusterDiskToJSON,
+} from './DatabaseClusterDisk';
 import type { DatabaseClusterNetworksInner } from './DatabaseClusterNetworksInner';
 import {
     DatabaseClusterNetworksInnerFromJSON,
@@ -112,10 +112,10 @@ export interface DatabaseCluster {
     presetId: number;
     /**
      * 
-     * @type {DatabaseClusterDiskStats}
+     * @type {DatabaseClusterDisk}
      * @memberof DatabaseCluster
      */
-    diskStats: DatabaseClusterDiskStats | null;
+    disk?: DatabaseClusterDisk | null;
     /**
      * 
      * @type {ConfigParameters}
@@ -136,9 +136,9 @@ export interface DatabaseCluster {
  */
 export const DatabaseClusterLocationEnum = {
     Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1'
+    Ru3: 'ru-3',
+    Nl1: 'nl-1',
+    De1: 'de-1'
 } as const;
 export type DatabaseClusterLocationEnum = typeof DatabaseClusterLocationEnum[keyof typeof DatabaseClusterLocationEnum];
 
@@ -187,7 +187,6 @@ export function instanceOfDatabaseCluster(value: object): boolean {
     isInstance = isInstance && "port" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "presetId" in value;
-    isInstance = isInstance && "diskStats" in value;
     isInstance = isInstance && "configParameters" in value;
     isInstance = isInstance && "isEnabledPublicNetwork" in value;
 
@@ -215,7 +214,7 @@ export function DatabaseClusterFromJSONTyped(json: any, ignoreDiscriminator: boo
         'port': json['port'],
         'status': json['status'],
         'presetId': json['preset_id'],
-        'diskStats': DatabaseClusterDiskStatsFromJSON(json['disk_stats']),
+        'disk': !exists(json, 'disk') ? undefined : DatabaseClusterDiskFromJSON(json['disk']),
         'configParameters': ConfigParametersFromJSON(json['config_parameters']),
         'isEnabledPublicNetwork': json['is_enabled_public_network'],
     };
@@ -241,7 +240,7 @@ export function DatabaseClusterToJSON(value?: DatabaseCluster | null): any {
         'port': value.port,
         'status': value.status,
         'preset_id': value.presetId,
-        'disk_stats': DatabaseClusterDiskStatsToJSON(value.diskStats),
+        'disk': DatabaseClusterDiskToJSON(value.disk),
         'config_parameters': ConfigParametersToJSON(value.configParameters),
         'is_enabled_public_network': value.isEnabledPublicNetwork,
     };

@@ -13,120 +13,65 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { RegistryInConfiguration } from './RegistryInConfiguration';
+import {
+    RegistryInConfigurationFromJSON,
+    RegistryInConfigurationFromJSONTyped,
+    RegistryInConfigurationToJSON,
+} from './RegistryInConfiguration';
+
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface RegistryEdit
  */
-export interface PresetsStorage {
+export interface RegistryEdit {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
+     * Новое описание реестра
+     * @type {string}
+     * @memberof RegistryEdit
+     */
+    description?: string;
+    /**
+     * ID тарифа. Нельзя передавать вместе с `configuration`
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryEdit
      */
-    id: number;
+    presetId?: number;
     /**
-     * Описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
+     * 
+     * @type {RegistryInConfiguration}
+     * @memberof RegistryEdit
      */
-    description: string;
-    /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    _configuration?: RegistryInConfiguration;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the RegistryEdit interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfRegistryEdit(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function RegistryEditFromJSON(json: any): RegistryEdit {
+    return RegistryEditFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function RegistryEditFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegistryEdit {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        '_configuration': !exists(json, 'configuration') ? undefined : RegistryInConfigurationFromJSON(json['configuration']),
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function RegistryEditToJSON(value?: RegistryEdit | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +80,9 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
         'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'preset_id': value.presetId,
+        'configuration': RegistryInConfigurationToJSON(value._configuration),
     };
 }
 

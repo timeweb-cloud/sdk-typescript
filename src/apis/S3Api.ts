@@ -18,13 +18,9 @@ import type {
   AddStorageSubdomainCertificateRequest,
   AddStorageSubdomains200Response,
   AddStorageSubdomainsRequest,
-  CopyStorageFileRequest,
-  CreateDatabaseBackup409Response,
-  CreateFolderInStorageRequest,
   CreateStorage201Response,
   CreateStorageRequest,
   DeleteStorage200Response,
-  DeleteStorageFileRequest,
   GetFinances400Response,
   GetFinances401Response,
   GetFinances403Response,
@@ -32,12 +28,10 @@ import type {
   GetFinances500Response,
   GetImage404Response,
   GetProjectStorages200Response,
-  GetStorageFilesList200Response,
   GetStorageSubdomains200Response,
   GetStorageTransferStatus200Response,
   GetStorageUsers200Response,
   GetStoragesPresets200Response,
-  RenameStorageFileRequest,
   TransferStorageRequest,
   UpdateStorageRequest,
   UpdateStorageUser200Response,
@@ -50,20 +44,12 @@ import {
     AddStorageSubdomains200ResponseToJSON,
     AddStorageSubdomainsRequestFromJSON,
     AddStorageSubdomainsRequestToJSON,
-    CopyStorageFileRequestFromJSON,
-    CopyStorageFileRequestToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
-    CreateFolderInStorageRequestFromJSON,
-    CreateFolderInStorageRequestToJSON,
     CreateStorage201ResponseFromJSON,
     CreateStorage201ResponseToJSON,
     CreateStorageRequestFromJSON,
     CreateStorageRequestToJSON,
     DeleteStorage200ResponseFromJSON,
     DeleteStorage200ResponseToJSON,
-    DeleteStorageFileRequestFromJSON,
-    DeleteStorageFileRequestToJSON,
     GetFinances400ResponseFromJSON,
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
@@ -78,8 +64,6 @@ import {
     GetImage404ResponseToJSON,
     GetProjectStorages200ResponseFromJSON,
     GetProjectStorages200ResponseToJSON,
-    GetStorageFilesList200ResponseFromJSON,
-    GetStorageFilesList200ResponseToJSON,
     GetStorageSubdomains200ResponseFromJSON,
     GetStorageSubdomains200ResponseToJSON,
     GetStorageTransferStatus200ResponseFromJSON,
@@ -88,8 +72,6 @@ import {
     GetStorageUsers200ResponseToJSON,
     GetStoragesPresets200ResponseFromJSON,
     GetStoragesPresets200ResponseToJSON,
-    RenameStorageFileRequestFromJSON,
-    RenameStorageFileRequestToJSON,
     TransferStorageRequestFromJSON,
     TransferStorageRequestToJSON,
     UpdateStorageRequestFromJSON,
@@ -109,16 +91,6 @@ export interface AddStorageSubdomainsOperationRequest {
     addStorageSubdomainsRequest: AddStorageSubdomainsRequest;
 }
 
-export interface CopyStorageFileOperationRequest {
-    bucketId: number;
-    copyStorageFileRequest: CopyStorageFileRequest;
-}
-
-export interface CreateFolderInStorageOperationRequest {
-    bucketId: number;
-    createFolderInStorageRequest: CreateFolderInStorageRequest;
-}
-
 export interface CreateStorageOperationRequest {
     createStorageRequest: CreateStorageRequest;
 }
@@ -129,21 +101,9 @@ export interface DeleteStorageRequest {
     code?: string;
 }
 
-export interface DeleteStorageFileOperationRequest {
-    bucketId: number;
-    deleteStorageFileRequest: DeleteStorageFileRequest;
-    isMultipart?: boolean;
-}
-
 export interface DeleteStorageSubdomainsRequest {
     bucketId: number;
     addStorageSubdomainsRequest: AddStorageSubdomainsRequest;
-}
-
-export interface GetStorageFilesListRequest {
-    bucketId: number;
-    prefix?: string;
-    isMultipart?: boolean;
 }
 
 export interface GetStorageSubdomainsRequest {
@@ -152,11 +112,6 @@ export interface GetStorageSubdomainsRequest {
 
 export interface GetStorageTransferStatusRequest {
     bucketId: number;
-}
-
-export interface RenameStorageFileOperationRequest {
-    bucketId: number;
-    renameStorageFileRequest: RenameStorageFileRequest;
 }
 
 export interface TransferStorageOperationRequest {
@@ -171,12 +126,6 @@ export interface UpdateStorageOperationRequest {
 export interface UpdateStorageUserOperationRequest {
     userId: number;
     updateStorageUserRequest: UpdateStorageUserRequest;
-}
-
-export interface UploadFileToStorageRequest {
-    bucketId: number;
-    files: Array<Blob>;
-    path?: string;
 }
 
 /**
@@ -274,98 +223,6 @@ export class S3Api extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы скопировать файла или директорию с вложениями, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/copy`.
-     * Копирование файла/директории в хранилище
-     */
-    async copyStorageFileRaw(requestParameters: CopyStorageFileOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
-            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling copyStorageFile.');
-        }
-
-        if (requestParameters.copyStorageFileRequest === null || requestParameters.copyStorageFileRequest === undefined) {
-            throw new runtime.RequiredError('copyStorageFileRequest','Required parameter requestParameters.copyStorageFileRequest was null or undefined when calling copyStorageFile.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/storages/buckets/{bucket_id}/object-manager/copy`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CopyStorageFileRequestToJSON(requestParameters.copyStorageFileRequest),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Чтобы скопировать файла или директорию с вложениями, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/copy`.
-     * Копирование файла/директории в хранилище
-     */
-    async copyStorageFile(requestParameters: CopyStorageFileOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.copyStorageFileRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Чтобы создать директорию в хранилище, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/mkdir`.
-     * Создание директории в хранилище
-     */
-    async createFolderInStorageRaw(requestParameters: CreateFolderInStorageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
-            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling createFolderInStorage.');
-        }
-
-        if (requestParameters.createFolderInStorageRequest === null || requestParameters.createFolderInStorageRequest === undefined) {
-            throw new runtime.RequiredError('createFolderInStorageRequest','Required parameter requestParameters.createFolderInStorageRequest was null or undefined when calling createFolderInStorage.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/storages/buckets/{bucket_id}/object-manager/mkdir`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateFolderInStorageRequestToJSON(requestParameters.createFolderInStorageRequest),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Чтобы создать директорию в хранилище, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/mkdir`.
-     * Создание директории в хранилище
-     */
-    async createFolderInStorage(requestParameters: CreateFolderInStorageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.createFolderInStorageRaw(requestParameters, initOverrides);
-    }
-
-    /**
      * Чтобы создать хранилище, отправьте POST-запрос на `/api/v1/storages/buckets`.
      * Создание хранилища
      */
@@ -457,56 +314,6 @@ export class S3Api extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить файл или директорию с вложениями, отправьте DELETE-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/remove`.
-     * Удаление файла/директории в хранилище
-     */
-    async deleteStorageFileRaw(requestParameters: DeleteStorageFileOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
-            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling deleteStorageFile.');
-        }
-
-        if (requestParameters.deleteStorageFileRequest === null || requestParameters.deleteStorageFileRequest === undefined) {
-            throw new runtime.RequiredError('deleteStorageFileRequest','Required parameter requestParameters.deleteStorageFileRequest was null or undefined when calling deleteStorageFile.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.isMultipart !== undefined) {
-            queryParameters['is_multipart'] = requestParameters.isMultipart;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/storages/buckets/{bucket_id}/object-manager/remove`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-            body: DeleteStorageFileRequestToJSON(requestParameters.deleteStorageFileRequest),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Чтобы удалить файл или директорию с вложениями, отправьте DELETE-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/remove`.
-     * Удаление файла/директории в хранилище
-     */
-    async deleteStorageFile(requestParameters: DeleteStorageFileOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteStorageFileRaw(requestParameters, initOverrides);
-    }
-
-    /**
      * Чтобы удалить поддомены хранилища, отправьте DELETE-запрос на `/api/v1/storages/buckets/{bucket_id}/subdomains`.
      * Удаление поддоменов хранилища
      */
@@ -550,54 +357,6 @@ export class S3Api extends runtime.BaseAPI {
      */
     async deleteStorageSubdomains(requestParameters: DeleteStorageSubdomainsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AddStorageSubdomains200Response> {
         const response = await this.deleteStorageSubdomainsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Чтобы получить список файлов в хранилище по префиксу, отправьте GET-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/list`.
-     * Получение списка файлов в хранилище по префиксу
-     */
-    async getStorageFilesListRaw(requestParameters: GetStorageFilesListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetStorageFilesList200Response>> {
-        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
-            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling getStorageFilesList.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.prefix !== undefined) {
-            queryParameters['prefix'] = requestParameters.prefix;
-        }
-
-        if (requestParameters.isMultipart !== undefined) {
-            queryParameters['is_multipart'] = requestParameters.isMultipart;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/storages/buckets/{bucket_id}/object-manager/list`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetStorageFilesList200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить список файлов в хранилище по префиксу, отправьте GET-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/list`.
-     * Получение списка файлов в хранилище по префиксу
-     */
-    async getStorageFilesList(requestParameters: GetStorageFilesListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetStorageFilesList200Response> {
-        const response = await this.getStorageFilesListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -790,52 +549,6 @@ export class S3Api extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы переименовать файл/директорию в хранилище, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/rename`.
-     * Переименование файла/директории в хранилище
-     */
-    async renameStorageFileRaw(requestParameters: RenameStorageFileOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
-            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling renameStorageFile.');
-        }
-
-        if (requestParameters.renameStorageFileRequest === null || requestParameters.renameStorageFileRequest === undefined) {
-            throw new runtime.RequiredError('renameStorageFileRequest','Required parameter requestParameters.renameStorageFileRequest was null or undefined when calling renameStorageFile.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/storages/buckets/{bucket_id}/object-manager/rename`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RenameStorageFileRequestToJSON(requestParameters.renameStorageFileRequest),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Чтобы переименовать файл/директорию в хранилище, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/rename`.
-     * Переименование файла/директории в хранилище
-     */
-    async renameStorageFile(requestParameters: RenameStorageFileOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.renameStorageFileRaw(requestParameters, initOverrides);
-    }
-
-    /**
      * Чтобы перенести хранилище от стороннего провайдера S3 в Timeweb Cloud, отправьте POST-запрос на `/api/v1/storages/transfer`.
      * Перенос хранилища от стороннего провайдера S3 в Timeweb Cloud
      */
@@ -969,76 +682,6 @@ export class S3Api extends runtime.BaseAPI {
     async updateStorageUser(requestParameters: UpdateStorageUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateStorageUser200Response> {
         const response = await this.updateStorageUserRaw(requestParameters, initOverrides);
         return await response.value();
-    }
-
-    /**
-     * Чтобы загрузить файлы в хранилище, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/upload`.
-     * Загрузка файлов в хранилище
-     */
-    async uploadFileToStorageRaw(requestParameters: UploadFileToStorageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
-            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling uploadFileToStorage.');
-        }
-
-        if (requestParameters.files === null || requestParameters.files === undefined) {
-            throw new runtime.RequiredError('files','Required parameter requestParameters.files was null or undefined when calling uploadFileToStorage.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.path !== undefined) {
-            queryParameters['path'] = requestParameters.path;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.files) {
-            requestParameters.files.forEach((element) => {
-                formParams.append('files', element as any);
-            })
-        }
-
-        const response = await this.request({
-            path: `/api/v1/storages/buckets/{bucket_id}/object-manager/upload`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Чтобы загрузить файлы в хранилище, отправьте POST-запрос на `/api/v1/storages/buckets/{bucket_id}/object-manager/upload`.
-     * Загрузка файлов в хранилище
-     */
-    async uploadFileToStorage(requestParameters: UploadFileToStorageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.uploadFileToStorageRaw(requestParameters, initOverrides);
     }
 
 }

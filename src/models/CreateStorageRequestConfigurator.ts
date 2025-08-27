@@ -14,119 +14,50 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Тариф
+ * Параметры конфигурации хранилища. Нельзя передавать вместе с `preset_id`.
  * @export
- * @interface PresetsStorage
+ * @interface CreateStorageRequestConfigurator
  */
-export interface PresetsStorage {
+export interface CreateStorageRequestConfigurator {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
+     * Размер диска в МБ..
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof CreateStorageRequestConfigurator
      */
-    id: number;
+    disk?: number;
     /**
-     * Описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    description: string;
-    /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
+     * ID конфигуратора хранилища.
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof CreateStorageRequestConfigurator
      */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    id?: number;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the CreateStorageRequestConfigurator interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfCreateStorageRequestConfigurator(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function CreateStorageRequestConfiguratorFromJSON(json: any): CreateStorageRequestConfigurator {
+    return CreateStorageRequestConfiguratorFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function CreateStorageRequestConfiguratorFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateStorageRequestConfigurator {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'disk': !exists(json, 'disk') ? undefined : json['disk'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function CreateStorageRequestConfiguratorToJSON(value?: CreateStorageRequestConfigurator | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +66,8 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
         'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'id': value.id,
     };
 }
 

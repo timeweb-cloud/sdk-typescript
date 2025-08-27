@@ -14,7 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Параметры базы данных
  * @export
  * @interface ConfigParameters
  */

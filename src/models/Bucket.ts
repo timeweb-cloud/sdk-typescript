@@ -19,6 +19,12 @@ import {
     BucketDiskStatsFromJSONTyped,
     BucketDiskStatsToJSON,
 } from './BucketDiskStats';
+import type { BucketWebsiteConfig } from './BucketWebsiteConfig';
+import {
+    BucketWebsiteConfigFromJSON,
+    BucketWebsiteConfigFromJSONTyped,
+    BucketWebsiteConfigToJSON,
+} from './BucketWebsiteConfig';
 
 /**
  * Хранилище S3
@@ -122,6 +128,24 @@ export interface Bucket {
      * @memberof Bucket
      */
     storageClass: BucketStorageClassEnum;
+    /**
+     * ID проекта.
+     * @type {number}
+     * @memberof Bucket
+     */
+    projectId: number;
+    /**
+     * ID тарифа.
+     * @type {number}
+     * @memberof Bucket
+     */
+    rateId: number;
+    /**
+     * 
+     * @type {BucketWebsiteConfig}
+     * @memberof Bucket
+     */
+    websiteConfig: BucketWebsiteConfig;
 }
 
 
@@ -174,6 +198,9 @@ export function instanceOfBucket(value: object): boolean {
     isInstance = isInstance && "secretKey" in value;
     isInstance = isInstance && "movedInQuarantineAt" in value;
     isInstance = isInstance && "storageClass" in value;
+    isInstance = isInstance && "projectId" in value;
+    isInstance = isInstance && "rateId" in value;
+    isInstance = isInstance && "websiteConfig" in value;
 
     return isInstance;
 }
@@ -204,6 +231,9 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         'secretKey': json['secret_key'],
         'movedInQuarantineAt': (json['moved_in_quarantine_at'] === null ? null : new Date(json['moved_in_quarantine_at'])),
         'storageClass': json['storage_class'],
+        'projectId': json['project_id'],
+        'rateId': json['rate_id'],
+        'websiteConfig': BucketWebsiteConfigFromJSON(json['website_config']),
     };
 }
 
@@ -232,6 +262,9 @@ export function BucketToJSON(value?: Bucket | null): any {
         'secret_key': value.secretKey,
         'moved_in_quarantine_at': (value.movedInQuarantineAt === null ? null : value.movedInQuarantineAt.toISOString()),
         'storage_class': value.storageClass,
+        'project_id': value.projectId,
+        'rate_id': value.rateId,
+        'website_config': BucketWebsiteConfigToJSON(value.websiteConfig),
     };
 }
 

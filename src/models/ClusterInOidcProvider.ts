@@ -14,119 +14,74 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Тариф
+ * OIDC-провайдер
  * @export
- * @interface PresetsStorage
+ * @interface ClusterInOidcProvider
  */
-export interface PresetsStorage {
+export interface ClusterInOidcProvider {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    id: number;
-    /**
-     * Описание тарифа.
+     * Название создаваемого подключения. Используется только для идентификации и не влияет на остальные параметры
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ClusterInOidcProvider
      */
-    description: string;
+    name: string;
     /**
-     * Краткое описание тарифа.
+     * Адрес OIDC-провайдера, используемый для аутентификации пользователей, запрашивающих доступ к кластеру
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ClusterInOidcProvider
      */
-    descriptionShort: string;
+    issuerUrl: string;
     /**
-     * Описание диска хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
+     * Идентификатор сервиса, выданный OIDC-провайдером, от имени которого осуществляется запрос к ресурсам
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ClusterInOidcProvider
      */
-    location: PresetsStorageLocationEnum;
+    clientId: string;
     /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
+     * Поле в JSON Web Token (JWT), используемое для идентификации пользователя
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ClusterInOidcProvider
      */
-    storageClass: PresetsStorageStorageClassEnum;
+    usernameClaim?: string;
+    /**
+     * Поле в JSON Web Token (JWT), содержащее названии группы, к которой принадлежит пользователь
+     * @type {string}
+     * @memberof ClusterInOidcProvider
+     */
+    groupsClaim?: string;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the ClusterInOidcProvider interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfClusterInOidcProvider(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "issuerUrl" in value;
+    isInstance = isInstance && "clientId" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function ClusterInOidcProviderFromJSON(json: any): ClusterInOidcProvider {
+    return ClusterInOidcProviderFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function ClusterInOidcProviderFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterInOidcProvider {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'name': json['name'],
+        'issuerUrl': json['issuer_url'],
+        'clientId': json['client_id'],
+        'usernameClaim': !exists(json, 'username_claim') ? undefined : json['username_claim'],
+        'groupsClaim': !exists(json, 'groups_claim') ? undefined : json['groups_claim'],
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function ClusterInOidcProviderToJSON(value?: ClusterInOidcProvider | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +90,11 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'name': value.name,
+        'issuer_url': value.issuerUrl,
+        'client_id': value.clientId,
+        'username_claim': value.usernameClaim,
+        'groups_claim': value.groupsClaim,
     };
 }
 

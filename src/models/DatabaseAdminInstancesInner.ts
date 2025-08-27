@@ -59,7 +59,10 @@ export const DatabaseAdminInstancesInnerPrivilegesEnum = {
     ReadWrite: 'readWrite',
     AlterRoutine: 'ALTER_ROUTINE',
     CreateRoutine: 'CREATE_ROUTINE',
-    Transaction: 'TRANSACTION'
+    Transaction: 'TRANSACTION',
+    SlowLog: 'SLOW_LOG',
+    Trigger: 'TRIGGER',
+    CreateTemporaryTables: 'CREATE_TEMPORARY_TABLES'
 } as const;
 export type DatabaseAdminInstancesInnerPrivilegesEnum = typeof DatabaseAdminInstancesInnerPrivilegesEnum[keyof typeof DatabaseAdminInstancesInnerPrivilegesEnum];
 

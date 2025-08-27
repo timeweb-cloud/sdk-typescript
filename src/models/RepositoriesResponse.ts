@@ -13,120 +13,73 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ContainerRegistryRepositoriesInner } from './ContainerRegistryRepositoriesInner';
+import {
+    ContainerRegistryRepositoriesInnerFromJSON,
+    ContainerRegistryRepositoriesInnerFromJSONTyped,
+    ContainerRegistryRepositoriesInnerToJSON,
+} from './ContainerRegistryRepositoriesInner';
+import type { Meta1 } from './Meta1';
+import {
+    Meta1FromJSON,
+    Meta1FromJSONTyped,
+    Meta1ToJSON,
+} from './Meta1';
+
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface RepositoriesResponse
  */
-export interface PresetsStorage {
+export interface RepositoriesResponse {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    id: number;
-    /**
-     * Описание тарифа.
+     * ID запроса
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof RepositoriesResponse
      */
-    description: string;
+    responseId?: string;
     /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
+     * 
+     * @type {Meta1}
+     * @memberof RepositoriesResponse
      */
-    descriptionShort: string;
+    meta: Meta1;
     /**
-     * Описание диска хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
+     * Массив тарифов container registry
+     * @type {Array<ContainerRegistryRepositoriesInner>}
+     * @memberof RepositoriesResponse
      */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    containerRegistriesRepositories: Array<ContainerRegistryRepositoriesInner>;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the RepositoriesResponse interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfRepositoriesResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
+    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "containerRegistriesRepositories" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function RepositoriesResponseFromJSON(json: any): RepositoriesResponse {
+    return RepositoriesResponseFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function RepositoriesResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RepositoriesResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
+        'meta': Meta1FromJSON(json['meta']),
+        'containerRegistriesRepositories': ((json['container_registries_repositories'] as Array<any>).map(ContainerRegistryRepositoriesInnerFromJSON)),
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function RepositoriesResponseToJSON(value?: RepositoriesResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +88,9 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'response_id': value.responseId,
+        'meta': Meta1ToJSON(value.meta),
+        'container_registries_repositories': ((value.containerRegistriesRepositories as Array<any>).map(ContainerRegistryRepositoriesInnerToJSON)),
     };
 }
 

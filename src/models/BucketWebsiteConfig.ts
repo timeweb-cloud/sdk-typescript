@@ -13,120 +13,65 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BucketWebsiteConfigErrorPagesInner } from './BucketWebsiteConfigErrorPagesInner';
+import {
+    BucketWebsiteConfigErrorPagesInnerFromJSON,
+    BucketWebsiteConfigErrorPagesInnerFromJSONTyped,
+    BucketWebsiteConfigErrorPagesInnerToJSON,
+} from './BucketWebsiteConfigErrorPagesInner';
+
 /**
- * Тариф
+ * Позволяет разместить статический веб-сайт используя файлы бакета
  * @export
- * @interface PresetsStorage
+ * @interface BucketWebsiteConfig
  */
-export interface PresetsStorage {
+export interface BucketWebsiteConfig {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
+     * Включено ли сайтовое хранилище.
+     * @type {boolean}
+     * @memberof BucketWebsiteConfig
      */
-    id: number;
+    enabled?: boolean;
     /**
-     * Описание тарифа.
+     * Страница сайта.
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof BucketWebsiteConfig
      */
-    description: string;
+    indexPage?: string;
     /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
+     * Страницы ошибок.
+     * @type {Array<BucketWebsiteConfigErrorPagesInner>}
+     * @memberof BucketWebsiteConfig
      */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    errorPages?: Array<BucketWebsiteConfigErrorPagesInner>;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the BucketWebsiteConfig interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfBucketWebsiteConfig(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function BucketWebsiteConfigFromJSON(json: any): BucketWebsiteConfig {
+    return BucketWebsiteConfigFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function BucketWebsiteConfigFromJSONTyped(json: any, ignoreDiscriminator: boolean): BucketWebsiteConfig {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'enabled': !exists(json, 'enabled') ? undefined : json['enabled'],
+        'indexPage': !exists(json, 'index_page') ? undefined : json['index_page'],
+        'errorPages': !exists(json, 'error_pages') ? undefined : ((json['error_pages'] as Array<any>).map(BucketWebsiteConfigErrorPagesInnerFromJSON)),
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function BucketWebsiteConfigToJSON(value?: BucketWebsiteConfig | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +80,9 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'enabled': value.enabled,
+        'index_page': value.indexPage,
+        'error_pages': value.errorPages === undefined ? undefined : ((value.errorPages as Array<any>).map(BucketWebsiteConfigErrorPagesInnerToJSON)),
     };
 }
 

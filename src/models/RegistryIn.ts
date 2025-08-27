@@ -13,120 +13,80 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { RegistryInConfiguration } from './RegistryInConfiguration';
+import {
+    RegistryInConfigurationFromJSON,
+    RegistryInConfigurationFromJSONTyped,
+    RegistryInConfigurationToJSON,
+} from './RegistryInConfiguration';
+
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface RegistryIn
  */
-export interface PresetsStorage {
+export interface RegistryIn {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
+     * Имя реестра. Должно быть уникальным, от 3 до 48 символов, начинаться и заканчиваться буквой или числом, содержать только латинские буквы в нижнем регистре, цифры и символ «-», без пробелов
+     * @type {string}
+     * @memberof RegistryIn
+     */
+    name: string;
+    /**
+     * Описание реестра
+     * @type {string}
+     * @memberof RegistryIn
+     */
+    description?: string;
+    /**
+     * ID тарифа. Нельзя передавать вместе с `configuration`
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryIn
      */
-    id: number;
+    presetId?: number;
     /**
-     * Описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
+     * 
+     * @type {RegistryInConfiguration}
+     * @memberof RegistryIn
      */
-    description: string;
+    _configuration?: RegistryInConfiguration;
     /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
+     * ID проекта
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryIn
      */
-    disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    projectId?: number;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the RegistryIn interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfRegistryIn(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
-    isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
+    isInstance = isInstance && "name" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function RegistryInFromJSON(json: any): RegistryIn {
+    return RegistryInFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function RegistryInFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegistryIn {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
-        'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'name': json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        '_configuration': !exists(json, 'configuration') ? undefined : RegistryInConfigurationFromJSON(json['configuration']),
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function RegistryInToJSON(value?: RegistryIn | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -135,14 +95,11 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     }
     return {
         
-        'id': value.id,
+        'name': value.name,
         'description': value.description,
-        'description_short': value.descriptionShort,
-        'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
+        'preset_id': value.presetId,
+        'configuration': RegistryInConfigurationToJSON(value._configuration),
+        'project_id': value.projectId,
     };
 }
 

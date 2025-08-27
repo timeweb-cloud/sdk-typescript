@@ -22,10 +22,11 @@ export const AvailabilityZone = {
     Spb2: 'spb-2',
     Spb3: 'spb-3',
     Spb4: 'spb-4',
+    Msk1: 'msk-1',
     Nsk1: 'nsk-1',
     Ams1: 'ams-1',
-    Gdn1: 'gdn-1',
-    Ala1: 'ala-1'
+    Ala1: 'ala-1',
+    Fra1: 'fra-1'
 } as const;
 export type AvailabilityZone = typeof AvailabilityZone[keyof typeof AvailabilityZone];
 

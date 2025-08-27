@@ -13,53 +13,102 @@
  */
 
 import { exists, mapValues } from '../runtime';
-/**
- * Статистика использования диска кластера базы данных.
- * @export
- * @interface DatabaseClusterDiskStats
- */
-export interface DatabaseClusterDiskStats {
-    /**
-     * Размер (в Кб) диска кластера базы данных.
-     * @type {number}
-     * @memberof DatabaseClusterDiskStats
-     */
-    size: number;
-    /**
-     * Размер (в Кб) использованного пространства диска кластера базы данных.
-     * @type {number}
-     * @memberof DatabaseClusterDiskStats
-     */
-    used: number;
-}
+import type { BalancerNetworksInnerIpsInner } from './BalancerNetworksInnerIpsInner';
+import {
+    BalancerNetworksInnerIpsInnerFromJSON,
+    BalancerNetworksInnerIpsInnerFromJSONTyped,
+    BalancerNetworksInnerIpsInnerToJSON,
+} from './BalancerNetworksInnerIpsInner';
 
 /**
- * Check if a given object implements the DatabaseClusterDiskStats interface.
+ * 
+ * @export
+ * @interface BalancerNetworksInner
  */
-export function instanceOfDatabaseClusterDiskStats(value: object): boolean {
+export interface BalancerNetworksInner {
+    /**
+     * ID сети. Есть только у приватных сетей.
+     * @type {string}
+     * @memberof BalancerNetworksInner
+     */
+    id?: string;
+    /**
+     * Тип сети.
+     * @type {string}
+     * @memberof BalancerNetworksInner
+     */
+    type: BalancerNetworksInnerTypeEnum;
+    /**
+     * Тип преобразования сетевых адресов.
+     * @type {string}
+     * @memberof BalancerNetworksInner
+     */
+    natMode?: BalancerNetworksInnerNatModeEnum;
+    /**
+     * ID порта.
+     * @type {string}
+     * @memberof BalancerNetworksInner
+     */
+    portId?: string;
+    /**
+     * Список IP-адресов сети.
+     * @type {Array<BalancerNetworksInnerIpsInner>}
+     * @memberof BalancerNetworksInner
+     */
+    ips: Array<BalancerNetworksInnerIpsInner> | null;
+}
+
+
+/**
+ * @export
+ */
+export const BalancerNetworksInnerTypeEnum = {
+    Public: 'public',
+    Local: 'local'
+} as const;
+export type BalancerNetworksInnerTypeEnum = typeof BalancerNetworksInnerTypeEnum[keyof typeof BalancerNetworksInnerTypeEnum];
+
+/**
+ * @export
+ */
+export const BalancerNetworksInnerNatModeEnum = {
+    DnatAndSnat: 'dnat_and_snat',
+    Snat: 'snat',
+    NoNat: 'no_nat'
+} as const;
+export type BalancerNetworksInnerNatModeEnum = typeof BalancerNetworksInnerNatModeEnum[keyof typeof BalancerNetworksInnerNatModeEnum];
+
+
+/**
+ * Check if a given object implements the BalancerNetworksInner interface.
+ */
+export function instanceOfBalancerNetworksInner(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "size" in value;
-    isInstance = isInstance && "used" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "ips" in value;
 
     return isInstance;
 }
 
-export function DatabaseClusterDiskStatsFromJSON(json: any): DatabaseClusterDiskStats {
-    return DatabaseClusterDiskStatsFromJSONTyped(json, false);
+export function BalancerNetworksInnerFromJSON(json: any): BalancerNetworksInner {
+    return BalancerNetworksInnerFromJSONTyped(json, false);
 }
 
-export function DatabaseClusterDiskStatsFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatabaseClusterDiskStats {
+export function BalancerNetworksInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): BalancerNetworksInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'size': json['size'],
-        'used': json['used'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'type': json['type'],
+        'natMode': !exists(json, 'nat_mode') ? undefined : json['nat_mode'],
+        'portId': !exists(json, 'port_id') ? undefined : json['port_id'],
+        'ips': (json['ips'] === null ? null : (json['ips'] as Array<any>).map(BalancerNetworksInnerIpsInnerFromJSON)),
     };
 }
 
-export function DatabaseClusterDiskStatsToJSON(value?: DatabaseClusterDiskStats | null): any {
+export function BalancerNetworksInnerToJSON(value?: BalancerNetworksInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +117,11 @@ export function DatabaseClusterDiskStatsToJSON(value?: DatabaseClusterDiskStats 
     }
     return {
         
-        'size': value.size,
-        'used': value.used,
+        'id': value.id,
+        'type': value.type,
+        'nat_mode': value.natMode,
+        'port_id': value.portId,
+        'ips': (value.ips === null ? null : (value.ips as Array<any>).map(BalancerNetworksInnerIpsInnerToJSON)),
     };
 }
 

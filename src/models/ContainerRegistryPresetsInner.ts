@@ -14,102 +14,68 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Тариф
+ * 
  * @export
- * @interface PresetsStorage
+ * @interface ContainerRegistryPresetsInner
  */
-export interface PresetsStorage {
+export interface ContainerRegistryPresetsInner {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
+     * ID тарифа
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof ContainerRegistryPresetsInner
      */
     id: number;
     /**
-     * Описание тарифа.
+     * Описание тарифа
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ContainerRegistryPresetsInner
      */
     description: string;
     /**
-     * Краткое описание тарифа.
+     * Краткое описание тарифа
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ContainerRegistryPresetsInner
      */
     descriptionShort: string;
     /**
-     * Описание диска хранилища.
+     * Количество пространства в ГБ
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof ContainerRegistryPresetsInner
      */
     disk: number;
     /**
-     * Стоимость тарифа хранилища.
+     * Стоимость
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof ContainerRegistryPresetsInner
      */
     price: number;
     /**
-     * Географическое расположение тарифа.
+     * Локация
      * @type {string}
-     * @memberof PresetsStorage
+     * @memberof ContainerRegistryPresetsInner
      */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
+    location?: string;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the ContainerRegistryPresetsInner interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfContainerRegistryPresetsInner(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "descriptionShort" in value;
     isInstance = isInstance && "disk" in value;
     isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function ContainerRegistryPresetsInnerFromJSON(json: any): ContainerRegistryPresetsInner {
+    return ContainerRegistryPresetsInnerFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function ContainerRegistryPresetsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContainerRegistryPresetsInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -120,13 +86,11 @@ export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: bool
         'descriptionShort': json['description_short'],
         'disk': json['disk'],
         'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
+        'location': !exists(json, 'location') ? undefined : json['location'],
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function ContainerRegistryPresetsInnerToJSON(value?: ContainerRegistryPresetsInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -141,8 +105,6 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
         'disk': value.disk,
         'price': value.price,
         'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
     };
 }
 

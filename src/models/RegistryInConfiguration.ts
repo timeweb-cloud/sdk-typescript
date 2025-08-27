@@ -14,119 +14,52 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Тариф
+ * Параметры конфигурации. Нельзя передавать вместе с `preset_id`.
  * @export
- * @interface PresetsStorage
+ * @interface RegistryInConfiguration
  */
-export interface PresetsStorage {
+export interface RegistryInConfiguration {
     /**
-     * ID для каждого экземпляра тарифа хранилища.
+     * ID конфигуратора
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryInConfiguration
      */
     id: number;
     /**
-     * Описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    description: string;
-    /**
-     * Краткое описание тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    descriptionShort: string;
-    /**
-     * Описание диска хранилища.
+     * Размер диска в ГБ
      * @type {number}
-     * @memberof PresetsStorage
+     * @memberof RegistryInConfiguration
      */
     disk: number;
-    /**
-     * Стоимость тарифа хранилища.
-     * @type {number}
-     * @memberof PresetsStorage
-     */
-    price: number;
-    /**
-     * Географическое расположение тарифа.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    location: PresetsStorageLocationEnum;
-    /**
-     * Теги тарифа.
-     * @type {Array<string>}
-     * @memberof PresetsStorage
-     */
-    tags: Array<string>;
-    /**
-     * Класс хранилища.
-     * @type {string}
-     * @memberof PresetsStorage
-     */
-    storageClass: PresetsStorageStorageClassEnum;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the RegistryInConfiguration interface.
  */
-export const PresetsStorageLocationEnum = {
-    Ru1: 'ru-1'
-} as const;
-export type PresetsStorageLocationEnum = typeof PresetsStorageLocationEnum[keyof typeof PresetsStorageLocationEnum];
-
-/**
- * @export
- */
-export const PresetsStorageStorageClassEnum = {
-    Cold: 'cold',
-    Hot: 'hot'
-} as const;
-export type PresetsStorageStorageClassEnum = typeof PresetsStorageStorageClassEnum[keyof typeof PresetsStorageStorageClassEnum];
-
-
-/**
- * Check if a given object implements the PresetsStorage interface.
- */
-export function instanceOfPresetsStorage(value: object): boolean {
+export function instanceOfRegistryInConfiguration(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "descriptionShort" in value;
     isInstance = isInstance && "disk" in value;
-    isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "storageClass" in value;
 
     return isInstance;
 }
 
-export function PresetsStorageFromJSON(json: any): PresetsStorage {
-    return PresetsStorageFromJSONTyped(json, false);
+export function RegistryInConfigurationFromJSON(json: any): RegistryInConfiguration {
+    return RegistryInConfigurationFromJSONTyped(json, false);
 }
 
-export function PresetsStorageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresetsStorage {
+export function RegistryInConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegistryInConfiguration {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'description': json['description'],
-        'descriptionShort': json['description_short'],
         'disk': json['disk'],
-        'price': json['price'],
-        'location': json['location'],
-        'tags': json['tags'],
-        'storageClass': json['storage_class'],
     };
 }
 
-export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
+export function RegistryInConfigurationToJSON(value?: RegistryInConfiguration | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -136,13 +69,7 @@ export function PresetsStorageToJSON(value?: PresetsStorage | null): any {
     return {
         
         'id': value.id,
-        'description': value.description,
-        'description_short': value.descriptionShort,
         'disk': value.disk,
-        'price': value.price,
-        'location': value.location,
-        'tags': value.tags,
-        'storage_class': value.storageClass,
     };
 }
 

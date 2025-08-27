@@ -43,6 +43,12 @@ export interface NodeGroupInConfiguration {
      * @memberof NodeGroupInConfiguration
      */
     ram: number;
+    /**
+     * Количество видеокарт
+     * @type {number}
+     * @memberof NodeGroupInConfiguration
+     */
+    gpu?: number;
 }
 
 /**
@@ -72,6 +78,7 @@ export function NodeGroupInConfigurationFromJSONTyped(json: any, ignoreDiscrimin
         'disk': json['disk'],
         'cpu': json['cpu'],
         'ram': json['ram'],
+        'gpu': !exists(json, 'gpu') ? undefined : json['gpu'],
     };
 }
 
@@ -88,6 +95,7 @@ export function NodeGroupInConfigurationToJSON(value?: NodeGroupInConfiguration 
         'disk': value.disk,
         'cpu': value.cpu,
         'ram': value.ram,
+        'gpu': value.gpu,
     };
 }
 

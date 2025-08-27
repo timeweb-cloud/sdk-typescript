@@ -14,50 +14,69 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Информация о владельце файла или папки.
+ * Окно обслуживания кластера
  * @export
- * @interface S3ObjectOwner
+ * @interface ClusterInMaintenanceSlot
  */
-export interface S3ObjectOwner {
+export interface ClusterInMaintenanceSlot {
     /**
-     * ID владельца файла.
+     * В любое время или в заданное время. При значении `fixed_time` поля `from` и `to` являются обязательными. Минимально допустимый временной интервал — 3 часа. Время задается в часовом поясе UTC.
      * @type {string}
-     * @memberof S3ObjectOwner
+     * @memberof ClusterInMaintenanceSlot
      */
-    id?: string;
+    type: ClusterInMaintenanceSlotTypeEnum;
     /**
-     * Имя владельца файла.
+     * Интервал времени с. Время должно быть в формате HH:MM (24 часа)
      * @type {string}
-     * @memberof S3ObjectOwner
+     * @memberof ClusterInMaintenanceSlot
      */
-    displayName?: string;
+    from?: string;
+    /**
+     * Интервал времени до. Время должно быть в формате HH:MM (24 часа)
+     * @type {string}
+     * @memberof ClusterInMaintenanceSlot
+     */
+    to?: string;
 }
 
+
 /**
- * Check if a given object implements the S3ObjectOwner interface.
+ * @export
  */
-export function instanceOfS3ObjectOwner(value: object): boolean {
+export const ClusterInMaintenanceSlotTypeEnum = {
+    AnyTime: 'any_time',
+    FixedTime: 'fixed_time'
+} as const;
+export type ClusterInMaintenanceSlotTypeEnum = typeof ClusterInMaintenanceSlotTypeEnum[keyof typeof ClusterInMaintenanceSlotTypeEnum];
+
+
+/**
+ * Check if a given object implements the ClusterInMaintenanceSlot interface.
+ */
+export function instanceOfClusterInMaintenanceSlot(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
 
-export function S3ObjectOwnerFromJSON(json: any): S3ObjectOwner {
-    return S3ObjectOwnerFromJSONTyped(json, false);
+export function ClusterInMaintenanceSlotFromJSON(json: any): ClusterInMaintenanceSlot {
+    return ClusterInMaintenanceSlotFromJSONTyped(json, false);
 }
 
-export function S3ObjectOwnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): S3ObjectOwner {
+export function ClusterInMaintenanceSlotFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterInMaintenanceSlot {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'displayName': !exists(json, 'display_name') ? undefined : json['display_name'],
+        'type': json['type'],
+        'from': !exists(json, 'from') ? undefined : json['from'],
+        'to': !exists(json, 'to') ? undefined : json['to'],
     };
 }
 
-export function S3ObjectOwnerToJSON(value?: S3ObjectOwner | null): any {
+export function ClusterInMaintenanceSlotToJSON(value?: ClusterInMaintenanceSlot | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -66,8 +85,9 @@ export function S3ObjectOwnerToJSON(value?: S3ObjectOwner | null): any {
     }
     return {
         
-        'id': value.id,
-        'display_name': value.displayName,
+        'type': value.type,
+        'from': value.from,
+        'to': value.to,
     };
 }
 

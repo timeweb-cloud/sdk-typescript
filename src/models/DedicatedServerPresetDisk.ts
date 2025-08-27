@@ -31,6 +31,18 @@ export interface DedicatedServerPresetDisk {
      * @memberof DedicatedServerPresetDisk
      */
     count: number;
+    /**
+     * Общий размер дисков выделенного сервера.
+     * @type {number}
+     * @memberof DedicatedServerPresetDisk
+     */
+    totalSize: number;
+    /**
+     * Тип дисков выделенного сервера.
+     * @type {string}
+     * @memberof DedicatedServerPresetDisk
+     */
+    type: string;
 }
 
 /**
@@ -40,6 +52,8 @@ export function instanceOfDedicatedServerPresetDisk(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "totalSize" in value;
+    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
@@ -56,6 +70,8 @@ export function DedicatedServerPresetDiskFromJSONTyped(json: any, ignoreDiscrimi
         
         'description': json['description'],
         'count': json['count'],
+        'totalSize': json['total_size'],
+        'type': json['type'],
     };
 }
 
@@ -70,6 +86,8 @@ export function DedicatedServerPresetDiskToJSON(value?: DedicatedServerPresetDis
         
         'description': value.description,
         'count': value.count,
+        'total_size': value.totalSize,
+        'type': value.type,
     };
 }
 

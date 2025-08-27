@@ -57,7 +57,7 @@ export interface UpdateServer {
      */
     bandwidth?: number;
     /**
-     * Имя облачного сервера. Максимальная длина — 255 символов, имя должно быть уникальным.
+     * Имя облачного сервера. Максимальная длина — 255 символов.
      * @type {string}
      * @memberof UpdateServer
      */

@@ -79,7 +79,7 @@ export interface DedicatedServerPreset {
      * @type {number}
      * @memberof DedicatedServerPreset
      */
-    price?: number;
+    price: number;
     /**
      * 
      * @type {DedicatedServerPresetMemory}
@@ -123,6 +123,7 @@ export function instanceOfDedicatedServerPreset(value: object): boolean {
     isInstance = isInstance && "isPreInstalled" in value;
     isInstance = isInstance && "cpu" in value;
     isInstance = isInstance && "disk" in value;
+    isInstance = isInstance && "price" in value;
     isInstance = isInstance && "memory" in value;
     isInstance = isInstance && "location" in value;
 
@@ -145,7 +146,7 @@ export function DedicatedServerPresetFromJSONTyped(json: any, ignoreDiscriminato
         'isPreInstalled': json['is_pre_installed'],
         'cpu': DedicatedServerPresetCpuFromJSON(json['cpu']),
         'disk': DedicatedServerPresetDiskFromJSON(json['disk']),
-        'price': !exists(json, 'price') ? undefined : json['price'],
+        'price': json['price'],
         'memory': DedicatedServerPresetMemoryFromJSON(json['memory']),
         'location': json['location'],
     };
