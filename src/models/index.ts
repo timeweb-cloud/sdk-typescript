@@ -65,6 +65,7 @@ export * from './ClusterInMaintenanceSlot';
 export * from './ClusterInOidcProvider';
 export * from './ClusterOut';
 export * from './ClusterResponse';
+export * from './ClusterVersionEdit';
 export * from './Clusterk8s';
 export * from './ClustersResponse';
 export * from './Commit';

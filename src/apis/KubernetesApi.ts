@@ -18,6 +18,7 @@ import type {
   ClusterEdit,
   ClusterIn,
   ClusterResponse,
+  ClusterVersionEdit,
   ClustersResponse,
   DeleteCluster200Response,
   GetFinances400Response,
@@ -44,6 +45,8 @@ import {
     ClusterInToJSON,
     ClusterResponseFromJSON,
     ClusterResponseToJSON,
+    ClusterVersionEditFromJSON,
+    ClusterVersionEditToJSON,
     ClustersResponseFromJSON,
     ClustersResponseToJSON,
     DeleteCluster200ResponseFromJSON,
@@ -159,6 +162,11 @@ export interface ReduceCountOfNodesInGroupRequest {
 export interface UpdateClusterRequest {
     clusterId: number;
     clusterEdit: ClusterEdit;
+}
+
+export interface UpdateClusterVersionRequest {
+    clusterId: number;
+    clusterVersionEdit: ClusterVersionEdit;
 }
 
 /**
@@ -988,6 +996,52 @@ export class KubernetesApi extends runtime.BaseAPI {
     async updateCluster(requestParameters: UpdateClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ClusterResponse> {
         const response = await this.updateClusterRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Чтобы обновить версию кластера, отправьте PATCH-запрос в `/api/v1/k8s/clusters/{cluster_id}/versions/update`
+     * Обновление версии кластера
+     */
+    async updateClusterVersionRaw(requestParameters: UpdateClusterVersionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.clusterId === null || requestParameters.clusterId === undefined) {
+            throw new runtime.RequiredError('clusterId','Required parameter requestParameters.clusterId was null or undefined when calling updateClusterVersion.');
+        }
+
+        if (requestParameters.clusterVersionEdit === null || requestParameters.clusterVersionEdit === undefined) {
+            throw new runtime.RequiredError('clusterVersionEdit','Required parameter requestParameters.clusterVersionEdit was null or undefined when calling updateClusterVersion.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/k8s/clusters/{cluster_id}/versions/update`.replace(`{${"cluster_id"}}`, encodeURIComponent(String(requestParameters.clusterId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ClusterVersionEditToJSON(requestParameters.clusterVersionEdit),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы обновить версию кластера, отправьте PATCH-запрос в `/api/v1/k8s/clusters/{cluster_id}/versions/update`
+     * Обновление версии кластера
+     */
+    async updateClusterVersion(requestParameters: UpdateClusterVersionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateClusterVersionRaw(requestParameters, initOverrides);
     }
 
 }

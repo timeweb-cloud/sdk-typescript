@@ -90,6 +90,7 @@ src/models/ClusterInMaintenanceSlot.ts
 src/models/ClusterInOidcProvider.ts
 src/models/ClusterOut.ts
 src/models/ClusterResponse.ts
+src/models/ClusterVersionEdit.ts
 src/models/Clusterk8s.ts
 src/models/ClustersResponse.ts
 src/models/Commit.ts
