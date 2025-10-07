@@ -13,65 +13,75 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ClusterEditOidcProvider } from './ClusterEditOidcProvider';
-import {
-    ClusterEditOidcProviderFromJSON,
-    ClusterEditOidcProviderFromJSONTyped,
-    ClusterEditOidcProviderToJSON,
-} from './ClusterEditOidcProvider';
-
 /**
- * 
+ * OIDC-провайдер
  * @export
- * @interface ClusterEdit
+ * @interface ClusterEditOidcProvider
  */
-export interface ClusterEdit {
+export interface ClusterEditOidcProvider {
     /**
-     * Новое название кластера
+     * Название создаваемого подключения. Используется только для идентификации и не влияет на остальные параметры
      * @type {string}
-     * @memberof ClusterEdit
+     * @memberof ClusterEditOidcProvider
      */
-    name?: string;
+    name: string;
     /**
-     * Новое описание кластера
+     * Адрес OIDC-провайдера, используемый для аутентификации пользователей, запрашивающих доступ к кластеру
      * @type {string}
-     * @memberof ClusterEdit
+     * @memberof ClusterEditOidcProvider
      */
-    description?: string;
+    issuerUrl: string;
     /**
-     * 
-     * @type {ClusterEditOidcProvider}
-     * @memberof ClusterEdit
+     * Идентификатор сервиса, выданный OIDC-провайдером, от имени которого осуществляется запрос к ресурсам
+     * @type {string}
+     * @memberof ClusterEditOidcProvider
      */
-    oidcProvider?: ClusterEditOidcProvider;
+    clientId: string;
+    /**
+     * Поле в JSON Web Token (JWT), используемое для идентификации пользователя
+     * @type {string}
+     * @memberof ClusterEditOidcProvider
+     */
+    usernameClaim?: string;
+    /**
+     * Поле в JSON Web Token (JWT), содержащее названии группы, к которой принадлежит пользователь
+     * @type {string}
+     * @memberof ClusterEditOidcProvider
+     */
+    groupsClaim?: string;
 }
 
 /**
- * Check if a given object implements the ClusterEdit interface.
+ * Check if a given object implements the ClusterEditOidcProvider interface.
  */
-export function instanceOfClusterEdit(value: object): boolean {
+export function instanceOfClusterEditOidcProvider(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "issuerUrl" in value;
+    isInstance = isInstance && "clientId" in value;
 
     return isInstance;
 }
 
-export function ClusterEditFromJSON(json: any): ClusterEdit {
-    return ClusterEditFromJSONTyped(json, false);
+export function ClusterEditOidcProviderFromJSON(json: any): ClusterEditOidcProvider {
+    return ClusterEditOidcProviderFromJSONTyped(json, false);
 }
 
-export function ClusterEditFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterEdit {
+export function ClusterEditOidcProviderFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterEditOidcProvider {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'oidcProvider': !exists(json, 'oidc_provider') ? undefined : ClusterEditOidcProviderFromJSON(json['oidc_provider']),
+        'name': json['name'],
+        'issuerUrl': json['issuer_url'],
+        'clientId': json['client_id'],
+        'usernameClaim': !exists(json, 'username_claim') ? undefined : json['username_claim'],
+        'groupsClaim': !exists(json, 'groups_claim') ? undefined : json['groups_claim'],
     };
 }
 
-export function ClusterEditToJSON(value?: ClusterEdit | null): any {
+export function ClusterEditOidcProviderToJSON(value?: ClusterEditOidcProvider | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -81,8 +91,10 @@ export function ClusterEditToJSON(value?: ClusterEdit | null): any {
     return {
         
         'name': value.name,
-        'description': value.description,
-        'oidc_provider': ClusterEditOidcProviderToJSON(value.oidcProvider),
+        'issuer_url': value.issuerUrl,
+        'client_id': value.clientId,
+        'username_claim': value.usernameClaim,
+        'groups_claim': value.groupsClaim,
     };
 }
 

@@ -83,6 +83,7 @@ src/models/BucketWebsiteConfig.ts
 src/models/BucketWebsiteConfigErrorPagesInner.ts
 src/models/CheckDomain200Response.ts
 src/models/ClusterEdit.ts
+src/models/ClusterEditOidcProvider.ts
 src/models/ClusterIn.ts
 src/models/ClusterInClusterNetworkCidr.ts
 src/models/ClusterInConfiguration.ts

@@ -58,6 +58,7 @@ export * from './BucketWebsiteConfig';
 export * from './BucketWebsiteConfigErrorPagesInner';
 export * from './CheckDomain200Response';
 export * from './ClusterEdit';
+export * from './ClusterEditOidcProvider';
 export * from './ClusterIn';
 export * from './ClusterInClusterNetworkCidr';
 export * from './ClusterInConfiguration';
