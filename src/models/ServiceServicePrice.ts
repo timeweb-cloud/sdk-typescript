@@ -12,70 +12,99 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
+import { exists, mapValues } from '../runtime';
+import type { ServiceCostType } from './ServiceCostType';
 import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
+    ServiceCostTypeFromJSON,
+    ServiceCostTypeFromJSONTyped,
+    ServiceCostTypeToJSON,
+} from './ServiceCostType';
+import type { ServiceServicePriceNodeGroupsInner } from './ServiceServicePriceNodeGroupsInner';
+import {
+    ServiceServicePriceNodeGroupsInnerFromJSON,
+    ServiceServicePriceNodeGroupsInnerFromJSONTyped,
+    ServiceServicePriceNodeGroupsInnerToJSON,
+} from './ServiceServicePriceNodeGroupsInner';
 
 /**
- * 
+ * Информация о стоимости вложенного сервиса
+ * @export
+ * @interface ServiceServicePrice
  */
-export class LocationsApi extends runtime.BaseAPI {
-
+export interface ServiceServicePrice {
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Идентификатор сервиса
+     * @type {number}
+     * @memberof ServiceServicePrice
      */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
+    id?: number;
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Стоимость сервиса
+     * @type {number}
+     * @memberof ServiceServicePrice
      */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+    cost?: number;
+    /**
+     * Описание сервиса
+     * @type {string}
+     * @memberof ServiceServicePrice
+     */
+    description?: string;
+    /**
+     * 
+     * @type {ServiceCostType}
+     * @memberof ServiceServicePrice
+     */
+    type?: ServiceCostType;
+    /**
+     * Группы узлов для Kubernetes кластера
+     * @type {Array<ServiceServicePriceNodeGroupsInner>}
+     * @memberof ServiceServicePrice
+     */
+    nodeGroups?: Array<ServiceServicePriceNodeGroupsInner>;
 }
+
+/**
+ * Check if a given object implements the ServiceServicePrice interface.
+ */
+export function instanceOfServiceServicePrice(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
+export function ServiceServicePriceFromJSON(json: any): ServiceServicePrice {
+    return ServiceServicePriceFromJSONTyped(json, false);
+}
+
+export function ServiceServicePriceFromJSONTyped(json: any, ignoreDiscriminator: boolean): ServiceServicePrice {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'cost': !exists(json, 'cost') ? undefined : json['cost'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'type': !exists(json, 'type') ? undefined : ServiceCostTypeFromJSON(json['type']),
+        'nodeGroups': !exists(json, 'node_groups') ? undefined : ((json['node_groups'] as Array<any>).map(ServiceServicePriceNodeGroupsInnerFromJSON)),
+    };
+}
+
+export function ServiceServicePriceToJSON(value?: ServiceServicePrice | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'cost': value.cost,
+        'description': value.description,
+        'type': ServiceCostTypeToJSON(value.type),
+        'node_groups': value.nodeGroups === undefined ? undefined : ((value.nodeGroups as Array<any>).map(ServiceServicePriceNodeGroupsInnerToJSON)),
+    };
+}
+

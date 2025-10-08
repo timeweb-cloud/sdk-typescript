@@ -12,70 +12,70 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
-import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
+import { exists, mapValues } from '../runtime';
+/**
+ * Конфигурация сервиса
+ * @export
+ * @interface ServicePriceConfiguration
+ */
+export interface ServicePriceConfiguration {
+    /**
+     * Количество ядер процессора
+     * @type {number}
+     * @memberof ServicePriceConfiguration
+     */
+    cpu?: number;
+    /**
+     * Объем оперативной памяти в МБ
+     * @type {number}
+     * @memberof ServicePriceConfiguration
+     */
+    ram?: number;
+    /**
+     * Объем дискового пространства в ГБ
+     * @type {number}
+     * @memberof ServicePriceConfiguration
+     */
+    disk?: number;
+}
 
 /**
- * 
+ * Check if a given object implements the ServicePriceConfiguration interface.
  */
-export class LocationsApi extends runtime.BaseAPI {
+export function instanceOfServicePriceConfiguration(value: object): boolean {
+    let isInstance = true;
 
-    /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
-     */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
-     */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+    return isInstance;
 }
+
+export function ServicePriceConfigurationFromJSON(json: any): ServicePriceConfiguration {
+    return ServicePriceConfigurationFromJSONTyped(json, false);
+}
+
+export function ServicePriceConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): ServicePriceConfiguration {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
+        'ram': !exists(json, 'ram') ? undefined : json['ram'],
+        'disk': !exists(json, 'disk') ? undefined : json['disk'],
+    };
+}
+
+export function ServicePriceConfigurationToJSON(value?: ServicePriceConfiguration | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'cpu': value.cpu,
+        'ram': value.ram,
+        'disk': value.disk,
+    };
+}
+

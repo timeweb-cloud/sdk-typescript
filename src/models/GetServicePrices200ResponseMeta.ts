@@ -12,70 +12,55 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
-import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
-
+import { exists, mapValues } from '../runtime';
 /**
  * 
+ * @export
+ * @interface GetServicePrices200ResponseMeta
  */
-export class LocationsApi extends runtime.BaseAPI {
-
+export interface GetServicePrices200ResponseMeta {
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Общее количество сервисов
+     * @type {number}
+     * @memberof GetServicePrices200ResponseMeta
      */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
-     */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+    total: number;
 }
+
+/**
+ * Check if a given object implements the GetServicePrices200ResponseMeta interface.
+ */
+export function instanceOfGetServicePrices200ResponseMeta(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "total" in value;
+
+    return isInstance;
+}
+
+export function GetServicePrices200ResponseMetaFromJSON(json: any): GetServicePrices200ResponseMeta {
+    return GetServicePrices200ResponseMetaFromJSONTyped(json, false);
+}
+
+export function GetServicePrices200ResponseMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetServicePrices200ResponseMeta {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'total': json['total'],
+    };
+}
+
+export function GetServicePrices200ResponseMetaToJSON(value?: GetServicePrices200ResponseMeta | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'total': value.total,
+    };
+}
+

@@ -12,70 +12,70 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
-import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
-
+import { exists, mapValues } from '../runtime';
 /**
  * 
+ * @export
+ * @interface ServiceServicePriceNodeGroupsInner
  */
-export class LocationsApi extends runtime.BaseAPI {
-
+export interface ServiceServicePriceNodeGroupsInner {
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Стоимость группы узлов
+     * @type {number}
+     * @memberof ServiceServicePriceNodeGroupsInner
      */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
+    cost?: number;
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Название группы узлов
+     * @type {string}
+     * @memberof ServiceServicePriceNodeGroupsInner
      */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+    name?: string;
+    /**
+     * Количество узлов в группе
+     * @type {number}
+     * @memberof ServiceServicePriceNodeGroupsInner
+     */
+    nodesCount?: number;
 }
+
+/**
+ * Check if a given object implements the ServiceServicePriceNodeGroupsInner interface.
+ */
+export function instanceOfServiceServicePriceNodeGroupsInner(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
+export function ServiceServicePriceNodeGroupsInnerFromJSON(json: any): ServiceServicePriceNodeGroupsInner {
+    return ServiceServicePriceNodeGroupsInnerFromJSONTyped(json, false);
+}
+
+export function ServiceServicePriceNodeGroupsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): ServiceServicePriceNodeGroupsInner {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'cost': !exists(json, 'cost') ? undefined : json['cost'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'nodesCount': !exists(json, 'nodes_count') ? undefined : json['nodes_count'],
+    };
+}
+
+export function ServiceServicePriceNodeGroupsInnerToJSON(value?: ServiceServicePriceNodeGroupsInner | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'cost': value.cost,
+        'name': value.name,
+        'nodes_count': value.nodesCount,
+    };
+}
+

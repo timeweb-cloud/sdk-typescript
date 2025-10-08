@@ -12,70 +12,138 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
+import { exists, mapValues } from '../runtime';
+import type { InfoServicePrice } from './InfoServicePrice';
 import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
+    InfoServicePriceFromJSON,
+    InfoServicePriceFromJSONTyped,
+    InfoServicePriceToJSON,
+} from './InfoServicePrice';
+import type { ServicePriceConfiguration } from './ServicePriceConfiguration';
+import {
+    ServicePriceConfigurationFromJSON,
+    ServicePriceConfigurationFromJSONTyped,
+    ServicePriceConfigurationToJSON,
+} from './ServicePriceConfiguration';
+import type { ServicePriceType } from './ServicePriceType';
+import {
+    ServicePriceTypeFromJSON,
+    ServicePriceTypeFromJSONTyped,
+    ServicePriceTypeToJSON,
+} from './ServicePriceType';
+import type { ServiceServicePrice } from './ServiceServicePrice';
+import {
+    ServiceServicePriceFromJSON,
+    ServiceServicePriceFromJSONTyped,
+    ServiceServicePriceToJSON,
+} from './ServiceServicePrice';
 
 /**
- * 
+ * Информация о стоимости сервиса
+ * @export
+ * @interface ServicePrice
  */
-export class LocationsApi extends runtime.BaseAPI {
-
+export interface ServicePrice {
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Стоимость сервиса
+     * @type {number}
+     * @memberof ServicePrice
      */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
+    cost: number;
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Общая стоимость сервиса с учетом всех дополнительных услуг
+     * @type {number}
+     * @memberof ServicePrice
      */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+    totalCost: number;
+    /**
+     * 
+     * @type {ServicePriceType}
+     * @memberof ServicePrice
+     */
+    type: ServicePriceType;
+    /**
+     * Идентификатор сервиса
+     * @type {number}
+     * @memberof ServicePrice
+     */
+    serviceId?: number;
+    /**
+     * Идентификатор проекта
+     * @type {number}
+     * @memberof ServicePrice
+     */
+    projectId?: number | null;
+    /**
+     * Список вложенных сервисов
+     * @type {Array<ServiceServicePrice>}
+     * @memberof ServicePrice
+     */
+    services?: Array<ServiceServicePrice>;
+    /**
+     * 
+     * @type {InfoServicePrice}
+     * @memberof ServicePrice
+     */
+    info?: InfoServicePrice;
+    /**
+     * 
+     * @type {ServicePriceConfiguration}
+     * @memberof ServicePrice
+     */
+    _configuration?: ServicePriceConfiguration;
 }
+
+/**
+ * Check if a given object implements the ServicePrice interface.
+ */
+export function instanceOfServicePrice(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "cost" in value;
+    isInstance = isInstance && "totalCost" in value;
+    isInstance = isInstance && "type" in value;
+
+    return isInstance;
+}
+
+export function ServicePriceFromJSON(json: any): ServicePrice {
+    return ServicePriceFromJSONTyped(json, false);
+}
+
+export function ServicePriceFromJSONTyped(json: any, ignoreDiscriminator: boolean): ServicePrice {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'cost': json['cost'],
+        'totalCost': json['total_cost'],
+        'type': ServicePriceTypeFromJSON(json['type']),
+        'serviceId': !exists(json, 'service_id') ? undefined : json['service_id'],
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'services': !exists(json, 'services') ? undefined : ((json['services'] as Array<any>).map(ServiceServicePriceFromJSON)),
+        'info': !exists(json, 'info') ? undefined : InfoServicePriceFromJSON(json['info']),
+        '_configuration': !exists(json, 'configuration') ? undefined : ServicePriceConfigurationFromJSON(json['configuration']),
+    };
+}
+
+export function ServicePriceToJSON(value?: ServicePrice | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'cost': value.cost,
+        'total_cost': value.totalCost,
+        'type': ServicePriceTypeToJSON(value.type),
+        'service_id': value.serviceId,
+        'project_id': value.projectId,
+        'services': value.services === undefined ? undefined : ((value.services as Array<any>).map(ServiceServicePriceToJSON)),
+        'info': InfoServicePriceToJSON(value.info),
+        'configuration': ServicePriceConfigurationToJSON(value._configuration),
+    };
+}
+

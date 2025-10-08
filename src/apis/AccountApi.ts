@@ -24,12 +24,11 @@ import type {
   DeleteIPsFromAllowedList200Response,
   DeleteIPsFromAllowedListRequest,
   GetAccountStatus200Response,
+  GetAccountStatus403Response,
   GetAuthAccessSettings200Response,
   GetCountries200Response,
-  GetFinances200Response,
   GetFinances400Response,
   GetFinances401Response,
-  GetFinances403Response,
   GetFinances429Response,
   GetFinances500Response,
   GetNotificationSettings200Response,
@@ -55,18 +54,16 @@ import {
     DeleteIPsFromAllowedListRequestToJSON,
     GetAccountStatus200ResponseFromJSON,
     GetAccountStatus200ResponseToJSON,
+    GetAccountStatus403ResponseFromJSON,
+    GetAccountStatus403ResponseToJSON,
     GetAuthAccessSettings200ResponseFromJSON,
     GetAuthAccessSettings200ResponseToJSON,
     GetCountries200ResponseFromJSON,
     GetCountries200ResponseToJSON,
-    GetFinances200ResponseFromJSON,
-    GetFinances200ResponseToJSON,
     GetFinances400ResponseFromJSON,
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
     GetFinances401ResponseToJSON,
-    GetFinances403ResponseFromJSON,
-    GetFinances403ResponseToJSON,
     GetFinances429ResponseFromJSON,
     GetFinances429ResponseToJSON,
     GetFinances500ResponseFromJSON,
@@ -389,42 +386,6 @@ export class AccountApi extends runtime.BaseAPI {
      */
     async getCountries(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCountries200Response> {
         const response = await this.getCountriesRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Чтобы получить платежную информацию, отправьте GET-запрос на `/api/v1/account/finances`.
-     * Получение платежной информации
-     */
-    async getFinancesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFinances200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/account/finances`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFinances200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить платежную информацию, отправьте GET-запрос на `/api/v1/account/finances`.
-     * Получение платежной информации
-     */
-    async getFinances(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFinances200Response> {
-        const response = await this.getFinancesRaw(initOverrides);
         return await response.value();
     }
 

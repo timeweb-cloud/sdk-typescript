@@ -13,68 +13,81 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PaymentType } from './PaymentType';
+import {
+    PaymentTypeFromJSON,
+    PaymentTypeFromJSONTyped,
+    PaymentTypeToJSON,
+} from './PaymentType';
+
 /**
- * 
+ * Данные для создания платежа
  * @export
- * @interface GetFinances403Response
+ * @interface CreatePayment
  */
-export interface GetFinances403Response {
+export interface CreatePayment {
     /**
-     * Короткий идентификатор, соответствующий возвращаемому коду состояния HTTP.
+     * Сумма оплаты
      * @type {number}
-     * @memberof GetFinances403Response
+     * @memberof CreatePayment
      */
-    statusCode: number;
+    amount: number;
     /**
-     * Сообщение, предоставляющее дополнительную информацию об ошибке, в том числе сведения, помогающие устранить ее, когда это возможно.
-     * @type {string}
-     * @memberof GetFinances403Response
+     * 
+     * @type {PaymentType}
+     * @memberof CreatePayment
      */
-    message?: string;
+    paymentType: PaymentType;
     /**
-     * Краткое описание ошибки HTTP на основе статуса.
-     * @type {string}
-     * @memberof GetFinances403Response
+     * Привязать карту
+     * @type {boolean}
+     * @memberof CreatePayment
      */
-    errorCode: string;
+    isBindCard?: boolean;
     /**
-     * ID запроса, который можно указывать при обращении в службу технической поддержки, чтобы помочь определить проблему.
+     * URL для перенаправления после успешной оплаты
      * @type {string}
-     * @memberof GetFinances403Response
+     * @memberof CreatePayment
      */
-    responseId: string;
+    returnUrl?: string;
+    /**
+     * URL для перенаправления после неудачной оплаты
+     * @type {string}
+     * @memberof CreatePayment
+     */
+    failUrl?: string;
 }
 
 /**
- * Check if a given object implements the GetFinances403Response interface.
+ * Check if a given object implements the CreatePayment interface.
  */
-export function instanceOfGetFinances403Response(value: object): boolean {
+export function instanceOfCreatePayment(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "statusCode" in value;
-    isInstance = isInstance && "errorCode" in value;
-    isInstance = isInstance && "responseId" in value;
+    isInstance = isInstance && "amount" in value;
+    isInstance = isInstance && "paymentType" in value;
 
     return isInstance;
 }
 
-export function GetFinances403ResponseFromJSON(json: any): GetFinances403Response {
-    return GetFinances403ResponseFromJSONTyped(json, false);
+export function CreatePaymentFromJSON(json: any): CreatePayment {
+    return CreatePaymentFromJSONTyped(json, false);
 }
 
-export function GetFinances403ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFinances403Response {
+export function CreatePaymentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreatePayment {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'statusCode': json['status_code'],
-        'message': !exists(json, 'message') ? undefined : json['message'],
-        'errorCode': json['error_code'],
-        'responseId': json['response_id'],
+        'amount': json['amount'],
+        'paymentType': PaymentTypeFromJSON(json['payment_type']),
+        'isBindCard': !exists(json, 'is_bind_card') ? undefined : json['is_bind_card'],
+        'returnUrl': !exists(json, 'return_url') ? undefined : json['return_url'],
+        'failUrl': !exists(json, 'fail_url') ? undefined : json['fail_url'],
     };
 }
 
-export function GetFinances403ResponseToJSON(value?: GetFinances403Response | null): any {
+export function CreatePaymentToJSON(value?: CreatePayment | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -83,10 +96,11 @@ export function GetFinances403ResponseToJSON(value?: GetFinances403Response | nu
     }
     return {
         
-        'status_code': value.statusCode,
-        'message': value.message,
-        'error_code': value.errorCode,
-        'response_id': value.responseId,
+        'amount': value.amount,
+        'payment_type': PaymentTypeToJSON(value.paymentType),
+        'is_bind_card': value.isBindCard,
+        'return_url': value.returnUrl,
+        'fail_url': value.failUrl,
     };
 }
 

@@ -12,70 +12,81 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
-import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
-
+import { exists, mapValues } from '../runtime';
 /**
  * 
+ * @export
+ * @interface GetAccountStatus403Response
  */
-export class LocationsApi extends runtime.BaseAPI {
-
+export interface GetAccountStatus403Response {
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Короткий идентификатор, соответствующий возвращаемому коду состояния HTTP.
+     * @type {number}
+     * @memberof GetAccountStatus403Response
      */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
+    statusCode: number;
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Сообщение, предоставляющее дополнительную информацию об ошибке, в том числе сведения, помогающие устранить ее, когда это возможно.
+     * @type {string}
+     * @memberof GetAccountStatus403Response
      */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+    message?: string;
+    /**
+     * Краткое описание ошибки HTTP на основе статуса.
+     * @type {string}
+     * @memberof GetAccountStatus403Response
+     */
+    errorCode: string;
+    /**
+     * ID запроса, который можно указывать при обращении в службу технической поддержки, чтобы помочь определить проблему.
+     * @type {string}
+     * @memberof GetAccountStatus403Response
+     */
+    responseId: string;
 }
+
+/**
+ * Check if a given object implements the GetAccountStatus403Response interface.
+ */
+export function instanceOfGetAccountStatus403Response(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "statusCode" in value;
+    isInstance = isInstance && "errorCode" in value;
+    isInstance = isInstance && "responseId" in value;
+
+    return isInstance;
+}
+
+export function GetAccountStatus403ResponseFromJSON(json: any): GetAccountStatus403Response {
+    return GetAccountStatus403ResponseFromJSONTyped(json, false);
+}
+
+export function GetAccountStatus403ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetAccountStatus403Response {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'statusCode': json['status_code'],
+        'message': !exists(json, 'message') ? undefined : json['message'],
+        'errorCode': json['error_code'],
+        'responseId': json['response_id'],
+    };
+}
+
+export function GetAccountStatus403ResponseToJSON(value?: GetAccountStatus403Response | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'status_code': value.statusCode,
+        'message': value.message,
+        'error_code': value.errorCode,
+        'response_id': value.responseId,
+    };
+}
+

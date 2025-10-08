@@ -18,6 +18,7 @@ src/apis/KubernetesApi.ts
 src/apis/LocationsApi.ts
 src/apis/MailApi.ts
 src/apis/NetworkDrivesApi.ts
+src/apis/PaymentsApi.ts
 src/apis/ProjectsApi.ts
 src/apis/S3Api.ts
 src/apis/SSHApi.ts
@@ -136,6 +137,7 @@ src/models/CreateMultipleDomainMailboxesRequest.ts
 src/models/CreateMultipleDomainMailboxesRequestMailboxesInner.ts
 src/models/CreateNetworkDrive.ts
 src/models/CreateNetworkDrive201Response.ts
+src/models/CreatePayment.ts
 src/models/CreateProject.ts
 src/models/CreateProject201Response.ts
 src/models/CreateRule.ts
@@ -224,6 +226,7 @@ src/models/ForwardingOutgoingIsEnabled.ts
 src/models/Frameworks.ts
 src/models/Free.ts
 src/models/GetAccountStatus200Response.ts
+src/models/GetAccountStatus403Response.ts
 src/models/GetAllProjectResources200Response.ts
 src/models/GetAppDeploys200Response.ts
 src/models/GetAppLogs200Response.ts
@@ -260,13 +263,13 @@ src/models/GetDomains200Response.ts
 src/models/GetFinances200Response.ts
 src/models/GetFinances400Response.ts
 src/models/GetFinances401Response.ts
-src/models/GetFinances403Response.ts
 src/models/GetFinances429Response.ts
 src/models/GetFinances500Response.ts
 src/models/GetFloatingIps200Response.ts
 src/models/GetImage404Response.ts
 src/models/GetKey200Response.ts
 src/models/GetKeys200Response.ts
+src/models/GetLinkCardPayment200Response.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
@@ -298,6 +301,8 @@ src/models/GetServerStatistics200ResponseRamInner.ts
 src/models/GetServerStatisticsNew200Response.ts
 src/models/GetServers200Response.ts
 src/models/GetServersPresets200Response.ts
+src/models/GetServicePrices200Response.ts
+src/models/GetServicePrices200ResponseMeta.ts
 src/models/GetSoftware200Response.ts
 src/models/GetStorageSubdomains200Response.ts
 src/models/GetStorageTransferStatus200Response.ts
@@ -321,6 +326,7 @@ src/models/ImageUrlAuth.ts
 src/models/ImageUrlIn.ts
 src/models/ImagesOutResponse.ts
 src/models/IncreaseNodes.ts
+src/models/InfoServicePrice.ts
 src/models/Invoice.ts
 src/models/K8SVersionsResponse.ts
 src/models/Location.ts
@@ -354,6 +360,7 @@ src/models/NotificationSettingChannel.ts
 src/models/NotificationSettingChannels.ts
 src/models/NotificationSettingType.ts
 src/models/OS.ts
+src/models/PaymentType.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
 src/models/Policy.ts
@@ -403,6 +410,12 @@ src/models/ServersSoftwareRequirements.ts
 src/models/ServersStatistics.ts
 src/models/ServersStatisticsListInner.ts
 src/models/ServersStatisticsMeta.ts
+src/models/ServiceCostType.ts
+src/models/ServicePrice.ts
+src/models/ServicePriceConfiguration.ts
+src/models/ServicePriceType.ts
+src/models/ServiceServicePrice.ts
+src/models/ServiceServicePriceNodeGroupsInner.ts
 src/models/SetLabels.ts
 src/models/SettingCondition.ts
 src/models/SpamFilterIsDisabled.ts

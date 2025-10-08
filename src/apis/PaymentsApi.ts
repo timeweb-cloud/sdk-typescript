@@ -15,16 +15,20 @@
 
 import * as runtime from '../runtime';
 import type {
-  GetAccountStatus403Response,
+  CreatePayment,
+  GetFinances200Response,
   GetFinances400Response,
   GetFinances401Response,
   GetFinances429Response,
   GetFinances500Response,
-  GetLocations200Response,
+  GetLinkCardPayment200Response,
+  GetServicePrices200Response,
 } from '../models/index';
 import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
+    CreatePaymentFromJSON,
+    CreatePaymentToJSON,
+    GetFinances200ResponseFromJSON,
+    GetFinances200ResponseToJSON,
     GetFinances400ResponseFromJSON,
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
@@ -33,20 +37,26 @@ import {
     GetFinances429ResponseToJSON,
     GetFinances500ResponseFromJSON,
     GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
+    GetLinkCardPayment200ResponseFromJSON,
+    GetLinkCardPayment200ResponseToJSON,
+    GetServicePrices200ResponseFromJSON,
+    GetServicePrices200ResponseToJSON,
 } from '../models/index';
+
+export interface GetLinkCardPaymentRequest {
+    createPayment: CreatePayment;
+}
 
 /**
  * 
  */
-export class LocationsApi extends runtime.BaseAPI {
+export class PaymentsApi extends runtime.BaseAPI {
 
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Чтобы получить платежную информацию, отправьте GET-запрос на `/api/v1/account/finances`.
+     * Получение платежной информации
      */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
+    async getFinancesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFinances200Response>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -60,21 +70,100 @@ export class LocationsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v2/locations`,
+            path: `/api/v1/account/finances`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFinances200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
+     * Чтобы получить платежную информацию, отправьте GET-запрос на `/api/v1/account/finances`.
+     * Получение платежной информации
      */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
+    async getFinances(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFinances200Response> {
+        const response = await this.getFinancesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить ссылку на оплату, отправьте POST-запрос на `/api/v1/account/payment-link`.
+     * Получение ссылки на оплату
+     */
+    async getLinkCardPaymentRaw(requestParameters: GetLinkCardPaymentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLinkCardPayment200Response>> {
+        if (requestParameters.createPayment === null || requestParameters.createPayment === undefined) {
+            throw new runtime.RequiredError('createPayment','Required parameter requestParameters.createPayment was null or undefined when calling getLinkCardPayment.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/account/payment-link`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePaymentToJSON(requestParameters.createPayment),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetLinkCardPayment200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить ссылку на оплату, отправьте POST-запрос на `/api/v1/account/payment-link`.
+     * Получение ссылки на оплату
+     */
+    async getLinkCardPayment(requestParameters: GetLinkCardPaymentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLinkCardPayment200Response> {
+        const response = await this.getLinkCardPaymentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить информацию о стоимости всех активных сервисов аккаунта, отправьте GET-запрос на `/api/v1/account/services/cost`.
+     * Получение стоимости сервисов
+     */
+    async getServicePricesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetServicePrices200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/account/services/cost`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetServicePrices200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить информацию о стоимости всех активных сервисов аккаунта, отправьте GET-запрос на `/api/v1/account/services/cost`.
+     * Получение стоимости сервисов
+     */
+    async getServicePrices(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetServicePrices200Response> {
+        const response = await this.getServicePricesRaw(initOverrides);
         return await response.value();
     }
 

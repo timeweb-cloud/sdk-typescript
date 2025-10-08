@@ -13,69 +13,44 @@
  */
 
 
-import * as runtime from '../runtime';
-import type {
-  GetAccountStatus403Response,
-  GetFinances400Response,
-  GetFinances401Response,
-  GetFinances429Response,
-  GetFinances500Response,
-  GetLocations200Response,
-} from '../models/index';
-import {
-    GetAccountStatus403ResponseFromJSON,
-    GetAccountStatus403ResponseToJSON,
-    GetFinances400ResponseFromJSON,
-    GetFinances400ResponseToJSON,
-    GetFinances401ResponseFromJSON,
-    GetFinances401ResponseToJSON,
-    GetFinances429ResponseFromJSON,
-    GetFinances429ResponseToJSON,
-    GetFinances500ResponseFromJSON,
-    GetFinances500ResponseToJSON,
-    GetLocations200ResponseFromJSON,
-    GetLocations200ResponseToJSON,
-} from '../models/index';
-
 /**
- * 
+ * Тип сервиса
+ * @export
  */
-export class LocationsApi extends runtime.BaseAPI {
+export const ServicePriceType = {
+    Server: 'server',
+    DedicatedServer: 'dedicated_server',
+    S3: 's3',
+    S3OutgoingTraffic: 's3_outgoing_traffic',
+    K8s: 'k8s',
+    Database: 'database',
+    Balancer: 'balancer',
+    Vpn: 'vpn',
+    Mail: 'mail',
+    Image: 'image',
+    FloatingIp: 'floating_ip',
+    FloatingIpWithDdosGuard: 'floating_ip_with_ddos_guard',
+    AppFrontend: 'app_frontend',
+    AppBackend: 'app_backend',
+    NetworkDrive: 'network_drive',
+    ContainerRegistry: 'container_registry',
+    Router: 'router',
+    Vmware: 'vmware',
+    AdditionalDrive: 'additional_drive',
+    Backup: 'backup'
+} as const;
+export type ServicePriceType = typeof ServicePriceType[keyof typeof ServicePriceType];
 
-    /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
-     */
-    async getLocationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLocations200Response>> {
-        const queryParameters: any = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v2/locations`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLocations200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить список локаций, отправьте GET-запрос на `/api/v2/locations`.   Тело ответа будет представлять собой объект JSON с ключом `locations`.
-     * Получение списка локаций
-     */
-    async getLocations(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLocations200Response> {
-        const response = await this.getLocationsRaw(initOverrides);
-        return await response.value();
-    }
-
+export function ServicePriceTypeFromJSON(json: any): ServicePriceType {
+    return ServicePriceTypeFromJSONTyped(json, false);
 }
+
+export function ServicePriceTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): ServicePriceType {
+    return json as ServicePriceType;
+}
+
+export function ServicePriceTypeToJSON(value?: ServicePriceType | null): any {
+    return value as any;
+}
+
