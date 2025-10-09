@@ -137,7 +137,6 @@ src/models/CreateMultipleDomainMailboxesRequest.ts
 src/models/CreateMultipleDomainMailboxesRequestMailboxesInner.ts
 src/models/CreateNetworkDrive.ts
 src/models/CreateNetworkDrive201Response.ts
-src/models/CreatePayment.ts
 src/models/CreateProject.ts
 src/models/CreateProject201Response.ts
 src/models/CreateRule.ts
@@ -269,7 +268,6 @@ src/models/GetFloatingIps200Response.ts
 src/models/GetImage404Response.ts
 src/models/GetKey200Response.ts
 src/models/GetKeys200Response.ts
-src/models/GetLinkCardPayment200Response.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
@@ -360,7 +358,6 @@ src/models/NotificationSettingChannel.ts
 src/models/NotificationSettingChannels.ts
 src/models/NotificationSettingType.ts
 src/models/OS.ts
-src/models/PaymentType.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
 src/models/Policy.ts

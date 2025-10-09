@@ -15,18 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
-  CreatePayment,
   GetFinances200Response,
   GetFinances400Response,
   GetFinances401Response,
   GetFinances429Response,
   GetFinances500Response,
-  GetLinkCardPayment200Response,
   GetServicePrices200Response,
 } from '../models/index';
 import {
-    CreatePaymentFromJSON,
-    CreatePaymentToJSON,
     GetFinances200ResponseFromJSON,
     GetFinances200ResponseToJSON,
     GetFinances400ResponseFromJSON,
@@ -37,15 +33,9 @@ import {
     GetFinances429ResponseToJSON,
     GetFinances500ResponseFromJSON,
     GetFinances500ResponseToJSON,
-    GetLinkCardPayment200ResponseFromJSON,
-    GetLinkCardPayment200ResponseToJSON,
     GetServicePrices200ResponseFromJSON,
     GetServicePrices200ResponseToJSON,
 } from '../models/index';
-
-export interface GetLinkCardPaymentRequest {
-    createPayment: CreatePayment;
-}
 
 /**
  * 
@@ -85,49 +75,6 @@ export class PaymentsApi extends runtime.BaseAPI {
      */
     async getFinances(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFinances200Response> {
         const response = await this.getFinancesRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Чтобы получить ссылку на оплату, отправьте POST-запрос на `/api/v1/account/payment-link`.
-     * Получение ссылки на оплату
-     */
-    async getLinkCardPaymentRaw(requestParameters: GetLinkCardPaymentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLinkCardPayment200Response>> {
-        if (requestParameters.createPayment === null || requestParameters.createPayment === undefined) {
-            throw new runtime.RequiredError('createPayment','Required parameter requestParameters.createPayment was null or undefined when calling getLinkCardPayment.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/account/payment-link`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreatePaymentToJSON(requestParameters.createPayment),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLinkCardPayment200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить ссылку на оплату, отправьте POST-запрос на `/api/v1/account/payment-link`.
-     * Получение ссылки на оплату
-     */
-    async getLinkCardPayment(requestParameters: GetLinkCardPaymentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLinkCardPayment200Response> {
-        const response = await this.getLinkCardPaymentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
