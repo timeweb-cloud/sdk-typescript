@@ -25,7 +25,6 @@ export const ServicePriceType = {
     K8s: 'k8s',
     Database: 'database',
     Balancer: 'balancer',
-    Vpn: 'vpn',
     Mail: 'mail',
     Image: 'image',
     FloatingIp: 'floating_ip',
