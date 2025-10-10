@@ -118,6 +118,7 @@ export interface CreateDatabaseRequest {
 
 export interface CreateDatabaseBackupRequest {
     dbId: number;
+    comment?: string;
 }
 
 export interface CreateDatabaseClusterRequest {
@@ -301,6 +302,10 @@ export class DatabasesApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.comment !== undefined) {
+            queryParameters['comment'] = requestParameters.comment;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

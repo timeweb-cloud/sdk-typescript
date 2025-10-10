@@ -106,6 +106,7 @@ src/models/CreateApp.ts
 src/models/CreateApp201Response.ts
 src/models/CreateBalancer.ts
 src/models/CreateBalancer200Response.ts
+src/models/CreateBalancerCertificates.ts
 src/models/CreateBalancerRule200Response.ts
 src/models/CreateCluster.ts
 src/models/CreateClusterAdmin.ts

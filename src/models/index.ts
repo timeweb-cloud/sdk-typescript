@@ -80,6 +80,7 @@ export * from './CreateApp';
 export * from './CreateApp201Response';
 export * from './CreateBalancer';
 export * from './CreateBalancer200Response';
+export * from './CreateBalancerCertificates';
 export * from './CreateBalancerRule200Response';
 export * from './CreateCluster';
 export * from './CreateClusterAdmin';

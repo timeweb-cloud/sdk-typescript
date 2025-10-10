@@ -13,206 +13,76 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { CreateBalancerCertificates } from './CreateBalancerCertificates';
-import {
-    CreateBalancerCertificatesFromJSON,
-    CreateBalancerCertificatesFromJSONTyped,
-    CreateBalancerCertificatesToJSON,
-} from './CreateBalancerCertificates';
-
 /**
- * 
+ * Сертификат SSL.
  * @export
- * @interface UpdateBalancer
+ * @interface CreateBalancerCertificates
  */
-export interface UpdateBalancer {
+export interface CreateBalancerCertificates {
     /**
-     * Удобочитаемое имя, установленное для балансировщика. Должно быть уникальным в рамках аккаунта
+     * Тип сертификата.
      * @type {string}
-     * @memberof UpdateBalancer
+     * @memberof CreateBalancerCertificates
      */
-    name?: string;
+    type?: CreateBalancerCertificatesTypeEnum;
     /**
-     * Алгоритм переключений балансировщика.
+     * Полное имя домена.
      * @type {string}
-     * @memberof UpdateBalancer
+     * @memberof CreateBalancerCertificates
      */
-    algo?: UpdateBalancerAlgoEnum;
+    fqdn?: string;
     /**
-     * Это логическое значение, которое показывает, сохраняется ли сессия.
-     * @type {boolean}
-     * @memberof UpdateBalancer
-     */
-    isSticky?: boolean;
-    /**
-     * Это логическое значение, которое показывает, выступает ли балансировщик в качестве прокси.
-     * @type {boolean}
-     * @memberof UpdateBalancer
-     */
-    isUseProxy?: boolean;
-    /**
-     * Это логическое значение, которое показывает, требуется ли перенаправление на SSL.
-     * @type {boolean}
-     * @memberof UpdateBalancer
-     */
-    isSsl?: boolean;
-    /**
-     * Это логическое значение, которое показывает, выдает ли балансировщик сигнал о проверке жизнеспособности.
-     * @type {boolean}
-     * @memberof UpdateBalancer
-     */
-    isKeepalive?: boolean;
-    /**
-     * Протокол.
+     * Данные сертификата. Нужны только для типа custom.
      * @type {string}
-     * @memberof UpdateBalancer
+     * @memberof CreateBalancerCertificates
      */
-    proto?: UpdateBalancerProtoEnum;
+    certData?: string;
     /**
-     * Порт балансировщика.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    port?: number;
-    /**
-     * Адрес балансировщика.
+     * Данные ключа. Нужны только для типа custom.
      * @type {string}
-     * @memberof UpdateBalancer
+     * @memberof CreateBalancerCertificates
      */
-    path?: string;
-    /**
-     * Интервал проверки.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    inter?: number;
-    /**
-     * Таймаут ответа балансировщика.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    timeout?: number;
-    /**
-     * Порог количества ошибок.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    fall?: number;
-    /**
-     * Порог количества успешных ответов.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    rise?: number;
-    /**
-     * Максимальное количество соединений.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    maxconn?: number;
-    /**
-     * Таймаут подключения.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    connectTimeout?: number;
-    /**
-     * Таймаут клиента.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    clientTimeout?: number;
-    /**
-     * Таймаут сервера.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    serverTimeout?: number;
-    /**
-     * Таймаут HTTP запроса.
-     * @type {number}
-     * @memberof UpdateBalancer
-     */
-    httprequestTimeout?: number;
-    /**
-     * Комментарий к балансировщику.
-     * @type {string}
-     * @memberof UpdateBalancer
-     */
-    comment?: string;
-    /**
-     * 
-     * @type {CreateBalancerCertificates}
-     * @memberof UpdateBalancer
-     */
-    certificates?: CreateBalancerCertificates;
+    keyData?: string;
 }
 
 
 /**
  * @export
  */
-export const UpdateBalancerAlgoEnum = {
-    Roundrobin: 'roundrobin',
-    Leastconn: 'leastconn'
+export const CreateBalancerCertificatesTypeEnum = {
+    LetsEncrypt: 'lets_encrypt',
+    Custom: 'custom'
 } as const;
-export type UpdateBalancerAlgoEnum = typeof UpdateBalancerAlgoEnum[keyof typeof UpdateBalancerAlgoEnum];
-
-/**
- * @export
- */
-export const UpdateBalancerProtoEnum = {
-    Http: 'http',
-    Http2: 'http2',
-    Https: 'https',
-    Tcp: 'tcp'
-} as const;
-export type UpdateBalancerProtoEnum = typeof UpdateBalancerProtoEnum[keyof typeof UpdateBalancerProtoEnum];
+export type CreateBalancerCertificatesTypeEnum = typeof CreateBalancerCertificatesTypeEnum[keyof typeof CreateBalancerCertificatesTypeEnum];
 
 
 /**
- * Check if a given object implements the UpdateBalancer interface.
+ * Check if a given object implements the CreateBalancerCertificates interface.
  */
-export function instanceOfUpdateBalancer(value: object): boolean {
+export function instanceOfCreateBalancerCertificates(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function UpdateBalancerFromJSON(json: any): UpdateBalancer {
-    return UpdateBalancerFromJSONTyped(json, false);
+export function CreateBalancerCertificatesFromJSON(json: any): CreateBalancerCertificates {
+    return CreateBalancerCertificatesFromJSONTyped(json, false);
 }
 
-export function UpdateBalancerFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateBalancer {
+export function CreateBalancerCertificatesFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateBalancerCertificates {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'algo': !exists(json, 'algo') ? undefined : json['algo'],
-        'isSticky': !exists(json, 'is_sticky') ? undefined : json['is_sticky'],
-        'isUseProxy': !exists(json, 'is_use_proxy') ? undefined : json['is_use_proxy'],
-        'isSsl': !exists(json, 'is_ssl') ? undefined : json['is_ssl'],
-        'isKeepalive': !exists(json, 'is_keepalive') ? undefined : json['is_keepalive'],
-        'proto': !exists(json, 'proto') ? undefined : json['proto'],
-        'port': !exists(json, 'port') ? undefined : json['port'],
-        'path': !exists(json, 'path') ? undefined : json['path'],
-        'inter': !exists(json, 'inter') ? undefined : json['inter'],
-        'timeout': !exists(json, 'timeout') ? undefined : json['timeout'],
-        'fall': !exists(json, 'fall') ? undefined : json['fall'],
-        'rise': !exists(json, 'rise') ? undefined : json['rise'],
-        'maxconn': !exists(json, 'maxconn') ? undefined : json['maxconn'],
-        'connectTimeout': !exists(json, 'connect_timeout') ? undefined : json['connect_timeout'],
-        'clientTimeout': !exists(json, 'client_timeout') ? undefined : json['client_timeout'],
-        'serverTimeout': !exists(json, 'server_timeout') ? undefined : json['server_timeout'],
-        'httprequestTimeout': !exists(json, 'httprequest_timeout') ? undefined : json['httprequest_timeout'],
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
-        'certificates': !exists(json, 'certificates') ? undefined : CreateBalancerCertificatesFromJSON(json['certificates']),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'fqdn': !exists(json, 'fqdn') ? undefined : json['fqdn'],
+        'certData': !exists(json, 'cert_data') ? undefined : json['cert_data'],
+        'keyData': !exists(json, 'key_data') ? undefined : json['key_data'],
     };
 }
 
-export function UpdateBalancerToJSON(value?: UpdateBalancer | null): any {
+export function CreateBalancerCertificatesToJSON(value?: CreateBalancerCertificates | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -221,26 +91,10 @@ export function UpdateBalancerToJSON(value?: UpdateBalancer | null): any {
     }
     return {
         
-        'name': value.name,
-        'algo': value.algo,
-        'is_sticky': value.isSticky,
-        'is_use_proxy': value.isUseProxy,
-        'is_ssl': value.isSsl,
-        'is_keepalive': value.isKeepalive,
-        'proto': value.proto,
-        'port': value.port,
-        'path': value.path,
-        'inter': value.inter,
-        'timeout': value.timeout,
-        'fall': value.fall,
-        'rise': value.rise,
-        'maxconn': value.maxconn,
-        'connect_timeout': value.connectTimeout,
-        'client_timeout': value.clientTimeout,
-        'server_timeout': value.serverTimeout,
-        'httprequest_timeout': value.httprequestTimeout,
-        'comment': value.comment,
-        'certificates': CreateBalancerCertificatesToJSON(value.certificates),
+        'type': value.type,
+        'fqdn': value.fqdn,
+        'cert_data': value.certData,
+        'key_data': value.keyData,
     };
 }
 

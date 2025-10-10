@@ -19,6 +19,12 @@ import {
     AvailabilityZoneFromJSONTyped,
     AvailabilityZoneToJSON,
 } from './AvailabilityZone';
+import type { CreateBalancerCertificates } from './CreateBalancerCertificates';
+import {
+    CreateBalancerCertificatesFromJSON,
+    CreateBalancerCertificatesFromJSONTyped,
+    CreateBalancerCertificatesToJSON,
+} from './CreateBalancerCertificates';
 import type { Network } from './Network';
 import {
     NetworkFromJSON,
@@ -164,6 +170,12 @@ export interface CreateBalancer {
      * @memberof CreateBalancer
      */
     projectId?: number;
+    /**
+     * 
+     * @type {CreateBalancerCertificates}
+     * @memberof CreateBalancer
+     */
+    certificates?: CreateBalancerCertificates;
 }
 
 
@@ -243,6 +255,7 @@ export function CreateBalancerFromJSONTyped(json: any, ignoreDiscriminator: bool
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'certificates': !exists(json, 'certificates') ? undefined : CreateBalancerCertificatesFromJSON(json['certificates']),
     };
 }
 
@@ -277,6 +290,7 @@ export function CreateBalancerToJSON(value?: CreateBalancer | null): any {
         'network': NetworkToJSON(value.network),
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
         'project_id': value.projectId,
+        'certificates': CreateBalancerCertificatesToJSON(value.certificates),
     };
 }
 
