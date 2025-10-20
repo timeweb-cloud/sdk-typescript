@@ -3,6 +3,7 @@
 .openapi-generator-ignore
 README.md
 package.json
+src/apis/AIAgentsApi.ts
 src/apis/APIKeysApi.ts
 src/apis/AccountApi.ts
 src/apis/AppsApi.ts
@@ -14,6 +15,7 @@ src/apis/DomainsApi.ts
 src/apis/FirewallApi.ts
 src/apis/FloatingIPApi.ts
 src/apis/ImagesApi.ts
+src/apis/KnowledgeBasesApi.ts
 src/apis/KubernetesApi.ts
 src/apis/LocationsApi.ts
 src/apis/MailApi.ts
@@ -52,7 +54,12 @@ src/models/AddStorageSubdomains200Response.ts
 src/models/AddStorageSubdomainsRequest.ts
 src/models/AddStorageToProjectRequest.ts
 src/models/AddSubdomain201Response.ts
+src/models/AddTokenPackage.ts
 src/models/AddedSubdomain.ts
+src/models/Agent.ts
+src/models/AgentModelSettings.ts
+src/models/AgentSettings.ts
+src/models/AgentSettingsWidget.ts
 src/models/ApiKey.ts
 src/models/App.ts
 src/models/AppConfiguration.ts
@@ -101,6 +108,8 @@ src/models/ConfigParameters.ts
 src/models/ContainerRegistryPresetsInner.ts
 src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
+src/models/CreateAgent.ts
+src/models/CreateAgent201Response.ts
 src/models/CreateApiKey.ts
 src/models/CreateApp.ts
 src/models/CreateApp201Response.ts
@@ -133,6 +142,8 @@ src/models/CreateFloatingIp201Response.ts
 src/models/CreateInstance.ts
 src/models/CreateKey201Response.ts
 src/models/CreateKeyRequest.ts
+src/models/CreateKnowledgebase.ts
+src/models/CreateKnowledgebase201Response.ts
 src/models/CreateMultipleDomainMailboxes201Response.ts
 src/models/CreateMultipleDomainMailboxesRequest.ts
 src/models/CreateMultipleDomainMailboxesRequestMailboxesInner.ts
@@ -192,6 +203,9 @@ src/models/DeploySettingsInner.ts
 src/models/DeployStatus.ts
 src/models/DnsRecord.ts
 src/models/DnsRecordData.ts
+src/models/Document.ts
+src/models/DocumentStatusInfo.ts
+src/models/DocumentStatusInfoDetails.ts
 src/models/Domain.ts
 src/models/DomainAllowedBuyPeriodsInner.ts
 src/models/DomainInfo.ts
@@ -227,6 +241,10 @@ src/models/Frameworks.ts
 src/models/Free.ts
 src/models/GetAccountStatus200Response.ts
 src/models/GetAccountStatus403Response.ts
+src/models/GetAgentStatistics200Response.ts
+src/models/GetAgentStatistics200ResponseMeta.ts
+src/models/GetAgents200Response.ts
+src/models/GetAgents200ResponseMeta.ts
 src/models/GetAllProjectResources200Response.ts
 src/models/GetAppDeploys200Response.ts
 src/models/GetAppLogs200Response.ts
@@ -269,6 +287,9 @@ src/models/GetFloatingIps200Response.ts
 src/models/GetImage404Response.ts
 src/models/GetKey200Response.ts
 src/models/GetKeys200Response.ts
+src/models/GetKnowledgebaseStatistics200Response.ts
+src/models/GetKnowledgebases200Response.ts
+src/models/GetKnowledgebases200ResponseMeta.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
@@ -328,6 +349,7 @@ src/models/IncreaseNodes.ts
 src/models/InfoServicePrice.ts
 src/models/Invoice.ts
 src/models/K8SVersionsResponse.ts
+src/models/Knowledgebase.ts
 src/models/Location.ts
 src/models/LocationDto.ts
 src/models/Mailbox.ts
@@ -424,6 +446,7 @@ src/models/Status.ts
 src/models/StatusCompanyInfo.ts
 src/models/Subdomain.ts
 src/models/Tags.ts
+src/models/TokenStatistic.ts
 src/models/TopLevelDomain.ts
 src/models/TopLevelDomainAllowedBuyPeriodsInner.ts
 src/models/TransferStatus.ts
@@ -431,6 +454,8 @@ src/models/TransferStatusErrorsInner.ts
 src/models/TransferStorageRequest.ts
 src/models/URLType.ts
 src/models/UpdateAdmin.ts
+src/models/UpdateAgent.ts
+src/models/UpdateAgentSettings.ts
 src/models/UpdateAppSettings200Response.ts
 src/models/UpdateAuthRestrictionsByCountriesRequest.ts
 src/models/UpdateBalancer.ts
@@ -445,6 +470,7 @@ src/models/UpdateDomainNameServersNameServersInner.ts
 src/models/UpdateFloatingIp.ts
 src/models/UpdateInstance.ts
 src/models/UpdateKeyRequest.ts
+src/models/UpdateKnowledgebase.ts
 src/models/UpdateMailQuotaRequest.ts
 src/models/UpdateMailbox.ts
 src/models/UpdateNetworkDrive.ts
@@ -467,6 +493,7 @@ src/models/UpdateStorageUser200Response.ts
 src/models/UpdateStorageUserRequest.ts
 src/models/UpdateToken200Response.ts
 src/models/UpdateVpc.ts
+src/models/UploadFilesToKnowledgebase200Response.ts
 src/models/UploadSuccessful.ts
 src/models/UploadSuccessfulResponse.ts
 src/models/UrlStatus.ts

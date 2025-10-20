@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AIAgentsApi';
 export * from './APIKeysApi';
 export * from './AccountApi';
 export * from './AppsApi';
@@ -11,6 +12,7 @@ export * from './DomainsApi';
 export * from './FirewallApi';
 export * from './FloatingIPApi';
 export * from './ImagesApi';
+export * from './KnowledgeBasesApi';
 export * from './KubernetesApi';
 export * from './LocationsApi';
 export * from './MailApi';
