@@ -45,7 +45,7 @@ export interface Knowledgebase {
      */
     description?: string | null;
     /**
-     * ID базы данных (opensearch или qdrant)
+     * ID базы данных opensearch
      * @type {number}
      * @memberof Knowledgebase
      */
