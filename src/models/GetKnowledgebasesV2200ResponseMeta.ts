@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetKnowledgebases200ResponseMeta
+ * @interface GetKnowledgebasesV2200ResponseMeta
  */
-export interface GetKnowledgebases200ResponseMeta {
+export interface GetKnowledgebasesV2200ResponseMeta {
     /**
      * Общее количество баз знаний
      * @type {number}
-     * @memberof GetKnowledgebases200ResponseMeta
+     * @memberof GetKnowledgebasesV2200ResponseMeta
      */
     total: number;
 }
 
 /**
- * Check if a given object implements the GetKnowledgebases200ResponseMeta interface.
+ * Check if a given object implements the GetKnowledgebasesV2200ResponseMeta interface.
  */
-export function instanceOfGetKnowledgebases200ResponseMeta(value: object): boolean {
+export function instanceOfGetKnowledgebasesV2200ResponseMeta(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "total" in value;
 
     return isInstance;
 }
 
-export function GetKnowledgebases200ResponseMetaFromJSON(json: any): GetKnowledgebases200ResponseMeta {
-    return GetKnowledgebases200ResponseMetaFromJSONTyped(json, false);
+export function GetKnowledgebasesV2200ResponseMetaFromJSON(json: any): GetKnowledgebasesV2200ResponseMeta {
+    return GetKnowledgebasesV2200ResponseMetaFromJSONTyped(json, false);
 }
 
-export function GetKnowledgebases200ResponseMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebases200ResponseMeta {
+export function GetKnowledgebasesV2200ResponseMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebasesV2200ResponseMeta {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -51,7 +51,7 @@ export function GetKnowledgebases200ResponseMetaFromJSONTyped(json: any, ignoreD
     };
 }
 
-export function GetKnowledgebases200ResponseMetaToJSON(value?: GetKnowledgebases200ResponseMeta | null): any {
+export function GetKnowledgebasesV2200ResponseMetaToJSON(value?: GetKnowledgebasesV2200ResponseMeta | null): any {
     if (value === undefined) {
         return undefined;
     }

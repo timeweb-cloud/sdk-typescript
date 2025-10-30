@@ -13,66 +13,66 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GetKnowledgebasesV2200ResponseMeta } from './GetKnowledgebasesV2200ResponseMeta';
+import type { Document } from './Document';
 import {
-    GetKnowledgebasesV2200ResponseMetaFromJSON,
-    GetKnowledgebasesV2200ResponseMetaFromJSONTyped,
-    GetKnowledgebasesV2200ResponseMetaToJSON,
-} from './GetKnowledgebasesV2200ResponseMeta';
-import type { Knowledgebase } from './Knowledgebase';
+    DocumentFromJSON,
+    DocumentFromJSONTyped,
+    DocumentToJSON,
+} from './Document';
+import type { GetKnowledgebaseDocumentsV2200ResponseMeta } from './GetKnowledgebaseDocumentsV2200ResponseMeta';
 import {
-    KnowledgebaseFromJSON,
-    KnowledgebaseFromJSONTyped,
-    KnowledgebaseToJSON,
-} from './Knowledgebase';
+    GetKnowledgebaseDocumentsV2200ResponseMetaFromJSON,
+    GetKnowledgebaseDocumentsV2200ResponseMetaFromJSONTyped,
+    GetKnowledgebaseDocumentsV2200ResponseMetaToJSON,
+} from './GetKnowledgebaseDocumentsV2200ResponseMeta';
 
 /**
  * 
  * @export
- * @interface GetKnowledgebases200Response
+ * @interface GetKnowledgebaseDocumentsV2200Response
  */
-export interface GetKnowledgebases200Response {
+export interface GetKnowledgebaseDocumentsV2200Response {
+    /**
+     * Список документов
+     * @type {Array<Document>}
+     * @memberof GetKnowledgebaseDocumentsV2200Response
+     */
+    knowledgebaseDocuments: Array<Document>;
     /**
      * 
-     * @type {Array<Knowledgebase>}
-     * @memberof GetKnowledgebases200Response
+     * @type {GetKnowledgebaseDocumentsV2200ResponseMeta}
+     * @memberof GetKnowledgebaseDocumentsV2200Response
      */
-    knowledgebases: Array<Knowledgebase>;
-    /**
-     * 
-     * @type {GetKnowledgebasesV2200ResponseMeta}
-     * @memberof GetKnowledgebases200Response
-     */
-    meta: GetKnowledgebasesV2200ResponseMeta;
+    meta: GetKnowledgebaseDocumentsV2200ResponseMeta;
 }
 
 /**
- * Check if a given object implements the GetKnowledgebases200Response interface.
+ * Check if a given object implements the GetKnowledgebaseDocumentsV2200Response interface.
  */
-export function instanceOfGetKnowledgebases200Response(value: object): boolean {
+export function instanceOfGetKnowledgebaseDocumentsV2200Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "knowledgebases" in value;
+    isInstance = isInstance && "knowledgebaseDocuments" in value;
     isInstance = isInstance && "meta" in value;
 
     return isInstance;
 }
 
-export function GetKnowledgebases200ResponseFromJSON(json: any): GetKnowledgebases200Response {
-    return GetKnowledgebases200ResponseFromJSONTyped(json, false);
+export function GetKnowledgebaseDocumentsV2200ResponseFromJSON(json: any): GetKnowledgebaseDocumentsV2200Response {
+    return GetKnowledgebaseDocumentsV2200ResponseFromJSONTyped(json, false);
 }
 
-export function GetKnowledgebases200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebases200Response {
+export function GetKnowledgebaseDocumentsV2200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebaseDocumentsV2200Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'knowledgebases': ((json['knowledgebases'] as Array<any>).map(KnowledgebaseFromJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaFromJSON(json['meta']),
+        'knowledgebaseDocuments': ((json['knowledgebase_documents'] as Array<any>).map(DocumentFromJSON)),
+        'meta': GetKnowledgebaseDocumentsV2200ResponseMetaFromJSON(json['meta']),
     };
 }
 
-export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200Response | null): any {
+export function GetKnowledgebaseDocumentsV2200ResponseToJSON(value?: GetKnowledgebaseDocumentsV2200Response | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -81,8 +81,8 @@ export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200R
     }
     return {
         
-        'knowledgebases': ((value.knowledgebases as Array<any>).map(KnowledgebaseToJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaToJSON(value.meta),
+        'knowledgebase_documents': ((value.knowledgebaseDocuments as Array<any>).map(DocumentToJSON)),
+        'meta': GetKnowledgebaseDocumentsV2200ResponseMetaToJSON(value.meta),
     };
 }
 

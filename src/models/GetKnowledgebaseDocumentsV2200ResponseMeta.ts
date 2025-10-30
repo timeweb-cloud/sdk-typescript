@@ -13,66 +13,61 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GetKnowledgebasesV2200ResponseMeta } from './GetKnowledgebasesV2200ResponseMeta';
-import {
-    GetKnowledgebasesV2200ResponseMetaFromJSON,
-    GetKnowledgebasesV2200ResponseMetaFromJSONTyped,
-    GetKnowledgebasesV2200ResponseMetaToJSON,
-} from './GetKnowledgebasesV2200ResponseMeta';
-import type { Knowledgebase } from './Knowledgebase';
-import {
-    KnowledgebaseFromJSON,
-    KnowledgebaseFromJSONTyped,
-    KnowledgebaseToJSON,
-} from './Knowledgebase';
-
 /**
  * 
  * @export
- * @interface GetKnowledgebases200Response
+ * @interface GetKnowledgebaseDocumentsV2200ResponseMeta
  */
-export interface GetKnowledgebases200Response {
+export interface GetKnowledgebaseDocumentsV2200ResponseMeta {
     /**
-     * 
-     * @type {Array<Knowledgebase>}
-     * @memberof GetKnowledgebases200Response
+     * Общее количество документов
+     * @type {number}
+     * @memberof GetKnowledgebaseDocumentsV2200ResponseMeta
      */
-    knowledgebases: Array<Knowledgebase>;
+    total: number;
     /**
-     * 
-     * @type {GetKnowledgebasesV2200ResponseMeta}
-     * @memberof GetKnowledgebases200Response
+     * Количество документов на странице
+     * @type {number}
+     * @memberof GetKnowledgebaseDocumentsV2200ResponseMeta
      */
-    meta: GetKnowledgebasesV2200ResponseMeta;
+    limit: number;
+    /**
+     * Количество пропущенных документов
+     * @type {number}
+     * @memberof GetKnowledgebaseDocumentsV2200ResponseMeta
+     */
+    offset: number;
 }
 
 /**
- * Check if a given object implements the GetKnowledgebases200Response interface.
+ * Check if a given object implements the GetKnowledgebaseDocumentsV2200ResponseMeta interface.
  */
-export function instanceOfGetKnowledgebases200Response(value: object): boolean {
+export function instanceOfGetKnowledgebaseDocumentsV2200ResponseMeta(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "knowledgebases" in value;
-    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "total" in value;
+    isInstance = isInstance && "limit" in value;
+    isInstance = isInstance && "offset" in value;
 
     return isInstance;
 }
 
-export function GetKnowledgebases200ResponseFromJSON(json: any): GetKnowledgebases200Response {
-    return GetKnowledgebases200ResponseFromJSONTyped(json, false);
+export function GetKnowledgebaseDocumentsV2200ResponseMetaFromJSON(json: any): GetKnowledgebaseDocumentsV2200ResponseMeta {
+    return GetKnowledgebaseDocumentsV2200ResponseMetaFromJSONTyped(json, false);
 }
 
-export function GetKnowledgebases200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebases200Response {
+export function GetKnowledgebaseDocumentsV2200ResponseMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebaseDocumentsV2200ResponseMeta {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'knowledgebases': ((json['knowledgebases'] as Array<any>).map(KnowledgebaseFromJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaFromJSON(json['meta']),
+        'total': json['total'],
+        'limit': json['limit'],
+        'offset': json['offset'],
     };
 }
 
-export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200Response | null): any {
+export function GetKnowledgebaseDocumentsV2200ResponseMetaToJSON(value?: GetKnowledgebaseDocumentsV2200ResponseMeta | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -81,8 +76,9 @@ export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200R
     }
     return {
         
-        'knowledgebases': ((value.knowledgebases as Array<any>).map(KnowledgebaseToJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaToJSON(value.meta),
+        'total': value.total,
+        'limit': value.limit,
+        'offset': value.offset,
     };
 }
 

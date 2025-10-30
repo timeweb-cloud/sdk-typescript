@@ -287,9 +287,12 @@ src/models/GetFloatingIps200Response.ts
 src/models/GetImage404Response.ts
 src/models/GetKey200Response.ts
 src/models/GetKeys200Response.ts
+src/models/GetKnowledgebaseDocumentsV2200Response.ts
+src/models/GetKnowledgebaseDocumentsV2200ResponseMeta.ts
 src/models/GetKnowledgebaseStatistics200Response.ts
 src/models/GetKnowledgebases200Response.ts
-src/models/GetKnowledgebases200ResponseMeta.ts
+src/models/GetKnowledgebasesV2200Response.ts
+src/models/GetKnowledgebasesV2200ResponseMeta.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
@@ -350,6 +353,7 @@ src/models/InfoServicePrice.ts
 src/models/Invoice.ts
 src/models/K8SVersionsResponse.ts
 src/models/Knowledgebase.ts
+src/models/KnowledgebaseV2.ts
 src/models/Location.ts
 src/models/LocationDto.ts
 src/models/Mailbox.ts

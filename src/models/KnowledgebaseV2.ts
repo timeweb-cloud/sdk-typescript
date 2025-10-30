@@ -13,66 +13,160 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GetKnowledgebasesV2200ResponseMeta } from './GetKnowledgebasesV2200ResponseMeta';
-import {
-    GetKnowledgebasesV2200ResponseMetaFromJSON,
-    GetKnowledgebasesV2200ResponseMetaFromJSONTyped,
-    GetKnowledgebasesV2200ResponseMetaToJSON,
-} from './GetKnowledgebasesV2200ResponseMeta';
-import type { Knowledgebase } from './Knowledgebase';
-import {
-    KnowledgebaseFromJSON,
-    KnowledgebaseFromJSONTyped,
-    KnowledgebaseToJSON,
-} from './Knowledgebase';
-
 /**
- * 
+ * База знаний (версия API v2)
  * @export
- * @interface GetKnowledgebases200Response
+ * @interface KnowledgebaseV2
  */
-export interface GetKnowledgebases200Response {
+export interface KnowledgebaseV2 {
     /**
-     * 
-     * @type {Array<Knowledgebase>}
-     * @memberof GetKnowledgebases200Response
+     * Уникальный идентификатор базы знаний
+     * @type {number}
+     * @memberof KnowledgebaseV2
      */
-    knowledgebases: Array<Knowledgebase>;
+    id: number;
     /**
-     * 
-     * @type {GetKnowledgebasesV2200ResponseMeta}
-     * @memberof GetKnowledgebases200Response
+     * Название базы знаний
+     * @type {string}
+     * @memberof KnowledgebaseV2
      */
-    meta: GetKnowledgebasesV2200ResponseMeta;
+    name: string;
+    /**
+     * Описание базы знаний
+     * @type {string}
+     * @memberof KnowledgebaseV2
+     */
+    description?: string | null;
+    /**
+     * ID базы данных opensearch
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    dbaasId: number;
+    /**
+     * Статус базы знаний
+     * @type {string}
+     * @memberof KnowledgebaseV2
+     */
+    status: KnowledgebaseV2StatusEnum;
+    /**
+     * Дата последней синхронизации
+     * @type {Date}
+     * @memberof KnowledgebaseV2
+     */
+    lastSync?: Date | null;
+    /**
+     * Всего токенов выделено
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    totalTokens: number;
+    /**
+     * Использовано токенов
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    usedTokens: number;
+    /**
+     * Осталось токенов
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    remainingTokens: number;
+    /**
+     * ID пакета токенов
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    tokenPackageId: number;
+    /**
+     * Дата обновления подписки
+     * @type {Date}
+     * @memberof KnowledgebaseV2
+     */
+    subscriptionRenewalDate: Date;
+    /**
+     * Общее количество документов в базе знаний
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    documentsCount: number;
+    /**
+     * ID агентов, связанных с базой знаний
+     * @type {Array<number>}
+     * @memberof KnowledgebaseV2
+     */
+    agentsIds: Array<number>;
+    /**
+     * Дата создания базы знаний
+     * @type {Date}
+     * @memberof KnowledgebaseV2
+     */
+    createdAt: Date;
 }
 
+
 /**
- * Check if a given object implements the GetKnowledgebases200Response interface.
+ * @export
  */
-export function instanceOfGetKnowledgebases200Response(value: object): boolean {
+export const KnowledgebaseV2StatusEnum = {
+    Active: 'active',
+    Blocked: 'blocked',
+    Creating: 'creating',
+    Deleted: 'deleted'
+} as const;
+export type KnowledgebaseV2StatusEnum = typeof KnowledgebaseV2StatusEnum[keyof typeof KnowledgebaseV2StatusEnum];
+
+
+/**
+ * Check if a given object implements the KnowledgebaseV2 interface.
+ */
+export function instanceOfKnowledgebaseV2(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "knowledgebases" in value;
-    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "dbaasId" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "totalTokens" in value;
+    isInstance = isInstance && "usedTokens" in value;
+    isInstance = isInstance && "remainingTokens" in value;
+    isInstance = isInstance && "tokenPackageId" in value;
+    isInstance = isInstance && "subscriptionRenewalDate" in value;
+    isInstance = isInstance && "documentsCount" in value;
+    isInstance = isInstance && "agentsIds" in value;
+    isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
 }
 
-export function GetKnowledgebases200ResponseFromJSON(json: any): GetKnowledgebases200Response {
-    return GetKnowledgebases200ResponseFromJSONTyped(json, false);
+export function KnowledgebaseV2FromJSON(json: any): KnowledgebaseV2 {
+    return KnowledgebaseV2FromJSONTyped(json, false);
 }
 
-export function GetKnowledgebases200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetKnowledgebases200Response {
+export function KnowledgebaseV2FromJSONTyped(json: any, ignoreDiscriminator: boolean): KnowledgebaseV2 {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'knowledgebases': ((json['knowledgebases'] as Array<any>).map(KnowledgebaseFromJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaFromJSON(json['meta']),
+        'id': json['id'],
+        'name': json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'dbaasId': json['dbaas_id'],
+        'status': json['status'],
+        'lastSync': !exists(json, 'last_sync') ? undefined : (json['last_sync'] === null ? null : new Date(json['last_sync'])),
+        'totalTokens': json['total_tokens'],
+        'usedTokens': json['used_tokens'],
+        'remainingTokens': json['remaining_tokens'],
+        'tokenPackageId': json['token_package_id'],
+        'subscriptionRenewalDate': (new Date(json['subscription_renewal_date'])),
+        'documentsCount': json['documents_count'],
+        'agentsIds': json['agents_ids'],
+        'createdAt': (new Date(json['created_at'])),
     };
 }
 
-export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200Response | null): any {
+export function KnowledgebaseV2ToJSON(value?: KnowledgebaseV2 | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -81,8 +175,20 @@ export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200R
     }
     return {
         
-        'knowledgebases': ((value.knowledgebases as Array<any>).map(KnowledgebaseToJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaToJSON(value.meta),
+        'id': value.id,
+        'name': value.name,
+        'description': value.description,
+        'dbaas_id': value.dbaasId,
+        'status': value.status,
+        'last_sync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
+        'total_tokens': value.totalTokens,
+        'used_tokens': value.usedTokens,
+        'remaining_tokens': value.remainingTokens,
+        'token_package_id': value.tokenPackageId,
+        'subscription_renewal_date': (value.subscriptionRenewalDate.toISOString()),
+        'documents_count': value.documentsCount,
+        'agents_ids': value.agentsIds,
+        'created_at': (value.createdAt.toISOString()),
     };
 }
 

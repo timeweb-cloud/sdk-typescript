@@ -24,8 +24,10 @@ import type {
   GetFinances429Response,
   GetFinances500Response,
   GetImage404Response,
+  GetKnowledgebaseDocumentsV2200Response,
   GetKnowledgebaseStatistics200Response,
   GetKnowledgebases200Response,
+  GetKnowledgebasesV2200Response,
   UpdateKnowledgebase,
   UploadFilesToKnowledgebase200Response,
 } from '../models/index';
@@ -48,10 +50,14 @@ import {
     GetFinances500ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
+    GetKnowledgebaseDocumentsV2200ResponseFromJSON,
+    GetKnowledgebaseDocumentsV2200ResponseToJSON,
     GetKnowledgebaseStatistics200ResponseFromJSON,
     GetKnowledgebaseStatistics200ResponseToJSON,
     GetKnowledgebases200ResponseFromJSON,
     GetKnowledgebases200ResponseToJSON,
+    GetKnowledgebasesV2200ResponseFromJSON,
+    GetKnowledgebasesV2200ResponseToJSON,
     UpdateKnowledgebaseFromJSON,
     UpdateKnowledgebaseToJSON,
     UploadFilesToKnowledgebase200ResponseFromJSON,
@@ -83,6 +89,14 @@ export interface DownloadDocumentRequest {
 
 export interface GetKnowledgebaseRequest {
     id: number;
+}
+
+export interface GetKnowledgebaseDocumentsV2Request {
+    id: number;
+    limit?: number;
+    offset?: number;
+    sortBy?: GetKnowledgebaseDocumentsV2SortByEnum;
+    sortOrder?: GetKnowledgebaseDocumentsV2SortOrderEnum;
 }
 
 export interface GetKnowledgebaseStatisticsRequest {
@@ -374,6 +388,62 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы получить список документов базы знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Тело ответа будет представлять собой объект JSON с ключами `knowledgebase_documents` и `meta`.
+     * Получение списка документов базы знаний
+     */
+    async getKnowledgebaseDocumentsV2Raw(requestParameters: GetKnowledgebaseDocumentsV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebaseDocumentsV2200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getKnowledgebaseDocumentsV2.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.sortBy !== undefined) {
+            queryParameters['sort_by'] = requestParameters.sortBy;
+        }
+
+        if (requestParameters.sortOrder !== undefined) {
+            queryParameters['sort_order'] = requestParameters.sortOrder;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetKnowledgebaseDocumentsV2200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список документов базы знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Тело ответа будет представлять собой объект JSON с ключами `knowledgebase_documents` и `meta`.
+     * Получение списка документов базы знаний
+     */
+    async getKnowledgebaseDocumentsV2(requestParameters: GetKnowledgebaseDocumentsV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebaseDocumentsV2200Response> {
+        const response = await this.getKnowledgebaseDocumentsV2Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы получить статистику использования токенов базы знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/statistic`.  Можно указать временной диапазон и интервал агрегации.
      * Получение статистики использования токенов базы знаний
      */
@@ -458,6 +528,42 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
      */
     async getKnowledgebases(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebases200Response> {
         const response = await this.getKnowledgebasesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases`.  Версия API v2 возвращает оптимизированный ответ с количеством документов вместо полного списка документов.  Тело ответа будет представлять собой объект JSON с ключом `knowledgebases`.
+     * Получение списка баз знаний (v2)
+     */
+    async getKnowledgebasesV2Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebasesV2200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/cloud-ai/knowledge-bases`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetKnowledgebasesV2200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases`.  Версия API v2 возвращает оптимизированный ответ с количеством документов вместо полного списка документов.  Тело ответа будет представлять собой объект JSON с ключом `knowledgebases`.
+     * Получение списка баз знаний (v2)
+     */
+    async getKnowledgebasesV2(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebasesV2200Response> {
+        const response = await this.getKnowledgebasesV2Raw(initOverrides);
         return await response.value();
     }
 
@@ -705,3 +811,22 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const GetKnowledgebaseDocumentsV2SortByEnum = {
+    Name: 'name',
+    Size: 'size',
+    Status: 'status',
+    IndexingTimestamp: 'indexing_timestamp'
+} as const;
+export type GetKnowledgebaseDocumentsV2SortByEnum = typeof GetKnowledgebaseDocumentsV2SortByEnum[keyof typeof GetKnowledgebaseDocumentsV2SortByEnum];
+/**
+ * @export
+ */
+export const GetKnowledgebaseDocumentsV2SortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type GetKnowledgebaseDocumentsV2SortOrderEnum = typeof GetKnowledgebaseDocumentsV2SortOrderEnum[keyof typeof GetKnowledgebaseDocumentsV2SortOrderEnum];
