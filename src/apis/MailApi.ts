@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateDatabaseBackup409Response,
   CreateDomainMailbox201Response,
   CreateDomainMailboxRequest,
   CreateMultipleDomainMailboxes201Response,
@@ -26,13 +27,15 @@ import type {
   GetFinances429Response,
   GetFinances500Response,
   GetImage404Response,
-  GetMailQuota200Response,
   GetMailboxes200Response,
   UpdateDomainMailInfoRequest,
-  UpdateMailQuotaRequest,
   UpdateMailbox,
+  UpdateMailboxV2,
+  UpdateMailboxV2200Response,
 } from '../models/index';
 import {
+    CreateDatabaseBackup409ResponseFromJSON,
+    CreateDatabaseBackup409ResponseToJSON,
     CreateDomainMailbox201ResponseFromJSON,
     CreateDomainMailbox201ResponseToJSON,
     CreateDomainMailboxRequestFromJSON,
@@ -55,16 +58,16 @@ import {
     GetFinances500ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
-    GetMailQuota200ResponseFromJSON,
-    GetMailQuota200ResponseToJSON,
     GetMailboxes200ResponseFromJSON,
     GetMailboxes200ResponseToJSON,
     UpdateDomainMailInfoRequestFromJSON,
     UpdateDomainMailInfoRequestToJSON,
-    UpdateMailQuotaRequestFromJSON,
-    UpdateMailQuotaRequestToJSON,
     UpdateMailboxFromJSON,
     UpdateMailboxToJSON,
+    UpdateMailboxV2FromJSON,
+    UpdateMailboxV2ToJSON,
+    UpdateMailboxV2200ResponseFromJSON,
+    UpdateMailboxV2200ResponseToJSON,
 } from '../models/index';
 
 export interface CreateDomainMailboxOperationRequest {
@@ -109,14 +112,16 @@ export interface UpdateDomainMailInfoOperationRequest {
     updateDomainMailInfoRequest: UpdateDomainMailInfoRequest;
 }
 
-export interface UpdateMailQuotaOperationRequest {
-    updateMailQuotaRequest: UpdateMailQuotaRequest;
-}
-
 export interface UpdateMailboxRequest {
     domain: string;
     mailbox: string;
     updateMailbox: UpdateMailbox;
+}
+
+export interface UpdateMailboxV2Request {
+    domain: string;
+    mailbox: string;
+    updateMailboxV2: UpdateMailboxV2;
 }
 
 /**
@@ -354,42 +359,6 @@ export class MailApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить квоту почты аккаунта, отправьте GET-запрос на `/api/v1/mail/quota`.
-     * Получение квоты почты аккаунта
-     */
-    async getMailQuotaRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMailQuota200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/mail/quota`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetMailQuota200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить квоту почты аккаунта, отправьте GET-запрос на `/api/v1/mail/quota`.
-     * Получение квоты почты аккаунта
-     */
-    async getMailQuota(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMailQuota200Response> {
-        const response = await this.getMailQuotaRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Чтобы получить почтовый ящик, отправьте GET-запрос на `/api/v1/mail/domains/{domain}/mailboxes/{mailbox}`.
      * Получение почтового ящика
      */
@@ -529,49 +498,6 @@ export class MailApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить инфомацию по квоте почты аккаунта, отправьте GET-запрос на `/api/v1/mail/quota`.
-     * Изменение квоты почты аккаунта
-     */
-    async updateMailQuotaRaw(requestParameters: UpdateMailQuotaOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMailQuota200Response>> {
-        if (requestParameters.updateMailQuotaRequest === null || requestParameters.updateMailQuotaRequest === undefined) {
-            throw new runtime.RequiredError('updateMailQuotaRequest','Required parameter requestParameters.updateMailQuotaRequest was null or undefined when calling updateMailQuota.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/mail/quota`,
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateMailQuotaRequestToJSON(requestParameters.updateMailQuotaRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetMailQuota200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить инфомацию по квоте почты аккаунта, отправьте GET-запрос на `/api/v1/mail/quota`.
-     * Изменение квоты почты аккаунта
-     */
-    async updateMailQuota(requestParameters: UpdateMailQuotaOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMailQuota200Response> {
-        const response = await this.updateMailQuotaRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Чтобы изменить почтовый ящик, отправьте PATCH-запрос на `/api/v1/mail/domains/{domain}/mailboxes/{mailbox}`.
      * Изменение почтового ящика
      */
@@ -619,6 +545,57 @@ export class MailApi extends runtime.BaseAPI {
      */
     async updateMailbox(requestParameters: UpdateMailboxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainMailbox201Response> {
         const response = await this.updateMailboxRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы изменить почтовый ящик, отправьте PATCH-запрос на `/api/v2/mail/domains/{domain}/mailboxes/{mailbox}`.
+     * Изменение почтового ящика
+     */
+    async updateMailboxV2Raw(requestParameters: UpdateMailboxV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateMailboxV2200Response>> {
+        if (requestParameters.domain === null || requestParameters.domain === undefined) {
+            throw new runtime.RequiredError('domain','Required parameter requestParameters.domain was null or undefined when calling updateMailboxV2.');
+        }
+
+        if (requestParameters.mailbox === null || requestParameters.mailbox === undefined) {
+            throw new runtime.RequiredError('mailbox','Required parameter requestParameters.mailbox was null or undefined when calling updateMailboxV2.');
+        }
+
+        if (requestParameters.updateMailboxV2 === null || requestParameters.updateMailboxV2 === undefined) {
+            throw new runtime.RequiredError('updateMailboxV2','Required parameter requestParameters.updateMailboxV2 was null or undefined when calling updateMailboxV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/mail/domains/{domain}/mailboxes/{mailbox}`.replace(`{${"domain"}}`, encodeURIComponent(String(requestParameters.domain))).replace(`{${"mailbox"}}`, encodeURIComponent(String(requestParameters.mailbox))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateMailboxV2ToJSON(requestParameters.updateMailboxV2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UpdateMailboxV2200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы изменить почтовый ящик, отправьте PATCH-запрос на `/api/v2/mail/domains/{domain}/mailboxes/{mailbox}`.
+     * Изменение почтового ящика
+     */
+    async updateMailboxV2(requestParameters: UpdateMailboxV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateMailboxV2200Response> {
+        const response = await this.updateMailboxV2Raw(requestParameters, initOverrides);
         return await response.value();
     }
 

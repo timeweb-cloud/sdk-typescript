@@ -13,52 +13,45 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Quota } from './Quota';
-import {
-    QuotaFromJSON,
-    QuotaFromJSONTyped,
-    QuotaToJSON,
-} from './Quota';
-
 /**
  * 
  * @export
- * @interface GetMailQuota200Response
+ * @interface ForwardIsDisabled
  */
-export interface GetMailQuota200Response {
+export interface ForwardIsDisabled {
     /**
-     * 
-     * @type {Quota}
-     * @memberof GetMailQuota200Response
+     * Включена ли пересылка входящих писем
+     * @type {boolean}
+     * @memberof ForwardIsDisabled
      */
-    quota: Quota;
+    isEnabled: boolean;
 }
 
 /**
- * Check if a given object implements the GetMailQuota200Response interface.
+ * Check if a given object implements the ForwardIsDisabled interface.
  */
-export function instanceOfGetMailQuota200Response(value: object): boolean {
+export function instanceOfForwardIsDisabled(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "quota" in value;
+    isInstance = isInstance && "isEnabled" in value;
 
     return isInstance;
 }
 
-export function GetMailQuota200ResponseFromJSON(json: any): GetMailQuota200Response {
-    return GetMailQuota200ResponseFromJSONTyped(json, false);
+export function ForwardIsDisabledFromJSON(json: any): ForwardIsDisabled {
+    return ForwardIsDisabledFromJSONTyped(json, false);
 }
 
-export function GetMailQuota200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetMailQuota200Response {
+export function ForwardIsDisabledFromJSONTyped(json: any, ignoreDiscriminator: boolean): ForwardIsDisabled {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'quota': QuotaFromJSON(json['quota']),
+        'isEnabled': json['is_enabled'],
     };
 }
 
-export function GetMailQuota200ResponseToJSON(value?: GetMailQuota200Response | null): any {
+export function ForwardIsDisabledToJSON(value?: ForwardIsDisabled | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -67,7 +60,7 @@ export function GetMailQuota200ResponseToJSON(value?: GetMailQuota200Response | 
     }
     return {
         
-        'quota': QuotaToJSON(value.quota),
+        'is_enabled': value.isEnabled,
     };
 }
 

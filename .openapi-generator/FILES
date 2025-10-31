@@ -72,6 +72,8 @@ src/models/AppsPresetsFrontendPresetsInner.ts
 src/models/AutoBackup.ts
 src/models/AutoReplyIsDisabled.ts
 src/models/AutoReplyIsEnabled.ts
+src/models/AutoreplyIsDisabled.ts
+src/models/AutoreplyIsEnabled.ts
 src/models/AvailabilityZone.ts
 src/models/AvailableFrameworks.ts
 src/models/AvailableFrameworksBackendFrameworksInner.ts
@@ -233,6 +235,8 @@ src/models/FirewallRuleOutResponse.ts
 src/models/FirewallRuleProtocol.ts
 src/models/FirewallRulesOutResponse.ts
 src/models/FloatingIp.ts
+src/models/ForwardIsDisabled.ts
+src/models/ForwardIsEnabled.ts
 src/models/ForwardingIncomingIsDisabled.ts
 src/models/ForwardingIncomingIsEnabled.ts
 src/models/ForwardingOutgoingIsDisabled.ts
@@ -294,7 +298,6 @@ src/models/GetKnowledgebases200Response.ts
 src/models/GetKnowledgebasesV2200Response.ts
 src/models/GetKnowledgebasesV2200ResponseMeta.ts
 src/models/GetLocations200Response.ts
-src/models/GetMailQuota200Response.ts
 src/models/GetMailboxes200Response.ts
 src/models/GetNetworkDrives200Response.ts
 src/models/GetNetworkDrivesAvailableResources200Response.ts
@@ -360,6 +363,7 @@ src/models/Mailbox.ts
 src/models/MailboxAutoReply.ts
 src/models/MailboxForwardingIncoming.ts
 src/models/MailboxForwardingOutgoing.ts
+src/models/MailboxResponse.ts
 src/models/MailboxSpamFilter.ts
 src/models/MasterPresetOutApi.ts
 src/models/Meta.ts
@@ -385,6 +389,8 @@ src/models/NotificationSettingChannel.ts
 src/models/NotificationSettingChannels.ts
 src/models/NotificationSettingType.ts
 src/models/OS.ts
+src/models/OutgoingIsDisabled.ts
+src/models/OutgoingIsEnabled.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
 src/models/Policy.ts
@@ -396,7 +402,6 @@ src/models/Project.ts
 src/models/ProjectResource.ts
 src/models/Provider.ts
 src/models/Providers.ts
-src/models/Quota.ts
 src/models/ReduceNodes.ts
 src/models/RefreshApiKey.ts
 src/models/RegistriesResponse.ts
@@ -444,6 +449,8 @@ src/models/SetLabels.ts
 src/models/SettingCondition.ts
 src/models/SpamFilterIsDisabled.ts
 src/models/SpamFilterIsEnabled.ts
+src/models/SpamProtectionIsDisabled.ts
+src/models/SpamProtectionIsEnabled.ts
 src/models/SshKey.ts
 src/models/SshKeyUsedByInner.ts
 src/models/Status.ts
@@ -475,8 +482,9 @@ src/models/UpdateFloatingIp.ts
 src/models/UpdateInstance.ts
 src/models/UpdateKeyRequest.ts
 src/models/UpdateKnowledgebase.ts
-src/models/UpdateMailQuotaRequest.ts
 src/models/UpdateMailbox.ts
+src/models/UpdateMailboxV2.ts
+src/models/UpdateMailboxV2200Response.ts
 src/models/UpdateNetworkDrive.ts
 src/models/UpdateNotificationSettingsRequest.ts
 src/models/UpdateNotificationSettingsRequestSettingsInner.ts

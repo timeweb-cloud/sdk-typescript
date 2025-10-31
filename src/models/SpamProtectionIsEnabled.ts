@@ -14,52 +14,74 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Почтовая квота
+ * 
  * @export
- * @interface Quota
+ * @interface SpamProtectionIsEnabled
  */
-export interface Quota {
+export interface SpamProtectionIsEnabled {
     /**
-     * Общее количество места на почте (в Мб).
-     * @type {number}
-     * @memberof Quota
+     * Включен ли спам-фильтр
+     * @type {boolean}
+     * @memberof SpamProtectionIsEnabled
      */
-    total: number;
+    isEnabled: boolean;
     /**
-     * Занятое место на почте (в Мб).
-     * @type {number}
-     * @memberof Quota
+     * Что делать с письмами, которые попадают в спам. \
+     *  Параметры: \
+     *  `directory` - переместить в папку спам; \
+     *  `label` - пометить письмо; \
+     *  Если передан параметр `is_enabled`: `false`, то значение передавать нельзя
+     * @type {string}
+     * @memberof SpamProtectionIsEnabled
      */
-    used: number;
+    filterAction?: SpamProtectionIsEnabledFilterActionEnum;
+    /**
+     * Белый список адресов от которых письма не будут попадать в спам. \
+     *  Если передан параметр `is_enabled`: `false`, то значение передавать нельзя
+     * @type {Array<string>}
+     * @memberof SpamProtectionIsEnabled
+     */
+    whiteList?: Array<string>;
 }
 
+
 /**
- * Check if a given object implements the Quota interface.
+ * @export
  */
-export function instanceOfQuota(value: object): boolean {
+export const SpamProtectionIsEnabledFilterActionEnum = {
+    Directory: 'directory',
+    Label: 'label'
+} as const;
+export type SpamProtectionIsEnabledFilterActionEnum = typeof SpamProtectionIsEnabledFilterActionEnum[keyof typeof SpamProtectionIsEnabledFilterActionEnum];
+
+
+/**
+ * Check if a given object implements the SpamProtectionIsEnabled interface.
+ */
+export function instanceOfSpamProtectionIsEnabled(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "total" in value;
-    isInstance = isInstance && "used" in value;
+    isInstance = isInstance && "isEnabled" in value;
 
     return isInstance;
 }
 
-export function QuotaFromJSON(json: any): Quota {
-    return QuotaFromJSONTyped(json, false);
+export function SpamProtectionIsEnabledFromJSON(json: any): SpamProtectionIsEnabled {
+    return SpamProtectionIsEnabledFromJSONTyped(json, false);
 }
 
-export function QuotaFromJSONTyped(json: any, ignoreDiscriminator: boolean): Quota {
+export function SpamProtectionIsEnabledFromJSONTyped(json: any, ignoreDiscriminator: boolean): SpamProtectionIsEnabled {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'total': json['total'],
-        'used': json['used'],
+        'isEnabled': json['is_enabled'],
+        'filterAction': !exists(json, 'filter_action') ? undefined : json['filter_action'],
+        'whiteList': !exists(json, 'white_list') ? undefined : json['white_list'],
     };
 }
 
-export function QuotaToJSON(value?: Quota | null): any {
+export function SpamProtectionIsEnabledToJSON(value?: SpamProtectionIsEnabled | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +90,9 @@ export function QuotaToJSON(value?: Quota | null): any {
     }
     return {
         
-        'total': value.total,
-        'used': value.used,
+        'is_enabled': value.isEnabled,
+        'filter_action': value.filterAction,
+        'white_list': value.whiteList,
     };
 }
 

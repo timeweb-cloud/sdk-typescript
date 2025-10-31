@@ -13,45 +13,52 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MailboxResponse } from './MailboxResponse';
+import {
+    MailboxResponseFromJSON,
+    MailboxResponseFromJSONTyped,
+    MailboxResponseToJSON,
+} from './MailboxResponse';
+
 /**
  * 
  * @export
- * @interface UpdateMailQuotaRequest
+ * @interface UpdateMailboxV2200Response
  */
-export interface UpdateMailQuotaRequest {
+export interface UpdateMailboxV2200Response {
     /**
-     * Общее количество места на почте (в Мб).
-     * @type {number}
-     * @memberof UpdateMailQuotaRequest
+     * 
+     * @type {MailboxResponse}
+     * @memberof UpdateMailboxV2200Response
      */
-    total: number;
+    mailbox: MailboxResponse;
 }
 
 /**
- * Check if a given object implements the UpdateMailQuotaRequest interface.
+ * Check if a given object implements the UpdateMailboxV2200Response interface.
  */
-export function instanceOfUpdateMailQuotaRequest(value: object): boolean {
+export function instanceOfUpdateMailboxV2200Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "total" in value;
+    isInstance = isInstance && "mailbox" in value;
 
     return isInstance;
 }
 
-export function UpdateMailQuotaRequestFromJSON(json: any): UpdateMailQuotaRequest {
-    return UpdateMailQuotaRequestFromJSONTyped(json, false);
+export function UpdateMailboxV2200ResponseFromJSON(json: any): UpdateMailboxV2200Response {
+    return UpdateMailboxV2200ResponseFromJSONTyped(json, false);
 }
 
-export function UpdateMailQuotaRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateMailQuotaRequest {
+export function UpdateMailboxV2200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateMailboxV2200Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'total': json['total'],
+        'mailbox': MailboxResponseFromJSON(json['mailbox']),
     };
 }
 
-export function UpdateMailQuotaRequestToJSON(value?: UpdateMailQuotaRequest | null): any {
+export function UpdateMailboxV2200ResponseToJSON(value?: UpdateMailboxV2200Response | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -60,7 +67,7 @@ export function UpdateMailQuotaRequestToJSON(value?: UpdateMailQuotaRequest | nu
     }
     return {
         
-        'total': value.total,
+        'mailbox': MailboxResponseToJSON(value.mailbox),
     };
 }
 
