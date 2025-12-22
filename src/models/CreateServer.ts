@@ -136,6 +136,12 @@ export interface CreateServer {
      * @memberof CreateServer
      */
     projectId?: number;
+    /**
+     * Сетевое имя сервера
+     * @type {string}
+     * @memberof CreateServer
+     */
+    hostname?: string;
 }
 
 /**
@@ -174,6 +180,7 @@ export function CreateServerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'cloudInit': !exists(json, 'cloud_init') ? undefined : json['cloud_init'],
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'hostname': !exists(json, 'hostname') ? undefined : json['hostname'],
     };
 }
 
@@ -202,6 +209,7 @@ export function CreateServerToJSON(value?: CreateServer | null): any {
         'cloud_init': value.cloudInit,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
         'project_id': value.projectId,
+        'hostname': value.hostname,
     };
 }
 
