@@ -68,6 +68,12 @@ export interface ImageInAPI {
      * @memberof ImageInAPI
      */
     os: OS;
+    /**
+     * Сетевое имя сервера
+     * @type {string}
+     * @memberof ImageInAPI
+     */
+    hostname?: string;
 }
 
 /**
@@ -97,6 +103,7 @@ export function ImageInAPIFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'uploadUrl': !exists(json, 'upload_url') ? undefined : json['upload_url'],
         'location': LocationFromJSON(json['location']),
         'os': OSFromJSON(json['os']),
+        'hostname': !exists(json, 'hostname') ? undefined : json['hostname'],
     };
 }
 
@@ -115,6 +122,7 @@ export function ImageInAPIToJSON(value?: ImageInAPI | null): any {
         'upload_url': value.uploadUrl,
         'location': LocationToJSON(value.location),
         'os': OSToJSON(value.os),
+        'hostname': value.hostname,
     };
 }
 
