@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AIAgentsApi';
+export * from './AIModelsApi';
 export * from './APIKeysApi';
 export * from './AccountApi';
 export * from './AppsApi';

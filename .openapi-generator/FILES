@@ -4,6 +4,7 @@
 README.md
 package.json
 src/apis/AIAgentsApi.ts
+src/apis/AIModelsApi.ts
 src/apis/APIKeysApi.ts
 src/apis/AccountApi.ts
 src/apis/AppsApi.ts
@@ -249,6 +250,8 @@ src/models/GetAgentStatistics200Response.ts
 src/models/GetAgentStatistics200ResponseMeta.ts
 src/models/GetAgents200Response.ts
 src/models/GetAgents200ResponseMeta.ts
+src/models/GetAgentsTokenPackages200Response.ts
+src/models/GetAgentsTokenPackages200ResponseMeta.ts
 src/models/GetAllProjectResources200Response.ts
 src/models/GetAppDeploys200Response.ts
 src/models/GetAppLogs200Response.ts
@@ -299,6 +302,8 @@ src/models/GetKnowledgebasesV2200Response.ts
 src/models/GetKnowledgebasesV2200ResponseMeta.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailboxes200Response.ts
+src/models/GetModels200Response.ts
+src/models/GetModels200ResponseMeta.ts
 src/models/GetNetworkDrives200Response.ts
 src/models/GetNetworkDrivesAvailableResources200Response.ts
 src/models/GetNetworkDrivesPresets200Response.ts
@@ -368,6 +373,11 @@ src/models/MailboxSpamFilter.ts
 src/models/MasterPresetOutApi.ts
 src/models/Meta.ts
 src/models/Meta1.ts
+src/models/Model.ts
+src/models/ModelParamsInfo.ts
+src/models/ModelParamsInfoMaxTokens.ts
+src/models/ModelParamsInfoReasoningEffort.ts
+src/models/ModelParamsInfoTemperature.ts
 src/models/MountNetworkDrive.ts
 src/models/Network.ts
 src/models/NetworkDrive.ts
@@ -457,6 +467,7 @@ src/models/Status.ts
 src/models/StatusCompanyInfo.ts
 src/models/Subdomain.ts
 src/models/Tags.ts
+src/models/TokenPackage.ts
 src/models/TokenStatistic.ts
 src/models/TopLevelDomain.ts
 src/models/TopLevelDomainAllowedBuyPeriodsInner.ts
