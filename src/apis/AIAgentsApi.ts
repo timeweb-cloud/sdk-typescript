@@ -21,11 +21,13 @@ import type {
   GetAccountStatus403Response,
   GetAgentStatistics200Response,
   GetAgents200Response,
+  GetAgentsTokenPackages200Response,
   GetFinances400Response,
   GetFinances401Response,
   GetFinances429Response,
   GetFinances500Response,
   GetImage404Response,
+  GetModels200Response,
   UpdateAgent,
 } from '../models/index';
 import {
@@ -41,6 +43,8 @@ import {
     GetAgentStatistics200ResponseToJSON,
     GetAgents200ResponseFromJSON,
     GetAgents200ResponseToJSON,
+    GetAgentsTokenPackages200ResponseFromJSON,
+    GetAgentsTokenPackages200ResponseToJSON,
     GetFinances400ResponseFromJSON,
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
@@ -51,6 +55,8 @@ import {
     GetFinances500ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
+    GetModels200ResponseFromJSON,
+    GetModels200ResponseToJSON,
     UpdateAgentFromJSON,
     UpdateAgentToJSON,
 } from '../models/index';
@@ -338,6 +344,114 @@ export class AIAgentsApi extends runtime.BaseAPI {
      */
     async getAgents(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgents200Response> {
         const response = await this.getAgentsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
+     * Получение списка пакетов токенов для агентов
+     */
+    async getAgentsTokenPackagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentsTokenPackages200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/token-packages/agents`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentsTokenPackages200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
+     * Получение списка пакетов токенов для агентов
+     */
+    async getAgentsTokenPackages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentsTokenPackages200Response> {
+        const response = await this.getAgentsTokenPackagesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список доступных пакетов токенов для баз знаний, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
+     * Получение списка пакетов токенов для баз знаний
+     */
+    async getKnowledgebasesTokenPackagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentsTokenPackages200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/token-packages/knowledge-bases`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentsTokenPackages200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список доступных пакетов токенов для баз знаний, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
+     * Получение списка пакетов токенов для баз знаний
+     */
+    async getKnowledgebasesTokenPackages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentsTokenPackages200Response> {
+        const response = await this.getKnowledgebasesTokenPackagesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
+     * Получение списка моделей
+     */
+    async getModelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetModels200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/models`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetModels200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
+     * Получение списка моделей
+     */
+    async getModels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetModels200Response> {
+        const response = await this.getModelsRaw(initOverrides);
         return await response.value();
     }
 

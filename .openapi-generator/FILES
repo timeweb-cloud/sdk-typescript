@@ -4,7 +4,6 @@
 README.md
 package.json
 src/apis/AIAgentsApi.ts
-src/apis/AIModelsApi.ts
 src/apis/APIKeysApi.ts
 src/apis/AccountApi.ts
 src/apis/AppsApi.ts
