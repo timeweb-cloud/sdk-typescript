@@ -14,180 +14,209 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Почтовый ящик (API v2)
  * @export
- * @interface MailboxResponse
+ * @interface MailboxV2
  */
-export interface MailboxResponse {
+export interface MailboxV2 {
     /**
-     * IDN имя домена
+     * IDN домен почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    idnName?: string;
+    idnName: string;
     /**
-     * Сообщение автоответчика
+     * Сообщение автоответчика на входящие письма
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    autoreplyMessage?: string;
+    autoreplyMessage: string;
     /**
-     * Статус автоответчика
+     * Включен ли автоответчик на входящие письма
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    autoreplyStatus?: boolean;
+    autoreplyStatus: boolean;
     /**
-     * Тема автоответчика
+     * Тема сообщения автоответчика на входящие письма
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    autoreplySubject?: string;
+    autoreplySubject: string;
     /**
-     * Комментарий
+     * Комментарий к почтовому ящику
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    comment?: string;
+    comment: string;
     /**
-     * Действие фильтра спама
+     * Что делать с письмами, которые попадают в спам
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    filterAction?: MailboxResponseFilterActionEnum;
+    filterAction: MailboxV2FilterActionEnum;
     /**
-     * Статус фильтра спама
+     * Включен ли спам-фильтр
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    filterStatus?: boolean;
+    filterStatus: boolean;
     /**
-     * Список адресов для пересылки
+     * Список адресов для пересылки входящих писем
      * @type {Array<string>}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    forwardList?: Array<string>;
+    forwardList: Array<string>;
     /**
-     * Статус пересылки
+     * Включена ли пересылка входящих писем
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    forwardStatus?: boolean;
+    forwardStatus: boolean;
     /**
-     * Контроль исходящей почты
+     * Включена ли пересылка исходящих писем
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    outgoingControl?: boolean;
+    outgoingControl: boolean;
     /**
-     * Email для исходящих писем
+     * Адрес для пересылки исходящих писем
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    outgoingEmail?: string;
+    outgoingEmail: string;
     /**
-     * Пароль (пустая строка в ответе)
+     * Пароль почтового ящика (всегда возвращается пустой строкой)
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    password?: string;
+    password: string;
     /**
-     * Белый список адресов
+     * Адрес для пересылки спама при выбранном действии forward
+     * @type {string}
+     * @memberof MailboxV2
+     */
+    spambox: string;
+    /**
+     * Белый список адресов от которых письма не будут попадать в спам
      * @type {Array<string>}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    whiteList?: Array<string>;
+    whiteList: Array<string>;
     /**
-     * Доступ к веб-почте
+     * Доступен ли Webmail
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    webmail?: boolean;
+    webmail: boolean;
     /**
-     * Использование Dovecot
+     * Есть ли доступ через dovecot
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    dovecot?: boolean;
+    dovecot: boolean;
     /**
-     * Полное доменное имя
+     * Домен почты
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    fqdn?: string;
+    fqdn: string;
     /**
-     * Оставлять копии писем при пересылке
+     * Оставлять ли сообщения на сервере при пересылке
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    leaveMessages?: boolean;
+    leaveMessages: boolean;
     /**
-     * Имя почтового ящика
+     * Название почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    mailbox?: string;
+    mailbox: string;
     /**
-     * ФИО владельца
+     * ФИО владельца почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof MailboxV2
      */
-    ownerFullName?: string;
+    ownerFullName: string;
 }
 
 
 /**
  * @export
  */
-export const MailboxResponseFilterActionEnum = {
+export const MailboxV2FilterActionEnum = {
     Directory: 'directory',
-    Label: 'label'
+    Forward: 'forward',
+    Delete: 'delete',
+    Tag: 'tag'
 } as const;
-export type MailboxResponseFilterActionEnum = typeof MailboxResponseFilterActionEnum[keyof typeof MailboxResponseFilterActionEnum];
+export type MailboxV2FilterActionEnum = typeof MailboxV2FilterActionEnum[keyof typeof MailboxV2FilterActionEnum];
 
 
 /**
- * Check if a given object implements the MailboxResponse interface.
+ * Check if a given object implements the MailboxV2 interface.
  */
-export function instanceOfMailboxResponse(value: object): boolean {
+export function instanceOfMailboxV2(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "idnName" in value;
+    isInstance = isInstance && "autoreplyMessage" in value;
+    isInstance = isInstance && "autoreplyStatus" in value;
+    isInstance = isInstance && "autoreplySubject" in value;
+    isInstance = isInstance && "comment" in value;
+    isInstance = isInstance && "filterAction" in value;
+    isInstance = isInstance && "filterStatus" in value;
+    isInstance = isInstance && "forwardList" in value;
+    isInstance = isInstance && "forwardStatus" in value;
+    isInstance = isInstance && "outgoingControl" in value;
+    isInstance = isInstance && "outgoingEmail" in value;
+    isInstance = isInstance && "password" in value;
+    isInstance = isInstance && "spambox" in value;
+    isInstance = isInstance && "whiteList" in value;
+    isInstance = isInstance && "webmail" in value;
+    isInstance = isInstance && "dovecot" in value;
+    isInstance = isInstance && "fqdn" in value;
+    isInstance = isInstance && "leaveMessages" in value;
+    isInstance = isInstance && "mailbox" in value;
+    isInstance = isInstance && "ownerFullName" in value;
 
     return isInstance;
 }
 
-export function MailboxResponseFromJSON(json: any): MailboxResponse {
-    return MailboxResponseFromJSONTyped(json, false);
+export function MailboxV2FromJSON(json: any): MailboxV2 {
+    return MailboxV2FromJSONTyped(json, false);
 }
 
-export function MailboxResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MailboxResponse {
+export function MailboxV2FromJSONTyped(json: any, ignoreDiscriminator: boolean): MailboxV2 {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'idnName': !exists(json, 'idn_name') ? undefined : json['idn_name'],
-        'autoreplyMessage': !exists(json, 'autoreply_message') ? undefined : json['autoreply_message'],
-        'autoreplyStatus': !exists(json, 'autoreply_status') ? undefined : json['autoreply_status'],
-        'autoreplySubject': !exists(json, 'autoreply_subject') ? undefined : json['autoreply_subject'],
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
-        'filterAction': !exists(json, 'filter_action') ? undefined : json['filter_action'],
-        'filterStatus': !exists(json, 'filter_status') ? undefined : json['filter_status'],
-        'forwardList': !exists(json, 'forward_list') ? undefined : json['forward_list'],
-        'forwardStatus': !exists(json, 'forward_status') ? undefined : json['forward_status'],
-        'outgoingControl': !exists(json, 'outgoing_control') ? undefined : json['outgoing_control'],
-        'outgoingEmail': !exists(json, 'outgoing_email') ? undefined : json['outgoing_email'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'whiteList': !exists(json, 'white_list') ? undefined : json['white_list'],
-        'webmail': !exists(json, 'webmail') ? undefined : json['webmail'],
-        'dovecot': !exists(json, 'dovecot') ? undefined : json['dovecot'],
-        'fqdn': !exists(json, 'fqdn') ? undefined : json['fqdn'],
-        'leaveMessages': !exists(json, 'leave_messages') ? undefined : json['leave_messages'],
-        'mailbox': !exists(json, 'mailbox') ? undefined : json['mailbox'],
-        'ownerFullName': !exists(json, 'owner_full_name') ? undefined : json['owner_full_name'],
+        'idnName': json['idn_name'],
+        'autoreplyMessage': json['autoreply_message'],
+        'autoreplyStatus': json['autoreply_status'],
+        'autoreplySubject': json['autoreply_subject'],
+        'comment': json['comment'],
+        'filterAction': json['filter_action'],
+        'filterStatus': json['filter_status'],
+        'forwardList': json['forward_list'],
+        'forwardStatus': json['forward_status'],
+        'outgoingControl': json['outgoing_control'],
+        'outgoingEmail': json['outgoing_email'],
+        'password': json['password'],
+        'spambox': json['spambox'],
+        'whiteList': json['white_list'],
+        'webmail': json['webmail'],
+        'dovecot': json['dovecot'],
+        'fqdn': json['fqdn'],
+        'leaveMessages': json['leave_messages'],
+        'mailbox': json['mailbox'],
+        'ownerFullName': json['owner_full_name'],
     };
 }
 
-export function MailboxResponseToJSON(value?: MailboxResponse | null): any {
+export function MailboxV2ToJSON(value?: MailboxV2 | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -208,6 +237,7 @@ export function MailboxResponseToJSON(value?: MailboxResponse | null): any {
         'outgoing_control': value.outgoingControl,
         'outgoing_email': value.outgoingEmail,
         'password': value.password,
+        'spambox': value.spambox,
         'white_list': value.whiteList,
         'webmail': value.webmail,
         'dovecot': value.dovecot,

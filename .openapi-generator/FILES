@@ -140,6 +140,8 @@ src/models/CreateDomainDNSRecord201Response.ts
 src/models/CreateDomainDNSRecordV2201Response.ts
 src/models/CreateDomainMailbox201Response.ts
 src/models/CreateDomainMailboxRequest.ts
+src/models/CreateDomainMailboxV2201Response.ts
+src/models/CreateDomainMailboxV2Request.ts
 src/models/CreateDomainRequest201Response.ts
 src/models/CreateFloatingIp.ts
 src/models/CreateFloatingIp201Response.ts
@@ -151,6 +153,8 @@ src/models/CreateKnowledgebase201Response.ts
 src/models/CreateMultipleDomainMailboxes201Response.ts
 src/models/CreateMultipleDomainMailboxesRequest.ts
 src/models/CreateMultipleDomainMailboxesRequestMailboxesInner.ts
+src/models/CreateMultipleDomainMailboxesV2201Response.ts
+src/models/CreateMultipleDomainMailboxesV2RequestInner.ts
 src/models/CreateNetworkDrive.ts
 src/models/CreateNetworkDrive201Response.ts
 src/models/CreateProject.ts
@@ -255,6 +259,7 @@ src/models/GetAgents200Response.ts
 src/models/GetAgents200ResponseMeta.ts
 src/models/GetAgentsTokenPackages200Response.ts
 src/models/GetAgentsTokenPackages200ResponseMeta.ts
+src/models/GetAllMailboxesV2200Response.ts
 src/models/GetAllProjectResources200Response.ts
 src/models/GetAppDeploys200Response.ts
 src/models/GetAppLogs200Response.ts
@@ -373,6 +378,8 @@ src/models/MailboxForwardingIncoming.ts
 src/models/MailboxForwardingOutgoing.ts
 src/models/MailboxResponse.ts
 src/models/MailboxSpamFilter.ts
+src/models/MailboxV2.ts
+src/models/MailboxesBatchV2.ts
 src/models/MasterPresetOutApi.ts
 src/models/Meta.ts
 src/models/Meta1.ts

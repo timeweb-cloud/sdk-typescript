@@ -18,9 +18,14 @@ import type {
   CreateDatabaseBackup409Response,
   CreateDomainMailbox201Response,
   CreateDomainMailboxRequest,
+  CreateDomainMailboxV2201Response,
+  CreateDomainMailboxV2Request,
   CreateMultipleDomainMailboxes201Response,
   CreateMultipleDomainMailboxesRequest,
+  CreateMultipleDomainMailboxesV2201Response,
+  CreateMultipleDomainMailboxesV2RequestInner,
   GetAccountStatus403Response,
+  GetAllMailboxesV2200Response,
   GetDomainMailInfo200Response,
   GetFinances400Response,
   GetFinances401Response,
@@ -40,12 +45,22 @@ import {
     CreateDomainMailbox201ResponseToJSON,
     CreateDomainMailboxRequestFromJSON,
     CreateDomainMailboxRequestToJSON,
+    CreateDomainMailboxV2201ResponseFromJSON,
+    CreateDomainMailboxV2201ResponseToJSON,
+    CreateDomainMailboxV2RequestFromJSON,
+    CreateDomainMailboxV2RequestToJSON,
     CreateMultipleDomainMailboxes201ResponseFromJSON,
     CreateMultipleDomainMailboxes201ResponseToJSON,
     CreateMultipleDomainMailboxesRequestFromJSON,
     CreateMultipleDomainMailboxesRequestToJSON,
+    CreateMultipleDomainMailboxesV2201ResponseFromJSON,
+    CreateMultipleDomainMailboxesV2201ResponseToJSON,
+    CreateMultipleDomainMailboxesV2RequestInnerFromJSON,
+    CreateMultipleDomainMailboxesV2RequestInnerToJSON,
     GetAccountStatus403ResponseFromJSON,
     GetAccountStatus403ResponseToJSON,
+    GetAllMailboxesV2200ResponseFromJSON,
+    GetAllMailboxesV2200ResponseToJSON,
     GetDomainMailInfo200ResponseFromJSON,
     GetDomainMailInfo200ResponseToJSON,
     GetFinances400ResponseFromJSON,
@@ -75,14 +90,30 @@ export interface CreateDomainMailboxOperationRequest {
     createDomainMailboxRequest: CreateDomainMailboxRequest;
 }
 
+export interface CreateDomainMailboxV2OperationRequest {
+    domain: string;
+    createDomainMailboxV2Request: CreateDomainMailboxV2Request;
+}
+
 export interface CreateMultipleDomainMailboxesOperationRequest {
     domain: string;
     createMultipleDomainMailboxesRequest: CreateMultipleDomainMailboxesRequest;
 }
 
+export interface CreateMultipleDomainMailboxesV2Request {
+    domain: string;
+    createMultipleDomainMailboxesV2RequestInner: Array<CreateMultipleDomainMailboxesV2RequestInner>;
+}
+
 export interface DeleteMailboxRequest {
     domain: string;
     mailbox: string;
+}
+
+export interface GetAllMailboxesV2Request {
+    limit?: number;
+    offset?: number;
+    search?: string;
 }
 
 export interface GetDomainMailInfoRequest {
@@ -97,6 +128,11 @@ export interface GetDomainMailboxesRequest {
 }
 
 export interface GetMailboxRequest {
+    domain: string;
+    mailbox: string;
+}
+
+export interface GetMailboxV2Request {
     domain: string;
     mailbox: string;
 }
@@ -177,6 +213,53 @@ export class MailApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы создать почтовый ящик, отправьте POST-запрос на `/api/v2/mail/domains/{domain}`.
+     * Создание почтового ящика
+     */
+    async createDomainMailboxV2Raw(requestParameters: CreateDomainMailboxV2OperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDomainMailboxV2201Response>> {
+        if (requestParameters.domain === null || requestParameters.domain === undefined) {
+            throw new runtime.RequiredError('domain','Required parameter requestParameters.domain was null or undefined when calling createDomainMailboxV2.');
+        }
+
+        if (requestParameters.createDomainMailboxV2Request === null || requestParameters.createDomainMailboxV2Request === undefined) {
+            throw new runtime.RequiredError('createDomainMailboxV2Request','Required parameter requestParameters.createDomainMailboxV2Request was null or undefined when calling createDomainMailboxV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/mail/domains/{domain}`.replace(`{${"domain"}}`, encodeURIComponent(String(requestParameters.domain))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateDomainMailboxV2RequestToJSON(requestParameters.createDomainMailboxV2Request),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDomainMailboxV2201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать почтовый ящик, отправьте POST-запрос на `/api/v2/mail/domains/{domain}`.
+     * Создание почтового ящика
+     */
+    async createDomainMailboxV2(requestParameters: CreateDomainMailboxV2OperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainMailboxV2201Response> {
+        const response = await this.createDomainMailboxV2Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы создать почтовый ящики, отправьте POST-запрос на `/api/v1/mail/domains/{domain}/batch`.
      * Множественное создание почтовых ящиков
      */
@@ -224,6 +307,53 @@ export class MailApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы создать несколько почтовых ящиков одновременно, отправьте POST-запрос на `/api/v2/mail/domains/{domain}/batch`.
+     * Множественное создание почтовых ящиков
+     */
+    async createMultipleDomainMailboxesV2Raw(requestParameters: CreateMultipleDomainMailboxesV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateMultipleDomainMailboxesV2201Response>> {
+        if (requestParameters.domain === null || requestParameters.domain === undefined) {
+            throw new runtime.RequiredError('domain','Required parameter requestParameters.domain was null or undefined when calling createMultipleDomainMailboxesV2.');
+        }
+
+        if (requestParameters.createMultipleDomainMailboxesV2RequestInner === null || requestParameters.createMultipleDomainMailboxesV2RequestInner === undefined) {
+            throw new runtime.RequiredError('createMultipleDomainMailboxesV2RequestInner','Required parameter requestParameters.createMultipleDomainMailboxesV2RequestInner was null or undefined when calling createMultipleDomainMailboxesV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/mail/domains/{domain}/batch`.replace(`{${"domain"}}`, encodeURIComponent(String(requestParameters.domain))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createMultipleDomainMailboxesV2RequestInner.map(CreateMultipleDomainMailboxesV2RequestInnerToJSON),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateMultipleDomainMailboxesV2201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать несколько почтовых ящиков одновременно, отправьте POST-запрос на `/api/v2/mail/domains/{domain}/batch`.
+     * Множественное создание почтовых ящиков
+     */
+    async createMultipleDomainMailboxesV2(requestParameters: CreateMultipleDomainMailboxesV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateMultipleDomainMailboxesV2201Response> {
+        const response = await this.createMultipleDomainMailboxesV2Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы удалить почтовый ящик, отправьте DELETE-запрос на `/api/v1/mail/domains/{domain}/mailboxes/{mailbox}`.
      * Удаление почтового ящика
      */
@@ -264,6 +394,54 @@ export class MailApi extends runtime.BaseAPI {
      */
     async deleteMailbox(requestParameters: DeleteMailboxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteMailboxRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы получить список всех почтовых ящиков, отправьте GET-запрос на `/api/v2/mail`.
+     * Получение списка всех почтовых ящиков аккаунта
+     */
+    async getAllMailboxesV2Raw(requestParameters: GetAllMailboxesV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAllMailboxesV2200Response>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.search !== undefined) {
+            queryParameters['search'] = requestParameters.search;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/mail`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAllMailboxesV2200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список всех почтовых ящиков, отправьте GET-запрос на `/api/v2/mail`.
+     * Получение списка всех почтовых ящиков аккаунта
+     */
+    async getAllMailboxesV2(requestParameters: GetAllMailboxesV2Request = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAllMailboxesV2200Response> {
+        const response = await this.getAllMailboxesV2Raw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -399,6 +577,50 @@ export class MailApi extends runtime.BaseAPI {
      */
     async getMailbox(requestParameters: GetMailboxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainMailbox201Response> {
         const response = await this.getMailboxRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить почтовый ящик, отправьте GET-запрос на `/api/v2/mail/domains/{domain}/mailboxes/{mailbox}`.
+     * Получение почтового ящика
+     */
+    async getMailboxV2Raw(requestParameters: GetMailboxV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDomainMailboxV2201Response>> {
+        if (requestParameters.domain === null || requestParameters.domain === undefined) {
+            throw new runtime.RequiredError('domain','Required parameter requestParameters.domain was null or undefined when calling getMailboxV2.');
+        }
+
+        if (requestParameters.mailbox === null || requestParameters.mailbox === undefined) {
+            throw new runtime.RequiredError('mailbox','Required parameter requestParameters.mailbox was null or undefined when calling getMailboxV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/mail/domains/{domain}/mailboxes/{mailbox}`.replace(`{${"domain"}}`, encodeURIComponent(String(requestParameters.domain))).replace(`{${"mailbox"}}`, encodeURIComponent(String(requestParameters.mailbox))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDomainMailboxV2201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить почтовый ящик, отправьте GET-запрос на `/api/v2/mail/domains/{domain}/mailboxes/{mailbox}`.
+     * Получение почтового ящика
+     */
+    async getMailboxV2(requestParameters: GetMailboxV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainMailboxV2201Response> {
+        const response = await this.getMailboxV2Raw(requestParameters, initOverrides);
         return await response.value();
     }
 

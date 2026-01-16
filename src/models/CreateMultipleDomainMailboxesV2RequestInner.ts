@@ -16,178 +16,93 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface MailboxResponse
+ * @interface CreateMultipleDomainMailboxesV2RequestInner
  */
-export interface MailboxResponse {
+export interface CreateMultipleDomainMailboxesV2RequestInner {
     /**
-     * IDN имя домена
+     * Название почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof CreateMultipleDomainMailboxesV2RequestInner
      */
-    idnName?: string;
+    login: string;
     /**
-     * Сообщение автоответчика
+     * Пароль почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof CreateMultipleDomainMailboxesV2RequestInner
      */
-    autoreplyMessage?: string;
+    password: string;
     /**
-     * Статус автоответчика
-     * @type {boolean}
-     * @memberof MailboxResponse
-     */
-    autoreplyStatus?: boolean;
-    /**
-     * Тема автоответчика
+     * ФИО владельца почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof CreateMultipleDomainMailboxesV2RequestInner
      */
-    autoreplySubject?: string;
+    ownerFullName?: string;
     /**
-     * Комментарий
+     * Комментарий почтового ящика
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof CreateMultipleDomainMailboxesV2RequestInner
      */
     comment?: string;
     /**
-     * Действие фильтра спама
-     * @type {string}
-     * @memberof MailboxResponse
-     */
-    filterAction?: MailboxResponseFilterActionEnum;
-    /**
-     * Статус фильтра спама
+     * Статус фильтрации почты
      * @type {boolean}
-     * @memberof MailboxResponse
+     * @memberof CreateMultipleDomainMailboxesV2RequestInner
      */
     filterStatus?: boolean;
     /**
-     * Список адресов для пересылки
-     * @type {Array<string>}
-     * @memberof MailboxResponse
-     */
-    forwardList?: Array<string>;
-    /**
-     * Статус пересылки
-     * @type {boolean}
-     * @memberof MailboxResponse
-     */
-    forwardStatus?: boolean;
-    /**
-     * Контроль исходящей почты
-     * @type {boolean}
-     * @memberof MailboxResponse
-     */
-    outgoingControl?: boolean;
-    /**
-     * Email для исходящих писем
+     * Что делать с письмами, которые попадают в спам. \
+     *  Параметры: \
+     *  `directory` - переместить в папку спам; \
+     *  `label` - пометить письмо; \
+     *  Если передан параметр `filter_status`: `false`, то значение передавать нельзя
      * @type {string}
-     * @memberof MailboxResponse
+     * @memberof CreateMultipleDomainMailboxesV2RequestInner
      */
-    outgoingEmail?: string;
-    /**
-     * Пароль (пустая строка в ответе)
-     * @type {string}
-     * @memberof MailboxResponse
-     */
-    password?: string;
-    /**
-     * Белый список адресов
-     * @type {Array<string>}
-     * @memberof MailboxResponse
-     */
-    whiteList?: Array<string>;
-    /**
-     * Доступ к веб-почте
-     * @type {boolean}
-     * @memberof MailboxResponse
-     */
-    webmail?: boolean;
-    /**
-     * Использование Dovecot
-     * @type {boolean}
-     * @memberof MailboxResponse
-     */
-    dovecot?: boolean;
-    /**
-     * Полное доменное имя
-     * @type {string}
-     * @memberof MailboxResponse
-     */
-    fqdn?: string;
-    /**
-     * Оставлять копии писем при пересылке
-     * @type {boolean}
-     * @memberof MailboxResponse
-     */
-    leaveMessages?: boolean;
-    /**
-     * Имя почтового ящика
-     * @type {string}
-     * @memberof MailboxResponse
-     */
-    mailbox?: string;
-    /**
-     * ФИО владельца
-     * @type {string}
-     * @memberof MailboxResponse
-     */
-    ownerFullName?: string;
+    filterAction?: CreateMultipleDomainMailboxesV2RequestInnerFilterActionEnum;
 }
 
 
 /**
  * @export
  */
-export const MailboxResponseFilterActionEnum = {
+export const CreateMultipleDomainMailboxesV2RequestInnerFilterActionEnum = {
     Directory: 'directory',
     Label: 'label'
 } as const;
-export type MailboxResponseFilterActionEnum = typeof MailboxResponseFilterActionEnum[keyof typeof MailboxResponseFilterActionEnum];
+export type CreateMultipleDomainMailboxesV2RequestInnerFilterActionEnum = typeof CreateMultipleDomainMailboxesV2RequestInnerFilterActionEnum[keyof typeof CreateMultipleDomainMailboxesV2RequestInnerFilterActionEnum];
 
 
 /**
- * Check if a given object implements the MailboxResponse interface.
+ * Check if a given object implements the CreateMultipleDomainMailboxesV2RequestInner interface.
  */
-export function instanceOfMailboxResponse(value: object): boolean {
+export function instanceOfCreateMultipleDomainMailboxesV2RequestInner(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "login" in value;
+    isInstance = isInstance && "password" in value;
 
     return isInstance;
 }
 
-export function MailboxResponseFromJSON(json: any): MailboxResponse {
-    return MailboxResponseFromJSONTyped(json, false);
+export function CreateMultipleDomainMailboxesV2RequestInnerFromJSON(json: any): CreateMultipleDomainMailboxesV2RequestInner {
+    return CreateMultipleDomainMailboxesV2RequestInnerFromJSONTyped(json, false);
 }
 
-export function MailboxResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MailboxResponse {
+export function CreateMultipleDomainMailboxesV2RequestInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateMultipleDomainMailboxesV2RequestInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'idnName': !exists(json, 'idn_name') ? undefined : json['idn_name'],
-        'autoreplyMessage': !exists(json, 'autoreply_message') ? undefined : json['autoreply_message'],
-        'autoreplyStatus': !exists(json, 'autoreply_status') ? undefined : json['autoreply_status'],
-        'autoreplySubject': !exists(json, 'autoreply_subject') ? undefined : json['autoreply_subject'],
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
-        'filterAction': !exists(json, 'filter_action') ? undefined : json['filter_action'],
-        'filterStatus': !exists(json, 'filter_status') ? undefined : json['filter_status'],
-        'forwardList': !exists(json, 'forward_list') ? undefined : json['forward_list'],
-        'forwardStatus': !exists(json, 'forward_status') ? undefined : json['forward_status'],
-        'outgoingControl': !exists(json, 'outgoing_control') ? undefined : json['outgoing_control'],
-        'outgoingEmail': !exists(json, 'outgoing_email') ? undefined : json['outgoing_email'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'whiteList': !exists(json, 'white_list') ? undefined : json['white_list'],
-        'webmail': !exists(json, 'webmail') ? undefined : json['webmail'],
-        'dovecot': !exists(json, 'dovecot') ? undefined : json['dovecot'],
-        'fqdn': !exists(json, 'fqdn') ? undefined : json['fqdn'],
-        'leaveMessages': !exists(json, 'leave_messages') ? undefined : json['leave_messages'],
-        'mailbox': !exists(json, 'mailbox') ? undefined : json['mailbox'],
+        'login': json['login'],
+        'password': json['password'],
         'ownerFullName': !exists(json, 'owner_full_name') ? undefined : json['owner_full_name'],
+        'comment': !exists(json, 'comment') ? undefined : json['comment'],
+        'filterStatus': !exists(json, 'filter_status') ? undefined : json['filter_status'],
+        'filterAction': !exists(json, 'filter_action') ? undefined : json['filter_action'],
     };
 }
 
-export function MailboxResponseToJSON(value?: MailboxResponse | null): any {
+export function CreateMultipleDomainMailboxesV2RequestInnerToJSON(value?: CreateMultipleDomainMailboxesV2RequestInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -196,25 +111,12 @@ export function MailboxResponseToJSON(value?: MailboxResponse | null): any {
     }
     return {
         
-        'idn_name': value.idnName,
-        'autoreply_message': value.autoreplyMessage,
-        'autoreply_status': value.autoreplyStatus,
-        'autoreply_subject': value.autoreplySubject,
-        'comment': value.comment,
-        'filter_action': value.filterAction,
-        'filter_status': value.filterStatus,
-        'forward_list': value.forwardList,
-        'forward_status': value.forwardStatus,
-        'outgoing_control': value.outgoingControl,
-        'outgoing_email': value.outgoingEmail,
+        'login': value.login,
         'password': value.password,
-        'white_list': value.whiteList,
-        'webmail': value.webmail,
-        'dovecot': value.dovecot,
-        'fqdn': value.fqdn,
-        'leave_messages': value.leaveMessages,
-        'mailbox': value.mailbox,
         'owner_full_name': value.ownerFullName,
+        'comment': value.comment,
+        'filter_status': value.filterStatus,
+        'filter_action': value.filterAction,
     };
 }
 
