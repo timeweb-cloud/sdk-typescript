@@ -19,7 +19,9 @@ import type {
   CheckDomain200Response,
   CreateDatabaseBackup409Response,
   CreateDns,
+  CreateDnsV2,
   CreateDomainDNSRecord201Response,
+  CreateDomainDNSRecordV2201Response,
   CreateDomainRequest201Response,
   DomainRegister,
   GetDomain200Response,
@@ -48,8 +50,12 @@ import {
     CreateDatabaseBackup409ResponseToJSON,
     CreateDnsFromJSON,
     CreateDnsToJSON,
+    CreateDnsV2FromJSON,
+    CreateDnsV2ToJSON,
     CreateDomainDNSRecord201ResponseFromJSON,
     CreateDomainDNSRecord201ResponseToJSON,
+    CreateDomainDNSRecordV2201ResponseFromJSON,
+    CreateDomainDNSRecordV2201ResponseToJSON,
     CreateDomainRequest201ResponseFromJSON,
     CreateDomainRequest201ResponseToJSON,
     DomainRegisterFromJSON,
@@ -106,6 +112,11 @@ export interface CreateDomainDNSRecordRequest {
     createDns: CreateDns;
 }
 
+export interface CreateDomainDNSRecordV2Request {
+    fqdn: string;
+    createDnsV2: CreateDnsV2;
+}
+
 export interface CreateDomainRequestRequest {
     domainRegister: DomainRegister;
 }
@@ -115,6 +126,11 @@ export interface DeleteDomainRequest {
 }
 
 export interface DeleteDomainDNSRecordRequest {
+    fqdn: string;
+    recordId: number;
+}
+
+export interface DeleteDomainDNSRecordV2Request {
     fqdn: string;
     recordId: number;
 }
@@ -179,6 +195,12 @@ export interface UpdateDomainDNSRecordRequest {
     fqdn: string;
     recordId: number;
     createDns: CreateDns;
+}
+
+export interface UpdateDomainDNSRecordV2Request {
+    fqdn: string;
+    recordId: number;
+    createDnsV2: CreateDnsV2;
 }
 
 export interface UpdateDomainNameServersRequest {
@@ -367,6 +389,53 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы добавить информацию о DNS-записи для домена или поддомена, отправьте запрос POST на `/api/v2/domains/{fqdn}/dns-records`, задав необходимые атрибуты.  DNS-запись будет добавлена с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о добавленной DNS-записи.
+     * Добавить информацию о DNS-записи для домена или поддомена
+     */
+    async createDomainDNSRecordV2Raw(requestParameters: CreateDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDomainDNSRecordV2201Response>> {
+        if (requestParameters.fqdn === null || requestParameters.fqdn === undefined) {
+            throw new runtime.RequiredError('fqdn','Required parameter requestParameters.fqdn was null or undefined when calling createDomainDNSRecordV2.');
+        }
+
+        if (requestParameters.createDnsV2 === null || requestParameters.createDnsV2 === undefined) {
+            throw new runtime.RequiredError('createDnsV2','Required parameter requestParameters.createDnsV2 was null or undefined when calling createDomainDNSRecordV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/domains/{fqdn}/dns-records`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateDnsV2ToJSON(requestParameters.createDnsV2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDomainDNSRecordV2201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы добавить информацию о DNS-записи для домена или поддомена, отправьте запрос POST на `/api/v2/domains/{fqdn}/dns-records`, задав необходимые атрибуты.  DNS-запись будет добавлена с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о добавленной DNS-записи.
+     * Добавить информацию о DNS-записи для домена или поддомена
+     */
+    async createDomainDNSRecordV2(requestParameters: CreateDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainDNSRecordV2201Response> {
+        const response = await this.createDomainDNSRecordV2Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы создать заявку на регистрацию/продление/трансфер домена, отправьте POST-запрос в `api/v1/domains-requests`, задав необходимые атрибуты.  Заявка будет создана с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданной заявке.
      * Создание заявки на регистрацию/продление/трансфер домена
      */
@@ -489,6 +558,49 @@ export class DomainsApi extends runtime.BaseAPI {
      */
     async deleteDomainDNSRecord(requestParameters: DeleteDomainDNSRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteDomainDNSRecordRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы удалить информацию о DNS-записи для домена или поддомена, отправьте запрос DELETE на `/api/v2/domains/{fqdn}/dns-records/{record_id}`.
+     * Удалить информацию о DNS-записи для домена или поддомена
+     */
+    async deleteDomainDNSRecordV2Raw(requestParameters: DeleteDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.fqdn === null || requestParameters.fqdn === undefined) {
+            throw new runtime.RequiredError('fqdn','Required parameter requestParameters.fqdn was null or undefined when calling deleteDomainDNSRecordV2.');
+        }
+
+        if (requestParameters.recordId === null || requestParameters.recordId === undefined) {
+            throw new runtime.RequiredError('recordId','Required parameter requestParameters.recordId was null or undefined when calling deleteDomainDNSRecordV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/domains/{fqdn}/dns-records/{record_id}`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))).replace(`{${"record_id"}}`, encodeURIComponent(String(requestParameters.recordId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы удалить информацию о DNS-записи для домена или поддомена, отправьте запрос DELETE на `/api/v2/domains/{fqdn}/dns-records/{record_id}`.
+     * Удалить информацию о DNS-записи для домена или поддомена
+     */
+    async deleteDomainDNSRecordV2(requestParameters: DeleteDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteDomainDNSRecordV2Raw(requestParameters, initOverrides);
     }
 
     /**
@@ -1029,6 +1141,57 @@ export class DomainsApi extends runtime.BaseAPI {
      */
     async updateDomainDNSRecord(requestParameters: UpdateDomainDNSRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainDNSRecord201Response> {
         const response = await this.updateDomainDNSRecordRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы обновить информацию о DNS-записи для домена или поддомена, отправьте запрос PATCH на `/api/v2/domains/{fqdn}/dns-records/{record_id}`, задав необходимые атрибуты.  DNS-запись будет обновлена с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией об обновленной DNS-записи.
+     * Обновить информацию о DNS-записи домена или поддомена
+     */
+    async updateDomainDNSRecordV2Raw(requestParameters: UpdateDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDomainDNSRecordV2201Response>> {
+        if (requestParameters.fqdn === null || requestParameters.fqdn === undefined) {
+            throw new runtime.RequiredError('fqdn','Required parameter requestParameters.fqdn was null or undefined when calling updateDomainDNSRecordV2.');
+        }
+
+        if (requestParameters.recordId === null || requestParameters.recordId === undefined) {
+            throw new runtime.RequiredError('recordId','Required parameter requestParameters.recordId was null or undefined when calling updateDomainDNSRecordV2.');
+        }
+
+        if (requestParameters.createDnsV2 === null || requestParameters.createDnsV2 === undefined) {
+            throw new runtime.RequiredError('createDnsV2','Required parameter requestParameters.createDnsV2 was null or undefined when calling updateDomainDNSRecordV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/domains/{fqdn}/dns-records/{record_id}`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))).replace(`{${"record_id"}}`, encodeURIComponent(String(requestParameters.recordId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateDnsV2ToJSON(requestParameters.createDnsV2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDomainDNSRecordV2201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы обновить информацию о DNS-записи для домена или поддомена, отправьте запрос PATCH на `/api/v2/domains/{fqdn}/dns-records/{record_id}`, задав необходимые атрибуты.  DNS-запись будет обновлена с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией об обновленной DNS-записи.
+     * Обновить информацию о DNS-записи домена или поддомена
+     */
+    async updateDomainDNSRecordV2(requestParameters: UpdateDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainDNSRecordV2201Response> {
+        const response = await this.updateDomainDNSRecordV2Raw(requestParameters, initOverrides);
         return await response.value();
     }
 

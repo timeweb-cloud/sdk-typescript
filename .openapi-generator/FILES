@@ -136,7 +136,9 @@ src/models/CreateDedicatedServer201Response.ts
 src/models/CreateDeploy201Response.ts
 src/models/CreateDeployRequest.ts
 src/models/CreateDns.ts
+src/models/CreateDnsV2.ts
 src/models/CreateDomainDNSRecord201Response.ts
+src/models/CreateDomainDNSRecordV2201Response.ts
 src/models/CreateDomainMailbox201Response.ts
 src/models/CreateDomainMailboxRequest.ts
 src/models/CreateDomainRequest201Response.ts
@@ -206,6 +208,8 @@ src/models/DeploySettingsInner.ts
 src/models/DeployStatus.ts
 src/models/DnsRecord.ts
 src/models/DnsRecordData.ts
+src/models/DnsRecordV2.ts
+src/models/DnsRecordV2Data.ts
 src/models/Document.ts
 src/models/DocumentStatusInfo.ts
 src/models/DocumentStatusInfoDetails.ts
