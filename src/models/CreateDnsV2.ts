@@ -37,6 +37,12 @@ export interface CreateDnsV2 {
      * @memberof CreateDnsV2
      */
     ttl?: number;
+    /**
+     * Идентификатор приложения в App Platform, к которому будет привязан домен или поддомен.
+     * @type {number}
+     * @memberof CreateDnsV2
+     */
+    appId?: number;
 }
 
 
@@ -73,6 +79,7 @@ export function CreateDnsV2FromJSONTyped(json: any, ignoreDiscriminator: boolean
         'type': json['type'],
         'value': json['value'],
         'ttl': !exists(json, 'ttl') ? undefined : json['ttl'],
+        'appId': !exists(json, 'app_id') ? undefined : json['app_id'],
     };
 }
 
@@ -88,6 +95,7 @@ export function CreateDnsV2ToJSON(value?: CreateDnsV2 | null): any {
         'type': value.type,
         'value': value.value,
         'ttl': value.ttl,
+        'app_id': value.appId,
     };
 }
 
