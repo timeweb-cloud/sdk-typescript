@@ -49,7 +49,7 @@ export interface Bucket {
      * @type {string}
      * @memberof Bucket
      */
-    description?: string;
+    description: string;
     /**
      * 
      * @type {BucketDiskStats}
@@ -145,7 +145,13 @@ export interface Bucket {
      * @type {BucketWebsiteConfig}
      * @memberof Bucket
      */
-    websiteConfig: BucketWebsiteConfig;
+    websiteConfig: BucketWebsiteConfig | null;
+    /**
+     * Разрешено ли автоматическое повышение тарифа.
+     * @type {boolean}
+     * @memberof Bucket
+     */
+    isAllowAutoUpgrade: boolean;
 }
 
 
@@ -185,6 +191,7 @@ export function instanceOfBucket(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "diskStats" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "presetId" in value;
@@ -201,6 +208,7 @@ export function instanceOfBucket(value: object): boolean {
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "rateId" in value;
     isInstance = isInstance && "websiteConfig" in value;
+    isInstance = isInstance && "isAllowAutoUpgrade" in value;
 
     return isInstance;
 }
@@ -217,7 +225,7 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         
         'id': json['id'],
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'],
         'diskStats': BucketDiskStatsFromJSON(json['disk_stats']),
         'type': json['type'],
         'presetId': json['preset_id'],
@@ -234,6 +242,7 @@ export function BucketFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bu
         'projectId': json['project_id'],
         'rateId': json['rate_id'],
         'websiteConfig': BucketWebsiteConfigFromJSON(json['website_config']),
+        'isAllowAutoUpgrade': json['is_allow_auto_upgrade'],
     };
 }
 
@@ -265,6 +274,7 @@ export function BucketToJSON(value?: Bucket | null): any {
         'project_id': value.projectId,
         'rate_id': value.rateId,
         'website_config': BucketWebsiteConfigToJSON(value.websiteConfig),
+        'is_allow_auto_upgrade': value.isAllowAutoUpgrade,
     };
 }
 

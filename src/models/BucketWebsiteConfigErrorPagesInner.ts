@@ -26,7 +26,7 @@ export interface BucketWebsiteConfigErrorPagesInner {
      */
     code?: number;
     /**
-     * Страница сайта.
+     * Страница сайта.
      * @type {string}
      * @memberof BucketWebsiteConfigErrorPagesInner
      */

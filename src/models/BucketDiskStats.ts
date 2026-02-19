@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface BucketDiskStats {
     /**
-     * Размер (в Кб) диска хранилища.
+     * Размер (в Кб) диска хранилища включенного в тариф.
      * @type {number}
      * @memberof BucketDiskStats
      */
@@ -31,6 +31,12 @@ export interface BucketDiskStats {
      * @memberof BucketDiskStats
      */
     used: number;
+    /**
+     * Признак безлимитного размера хранилища.
+     * @type {boolean}
+     * @memberof BucketDiskStats
+     */
+    isUnlimited: boolean;
 }
 
 /**
@@ -40,6 +46,7 @@ export function instanceOfBucketDiskStats(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "size" in value;
     isInstance = isInstance && "used" in value;
+    isInstance = isInstance && "isUnlimited" in value;
 
     return isInstance;
 }
@@ -56,6 +63,7 @@ export function BucketDiskStatsFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'size': json['size'],
         'used': json['used'],
+        'isUnlimited': json['is_unlimited'],
     };
 }
 
@@ -70,6 +78,7 @@ export function BucketDiskStatsToJSON(value?: BucketDiskStats | null): any {
         
         'size': value.size,
         'used': value.used,
+        'is_unlimited': value.isUnlimited,
     };
 }
 

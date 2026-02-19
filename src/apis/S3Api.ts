@@ -106,6 +106,10 @@ export interface DeleteStorageSubdomainsRequest {
     addStorageSubdomainsRequest: AddStorageSubdomainsRequest;
 }
 
+export interface GetStorageRequest {
+    bucketId: number;
+}
+
 export interface GetStorageSubdomainsRequest {
     bucketId: number;
 }
@@ -357,6 +361,46 @@ export class S3Api extends runtime.BaseAPI {
      */
     async deleteStorageSubdomains(requestParameters: DeleteStorageSubdomainsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AddStorageSubdomains200Response> {
         const response = await this.deleteStorageSubdomainsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить хранилище по ID, отправьте GET-запрос на `/api/v1/storages/buckets/{bucket_id}`.
+     * Получение хранилища по ID
+     */
+    async getStorageRaw(requestParameters: GetStorageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateStorage201Response>> {
+        if (requestParameters.bucketId === null || requestParameters.bucketId === undefined) {
+            throw new runtime.RequiredError('bucketId','Required parameter requestParameters.bucketId was null or undefined when calling getStorage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/storages/buckets/{bucket_id}`.replace(`{${"bucket_id"}}`, encodeURIComponent(String(requestParameters.bucketId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateStorage201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить хранилище по ID, отправьте GET-запрос на `/api/v1/storages/buckets/{bucket_id}`.
+     * Получение хранилища по ID
+     */
+    async getStorage(requestParameters: GetStorageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateStorage201Response> {
+        const response = await this.getStorageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
