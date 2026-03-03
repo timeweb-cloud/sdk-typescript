@@ -213,6 +213,10 @@ export interface GetDatabasesRequest {
     offset?: number;
 }
 
+export interface GetDatabasesPresetsRequest {
+    dbId?: number;
+}
+
 export interface RestoreDatabaseFromBackupRequest {
     dbId: number;
     backupId: number;
@@ -1242,8 +1246,12 @@ export class DatabasesApi extends runtime.BaseAPI {
      * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
-    async getDatabasesPresetsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabasesPresets200Response>> {
+    async getDatabasesPresetsRaw(requestParameters: GetDatabasesPresetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabasesPresets200Response>> {
         const queryParameters: any = {};
+
+        if (requestParameters.dbId !== undefined) {
+            queryParameters['db_id'] = requestParameters.dbId;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -1269,8 +1277,8 @@ export class DatabasesApi extends runtime.BaseAPI {
      * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
-    async getDatabasesPresets(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabasesPresets200Response> {
-        const response = await this.getDatabasesPresetsRaw(initOverrides);
+    async getDatabasesPresets(requestParameters: GetDatabasesPresetsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabasesPresets200Response> {
+        const response = await this.getDatabasesPresetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
