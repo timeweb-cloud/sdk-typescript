@@ -1239,7 +1239,7 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v1/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
+     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
     async getDatabasesPresetsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabasesPresets200Response>> {
@@ -1256,7 +1256,7 @@ export class DatabasesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/presets/dbs`,
+            path: `/api/v2/presets/dbs`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -1266,7 +1266,7 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v1/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
+     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
     async getDatabasesPresets(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabasesPresets200Response> {
