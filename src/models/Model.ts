@@ -45,11 +45,29 @@ export interface Model {
      */
     name: string;
     /**
+     * Публичное имя модели
+     * @type {string}
+     * @memberof Model
+     */
+    publicName: string;
+    /**
      * Тип модели (llm - языковая модель, embedding - модель для эмбеддингов)
      * @type {string}
      * @memberof Model
      */
     type: ModelTypeEnum;
+    /**
+     * Признак, что модель устарела
+     * @type {boolean}
+     * @memberof Model
+     */
+    isDeprecated: boolean;
+    /**
+     * Признак поддержки режима рассуждения
+     * @type {boolean}
+     * @memberof Model
+     */
+    isReasoning: boolean;
     /**
      * Версия модели
      * @type {string}
@@ -83,7 +101,10 @@ export function instanceOfModel(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "providerId" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "publicName" in value;
     isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "isDeprecated" in value;
+    isInstance = isInstance && "isReasoning" in value;
     isInstance = isInstance && "version" in value;
 
     return isInstance;
@@ -102,7 +123,10 @@ export function ModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mod
         'id': json['id'],
         'providerId': json['provider_id'],
         'name': json['name'],
+        'publicName': json['public_name'],
         'type': json['type'],
+        'isDeprecated': json['is_deprecated'],
+        'isReasoning': json['is_reasoning'],
         'version': json['version'],
         'paramsInfo': !exists(json, 'params_info') ? undefined : ModelParamsInfoFromJSON(json['params_info']),
     };
@@ -120,7 +144,10 @@ export function ModelToJSON(value?: Model | null): any {
         'id': value.id,
         'provider_id': value.providerId,
         'name': value.name,
+        'public_name': value.publicName,
         'type': value.type,
+        'is_deprecated': value.isDeprecated,
+        'is_reasoning': value.isReasoning,
         'version': value.version,
         'params_info': ModelParamsInfoToJSON(value.paramsInfo),
     };
