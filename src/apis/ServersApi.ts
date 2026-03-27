@@ -264,6 +264,10 @@ export interface RebootServerRequest {
     serverId: number;
 }
 
+export interface RebootServerHardRequest {
+    serverId: number;
+}
+
 export interface ResetServerPasswordRequest {
     serverId: number;
 }
@@ -1579,6 +1583,45 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async rebootServer(requestParameters: RebootServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.rebootServerRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы принудительно перезагрузить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/hard-reboot`.
+     * Принудительная перезагрузка сервера
+     */
+    async rebootServerHardRaw(requestParameters: RebootServerHardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling rebootServerHard.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/hard-reboot`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы принудительно перезагрузить сервер, отправьте POST-запрос на `/api/v1/servers/{server_id}/hard-reboot`.
+     * Принудительная перезагрузка сервера
+     */
+    async rebootServerHard(requestParameters: RebootServerHardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.rebootServerHardRaw(requestParameters, initOverrides);
     }
 
     /**
