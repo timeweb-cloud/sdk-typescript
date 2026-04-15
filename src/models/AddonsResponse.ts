@@ -13,130 +13,73 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AddonOut } from './AddonOut';
+import {
+    AddonOutFromJSON,
+    AddonOutFromJSONTyped,
+    AddonOutToJSON,
+} from './AddonOut';
+import type { SchemasMeta } from './SchemasMeta';
+import {
+    SchemasMetaFromJSON,
+    SchemasMetaFromJSONTyped,
+    SchemasMetaToJSON,
+} from './SchemasMeta';
+
 /**
  * 
  * @export
- * @interface CreateDedicatedServer
+ * @interface AddonsResponse
  */
-export interface CreateDedicatedServer {
+export interface AddonsResponse {
     /**
-     * ID списка дополнительных услуг выделенного сервера.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    planId?: number | null;
-    /**
-     * ID тарифа выделенного сервера.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    presetId: number;
-    /**
-     * ID операционной системы, которая будет установлена на выделенный сервер.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    osId?: number | null;
-    /**
-     * ID панели управления, которая будет установлена на выделенный сервер.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    cpId?: number | null;
-    /**
-     * ID интернет-канала, который будет установлен на выделенный сервер.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    bandwidthId?: number | null;
-    /**
-     * ID сетевого диска, который будет установлен на выделенный сервер.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    networkDriveId?: number;
-    /**
-     * ID дополнительного IP-адреса, который будет установлен на выделенный сервер.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    additionalIpAddrId?: number | null;
-    /**
-     * Период оплаты.
+     * ID запроса
      * @type {string}
-     * @memberof CreateDedicatedServer
+     * @memberof AddonsResponse
      */
-    paymentPeriod: CreateDedicatedServerPaymentPeriodEnum;
+    responseId?: string;
     /**
-     * Удобочитаемое имя выделенного сервера. Максимальная длина — 255 символов, имя должно быть уникальным.
-     * @type {string}
-     * @memberof CreateDedicatedServer
+     * 
+     * @type {SchemasMeta}
+     * @memberof AddonsResponse
      */
-    name: string;
+    meta: SchemasMeta;
     /**
-     * Комментарий к выделенному серверу. Максимальная длина — 255 символов.
-     * @type {string}
-     * @memberof CreateDedicatedServer
+     * Массив дополнений k8s
+     * @type {Array<AddonOut>}
+     * @memberof AddonsResponse
      */
-    comment?: string | null;
-    /**
-     * ID проекта, в который будет добавлен выделенный сервер.
-     * @type {number}
-     * @memberof CreateDedicatedServer
-     */
-    projectId?: number | null;
+    addons: Array<AddonOut>;
 }
 
-
 /**
- * @export
+ * Check if a given object implements the AddonsResponse interface.
  */
-export const CreateDedicatedServerPaymentPeriodEnum = {
-    P1M: 'P1M',
-    P3M: 'P3M',
-    P6M: 'P6M',
-    P1Y: 'P1Y'
-} as const;
-export type CreateDedicatedServerPaymentPeriodEnum = typeof CreateDedicatedServerPaymentPeriodEnum[keyof typeof CreateDedicatedServerPaymentPeriodEnum];
-
-
-/**
- * Check if a given object implements the CreateDedicatedServer interface.
- */
-export function instanceOfCreateDedicatedServer(value: object): boolean {
+export function instanceOfAddonsResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "presetId" in value;
-    isInstance = isInstance && "paymentPeriod" in value;
-    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "meta" in value;
+    isInstance = isInstance && "addons" in value;
 
     return isInstance;
 }
 
-export function CreateDedicatedServerFromJSON(json: any): CreateDedicatedServer {
-    return CreateDedicatedServerFromJSONTyped(json, false);
+export function AddonsResponseFromJSON(json: any): AddonsResponse {
+    return AddonsResponseFromJSONTyped(json, false);
 }
 
-export function CreateDedicatedServerFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateDedicatedServer {
+export function AddonsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddonsResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'planId': !exists(json, 'plan_id') ? undefined : json['plan_id'],
-        'presetId': json['preset_id'],
-        'osId': !exists(json, 'os_id') ? undefined : json['os_id'],
-        'cpId': !exists(json, 'cp_id') ? undefined : json['cp_id'],
-        'bandwidthId': !exists(json, 'bandwidth_id') ? undefined : json['bandwidth_id'],
-        'networkDriveId': !exists(json, 'network_drive_id') ? undefined : json['network_drive_id'],
-        'additionalIpAddrId': !exists(json, 'additional_ip_addr_id') ? undefined : json['additional_ip_addr_id'],
-        'paymentPeriod': json['payment_period'],
-        'name': json['name'],
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
-        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'responseId': !exists(json, 'response_id') ? undefined : json['response_id'],
+        'meta': SchemasMetaFromJSON(json['meta']),
+        'addons': ((json['addons'] as Array<any>).map(AddonOutFromJSON)),
     };
 }
 
-export function CreateDedicatedServerToJSON(value?: CreateDedicatedServer | null): any {
+export function AddonsResponseToJSON(value?: AddonsResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -145,17 +88,9 @@ export function CreateDedicatedServerToJSON(value?: CreateDedicatedServer | null
     }
     return {
         
-        'plan_id': value.planId,
-        'preset_id': value.presetId,
-        'os_id': value.osId,
-        'cp_id': value.cpId,
-        'bandwidth_id': value.bandwidthId,
-        'network_drive_id': value.networkDriveId,
-        'additional_ip_addr_id': value.additionalIpAddrId,
-        'payment_period': value.paymentPeriod,
-        'name': value.name,
-        'comment': value.comment,
-        'project_id': value.projectId,
+        'response_id': value.responseId,
+        'meta': SchemasMetaToJSON(value.meta),
+        'addons': ((value.addons as Array<any>).map(AddonOutToJSON)),
     };
 }
 

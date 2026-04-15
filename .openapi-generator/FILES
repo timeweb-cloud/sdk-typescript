@@ -56,6 +56,10 @@ src/models/AddStorageToProjectRequest.ts
 src/models/AddSubdomain201Response.ts
 src/models/AddTokenPackage.ts
 src/models/AddedSubdomain.ts
+src/models/AddonConfigOut.ts
+src/models/AddonOut.ts
+src/models/AddonsConfigResponse.ts
+src/models/AddonsResponse.ts
 src/models/Agent.ts
 src/models/AgentModelSettings.ts
 src/models/AgentSettings.ts
@@ -95,6 +99,7 @@ src/models/CheckDomain200Response.ts
 src/models/ClusterEdit.ts
 src/models/ClusterEditOidcProvider.ts
 src/models/ClusterIn.ts
+src/models/ClusterIn1.ts
 src/models/ClusterInClusterNetworkCidr.ts
 src/models/ClusterInConfiguration.ts
 src/models/ClusterInMaintenanceSlot.ts

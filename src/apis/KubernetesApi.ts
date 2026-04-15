@@ -15,8 +15,11 @@
 
 import * as runtime from '../runtime';
 import type {
+  AddonsConfigResponse,
+  AddonsResponse,
   ClusterEdit,
   ClusterIn,
+  ClusterIn1,
   ClusterResponse,
   ClusterVersionEdit,
   ClustersResponse,
@@ -39,10 +42,16 @@ import type {
   ResourcesResponse,
 } from '../models/index';
 import {
+    AddonsConfigResponseFromJSON,
+    AddonsConfigResponseToJSON,
+    AddonsResponseFromJSON,
+    AddonsResponseToJSON,
     ClusterEditFromJSON,
     ClusterEditToJSON,
     ClusterInFromJSON,
     ClusterInToJSON,
+    ClusterIn1FromJSON,
+    ClusterIn1ToJSON,
     ClusterResponseFromJSON,
     ClusterResponseToJSON,
     ClusterVersionEditFromJSON,
@@ -110,6 +119,11 @@ export interface DeleteClusterNodeGroupRequest {
     groupId: number;
 }
 
+export interface DeleteKubernetesAddonsRequest {
+    clusterId: number;
+    addonId: number;
+}
+
 export interface GetClusterRequest {
     clusterId: number;
 }
@@ -147,10 +161,29 @@ export interface GetClustersRequest {
     offset?: number;
 }
 
+export interface GetKubernetesAddonsRequest {
+    clusterId: number;
+}
+
+export interface GetKubernetesAddonsConfigRequest {
+    clusterId: number;
+}
+
 export interface IncreaseCountOfNodesInGroupRequest {
     clusterId: number;
     groupId: number;
     increaseNodes: IncreaseNodes;
+}
+
+export interface PostKubernetesAddonsRequest {
+    clusterId: number;
+    clusterIn1: ClusterIn1;
+}
+
+export interface PostKubernetesAddonsUpdateRequest {
+    clusterId: number;
+    addonId: number;
+    clusterIn1: ClusterIn1;
 }
 
 export interface ReduceCountOfNodesInGroupRequest {
@@ -396,6 +429,49 @@ export class KubernetesApi extends runtime.BaseAPI {
      */
     async deleteClusterNodeGroup(requestParameters: DeleteClusterNodeGroupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteClusterNodeGroupRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы удалить дополнение, отправьте DELETE-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons/{addon_id}`.
+     * Удаление дополнения
+     */
+    async deleteKubernetesAddonsRaw(requestParameters: DeleteKubernetesAddonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.clusterId === null || requestParameters.clusterId === undefined) {
+            throw new runtime.RequiredError('clusterId','Required parameter requestParameters.clusterId was null or undefined when calling deleteKubernetesAddons.');
+        }
+
+        if (requestParameters.addonId === null || requestParameters.addonId === undefined) {
+            throw new runtime.RequiredError('addonId','Required parameter requestParameters.addonId was null or undefined when calling deleteKubernetesAddons.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/k8s/clusters/{cluster_id}/addons/{addon_id}`.replace(`{${"cluster_id"}}`, encodeURIComponent(String(requestParameters.clusterId))).replace(`{${"addon_id"}}`, encodeURIComponent(String(requestParameters.addonId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы удалить дополнение, отправьте DELETE-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons/{addon_id}`.
+     * Удаление дополнения
+     */
+    async deleteKubernetesAddons(requestParameters: DeleteKubernetesAddonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteKubernetesAddonsRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -815,6 +891,86 @@ export class KubernetesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы получить список установленных дополнений, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons`.
+     * Получение списка установленных дополнений
+     */
+    async getKubernetesAddonsRaw(requestParameters: GetKubernetesAddonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AddonsResponse>> {
+        if (requestParameters.clusterId === null || requestParameters.clusterId === undefined) {
+            throw new runtime.RequiredError('clusterId','Required parameter requestParameters.clusterId was null or undefined when calling getKubernetesAddons.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/k8s/clusters/{cluster_id}/addons`.replace(`{${"cluster_id"}}`, encodeURIComponent(String(requestParameters.clusterId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AddonsResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список установленных дополнений, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons`.
+     * Получение списка установленных дополнений
+     */
+    async getKubernetesAddons(requestParameters: GetKubernetesAddonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AddonsResponse> {
+        const response = await this.getKubernetesAddonsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список конфигураций дополнений, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons-configs`.
+     * Получение списка конфигураций дополнений
+     */
+    async getKubernetesAddonsConfigRaw(requestParameters: GetKubernetesAddonsConfigRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AddonsConfigResponse>> {
+        if (requestParameters.clusterId === null || requestParameters.clusterId === undefined) {
+            throw new runtime.RequiredError('clusterId','Required parameter requestParameters.clusterId was null or undefined when calling getKubernetesAddonsConfig.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/k8s/clusters/{cluster_id}/addons-configs`.replace(`{${"cluster_id"}}`, encodeURIComponent(String(requestParameters.clusterId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AddonsConfigResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список конфигураций дополнений, отправьте GET-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons-configs`.
+     * Получение списка конфигураций дополнений
+     */
+    async getKubernetesAddonsConfig(requestParameters: GetKubernetesAddonsConfigRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AddonsConfigResponse> {
+        const response = await this.getKubernetesAddonsConfigRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы получить список тарифов, отправьте GET-запрос в `/api/v1/presets/k8s`.
      * Получение списка тарифов
      */
@@ -899,6 +1055,102 @@ export class KubernetesApi extends runtime.BaseAPI {
     async increaseCountOfNodesInGroup(requestParameters: IncreaseCountOfNodesInGroupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NodesResponse> {
         const response = await this.increaseCountOfNodesInGroupRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Чтобы установить дополнение, отправьте POST-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons`.
+     * Установка дополнения
+     */
+    async postKubernetesAddonsRaw(requestParameters: PostKubernetesAddonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.clusterId === null || requestParameters.clusterId === undefined) {
+            throw new runtime.RequiredError('clusterId','Required parameter requestParameters.clusterId was null or undefined when calling postKubernetesAddons.');
+        }
+
+        if (requestParameters.clusterIn1 === null || requestParameters.clusterIn1 === undefined) {
+            throw new runtime.RequiredError('clusterIn1','Required parameter requestParameters.clusterIn1 was null or undefined when calling postKubernetesAddons.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/k8s/clusters/{cluster_id}/addons`.replace(`{${"cluster_id"}}`, encodeURIComponent(String(requestParameters.clusterId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ClusterIn1ToJSON(requestParameters.clusterIn1),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы установить дополнение, отправьте POST-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons`.
+     * Установка дополнения
+     */
+    async postKubernetesAddons(requestParameters: PostKubernetesAddonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.postKubernetesAddonsRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы обновить конфигурацию дополнения, отправьте POST-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons/{addon_id}`.
+     * Изменение конфигурации дополнения
+     */
+    async postKubernetesAddonsUpdateRaw(requestParameters: PostKubernetesAddonsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.clusterId === null || requestParameters.clusterId === undefined) {
+            throw new runtime.RequiredError('clusterId','Required parameter requestParameters.clusterId was null or undefined when calling postKubernetesAddonsUpdate.');
+        }
+
+        if (requestParameters.addonId === null || requestParameters.addonId === undefined) {
+            throw new runtime.RequiredError('addonId','Required parameter requestParameters.addonId was null or undefined when calling postKubernetesAddonsUpdate.');
+        }
+
+        if (requestParameters.clusterIn1 === null || requestParameters.clusterIn1 === undefined) {
+            throw new runtime.RequiredError('clusterIn1','Required parameter requestParameters.clusterIn1 was null or undefined when calling postKubernetesAddonsUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/k8s/clusters/{cluster_id}/addons/{addon_id}`.replace(`{${"cluster_id"}}`, encodeURIComponent(String(requestParameters.clusterId))).replace(`{${"addon_id"}}`, encodeURIComponent(String(requestParameters.addonId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ClusterIn1ToJSON(requestParameters.clusterIn1),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы обновить конфигурацию дополнения, отправьте POST-запрос в `/api/v1/k8s/clusters/{cluster_id}/addons/{addon_id}`.
+     * Изменение конфигурации дополнения
+     */
+    async postKubernetesAddonsUpdate(requestParameters: PostKubernetesAddonsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.postKubernetesAddonsUpdateRaw(requestParameters, initOverrides);
     }
 
     /**
