@@ -4,7 +4,6 @@
 README.md
 package.json
 src/apis/AIAgentsApi.ts
-src/apis/APIKeysApi.ts
 src/apis/AccountApi.ts
 src/apis/AppsApi.ts
 src/apis/BalancersApi.ts
@@ -64,7 +63,6 @@ src/models/Agent.ts
 src/models/AgentModelSettings.ts
 src/models/AgentSettings.ts
 src/models/AgentSettingsWidget.ts
-src/models/ApiKey.ts
 src/models/App.ts
 src/models/AppConfiguration.ts
 src/models/AppDiskStatus.ts
@@ -117,7 +115,6 @@ src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
 src/models/CreateAgent.ts
 src/models/CreateAgent201Response.ts
-src/models/CreateApiKey.ts
 src/models/CreateApp.ts
 src/models/CreateApp201Response.ts
 src/models/CreateBalancer.ts
@@ -176,10 +173,8 @@ src/models/CreateServerNetwork.ts
 src/models/CreateStorage201Response.ts
 src/models/CreateStorageRequest.ts
 src/models/CreateStorageRequestConfigurator.ts
-src/models/CreateToken201Response.ts
 src/models/CreateVPC201Response.ts
 src/models/CreateVpc.ts
-src/models/CreatedApiKey.ts
 src/models/DatabaseAdmin.ts
 src/models/DatabaseAdminInstancesInner.ts
 src/models/DatabaseCluster.ts
@@ -232,7 +227,6 @@ src/models/DomainProlong.ts
 src/models/DomainRegister.ts
 src/models/DomainRequest.ts
 src/models/DomainTransfer.ts
-src/models/EditApiKey.ts
 src/models/Finances.ts
 src/models/FirewallGroup.ts
 src/models/FirewallGroupInAPI.ts
@@ -354,7 +348,6 @@ src/models/GetStorageUsers200Response.ts
 src/models/GetStoragesPresets200Response.ts
 src/models/GetTLD200Response.ts
 src/models/GetTLDs200Response.ts
-src/models/GetTokens200Response.ts
 src/models/GetVPCPorts200Response.ts
 src/models/GetVPCServices200Response.ts
 src/models/GetVPCs200Response.ts
@@ -428,7 +421,6 @@ src/models/ProjectResource.ts
 src/models/Provider.ts
 src/models/Providers.ts
 src/models/ReduceNodes.ts
-src/models/RefreshApiKey.ts
 src/models/RegistriesResponse.ts
 src/models/RegistryEdit.ts
 src/models/RegistryIn.ts
@@ -529,7 +521,6 @@ src/models/UpdateStorageRequest.ts
 src/models/UpdateStorageRequestConfigurator.ts
 src/models/UpdateStorageUser200Response.ts
 src/models/UpdateStorageUserRequest.ts
-src/models/UpdateToken200Response.ts
 src/models/UpdateVpc.ts
 src/models/UploadFilesToKnowledgebase200Response.ts
 src/models/UploadSuccessful.ts
