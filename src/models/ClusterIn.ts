@@ -84,12 +84,14 @@ export interface ClusterIn {
      * Логическое значение, которое показывает, использовать ли Ingress в кластере
      * @type {boolean}
      * @memberof ClusterIn
+     * @deprecated
      */
     isIngress?: boolean;
     /**
      * Логическое значение, которое показывает, использовать ли Kubernetes Dashboard в кластере
      * @type {boolean}
      * @memberof ClusterIn
+     * @deprecated
      */
     isK8sDashboard?: boolean;
     /**
