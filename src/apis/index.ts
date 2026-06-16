@@ -18,6 +18,7 @@ export * from './MailApi';
 export * from './NetworkDrivesApi';
 export * from './PaymentsApi';
 export * from './ProjectsApi';
+export * from './RoutersApi';
 export * from './S3Api';
 export * from './SSHApi';
 export * from './ServersApi';
