@@ -75,6 +75,12 @@ export interface DatabaseCluster {
      */
     networks: Array<DatabaseClusterNetworksInner>;
     /**
+     * Использование IPv6 адреса.
+     * @type {boolean}
+     * @memberof DatabaseCluster
+     */
+    isPublicIpv6?: boolean;
+    /**
      * 
      * @type {DbType}
      * @memberof DatabaseCluster
@@ -208,6 +214,7 @@ export function DatabaseClusterFromJSONTyped(json: any, ignoreDiscriminator: boo
         'location': json['location'],
         'name': json['name'],
         'networks': ((json['networks'] as Array<any>).map(DatabaseClusterNetworksInnerFromJSON)),
+        'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
         'type': DbTypeFromJSON(json['type']),
         'hashType': json['hash_type'],
         'avatarLink': json['avatar_link'],
@@ -234,6 +241,7 @@ export function DatabaseClusterToJSON(value?: DatabaseCluster | null): any {
         'location': value.location,
         'name': value.name,
         'networks': ((value.networks as Array<any>).map(DatabaseClusterNetworksInnerToJSON)),
+        'is_public_ipv6': value.isPublicIpv6,
         'type': DbTypeToJSON(value.type),
         'hash_type': value.hashType,
         'avatar_link': value.avatarLink,

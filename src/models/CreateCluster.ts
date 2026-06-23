@@ -135,6 +135,12 @@ export interface CreateCluster {
      */
     network?: Network;
     /**
+     * Использование IPv6 адреса.
+     * @type {boolean}
+     * @memberof CreateCluster
+     */
+    isPublicIpv6?: boolean;
+    /**
      * Описание кластера базы данных
      * @type {string}
      * @memberof CreateCluster
@@ -197,6 +203,7 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'configParameters': !exists(json, 'config_parameters') ? undefined : ConfigParametersFromJSON(json['config_parameters']),
         'replication': !exists(json, 'replication') ? undefined : DbReplicationFromJSON(json['replication']),
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
+        'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
         'autoBackups': !exists(json, 'auto_backups') ? undefined : CreateDbAutoBackupsFromJSON(json['auto_backups']),
@@ -223,6 +230,7 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
         'config_parameters': ConfigParametersToJSON(value.configParameters),
         'replication': DbReplicationToJSON(value.replication),
         'network': NetworkToJSON(value.network),
+        'is_public_ipv6': value.isPublicIpv6,
         'description': value.description,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
         'auto_backups': CreateDbAutoBackupsToJSON(value.autoBackups),

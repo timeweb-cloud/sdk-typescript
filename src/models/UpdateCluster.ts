@@ -43,6 +43,12 @@ export interface UpdateCluster {
      * @memberof UpdateCluster
      */
     isEnabledPublicNetwork?: boolean;
+    /**
+     * Использование IPv6 адреса.
+     * @type {boolean}
+     * @memberof UpdateCluster
+     */
+    isPublicIpv6?: boolean;
 }
 
 /**
@@ -68,6 +74,7 @@ export function UpdateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'isEnabledPublicNetwork': !exists(json, 'is_enabled_public_network') ? undefined : json['is_enabled_public_network'],
+        'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
     };
 }
 
@@ -84,6 +91,7 @@ export function UpdateClusterToJSON(value?: UpdateCluster | null): any {
         'preset_id': value.presetId,
         'description': value.description,
         'is_enabled_public_network': value.isEnabledPublicNetwork,
+        'is_public_ipv6': value.isPublicIpv6,
     };
 }
 
