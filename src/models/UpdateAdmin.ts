@@ -38,7 +38,7 @@ export interface UpdateAdmin {
      */
     description?: string;
     /**
-     * ID инстанса базы данных для применения привилегий. В данных момент поле доступно только для кластеров MySQL. Если поле не передано, то привилегии будут применены ко всем инстансам
+     * ID инстанса базы данных для применения привилегий. Если поле не передано, то привилегии будут применены ко всем инстансам
      * @type {number}
      * @memberof UpdateAdmin
      */
@@ -51,30 +51,72 @@ export interface UpdateAdmin {
  */
 export const UpdateAdminPrivilegesEnum = {
     Alter: 'ALTER',
+    AlterTable: 'ALTER_TABLE',
+    AlterView: 'ALTER_VIEW',
     CreateView: 'CREATE_VIEW',
+    CreateDictionary: 'CREATE_DICTIONARY',
+    CreateFunction: 'CREATE_FUNCTION',
+    CreateTable: 'CREATE_TABLE',
     Create: 'CREATE',
     Delete: 'DELETE',
     Drop: 'DROP',
+    DropTable: 'DROP_TABLE',
+    DropView: 'DROP_VIEW',
+    DropDictionary: 'DROP_DICTIONARY',
     Event: 'EVENT',
     Index: 'INDEX',
     Insert: 'INSERT',
     LockTables: 'LOCK_TABLES',
     References: 'REFERENCES',
     Select: 'SELECT',
+    Show: 'SHOW',
     ShowView: 'SHOW_VIEW',
     Truncate: 'TRUNCATE',
+    Trigger: 'TRIGGER',
     Update: 'UPDATE',
     Read: 'READ',
     Write: 'WRITE',
-    Connection: 'CONNECTION',
-    Fast: 'FAST',
-    ReadWrite: 'readWrite',
+    ReadWrite: 'READ_WRITE',
+    DbAdmin: 'DB_ADMIN',
     AlterRoutine: 'ALTER_ROUTINE',
     CreateRoutine: 'CREATE_ROUTINE',
-    Transaction: 'TRANSACTION',
+    CreateTemporaryTables: 'CREATE_TEMPORARY_TABLES',
+    Temporary: 'TEMPORARY',
+    Configure: 'CONFIGURE',
+    ReadDashboard: 'READ_DASHBOARD',
+    WriteDashboard: 'WRITE_DASHBOARD',
+    Describe: 'DESCRIBE',
+    Optimize: 'OPTIMIZE',
+    Execute: 'EXECUTE',
+    Createdb: 'CREATEDB',
+    Createrole: 'CREATEROLE',
+    CreateDb: 'CREATE_DB',
+    CreateUser: 'CREATE_USER',
+    Process: 'PROCESS',
     SlowLog: 'SLOW_LOG',
-    Trigger: 'TRIGGER',
-    CreateTemporaryTables: 'CREATE_TEMPORARY_TABLES'
+    CreateTemporaryTable: 'CREATE_TEMPORARY_TABLE',
+    Admin: 'ADMIN',
+    Bitmap: 'BITMAP',
+    Blocking: 'BLOCKING',
+    Connection: 'CONNECTION',
+    Dangerous: 'DANGEROUS',
+    Geo: 'GEO',
+    Hash: 'HASH',
+    Hyperloglog: 'HYPERLOGLOG',
+    Fast: 'FAST',
+    Keyspace: 'KEYSPACE',
+    List: 'LIST',
+    Pubsub: 'PUBSUB',
+    Scripting: 'SCRIPTING',
+    Set: 'SET',
+    Sortedset: 'SORTEDSET',
+    Slow: 'SLOW',
+    Stream: 'STREAM',
+    String: 'STRING',
+    Transaction: 'TRANSACTION',
+    DictGet: 'dictGet',
+    DbAdmin: 'dbAdmin',
+    ReadWrite: 'readWrite'
 } as const;
 export type UpdateAdminPrivilegesEnum = typeof UpdateAdminPrivilegesEnum[keyof typeof UpdateAdminPrivilegesEnum];
 

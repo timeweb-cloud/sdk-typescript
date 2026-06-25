@@ -18,15 +18,12 @@ import type {
   AutoBackup,
   CreateAdmin,
   CreateCluster,
-  CreateDatabase201Response,
   CreateDatabaseBackup201Response,
   CreateDatabaseBackup409Response,
   CreateDatabaseCluster201Response,
   CreateDatabaseInstance201Response,
   CreateDatabaseUser201Response,
-  CreateDb,
   CreateInstance,
-  DeleteDatabase200Response,
   DeleteDatabaseCluster200Response,
   GetAccountStatus403Response,
   GetDatabaseAutoBackupsSettings200Response,
@@ -35,7 +32,6 @@ import type {
   GetDatabaseClusters200Response,
   GetDatabaseInstances200Response,
   GetDatabaseUsers200Response,
-  GetDatabases200Response,
   GetDatabasesPresets200Response,
   GetFinances400Response,
   GetFinances401Response,
@@ -44,7 +40,6 @@ import type {
   GetImage404Response,
   UpdateAdmin,
   UpdateCluster,
-  UpdateDb,
   UpdateInstance,
 } from '../models/index';
 import {
@@ -54,8 +49,6 @@ import {
     CreateAdminToJSON,
     CreateClusterFromJSON,
     CreateClusterToJSON,
-    CreateDatabase201ResponseFromJSON,
-    CreateDatabase201ResponseToJSON,
     CreateDatabaseBackup201ResponseFromJSON,
     CreateDatabaseBackup201ResponseToJSON,
     CreateDatabaseBackup409ResponseFromJSON,
@@ -66,12 +59,8 @@ import {
     CreateDatabaseInstance201ResponseToJSON,
     CreateDatabaseUser201ResponseFromJSON,
     CreateDatabaseUser201ResponseToJSON,
-    CreateDbFromJSON,
-    CreateDbToJSON,
     CreateInstanceFromJSON,
     CreateInstanceToJSON,
-    DeleteDatabase200ResponseFromJSON,
-    DeleteDatabase200ResponseToJSON,
     DeleteDatabaseCluster200ResponseFromJSON,
     DeleteDatabaseCluster200ResponseToJSON,
     GetAccountStatus403ResponseFromJSON,
@@ -88,8 +77,6 @@ import {
     GetDatabaseInstances200ResponseToJSON,
     GetDatabaseUsers200ResponseFromJSON,
     GetDatabaseUsers200ResponseToJSON,
-    GetDatabases200ResponseFromJSON,
-    GetDatabases200ResponseToJSON,
     GetDatabasesPresets200ResponseFromJSON,
     GetDatabasesPresets200ResponseToJSON,
     GetFinances400ResponseFromJSON,
@@ -106,15 +93,9 @@ import {
     UpdateAdminToJSON,
     UpdateClusterFromJSON,
     UpdateClusterToJSON,
-    UpdateDbFromJSON,
-    UpdateDbToJSON,
     UpdateInstanceFromJSON,
     UpdateInstanceToJSON,
 } from '../models/index';
-
-export interface CreateDatabaseRequest {
-    createDb: CreateDb;
-}
 
 export interface CreateDatabaseBackupRequest {
     dbId: number;
@@ -133,12 +114,6 @@ export interface CreateDatabaseInstanceRequest {
 export interface CreateDatabaseUserRequest {
     dbClusterId: number;
     createAdmin: CreateAdmin;
-}
-
-export interface DeleteDatabaseRequest {
-    dbId: number;
-    hash?: string;
-    code?: string;
 }
 
 export interface DeleteDatabaseBackupRequest {
@@ -160,10 +135,6 @@ export interface DeleteDatabaseInstanceRequest {
 export interface DeleteDatabaseUserRequest {
     dbClusterId: number;
     adminId: number;
-}
-
-export interface GetDatabaseRequest {
-    dbId: number;
 }
 
 export interface GetDatabaseAutoBackupsSettingsRequest {
@@ -208,11 +179,6 @@ export interface GetDatabaseUsersRequest {
     dbClusterId: number;
 }
 
-export interface GetDatabasesRequest {
-    limit?: number;
-    offset?: number;
-}
-
 export interface GetDatabasesPresetsRequest {
     dbId?: number;
 }
@@ -220,11 +186,6 @@ export interface GetDatabasesPresetsRequest {
 export interface RestoreDatabaseFromBackupRequest {
     dbId: number;
     backupId: number;
-}
-
-export interface UpdateDatabaseRequest {
-    dbId: number;
-    updateDb: UpdateDb;
 }
 
 export interface UpdateDatabaseAutoBackupsSettingsRequest {
@@ -252,49 +213,6 @@ export interface UpdateDatabaseUserRequest {
  * 
  */
 export class DatabasesApi extends runtime.BaseAPI {
-
-    /**
-     * Чтобы создать базу данных на вашем аккаунте, отправьте POST-запрос на `/api/v1/dbs`, задав необходимые атрибуты.  База данных будет создана с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданной базе данных.
-     * Создание базы данных
-     */
-    async createDatabaseRaw(requestParameters: CreateDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabase201Response>> {
-        if (requestParameters.createDb === null || requestParameters.createDb === undefined) {
-            throw new runtime.RequiredError('createDb','Required parameter requestParameters.createDb was null or undefined when calling createDatabase.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/dbs`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateDbToJSON(requestParameters.createDb),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabase201ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы создать базу данных на вашем аккаунте, отправьте POST-запрос на `/api/v1/dbs`, задав необходимые атрибуты.  База данных будет создана с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданной базе данных.
-     * Создание базы данных
-     */
-    async createDatabase(requestParameters: CreateDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabase201Response> {
-        const response = await this.createDatabaseRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Чтобы создать бэкап базы данных, отправьте запрос POST в `api/v1/dbs/{db_id}/backups`. 
@@ -478,54 +396,6 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить базу данных, отправьте запрос DELETE в `api/v1/dbs/{db_id}`. 
-     * Удаление базы данных
-     */
-    async deleteDatabaseRaw(requestParameters: DeleteDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteDatabase200Response>> {
-        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
-            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling deleteDatabase.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.hash !== undefined) {
-            queryParameters['hash'] = requestParameters.hash;
-        }
-
-        if (requestParameters.code !== undefined) {
-            queryParameters['code'] = requestParameters.code;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/dbs/{db_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteDatabase200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы удалить базу данных, отправьте запрос DELETE в `api/v1/dbs/{db_id}`. 
-     * Удаление базы данных
-     */
-    async deleteDatabase(requestParameters: DeleteDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteDatabase200Response> {
-        const response = await this.deleteDatabaseRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Чтобы удалить бэкап базы данных, отправьте запрос DELETE в `api/v1/dbs/{db_id}/backups/{backup_id}`. 
      * Удаление бэкапа базы данных
      */
@@ -700,46 +570,6 @@ export class DatabasesApi extends runtime.BaseAPI {
      */
     async deleteDatabaseUser(requestParameters: DeleteDatabaseUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteDatabaseUserRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Чтобы отобразить информацию об отдельной базе данных, отправьте запрос GET на `api/v1/dbs/{db_id}`. 
-     * Получение базы данных
-     */
-    async getDatabaseRaw(requestParameters: GetDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabase201Response>> {
-        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
-            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling getDatabase.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/dbs/{db_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabase201ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы отобразить информацию об отдельной базе данных, отправьте запрос GET на `api/v1/dbs/{db_id}`. 
-     * Получение базы данных
-     */
-    async getDatabase(requestParameters: GetDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabase201Response> {
-        const response = await this.getDatabaseRaw(requestParameters, initOverrides);
-        return await response.value();
     }
 
     /**
@@ -1199,50 +1029,6 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список всех баз данных на вашем аккаунте, отправьте GET-запрос на `/api/v1/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `dbs`.
-     * Получение списка всех баз данных
-     */
-    async getDatabasesRaw(requestParameters: GetDatabasesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabases200Response>> {
-        const queryParameters: any = {};
-
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
-        }
-
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/dbs`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabases200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить список всех баз данных на вашем аккаунте, отправьте GET-запрос на `/api/v1/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `dbs`.
-     * Получение списка всех баз данных
-     */
-    async getDatabases(requestParameters: GetDatabasesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabases200Response> {
-        const response = await this.getDatabasesRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
@@ -1323,53 +1109,6 @@ export class DatabasesApi extends runtime.BaseAPI {
      */
     async restoreDatabaseFromBackup(requestParameters: RestoreDatabaseFromBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.restoreDatabaseFromBackupRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Чтобы обновить только определенные атрибуты базы данных, отправьте запрос PATCH в `api/v1/dbs/{db_id}`. 
-     * Обновление базы данных
-     */
-    async updateDatabaseRaw(requestParameters: UpdateDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabase201Response>> {
-        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
-            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling updateDatabase.');
-        }
-
-        if (requestParameters.updateDb === null || requestParameters.updateDb === undefined) {
-            throw new runtime.RequiredError('updateDb','Required parameter requestParameters.updateDb was null or undefined when calling updateDatabase.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/dbs/{db_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateDbToJSON(requestParameters.updateDb),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabase201ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы обновить только определенные атрибуты базы данных, отправьте запрос PATCH в `api/v1/dbs/{db_id}`. 
-     * Обновление базы данных
-     */
-    async updateDatabase(requestParameters: UpdateDatabaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabase201Response> {
-        const response = await this.updateDatabaseRaw(requestParameters, initOverrides);
-        return await response.value();
     }
 
     /**
