@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ConfigParametersMysql } from './ConfigParametersMysql';
+import {
+    ConfigParametersMysqlFromJSON,
+    ConfigParametersMysqlFromJSONTyped,
+    ConfigParametersMysqlToJSON,
+} from './ConfigParametersMysql';
+import type { ConfigParametersPostgres } from './ConfigParametersPostgres';
+import {
+    ConfigParametersPostgresFromJSON,
+    ConfigParametersPostgresFromJSONTyped,
+    ConfigParametersPostgresToJSON,
+} from './ConfigParametersPostgres';
+
 /**
  * Параметры базы данных
  * @export
@@ -20,173 +33,17 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ConfigParameters {
     /**
-     * Интервал между значениями столбцов с атрибутом `AUTO_INCREMENT` (`mysql5` | `mysql`).
-     * @type {string}
+     * 
+     * @type {ConfigParametersMysql}
      * @memberof ConfigParameters
      */
-    autoIncrementIncrement?: string;
+    mysql?: ConfigParametersMysql;
     /**
-     * Начальное значение для столбцов с атрибутом `AUTO_INCREMENT` (`mysql5` | `mysql`).
-     * @type {string}
+     * 
+     * @type {ConfigParametersPostgres}
      * @memberof ConfigParameters
      */
-    autoIncrementOffset?: string;
-    /**
-     * Количество операций ввода-вывода в секунду `IOPS` (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    innodbIoCapacity?: string;
-    /**
-     * Количество потоков ввода-вывода, используемых для операций очистки (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    innodbPurgeThreads?: string;
-    /**
-     * Количество потоков ввода-вывода, используемых для операций чтения (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    innodbReadIoThreads?: string;
-    /**
-     * Максимальное число потоков, которые могут исполняться (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    innodbThreadConcurrency?: string;
-    /**
-     * Количество потоков ввода-вывода, используемых для операций записи (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    innodbWriteIoThreads?: string;
-    /**
-     * Минимальный размер буфера (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    joinBufferSize?: string;
-    /**
-     * Максимальный размер одного пакета, строки или параметра, отправляемого функцией `mysql_stmt_send_long_data()` (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    maxAllowedPacket?: string;
-    /**
-     * Максимальный размер пользовательских MEMORY-таблиц (`mysql5` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    maxHeapTableSize?: string;
-    /**
-     * Доля измененных или удаленных записей в таблице, при которой процесс автоочистки выполнит команду `ANALYZE` (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    autovacuumAnalyzeScaleFactor?: string;
-    /**
-     * Задержка между запусками процесса фоновой записи (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    bgwriterDelay?: string;
-    /**
-     * Максимальное число элементов буферного кеша (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    bgwriterLruMaxpages?: string;
-    /**
-     * Время ожидания, по истечении которого будет выполняться проверка состояния перекрестной блокировки (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    deadlockTimeout?: string;
-    /**
-     * Максимальный размер очереди записей индекса `GIN` (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    ginPendingListLimit?: string;
-    /**
-     * Время простоя открытой транзакции, при превышении которого будет завершена сессия с этой транзакцией (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    idleInTransactionSessionTimeout?: string;
-    /**
-     * Время простоя не открытой транзакции, при превышении которого будет завершена сессия с этой транзакцией (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    idleSessionTimeout?: string;
-    /**
-     * Значение количества элементов в списке `FROM` при превышении которого, планировщик будет переносить в список явные инструкции `JOIN` (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    joinCollapseLimit?: string;
-    /**
-     * Время ожидания освобождения блокировки (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    lockTimeout?: string;
-    /**
-     * Максимальное число транзакций, которые могут одновременно находиться в подготовленном состоянии (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    maxPreparedTransactions?: string;
-    /**
-     * Допустимое количество соединений (`postgres` | `postgres14`| `postgres15` | `mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    maxConnections?: string;
-    /**
-     * Устанавливает количество буферов общей памяти, используемых сервером (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    sharedBuffers?: string;
-    /**
-     * Устанавливает количество буферов дисковых страниц в общей памяти для WAL (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    walBuffers?: string;
-    /**
-     * Устанавливает максимальное количество временных буферов, используемых каждой сессией (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    tempBuffers?: string;
-    /**
-     * Устанавливает максимальное количество памяти, используемое для рабочих пространств запросов (`postgres` | `postgres14`| `postgres15`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    workMem?: string;
-    /**
-     * Устанавливает режим SQL. Можно задать несколько режимов, разделяя их запятой. (`mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    sqlMode?: string;
-    /**
-     * Параметр включает или отключает работу MySQL Query Cache (`mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    queryCacheType?: string;
-    /**
-     * Размер в байтах, доступный для кэша запросов (`mysql`).
-     * @type {string}
-     * @memberof ConfigParameters
-     */
-    queryCacheSize?: string;
+    postgres?: ConfigParametersPostgres;
 }
 
 /**
@@ -208,34 +65,8 @@ export function ConfigParametersFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'autoIncrementIncrement': !exists(json, 'auto_increment_increment') ? undefined : json['auto_increment_increment'],
-        'autoIncrementOffset': !exists(json, 'auto_increment_offset') ? undefined : json['auto_increment_offset'],
-        'innodbIoCapacity': !exists(json, 'innodb_io_capacity') ? undefined : json['innodb_io_capacity'],
-        'innodbPurgeThreads': !exists(json, 'innodb_purge_threads') ? undefined : json['innodb_purge_threads'],
-        'innodbReadIoThreads': !exists(json, 'innodb_read_io_threads') ? undefined : json['innodb_read_io_threads'],
-        'innodbThreadConcurrency': !exists(json, 'innodb_thread_concurrency') ? undefined : json['innodb_thread_concurrency'],
-        'innodbWriteIoThreads': !exists(json, 'innodb_write_io_threads') ? undefined : json['innodb_write_io_threads'],
-        'joinBufferSize': !exists(json, 'join_buffer_size') ? undefined : json['join_buffer_size'],
-        'maxAllowedPacket': !exists(json, 'max_allowed_packet') ? undefined : json['max_allowed_packet'],
-        'maxHeapTableSize': !exists(json, 'max_heap_table_size') ? undefined : json['max_heap_table_size'],
-        'autovacuumAnalyzeScaleFactor': !exists(json, 'autovacuum_analyze_scale_factor') ? undefined : json['autovacuum_analyze_scale_factor'],
-        'bgwriterDelay': !exists(json, 'bgwriter_delay') ? undefined : json['bgwriter_delay'],
-        'bgwriterLruMaxpages': !exists(json, 'bgwriter_lru_maxpages') ? undefined : json['bgwriter_lru_maxpages'],
-        'deadlockTimeout': !exists(json, 'deadlock_timeout') ? undefined : json['deadlock_timeout'],
-        'ginPendingListLimit': !exists(json, 'gin_pending_list_limit') ? undefined : json['gin_pending_list_limit'],
-        'idleInTransactionSessionTimeout': !exists(json, 'idle_in_transaction_session_timeout') ? undefined : json['idle_in_transaction_session_timeout'],
-        'idleSessionTimeout': !exists(json, 'idle_session_timeout') ? undefined : json['idle_session_timeout'],
-        'joinCollapseLimit': !exists(json, 'join_collapse_limit') ? undefined : json['join_collapse_limit'],
-        'lockTimeout': !exists(json, 'lock_timeout') ? undefined : json['lock_timeout'],
-        'maxPreparedTransactions': !exists(json, 'max_prepared_transactions') ? undefined : json['max_prepared_transactions'],
-        'maxConnections': !exists(json, 'max_connections') ? undefined : json['max_connections'],
-        'sharedBuffers': !exists(json, 'shared_buffers') ? undefined : json['shared_buffers'],
-        'walBuffers': !exists(json, 'wal_buffers') ? undefined : json['wal_buffers'],
-        'tempBuffers': !exists(json, 'temp_buffers') ? undefined : json['temp_buffers'],
-        'workMem': !exists(json, 'work_mem') ? undefined : json['work_mem'],
-        'sqlMode': !exists(json, 'sql_mode') ? undefined : json['sql_mode'],
-        'queryCacheType': !exists(json, 'query_cache_type') ? undefined : json['query_cache_type'],
-        'queryCacheSize': !exists(json, 'query_cache_size') ? undefined : json['query_cache_size'],
+        'mysql': !exists(json, 'mysql') ? undefined : ConfigParametersMysqlFromJSON(json['mysql']),
+        'postgres': !exists(json, 'postgres') ? undefined : ConfigParametersPostgresFromJSON(json['postgres']),
     };
 }
 
@@ -248,34 +79,8 @@ export function ConfigParametersToJSON(value?: ConfigParameters | null): any {
     }
     return {
         
-        'auto_increment_increment': value.autoIncrementIncrement,
-        'auto_increment_offset': value.autoIncrementOffset,
-        'innodb_io_capacity': value.innodbIoCapacity,
-        'innodb_purge_threads': value.innodbPurgeThreads,
-        'innodb_read_io_threads': value.innodbReadIoThreads,
-        'innodb_thread_concurrency': value.innodbThreadConcurrency,
-        'innodb_write_io_threads': value.innodbWriteIoThreads,
-        'join_buffer_size': value.joinBufferSize,
-        'max_allowed_packet': value.maxAllowedPacket,
-        'max_heap_table_size': value.maxHeapTableSize,
-        'autovacuum_analyze_scale_factor': value.autovacuumAnalyzeScaleFactor,
-        'bgwriter_delay': value.bgwriterDelay,
-        'bgwriter_lru_maxpages': value.bgwriterLruMaxpages,
-        'deadlock_timeout': value.deadlockTimeout,
-        'gin_pending_list_limit': value.ginPendingListLimit,
-        'idle_in_transaction_session_timeout': value.idleInTransactionSessionTimeout,
-        'idle_session_timeout': value.idleSessionTimeout,
-        'join_collapse_limit': value.joinCollapseLimit,
-        'lock_timeout': value.lockTimeout,
-        'max_prepared_transactions': value.maxPreparedTransactions,
-        'max_connections': value.maxConnections,
-        'shared_buffers': value.sharedBuffers,
-        'wal_buffers': value.walBuffers,
-        'temp_buffers': value.tempBuffers,
-        'work_mem': value.workMem,
-        'sql_mode': value.sqlMode,
-        'query_cache_type': value.queryCacheType,
-        'query_cache_size': value.queryCacheSize,
+        'mysql': ConfigParametersMysqlToJSON(value.mysql),
+        'postgres': ConfigParametersPostgresToJSON(value.postgres),
     };
 }
 

@@ -19,12 +19,6 @@ import {
     AvailabilityZoneFromJSONTyped,
     AvailabilityZoneToJSON,
 } from './AvailabilityZone';
-import type { ConfigParameters } from './ConfigParameters';
-import {
-    ConfigParametersFromJSON,
-    ConfigParametersFromJSONTyped,
-    ConfigParametersToJSON,
-} from './ConfigParameters';
 import type { DbDiskStats } from './DbDiskStats';
 import {
     DbDiskStatsFromJSON,
@@ -37,6 +31,12 @@ import {
     DbTypeFromJSONTyped,
     DbTypeToJSON,
 } from './DbType';
+import type { Mysql } from './Mysql';
+import {
+    MysqlFromJSON,
+    MysqlFromJSONTyped,
+    MysqlToJSON,
+} from './Mysql';
 
 /**
  * База данных
@@ -142,10 +142,10 @@ export interface Db {
     diskStats: DbDiskStats | null;
     /**
      * 
-     * @type {ConfigParameters}
+     * @type {Mysql}
      * @memberof Db
      */
-    configParameters: ConfigParameters;
+    configParameters: Mysql;
     /**
      * Это логическое значение, которое показывает, доступна ли база данных только по локальному IP адресу.
      * @type {boolean}
@@ -247,7 +247,7 @@ export function DbFromJSONTyped(json: any, ignoreDiscriminator: boolean): Db {
         'status': json['status'],
         'presetId': json['preset_id'],
         'diskStats': DbDiskStatsFromJSON(json['disk_stats']),
-        'configParameters': ConfigParametersFromJSON(json['config_parameters']),
+        'configParameters': MysqlFromJSON(json['config_parameters']),
         'isOnlyLocalIpAccess': json['is_only_local_ip_access'],
         'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
     };
@@ -278,7 +278,7 @@ export function DbToJSON(value?: Db | null): any {
         'status': value.status,
         'preset_id': value.presetId,
         'disk_stats': DbDiskStatsToJSON(value.diskStats),
-        'config_parameters': ConfigParametersToJSON(value.configParameters),
+        'config_parameters': MysqlToJSON(value.configParameters),
         'is_only_local_ip_access': value.isOnlyLocalIpAccess,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
     };

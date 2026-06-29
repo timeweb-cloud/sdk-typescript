@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   AutoBackup,
+  ConfigParameters,
   CreateAdmin,
   CreateCluster,
   CreateDatabaseBackup201Response,
@@ -45,6 +46,8 @@ import type {
 import {
     AutoBackupFromJSON,
     AutoBackupToJSON,
+    ConfigParametersFromJSON,
+    ConfigParametersToJSON,
     CreateAdminFromJSON,
     CreateAdminToJSON,
     CreateClusterFromJSON,
@@ -912,7 +915,7 @@ export class DatabasesApi extends runtime.BaseAPI {
      * Чтобы получить список параметров баз данных, отправьте GET-запрос на `/api/v1/dbs/parameters`.
      * Получение списка параметров баз данных
      */
-    async getDatabaseParametersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: Array<string>; }>> {
+    async getDatabaseParametersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ConfigParameters>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -932,14 +935,14 @@ export class DatabasesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => ConfigParametersFromJSON(jsonValue));
     }
 
     /**
      * Чтобы получить список параметров баз данных, отправьте GET-запрос на `/api/v1/dbs/parameters`.
      * Получение списка параметров баз данных
      */
-    async getDatabaseParameters(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: Array<string>; }> {
+    async getDatabaseParameters(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ConfigParameters> {
         const response = await this.getDatabaseParametersRaw(initOverrides);
         return await response.value();
     }

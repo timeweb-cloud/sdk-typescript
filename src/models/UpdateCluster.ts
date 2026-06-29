@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Mysql } from './Mysql';
+import {
+    MysqlFromJSON,
+    MysqlFromJSONTyped,
+    MysqlToJSON,
+} from './Mysql';
+
 /**
  * 
  * @export
@@ -31,6 +38,12 @@ export interface UpdateCluster {
      * @memberof UpdateCluster
      */
     presetId?: number;
+    /**
+     * 
+     * @type {Mysql}
+     * @memberof UpdateCluster
+     */
+    configParameters?: Mysql;
     /**
      * Описание кластера базы данных
      * @type {string}
@@ -72,6 +85,7 @@ export function UpdateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'name': !exists(json, 'name') ? undefined : json['name'],
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        'configParameters': !exists(json, 'config_parameters') ? undefined : MysqlFromJSON(json['config_parameters']),
         'description': !exists(json, 'description') ? undefined : json['description'],
         'isEnabledPublicNetwork': !exists(json, 'is_enabled_public_network') ? undefined : json['is_enabled_public_network'],
         'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
@@ -89,6 +103,7 @@ export function UpdateClusterToJSON(value?: UpdateCluster | null): any {
         
         'name': value.name,
         'preset_id': value.presetId,
+        'config_parameters': MysqlToJSON(value.configParameters),
         'description': value.description,
         'is_enabled_public_network': value.isEnabledPublicNetwork,
         'is_public_ipv6': value.isPublicIpv6,

@@ -19,12 +19,6 @@ import {
     AvailabilityZoneFromJSONTyped,
     AvailabilityZoneToJSON,
 } from './AvailabilityZone';
-import type { ConfigParameters } from './ConfigParameters';
-import {
-    ConfigParametersFromJSON,
-    ConfigParametersFromJSONTyped,
-    ConfigParametersToJSON,
-} from './ConfigParameters';
 import type { CreateClusterAdmin } from './CreateClusterAdmin';
 import {
     CreateClusterAdminFromJSON,
@@ -55,6 +49,12 @@ import {
     DbTypeFromJSONTyped,
     DbTypeToJSON,
 } from './DbType';
+import type { Mysql } from './Mysql';
+import {
+    MysqlFromJSON,
+    MysqlFromJSONTyped,
+    MysqlToJSON,
+} from './Mysql';
 import type { Network } from './Network';
 import {
     NetworkFromJSON,
@@ -118,10 +118,10 @@ export interface CreateCluster {
     projectId?: number;
     /**
      * 
-     * @type {ConfigParameters}
+     * @type {Mysql}
      * @memberof CreateCluster
      */
-    configParameters?: ConfigParameters;
+    configParameters?: Mysql;
     /**
      * 
      * @type {DbReplication}
@@ -200,7 +200,7 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
         'configuratorId': !exists(json, 'configurator_id') ? undefined : json['configurator_id'],
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
-        'configParameters': !exists(json, 'config_parameters') ? undefined : ConfigParametersFromJSON(json['config_parameters']),
+        'configParameters': !exists(json, 'config_parameters') ? undefined : MysqlFromJSON(json['config_parameters']),
         'replication': !exists(json, 'replication') ? undefined : DbReplicationFromJSON(json['replication']),
         'network': !exists(json, 'network') ? undefined : NetworkFromJSON(json['network']),
         'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
@@ -227,7 +227,7 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
         'preset_id': value.presetId,
         'configurator_id': value.configuratorId,
         'project_id': value.projectId,
-        'config_parameters': ConfigParametersToJSON(value.configParameters),
+        'config_parameters': MysqlToJSON(value.configParameters),
         'replication': DbReplicationToJSON(value.replication),
         'network': NetworkToJSON(value.network),
         'is_public_ipv6': value.isPublicIpv6,

@@ -117,6 +117,8 @@ src/models/Commit.ts
 src/models/ComponentsSchemasBaseError.ts
 src/models/ComponentsSchemasMeta.ts
 src/models/ConfigParameters.ts
+src/models/ConfigParametersMysql.ts
+src/models/ConfigParametersPostgres.ts
 src/models/ContainerRegistryPresetsInner.ts
 src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
@@ -396,6 +398,7 @@ src/models/ModelParamsInfoMaxTokens.ts
 src/models/ModelParamsInfoReasoningEffort.ts
 src/models/ModelParamsInfoTemperature.ts
 src/models/MountNetworkDrive.ts
+src/models/Mysql.ts
 src/models/NatIn.ts
 src/models/Network.ts
 src/models/NetworkDrive.ts
@@ -427,6 +430,7 @@ src/models/OutgoingIsEnabled.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
 src/models/Policy.ts
+src/models/Postgres.ts
 src/models/PresetsBalancer.ts
 src/models/PresetsDbs.ts
 src/models/PresetsResponse.ts

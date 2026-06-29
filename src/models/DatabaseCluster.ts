@@ -13,12 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ConfigParameters } from './ConfigParameters';
-import {
-    ConfigParametersFromJSON,
-    ConfigParametersFromJSONTyped,
-    ConfigParametersToJSON,
-} from './ConfigParameters';
 import type { DatabaseClusterDisk } from './DatabaseClusterDisk';
 import {
     DatabaseClusterDiskFromJSON,
@@ -37,6 +31,12 @@ import {
     DbTypeFromJSONTyped,
     DbTypeToJSON,
 } from './DbType';
+import type { Mysql } from './Mysql';
+import {
+    MysqlFromJSON,
+    MysqlFromJSONTyped,
+    MysqlToJSON,
+} from './Mysql';
 
 /**
  * Кластер базы данных
@@ -124,10 +124,10 @@ export interface DatabaseCluster {
     disk?: DatabaseClusterDisk | null;
     /**
      * 
-     * @type {ConfigParameters}
+     * @type {Mysql}
      * @memberof DatabaseCluster
      */
-    configParameters: ConfigParameters;
+    configParameters: Mysql;
     /**
      * Доступность публичного IP-адреса
      * @type {boolean}
@@ -222,7 +222,7 @@ export function DatabaseClusterFromJSONTyped(json: any, ignoreDiscriminator: boo
         'status': json['status'],
         'presetId': json['preset_id'],
         'disk': !exists(json, 'disk') ? undefined : DatabaseClusterDiskFromJSON(json['disk']),
-        'configParameters': ConfigParametersFromJSON(json['config_parameters']),
+        'configParameters': MysqlFromJSON(json['config_parameters']),
         'isEnabledPublicNetwork': json['is_enabled_public_network'],
     };
 }
@@ -249,7 +249,7 @@ export function DatabaseClusterToJSON(value?: DatabaseCluster | null): any {
         'status': value.status,
         'preset_id': value.presetId,
         'disk': DatabaseClusterDiskToJSON(value.disk),
-        'config_parameters': ConfigParametersToJSON(value.configParameters),
+        'config_parameters': MysqlToJSON(value.configParameters),
         'is_enabled_public_network': value.isEnabledPublicNetwork,
     };
 }
