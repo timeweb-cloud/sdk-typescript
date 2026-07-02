@@ -12,93 +12,46 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { PropertiesMysql } from './PropertiesMysql';
-import {
-    PropertiesMysqlFromJSON,
-    PropertiesMysqlFromJSONTyped,
-    PropertiesMysqlToJSON,
-} from './PropertiesMysql';
 
 /**
- * Пользователь базы данных.
+ * 
  * @export
- * @interface CreateClusterAdmin
  */
-export interface CreateClusterAdmin {
-    /**
-     * Имя пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    login?: string;
-    /**
-     * Пароль пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    password?: string;
-    /**
-     * Хост пользователя
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    host?: string;
-    /**
-     * Список привилегий пользователя базы данных
-     * @type {Array<PropertiesMysql>}
-     * @memberof CreateClusterAdmin
-     */
-    privileges?: Array<PropertiesMysql>;
-    /**
-     * Описание пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    description?: string;
+export const PropertiesMysql = {
+    Alter: 'ALTER',
+    Create: 'CREATE',
+    CreateView: 'CREATE_VIEW',
+    Delete: 'DELETE',
+    Drop: 'DROP',
+    Event: 'EVENT',
+    Index: 'INDEX',
+    Insert: 'INSERT',
+    LockTables: 'LOCK_TABLES',
+    References: 'REFERENCES',
+    Select: 'SELECT',
+    ShowView: 'SHOW_VIEW',
+    Trigger: 'TRIGGER',
+    Update: 'UPDATE',
+    AlterRoutine: 'ALTER_ROUTINE',
+    CreateRoutine: 'CREATE_ROUTINE',
+    CreateTemporaryTables: 'CREATE_TEMPORARY_TABLES',
+    CreateUser: 'CREATE_USER',
+    Process: 'PROCESS',
+    SlowLog: 'SLOW_LOG',
+    CreateDb: 'CREATE_DB'
+} as const;
+export type PropertiesMysql = typeof PropertiesMysql[keyof typeof PropertiesMysql];
+
+
+export function PropertiesMysqlFromJSON(json: any): PropertiesMysql {
+    return PropertiesMysqlFromJSONTyped(json, false);
 }
 
-/**
- * Check if a given object implements the CreateClusterAdmin interface.
- */
-export function instanceOfCreateClusterAdmin(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function PropertiesMysqlFromJSONTyped(json: any, ignoreDiscriminator: boolean): PropertiesMysql {
+    return json as PropertiesMysql;
 }
 
-export function CreateClusterAdminFromJSON(json: any): CreateClusterAdmin {
-    return CreateClusterAdminFromJSONTyped(json, false);
-}
-
-export function CreateClusterAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateClusterAdmin {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'login': !exists(json, 'login') ? undefined : json['login'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'host': !exists(json, 'host') ? undefined : json['host'],
-        'privileges': !exists(json, 'privileges') ? undefined : ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
-        'description': !exists(json, 'description') ? undefined : json['description'],
-    };
-}
-
-export function CreateClusterAdminToJSON(value?: CreateClusterAdmin | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'login': value.login,
-        'password': value.password,
-        'host': value.host,
-        'privileges': value.privileges === undefined ? undefined : ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
-        'description': value.description,
-    };
+export function PropertiesMysqlToJSON(value?: PropertiesMysql | null): any {
+    return value as any;
 }
 

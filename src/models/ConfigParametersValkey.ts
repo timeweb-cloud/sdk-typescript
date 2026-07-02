@@ -13,79 +13,114 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { PropertiesMysql } from './PropertiesMysql';
-import {
-    PropertiesMysqlFromJSON,
-    PropertiesMysqlFromJSONTyped,
-    PropertiesMysqlToJSON,
-} from './PropertiesMysql';
-
 /**
- * Пользователь базы данных.
+ * Параметры Valkey (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`)
  * @export
- * @interface CreateClusterAdmin
+ * @interface ConfigParametersValkey
  */
-export interface CreateClusterAdmin {
+export interface ConfigParametersValkey {
     /**
-     * Имя пользователя базы данных
+     * Ограничение буфера вывода для обычных клиентских подключений. Формат: `hard-limit soft-limit soft-seconds` (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
      * @type {string}
-     * @memberof CreateClusterAdmin
+     * @memberof ConfigParametersValkey
      */
-    login?: string;
+    clientOutputBufferLimitNormal?: string;
     /**
-     * Пароль пользователя базы данных
+     * Ограничение буфера вывода для клиентов pub/sub. Формат: `hard-limit soft-limit soft-seconds` (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
      * @type {string}
-     * @memberof CreateClusterAdmin
+     * @memberof ConfigParametersValkey
      */
-    password?: string;
+    clientOutputBufferLimitPubsub?: string;
     /**
-     * Хост пользователя
+     * Количество логических баз данных на сервере (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
      * @type {string}
-     * @memberof CreateClusterAdmin
+     * @memberof ConfigParametersValkey
      */
-    host?: string;
+    databases?: string;
     /**
-     * Список привилегий пользователя базы данных
-     * @type {Array<PropertiesMysql>}
-     * @memberof CreateClusterAdmin
-     */
-    privileges?: Array<PropertiesMysql>;
-    /**
-     * Описание пользователя базы данных
+     * Время ожидания в секундах перед закрытием неактивного клиентского соединения. `0` — отключено (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
      * @type {string}
-     * @memberof CreateClusterAdmin
+     * @memberof ConfigParametersValkey
      */
-    description?: string;
+    timeout?: string;
+    /**
+     * Политика вытеснения ключей при достижении лимита памяти (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    maxmemoryPolicy?: string;
+    /**
+     * Минимальное время выполнения команды в микросекундах для записи в журнал медленных команд (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    slowlogLogSlowerThan?: string;
+    /**
+     * Максимальное количество записей, хранящихся в журнале медленных команд (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    slowlogMaxLen?: string;
+    /**
+     * Условие создания снимка RDB на диск. Формат: `seconds changes` — сохранение выполняется, если за указанное время было сделано не менее указанного количества изменений (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    save?: string;
+    /**
+     * Включение режима AOF (Append Only File) для персистентного хранения данных (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    appendonly?: string;
+    /**
+     * Режим синхронизации AOF-файла с диском: `always` — при каждой записи, `everysec` — раз в секунду, `no` — управление передаётся ОС (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    appendfsync?: string;
+    /**
+     * Интервал проверки активности TCP-соединения в секундах. `0` — отключено (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof ConfigParametersValkey
+     */
+    tcpKeepalive?: string;
 }
 
 /**
- * Check if a given object implements the CreateClusterAdmin interface.
+ * Check if a given object implements the ConfigParametersValkey interface.
  */
-export function instanceOfCreateClusterAdmin(value: object): boolean {
+export function instanceOfConfigParametersValkey(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function CreateClusterAdminFromJSON(json: any): CreateClusterAdmin {
-    return CreateClusterAdminFromJSONTyped(json, false);
+export function ConfigParametersValkeyFromJSON(json: any): ConfigParametersValkey {
+    return ConfigParametersValkeyFromJSONTyped(json, false);
 }
 
-export function CreateClusterAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateClusterAdmin {
+export function ConfigParametersValkeyFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfigParametersValkey {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'login': !exists(json, 'login') ? undefined : json['login'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'host': !exists(json, 'host') ? undefined : json['host'],
-        'privileges': !exists(json, 'privileges') ? undefined : ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'clientOutputBufferLimitNormal': !exists(json, 'client-output-buffer-limit normal') ? undefined : json['client-output-buffer-limit normal'],
+        'clientOutputBufferLimitPubsub': !exists(json, 'client-output-buffer-limit pubsub') ? undefined : json['client-output-buffer-limit pubsub'],
+        'databases': !exists(json, 'databases') ? undefined : json['databases'],
+        'timeout': !exists(json, 'timeout') ? undefined : json['timeout'],
+        'maxmemoryPolicy': !exists(json, 'maxmemory-policy') ? undefined : json['maxmemory-policy'],
+        'slowlogLogSlowerThan': !exists(json, 'slowlog-log-slower-than') ? undefined : json['slowlog-log-slower-than'],
+        'slowlogMaxLen': !exists(json, 'slowlog-max-len') ? undefined : json['slowlog-max-len'],
+        'save': !exists(json, 'save') ? undefined : json['save'],
+        'appendonly': !exists(json, 'appendonly') ? undefined : json['appendonly'],
+        'appendfsync': !exists(json, 'appendfsync') ? undefined : json['appendfsync'],
+        'tcpKeepalive': !exists(json, 'tcp-keepalive') ? undefined : json['tcp-keepalive'],
     };
 }
 
-export function CreateClusterAdminToJSON(value?: CreateClusterAdmin | null): any {
+export function ConfigParametersValkeyToJSON(value?: ConfigParametersValkey | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -94,11 +129,17 @@ export function CreateClusterAdminToJSON(value?: CreateClusterAdmin | null): any
     }
     return {
         
-        'login': value.login,
-        'password': value.password,
-        'host': value.host,
-        'privileges': value.privileges === undefined ? undefined : ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
-        'description': value.description,
+        'client-output-buffer-limit normal': value.clientOutputBufferLimitNormal,
+        'client-output-buffer-limit pubsub': value.clientOutputBufferLimitPubsub,
+        'databases': value.databases,
+        'timeout': value.timeout,
+        'maxmemory-policy': value.maxmemoryPolicy,
+        'slowlog-log-slower-than': value.slowlogLogSlowerThan,
+        'slowlog-max-len': value.slowlogMaxLen,
+        'save': value.save,
+        'appendonly': value.appendonly,
+        'appendfsync': value.appendfsync,
+        'tcp-keepalive': value.tcpKeepalive,
     };
 }
 

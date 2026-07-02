@@ -12,93 +12,30 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { PropertiesMysql } from './PropertiesMysql';
-import {
-    PropertiesMysqlFromJSON,
-    PropertiesMysqlFromJSONTyped,
-    PropertiesMysqlToJSON,
-} from './PropertiesMysql';
 
 /**
- * Пользователь базы данных.
+ * 
  * @export
- * @interface CreateClusterAdmin
  */
-export interface CreateClusterAdmin {
-    /**
-     * Имя пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    login?: string;
-    /**
-     * Пароль пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    password?: string;
-    /**
-     * Хост пользователя
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    host?: string;
-    /**
-     * Список привилегий пользователя базы данных
-     * @type {Array<PropertiesMysql>}
-     * @memberof CreateClusterAdmin
-     */
-    privileges?: Array<PropertiesMysql>;
-    /**
-     * Описание пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    description?: string;
+export const Rabbitmq = {
+    Configure: 'CONFIGURE',
+    Read: 'READ',
+    Write: 'WRITE',
+    ReadDashboard: 'READ_DASHBOARD',
+    WriteDashboard: 'WRITE_DASHBOARD'
+} as const;
+export type Rabbitmq = typeof Rabbitmq[keyof typeof Rabbitmq];
+
+
+export function RabbitmqFromJSON(json: any): Rabbitmq {
+    return RabbitmqFromJSONTyped(json, false);
 }
 
-/**
- * Check if a given object implements the CreateClusterAdmin interface.
- */
-export function instanceOfCreateClusterAdmin(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function RabbitmqFromJSONTyped(json: any, ignoreDiscriminator: boolean): Rabbitmq {
+    return json as Rabbitmq;
 }
 
-export function CreateClusterAdminFromJSON(json: any): CreateClusterAdmin {
-    return CreateClusterAdminFromJSONTyped(json, false);
-}
-
-export function CreateClusterAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateClusterAdmin {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'login': !exists(json, 'login') ? undefined : json['login'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'host': !exists(json, 'host') ? undefined : json['host'],
-        'privileges': !exists(json, 'privileges') ? undefined : ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
-        'description': !exists(json, 'description') ? undefined : json['description'],
-    };
-}
-
-export function CreateClusterAdminToJSON(value?: CreateClusterAdmin | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'login': value.login,
-        'password': value.password,
-        'host': value.host,
-        'privileges': value.privileges === undefined ? undefined : ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
-        'description': value.description,
-    };
+export function RabbitmqToJSON(value?: Rabbitmq | null): any {
+    return value as any;
 }
 

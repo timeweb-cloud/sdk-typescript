@@ -25,6 +25,12 @@ import {
     ConfigParametersPostgresFromJSONTyped,
     ConfigParametersPostgresToJSON,
 } from './ConfigParametersPostgres';
+import type { ConfigParametersValkey } from './ConfigParametersValkey';
+import {
+    ConfigParametersValkeyFromJSON,
+    ConfigParametersValkeyFromJSONTyped,
+    ConfigParametersValkeyToJSON,
+} from './ConfigParametersValkey';
 
 /**
  * Параметры базы данных
@@ -44,6 +50,12 @@ export interface ConfigParameters {
      * @memberof ConfigParameters
      */
     postgres?: ConfigParametersPostgres;
+    /**
+     * 
+     * @type {ConfigParametersValkey}
+     * @memberof ConfigParameters
+     */
+    valkey?: ConfigParametersValkey;
 }
 
 /**
@@ -67,6 +79,7 @@ export function ConfigParametersFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'mysql': !exists(json, 'mysql') ? undefined : ConfigParametersMysqlFromJSON(json['mysql']),
         'postgres': !exists(json, 'postgres') ? undefined : ConfigParametersPostgresFromJSON(json['postgres']),
+        'valkey': !exists(json, 'valkey') ? undefined : ConfigParametersValkeyFromJSON(json['valkey']),
     };
 }
 
@@ -81,6 +94,7 @@ export function ConfigParametersToJSON(value?: ConfigParameters | null): any {
         
         'mysql': ConfigParametersMysqlToJSON(value.mysql),
         'postgres': ConfigParametersPostgresToJSON(value.postgres),
+        'valkey': ConfigParametersValkeyToJSON(value.valkey),
     };
 }
 

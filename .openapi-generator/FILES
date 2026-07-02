@@ -100,6 +100,7 @@ src/models/BucketUser.ts
 src/models/BucketWebsiteConfig.ts
 src/models/BucketWebsiteConfigErrorPagesInner.ts
 src/models/CheckDomain200Response.ts
+src/models/Clickhouse.ts
 src/models/ClusterEdit.ts
 src/models/ClusterEditOidcProvider.ts
 src/models/ClusterIn.ts
@@ -119,6 +120,7 @@ src/models/ComponentsSchemasMeta.ts
 src/models/ConfigParameters.ts
 src/models/ConfigParametersMysql.ts
 src/models/ConfigParametersPostgres.ts
+src/models/ConfigParametersValkey.ts
 src/models/ContainerRegistryPresetsInner.ts
 src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
@@ -377,6 +379,7 @@ src/models/IncreaseNodes.ts
 src/models/InfoServicePrice.ts
 src/models/Invoice.ts
 src/models/K8SVersionsResponse.ts
+src/models/Kafka.ts
 src/models/Knowledgebase.ts
 src/models/KnowledgebaseV2.ts
 src/models/Location.ts
@@ -397,6 +400,7 @@ src/models/ModelParamsInfo.ts
 src/models/ModelParamsInfoMaxTokens.ts
 src/models/ModelParamsInfoReasoningEffort.ts
 src/models/ModelParamsInfoTemperature.ts
+src/models/Mongodb.ts
 src/models/MountNetworkDrive.ts
 src/models/Mysql.ts
 src/models/NatIn.ts
@@ -425,20 +429,25 @@ src/models/NotificationSettingChannel.ts
 src/models/NotificationSettingChannels.ts
 src/models/NotificationSettingType.ts
 src/models/OS.ts
+src/models/Opensearch.ts
 src/models/OutgoingIsDisabled.ts
 src/models/OutgoingIsEnabled.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
 src/models/Policy.ts
 src/models/Postgres.ts
+src/models/Postgresql.ts
 src/models/PresetsBalancer.ts
 src/models/PresetsDbs.ts
 src/models/PresetsResponse.ts
 src/models/PresetsStorage.ts
 src/models/Project.ts
 src/models/ProjectResource.ts
+src/models/PropertiesMysql.ts
+src/models/PropertiesValkey.ts
 src/models/Provider.ts
 src/models/Providers.ts
+src/models/Rabbitmq.ts
 src/models/ReduceNodes.ts
 src/models/RegistriesResponse.ts
 src/models/RegistryEdit.ts
@@ -570,6 +579,7 @@ src/models/UploadSuccessful.ts
 src/models/UploadSuccessfulResponse.ts
 src/models/UrlStatus.ts
 src/models/Use.ts
+src/models/Valkey.ts
 src/models/Vds.ts
 src/models/VdsDisksInner.ts
 src/models/VdsImage.ts

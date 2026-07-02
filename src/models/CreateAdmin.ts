@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PropertiesMysql } from './PropertiesMysql';
+import {
+    PropertiesMysqlFromJSON,
+    PropertiesMysqlFromJSONTyped,
+    PropertiesMysqlToJSON,
+} from './PropertiesMysql';
+
 /**
  * 
  * @export
@@ -45,10 +52,10 @@ export interface CreateAdmin {
     instanceId?: number;
     /**
      * Список привилегий пользователя базы данных
-     * @type {Array<string>}
+     * @type {Array<PropertiesMysql>}
      * @memberof CreateAdmin
      */
-    privileges: Array<CreateAdminPrivilegesEnum>;
+    privileges: Array<PropertiesMysql>;
     /**
      * Описание пользователя базы данных
      * @type {string}
@@ -56,82 +63,6 @@ export interface CreateAdmin {
      */
     description?: string;
 }
-
-
-/**
- * @export
- */
-export const CreateAdminPrivilegesEnum = {
-    Alter: 'ALTER',
-    AlterTable: 'ALTER_TABLE',
-    AlterView: 'ALTER_VIEW',
-    CreateView: 'CREATE_VIEW',
-    CreateDictionary: 'CREATE_DICTIONARY',
-    CreateFunction: 'CREATE_FUNCTION',
-    CreateTable: 'CREATE_TABLE',
-    Create: 'CREATE',
-    Delete: 'DELETE',
-    Drop: 'DROP',
-    DropTable: 'DROP_TABLE',
-    DropView: 'DROP_VIEW',
-    DropDictionary: 'DROP_DICTIONARY',
-    Event: 'EVENT',
-    Index: 'INDEX',
-    Insert: 'INSERT',
-    LockTables: 'LOCK_TABLES',
-    References: 'REFERENCES',
-    Select: 'SELECT',
-    Show: 'SHOW',
-    ShowView: 'SHOW_VIEW',
-    Truncate: 'TRUNCATE',
-    Trigger: 'TRIGGER',
-    Update: 'UPDATE',
-    Read: 'READ',
-    Write: 'WRITE',
-    ReadWrite: 'READ_WRITE',
-    DbAdmin: 'DB_ADMIN',
-    AlterRoutine: 'ALTER_ROUTINE',
-    CreateRoutine: 'CREATE_ROUTINE',
-    CreateTemporaryTables: 'CREATE_TEMPORARY_TABLES',
-    Temporary: 'TEMPORARY',
-    Configure: 'CONFIGURE',
-    ReadDashboard: 'READ_DASHBOARD',
-    WriteDashboard: 'WRITE_DASHBOARD',
-    Describe: 'DESCRIBE',
-    Optimize: 'OPTIMIZE',
-    Execute: 'EXECUTE',
-    Createdb: 'CREATEDB',
-    Createrole: 'CREATEROLE',
-    CreateDb: 'CREATE_DB',
-    CreateUser: 'CREATE_USER',
-    Process: 'PROCESS',
-    SlowLog: 'SLOW_LOG',
-    CreateTemporaryTable: 'CREATE_TEMPORARY_TABLE',
-    Admin: 'ADMIN',
-    Bitmap: 'BITMAP',
-    Blocking: 'BLOCKING',
-    Connection: 'CONNECTION',
-    Dangerous: 'DANGEROUS',
-    Geo: 'GEO',
-    Hash: 'HASH',
-    Hyperloglog: 'HYPERLOGLOG',
-    Fast: 'FAST',
-    Keyspace: 'KEYSPACE',
-    List: 'LIST',
-    Pubsub: 'PUBSUB',
-    Scripting: 'SCRIPTING',
-    Set: 'SET',
-    Sortedset: 'SORTEDSET',
-    Slow: 'SLOW',
-    Stream: 'STREAM',
-    String: 'STRING',
-    Transaction: 'TRANSACTION',
-    DictGet: 'dictGet',
-    DbAdmin: 'dbAdmin',
-    ReadWrite: 'readWrite'
-} as const;
-export type CreateAdminPrivilegesEnum = typeof CreateAdminPrivilegesEnum[keyof typeof CreateAdminPrivilegesEnum];
-
 
 /**
  * Check if a given object implements the CreateAdmin interface.
@@ -159,7 +90,7 @@ export function CreateAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'password': json['password'],
         'host': !exists(json, 'host') ? undefined : json['host'],
         'instanceId': !exists(json, 'instance_id') ? undefined : json['instance_id'],
-        'privileges': json['privileges'],
+        'privileges': ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
         'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
@@ -177,7 +108,7 @@ export function CreateAdminToJSON(value?: CreateAdmin | null): any {
         'password': value.password,
         'host': value.host,
         'instance_id': value.instanceId,
-        'privileges': value.privileges,
+        'privileges': ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
         'description': value.description,
     };
 }

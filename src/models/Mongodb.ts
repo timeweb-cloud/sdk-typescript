@@ -12,93 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { PropertiesMysql } from './PropertiesMysql';
-import {
-    PropertiesMysqlFromJSON,
-    PropertiesMysqlFromJSONTyped,
-    PropertiesMysqlToJSON,
-} from './PropertiesMysql';
 
 /**
- * Пользователь базы данных.
+ * 
  * @export
- * @interface CreateClusterAdmin
  */
-export interface CreateClusterAdmin {
-    /**
-     * Имя пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    login?: string;
-    /**
-     * Пароль пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    password?: string;
-    /**
-     * Хост пользователя
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    host?: string;
-    /**
-     * Список привилегий пользователя базы данных
-     * @type {Array<PropertiesMysql>}
-     * @memberof CreateClusterAdmin
-     */
-    privileges?: Array<PropertiesMysql>;
-    /**
-     * Описание пользователя базы данных
-     * @type {string}
-     * @memberof CreateClusterAdmin
-     */
-    description?: string;
+export const Mongodb = {
+    DbAdmin: 'dbAdmin',
+    ReadWrite: 'readWrite'
+} as const;
+export type Mongodb = typeof Mongodb[keyof typeof Mongodb];
+
+
+export function MongodbFromJSON(json: any): Mongodb {
+    return MongodbFromJSONTyped(json, false);
 }
 
-/**
- * Check if a given object implements the CreateClusterAdmin interface.
- */
-export function instanceOfCreateClusterAdmin(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function MongodbFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mongodb {
+    return json as Mongodb;
 }
 
-export function CreateClusterAdminFromJSON(json: any): CreateClusterAdmin {
-    return CreateClusterAdminFromJSONTyped(json, false);
-}
-
-export function CreateClusterAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateClusterAdmin {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'login': !exists(json, 'login') ? undefined : json['login'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'host': !exists(json, 'host') ? undefined : json['host'],
-        'privileges': !exists(json, 'privileges') ? undefined : ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
-        'description': !exists(json, 'description') ? undefined : json['description'],
-    };
-}
-
-export function CreateClusterAdminToJSON(value?: CreateClusterAdmin | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'login': value.login,
-        'password': value.password,
-        'host': value.host,
-        'privileges': value.privileges === undefined ? undefined : ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
-        'description': value.description,
-    };
+export function MongodbToJSON(value?: Mongodb | null): any {
+    return value as any;
 }
 
