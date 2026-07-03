@@ -14,7 +14,7 @@
 
 
 /**
- * Привилегии Kafka (`kafka`)
+ * 
  * @export
  */
 export const Kafka = {
