@@ -25,6 +25,7 @@ src/apis/RoutersApi.ts
 src/apis/S3Api.ts
 src/apis/SSHApi.ts
 src/apis/ServersApi.ts
+src/apis/SnapshotsApi.ts
 src/apis/VPCApi.ts
 src/apis/index.ts
 src/index.ts
@@ -338,6 +339,8 @@ src/models/GetProjectStorages200Response.ts
 src/models/GetProjects200Response.ts
 src/models/GetProviders200Response.ts
 src/models/GetRepositories200Response.ts
+src/models/GetRestorePoint200Response.ts
+src/models/GetRestorePoints200Response.ts
 src/models/GetServerDiskAutoBackupSettings200Response.ts
 src/models/GetServerDiskBackup200Response.ts
 src/models/GetServerDiskBackups200Response.ts
@@ -465,6 +468,7 @@ src/models/ResourceTransfer.ts
 src/models/ResourceType.ts
 src/models/Resources.ts
 src/models/ResourcesResponse.ts
+src/models/RestorePoint.ts
 src/models/RouterEdit.ts
 src/models/RouterIn.ts
 src/models/RouterInIpsInner.ts
