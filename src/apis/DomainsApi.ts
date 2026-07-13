@@ -100,7 +100,7 @@ export interface AddDomainRequest {
 
 export interface AddSubdomainRequest {
     fqdn: string;
-    subdomainFqdn: string;
+    subdomain: string;
 }
 
 export interface CheckDomainRequest {
@@ -137,7 +137,7 @@ export interface DeleteDomainDNSRecordV2Request {
 
 export interface DeleteSubdomainRequest {
     fqdn: string;
-    subdomainFqdn: string;
+    subdomain: string;
 }
 
 export interface GetDomainRequest {
@@ -258,7 +258,7 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы добавить поддомен, отправьте запрос POST на `/api/v1/domains/{fqdn}/subdomains/{subdomain_fqdn}`, задав необходимые атрибуты.  Поддомен будет добавлен с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о добавленном поддомене.
+     * Чтобы добавить поддомен, отправьте запрос POST на `/api/v1/domains/{fqdn}/subdomains/{subdomain}`, задав необходимые атрибуты.  Поддомен будет добавлен с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о добавленном поддомене.
      * Добавление поддомена
      */
     async addSubdomainRaw(requestParameters: AddSubdomainRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AddSubdomain201Response>> {
@@ -266,8 +266,8 @@ export class DomainsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('fqdn','Required parameter requestParameters.fqdn was null or undefined when calling addSubdomain.');
         }
 
-        if (requestParameters.subdomainFqdn === null || requestParameters.subdomainFqdn === undefined) {
-            throw new runtime.RequiredError('subdomainFqdn','Required parameter requestParameters.subdomainFqdn was null or undefined when calling addSubdomain.');
+        if (requestParameters.subdomain === null || requestParameters.subdomain === undefined) {
+            throw new runtime.RequiredError('subdomain','Required parameter requestParameters.subdomain was null or undefined when calling addSubdomain.');
         }
 
         const queryParameters: any = {};
@@ -283,7 +283,7 @@ export class DomainsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/domains/{fqdn}/subdomains/{subdomain_fqdn}`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))).replace(`{${"subdomain_fqdn"}}`, encodeURIComponent(String(requestParameters.subdomainFqdn))),
+            path: `/api/v1/domains/{fqdn}/subdomains/{subdomain}`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))).replace(`{${"subdomain"}}`, encodeURIComponent(String(requestParameters.subdomain))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -293,7 +293,7 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы добавить поддомен, отправьте запрос POST на `/api/v1/domains/{fqdn}/subdomains/{subdomain_fqdn}`, задав необходимые атрибуты.  Поддомен будет добавлен с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о добавленном поддомене.
+     * Чтобы добавить поддомен, отправьте запрос POST на `/api/v1/domains/{fqdn}/subdomains/{subdomain}`, задав необходимые атрибуты.  Поддомен будет добавлен с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о добавленном поддомене.
      * Добавление поддомена
      */
     async addSubdomain(requestParameters: AddSubdomainRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AddSubdomain201Response> {
@@ -604,7 +604,7 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить поддомен, отправьте запрос DELETE на `/api/v1/domains/{fqdn}/subdomains/{subdomain_fqdn}`.
+     * Чтобы удалить поддомен, отправьте запрос DELETE на `/api/v1/domains/{fqdn}/subdomains/{subdomain}`.
      * Удаление поддомена
      */
     async deleteSubdomainRaw(requestParameters: DeleteSubdomainRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -612,8 +612,8 @@ export class DomainsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('fqdn','Required parameter requestParameters.fqdn was null or undefined when calling deleteSubdomain.');
         }
 
-        if (requestParameters.subdomainFqdn === null || requestParameters.subdomainFqdn === undefined) {
-            throw new runtime.RequiredError('subdomainFqdn','Required parameter requestParameters.subdomainFqdn was null or undefined when calling deleteSubdomain.');
+        if (requestParameters.subdomain === null || requestParameters.subdomain === undefined) {
+            throw new runtime.RequiredError('subdomain','Required parameter requestParameters.subdomain was null or undefined when calling deleteSubdomain.');
         }
 
         const queryParameters: any = {};
@@ -629,7 +629,7 @@ export class DomainsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/domains/{fqdn}/subdomains/{subdomain_fqdn}`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))).replace(`{${"subdomain_fqdn"}}`, encodeURIComponent(String(requestParameters.subdomainFqdn))),
+            path: `/api/v1/domains/{fqdn}/subdomains/{subdomain}`.replace(`{${"fqdn"}}`, encodeURIComponent(String(requestParameters.fqdn))).replace(`{${"subdomain"}}`, encodeURIComponent(String(requestParameters.subdomain))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -639,7 +639,7 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить поддомен, отправьте запрос DELETE на `/api/v1/domains/{fqdn}/subdomains/{subdomain_fqdn}`.
+     * Чтобы удалить поддомен, отправьте запрос DELETE на `/api/v1/domains/{fqdn}/subdomains/{subdomain}`.
      * Удаление поддомена
      */
     async deleteSubdomain(requestParameters: DeleteSubdomainRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
