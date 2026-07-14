@@ -22,5 +22,4 @@ export * from './RoutersApi';
 export * from './S3Api';
 export * from './SSHApi';
 export * from './ServersApi';
-export * from './SnapshotsApi';
 export * from './VPCApi';

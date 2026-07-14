@@ -25,7 +25,6 @@ src/apis/RoutersApi.ts
 src/apis/S3Api.ts
 src/apis/SSHApi.ts
 src/apis/ServersApi.ts
-src/apis/SnapshotsApi.ts
 src/apis/VPCApi.ts
 src/apis/index.ts
 src/index.ts

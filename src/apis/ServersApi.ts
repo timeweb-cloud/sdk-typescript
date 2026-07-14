@@ -35,6 +35,8 @@ import type {
   GetFinances500Response,
   GetImage404Response,
   GetOsList200Response,
+  GetRestorePoint200Response,
+  GetRestorePoints200Response,
   GetServerDiskAutoBackupSettings200Response,
   GetServerDiskBackup200Response,
   GetServerDiskBackups200Response,
@@ -96,6 +98,10 @@ import {
     GetImage404ResponseToJSON,
     GetOsList200ResponseFromJSON,
     GetOsList200ResponseToJSON,
+    GetRestorePoint200ResponseFromJSON,
+    GetRestorePoint200ResponseToJSON,
+    GetRestorePoints200ResponseFromJSON,
+    GetRestorePoints200ResponseToJSON,
     GetServerDiskAutoBackupSettings200ResponseFromJSON,
     GetServerDiskAutoBackupSettings200ResponseToJSON,
     GetServerDiskBackup200ResponseFromJSON,
@@ -145,6 +151,14 @@ export interface CloneServerRequest {
     serverId: number;
 }
 
+export interface CommitRestorePointRequest {
+    vdsId: number;
+}
+
+export interface CreateRestorePointRequest {
+    vdsId: number;
+}
+
 export interface CreateServerRequest {
     createServer: CreateServer;
 }
@@ -180,6 +194,10 @@ export interface DeleteServerDiskBackupRequest {
 export interface DeleteServerIPOperationRequest {
     serverId: number;
     deleteServerIPRequest: DeleteServerIPRequest;
+}
+
+export interface GetRestorePointRequest {
+    vdsId: number;
 }
 
 export interface GetServerRequest {
@@ -270,6 +288,10 @@ export interface RebootServerHardRequest {
 
 export interface ResetServerPasswordRequest {
     serverId: number;
+}
+
+export interface RollbackRestorePointRequest {
+    vdsId: number;
 }
 
 export interface ShutdownServerRequest {
@@ -408,6 +430,85 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async cloneServer(requestParameters: CloneServerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateServer201Response> {
         const response = await this.cloneServerRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы зафиксировать (применить) снапшот облачного сервера (VDS), отправьте POST-запрос на `/api/v1/restore-points/{vds_id}/commit`.  Фиксация подтверждает текущее состояние сервера. Действие выполняется асинхронно, ответ не содержит тела.  Для выполнения действия сервер должен быть включён, иначе вернётся ошибка `403`.
+     * Фиксация снапшота
+     */
+    async commitRestorePointRaw(requestParameters: CommitRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.vdsId === null || requestParameters.vdsId === undefined) {
+            throw new runtime.RequiredError('vdsId','Required parameter requestParameters.vdsId was null or undefined when calling commitRestorePoint.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/restore-points/{vds_id}/commit`.replace(`{${"vds_id"}}`, encodeURIComponent(String(requestParameters.vdsId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы зафиксировать (применить) снапшот облачного сервера (VDS), отправьте POST-запрос на `/api/v1/restore-points/{vds_id}/commit`.  Фиксация подтверждает текущее состояние сервера. Действие выполняется асинхронно, ответ не содержит тела.  Для выполнения действия сервер должен быть включён, иначе вернётся ошибка `403`.
+     * Фиксация снапшота
+     */
+    async commitRestorePoint(requestParameters: CommitRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.commitRestorePointRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы создать снапшот облачного сервера (VDS), отправьте POST-запрос на `/api/v1/restore-points/{vds_id}/create`.  Тело ответа будет содержать объект JSON с ключом `restore_point` и информацией о созданном снапшоте. Сразу после создания снапшот может находиться в статусе `creating`.  Для создания снапшота сервер должен быть включён, иначе вернётся ошибка `403`.
+     * Создание снапшота
+     */
+    async createRestorePointRaw(requestParameters: CreateRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetRestorePoint200Response>> {
+        if (requestParameters.vdsId === null || requestParameters.vdsId === undefined) {
+            throw new runtime.RequiredError('vdsId','Required parameter requestParameters.vdsId was null or undefined when calling createRestorePoint.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/restore-points/{vds_id}/create`.replace(`{${"vds_id"}}`, encodeURIComponent(String(requestParameters.vdsId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetRestorePoint200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать снапшот облачного сервера (VDS), отправьте POST-запрос на `/api/v1/restore-points/{vds_id}/create`.  Тело ответа будет содержать объект JSON с ключом `restore_point` и информацией о созданном снапшоте. Сразу после создания снапшот может находиться в статусе `creating`.  Для создания снапшота сервер должен быть включён, иначе вернётся ошибка `403`.
+     * Создание снапшота
+     */
+    async createRestorePoint(requestParameters: CreateRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetRestorePoint200Response> {
+        const response = await this.createRestorePointRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -797,6 +898,82 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async getOsList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetOsList200Response> {
         const response = await this.getOsListRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить снапшот облачного сервера (VDS), отправьте GET-запрос на `/api/v1/restore-points/{vds_id}`.  Тело ответа будет представлять собой объект JSON с ключом `restore_point`.
+     * Получение снапшота сервера
+     */
+    async getRestorePointRaw(requestParameters: GetRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetRestorePoint200Response>> {
+        if (requestParameters.vdsId === null || requestParameters.vdsId === undefined) {
+            throw new runtime.RequiredError('vdsId','Required parameter requestParameters.vdsId was null or undefined when calling getRestorePoint.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/restore-points/{vds_id}`.replace(`{${"vds_id"}}`, encodeURIComponent(String(requestParameters.vdsId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetRestorePoint200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить снапшот облачного сервера (VDS), отправьте GET-запрос на `/api/v1/restore-points/{vds_id}`.  Тело ответа будет представлять собой объект JSON с ключом `restore_point`.
+     * Получение снапшота сервера
+     */
+    async getRestorePoint(requestParameters: GetRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetRestorePoint200Response> {
+        const response = await this.getRestorePointRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список снапшотов аккаунта, отправьте GET-запрос на `/api/v1/restore-points`.  Тело ответа будет представлять собой объект JSON с ключом `restore_points`.  Снапшот — это снимок состояния облачного сервера (VDS), к которому можно вернуться. Каждому снапшоту соответствует один сервер.
+     * Получение списка снапшотов
+     */
+    async getRestorePointsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetRestorePoints200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/restore-points`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetRestorePoints200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список снапшотов аккаунта, отправьте GET-запрос на `/api/v1/restore-points`.  Тело ответа будет представлять собой объект JSON с ключом `restore_points`.  Снапшот — это снимок состояния облачного сервера (VDS), к которому можно вернуться. Каждому снапшоту соответствует один сервер.
+     * Получение списка снапшотов
+     */
+    async getRestorePoints(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetRestorePoints200Response> {
+        const response = await this.getRestorePointsRaw(initOverrides);
         return await response.value();
     }
 
@@ -1661,6 +1838,45 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async resetServerPassword(requestParameters: ResetServerPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.resetServerPasswordRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы откатить облачный сервер (VDS) к снапшоту, отправьте POST-запрос на `/api/v1/restore-points/{vds_id}/rollback`.  Откат возвращает сервер к состоянию, сохранённому в снапшоте. Действие выполняется асинхронно, ответ не содержит тела.  Для выполнения действия сервер должен быть включён, иначе вернётся ошибка `403`.
+     * Откат к снапшоту
+     */
+    async rollbackRestorePointRaw(requestParameters: RollbackRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.vdsId === null || requestParameters.vdsId === undefined) {
+            throw new runtime.RequiredError('vdsId','Required parameter requestParameters.vdsId was null or undefined when calling rollbackRestorePoint.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/restore-points/{vds_id}/rollback`.replace(`{${"vds_id"}}`, encodeURIComponent(String(requestParameters.vdsId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы откатить облачный сервер (VDS) к снапшоту, отправьте POST-запрос на `/api/v1/restore-points/{vds_id}/rollback`.  Откат возвращает сервер к состоянию, сохранённому в снапшоте. Действие выполняется асинхронно, ответ не содержит тела.  Для выполнения действия сервер должен быть включён, иначе вернётся ошибка `403`.
+     * Откат к снапшоту
+     */
+    async rollbackRestorePoint(requestParameters: RollbackRestorePointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.rollbackRestorePointRaw(requestParameters, initOverrides);
     }
 
     /**
