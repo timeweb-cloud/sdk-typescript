@@ -23,6 +23,7 @@ import type {
   CreateDomainDNSRecord201Response,
   CreateDomainDNSRecordV2201Response,
   CreateDomainRequest201Response,
+  CreatePerson201Response,
   DomainRegister,
   GetDomain200Response,
   GetDomainDNSRecords200Response,
@@ -34,11 +35,14 @@ import type {
   GetFinances429Response,
   GetFinances500Response,
   GetImage404Response,
+  GetPersons200Response,
   GetTLD200Response,
   GetTLDs200Response,
+  Person2,
   UpdateDomain,
   UpdateDomainAutoProlongation200Response,
   UpdateDomainNameServers,
+  UpdatePerson,
   Use,
 } from '../models/index';
 import {
@@ -58,6 +62,8 @@ import {
     CreateDomainDNSRecordV2201ResponseToJSON,
     CreateDomainRequest201ResponseFromJSON,
     CreateDomainRequest201ResponseToJSON,
+    CreatePerson201ResponseFromJSON,
+    CreatePerson201ResponseToJSON,
     DomainRegisterFromJSON,
     DomainRegisterToJSON,
     GetDomain200ResponseFromJSON,
@@ -80,16 +86,22 @@ import {
     GetFinances500ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
+    GetPersons200ResponseFromJSON,
+    GetPersons200ResponseToJSON,
     GetTLD200ResponseFromJSON,
     GetTLD200ResponseToJSON,
     GetTLDs200ResponseFromJSON,
     GetTLDs200ResponseToJSON,
+    Person2FromJSON,
+    Person2ToJSON,
     UpdateDomainFromJSON,
     UpdateDomainToJSON,
     UpdateDomainAutoProlongation200ResponseFromJSON,
     UpdateDomainAutoProlongation200ResponseToJSON,
     UpdateDomainNameServersFromJSON,
     UpdateDomainNameServersToJSON,
+    UpdatePersonFromJSON,
+    UpdatePersonToJSON,
     UseFromJSON,
     UseToJSON,
 } from '../models/index';
@@ -121,6 +133,10 @@ export interface CreateDomainRequestRequest {
     domainRegister: DomainRegister;
 }
 
+export interface CreatePersonRequest {
+    person2: Person2;
+}
+
 export interface DeleteDomainRequest {
     fqdn: string;
 }
@@ -133,6 +149,10 @@ export interface DeleteDomainDNSRecordRequest {
 export interface DeleteDomainDNSRecordV2Request {
     fqdn: string;
     recordId: number;
+}
+
+export interface DeletePersonRequest {
+    personId: number;
 }
 
 export interface DeleteSubdomainRequest {
@@ -177,6 +197,16 @@ export interface GetDomainsRequest {
     sort?: GetDomainsSortEnum;
 }
 
+export interface GetPersonRequest {
+    personId: number;
+}
+
+export interface GetPersonsRequest {
+    limit?: number;
+    offset?: number;
+    isClosed?: boolean;
+}
+
 export interface GetTLDRequest {
     tldId: number;
 }
@@ -211,6 +241,11 @@ export interface UpdateDomainNameServersRequest {
 export interface UpdateDomainRequestRequest {
     requestId: number;
     use: Use;
+}
+
+export interface UpdatePersonRequest {
+    personId: number;
+    updatePerson: UpdatePerson;
 }
 
 /**
@@ -479,6 +514,49 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы создать администратора доменов, отправьте POST-запрос на `/api/v1/persons`, задав необходимые атрибуты. Набор полей зависит от типа администратора: физическое лицо (`person`), организация (`org`) или индивидуальный предприниматель (`ip`).   Тело ответа будет представлять собой объект JSON с ключом `person`.
+     * Создание администратора доменов
+     */
+    async createPersonRaw(requestParameters: CreatePersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePerson201Response>> {
+        if (requestParameters.person2 === null || requestParameters.person2 === undefined) {
+            throw new runtime.RequiredError('person2','Required parameter requestParameters.person2 was null or undefined when calling createPerson.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/persons`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: Person2ToJSON(requestParameters.person2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePerson201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать администратора доменов, отправьте POST-запрос на `/api/v1/persons`, задав необходимые атрибуты. Набор полей зависит от типа администратора: физическое лицо (`person`), организация (`org`) или индивидуальный предприниматель (`ip`).   Тело ответа будет представлять собой объект JSON с ключом `person`.
+     * Создание администратора доменов
+     */
+    async createPerson(requestParameters: CreatePersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePerson201Response> {
+        const response = await this.createPersonRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы удалить домен, отправьте запрос DELETE на `/api/v1/domains/{fqdn}`.
      * Удаление домена
      */
@@ -601,6 +679,45 @@ export class DomainsApi extends runtime.BaseAPI {
      */
     async deleteDomainDNSRecordV2(requestParameters: DeleteDomainDNSRecordV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteDomainDNSRecordV2Raw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы удалить администратора доменов, отправьте DELETE-запрос на `/api/v1/persons/{person_id}`.
+     * Удаление администратора доменов
+     */
+    async deletePersonRaw(requestParameters: DeletePersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.personId === null || requestParameters.personId === undefined) {
+            throw new runtime.RequiredError('personId','Required parameter requestParameters.personId was null or undefined when calling deletePerson.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/persons/{person_id}`.replace(`{${"person_id"}}`, encodeURIComponent(String(requestParameters.personId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы удалить администратора доменов, отправьте DELETE-запрос на `/api/v1/persons/{person_id}`.
+     * Удаление администратора доменов
+     */
+    async deletePerson(requestParameters: DeletePersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deletePersonRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -963,6 +1080,94 @@ export class DomainsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы получить администратора доменов, отправьте GET-запрос на `/api/v1/persons/{person_id}`.   Тело ответа будет представлять собой объект JSON с ключом `person`.
+     * Получение администратора доменов
+     */
+    async getPersonRaw(requestParameters: GetPersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePerson201Response>> {
+        if (requestParameters.personId === null || requestParameters.personId === undefined) {
+            throw new runtime.RequiredError('personId','Required parameter requestParameters.personId was null or undefined when calling getPerson.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/persons/{person_id}`.replace(`{${"person_id"}}`, encodeURIComponent(String(requestParameters.personId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePerson201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить администратора доменов, отправьте GET-запрос на `/api/v1/persons/{person_id}`.   Тело ответа будет представлять собой объект JSON с ключом `person`.
+     * Получение администратора доменов
+     */
+    async getPerson(requestParameters: GetPersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePerson201Response> {
+        const response = await this.getPersonRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список администраторов доменов на вашем аккаунте, отправьте GET-запрос на `/api/v1/persons`.   Тело ответа будет представлять собой объект JSON с ключом `persons`.
+     * Получение списка администраторов доменов
+     */
+    async getPersonsRaw(requestParameters: GetPersonsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPersons200Response>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.isClosed !== undefined) {
+            queryParameters['is_closed'] = requestParameters.isClosed;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/persons`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPersons200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список администраторов доменов на вашем аккаунте, отправьте GET-запрос на `/api/v1/persons`.   Тело ответа будет представлять собой объект JSON с ключом `persons`.
+     * Получение списка администраторов доменов
+     */
+    async getPersons(requestParameters: GetPersonsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPersons200Response> {
+        const response = await this.getPersonsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы получить информацию о доменной зоне по ID, отправьте запрос GET на `/api/v1/tlds/{tld_id}`.
      * Получить информацию о доменной зоне по ID
      */
@@ -1286,6 +1491,53 @@ export class DomainsApi extends runtime.BaseAPI {
      */
     async updateDomainRequest(requestParameters: UpdateDomainRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDomainRequest201Response> {
         const response = await this.updateDomainRequestRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы обновить контактные данные администратора доменов, отправьте PUT-запрос на `/api/v1/persons/{person_id}`.   Тело ответа будет представлять собой объект JSON с ключом `person`.
+     * Обновление контактных данных администратора доменов
+     */
+    async updatePersonRaw(requestParameters: UpdatePersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePerson201Response>> {
+        if (requestParameters.personId === null || requestParameters.personId === undefined) {
+            throw new runtime.RequiredError('personId','Required parameter requestParameters.personId was null or undefined when calling updatePerson.');
+        }
+
+        if (requestParameters.updatePerson === null || requestParameters.updatePerson === undefined) {
+            throw new runtime.RequiredError('updatePerson','Required parameter requestParameters.updatePerson was null or undefined when calling updatePerson.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/persons/{person_id}`.replace(`{${"person_id"}}`, encodeURIComponent(String(requestParameters.personId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdatePersonToJSON(requestParameters.updatePerson),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePerson201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы обновить контактные данные администратора доменов, отправьте PUT-запрос на `/api/v1/persons/{person_id}`.   Тело ответа будет представлять собой объект JSON с ключом `person`.
+     * Обновление контактных данных администратора доменов
+     */
+    async updatePerson(requestParameters: UpdatePersonRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePerson201Response> {
+        const response = await this.updatePersonRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

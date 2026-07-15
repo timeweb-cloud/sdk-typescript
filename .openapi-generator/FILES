@@ -168,6 +168,7 @@ src/models/CreateMultipleDomainMailboxesV2201Response.ts
 src/models/CreateMultipleDomainMailboxesV2RequestInner.ts
 src/models/CreateNetworkDrive.ts
 src/models/CreateNetworkDrive201Response.ts
+src/models/CreatePerson201Response.ts
 src/models/CreateProject.ts
 src/models/CreateProject201Response.ts
 src/models/CreateRule.ts
@@ -329,6 +330,7 @@ src/models/GetNetworkDrivesAvailableResources200Response.ts
 src/models/GetNetworkDrivesPresets200Response.ts
 src/models/GetNotificationSettings200Response.ts
 src/models/GetOsList200Response.ts
+src/models/GetPersons200Response.ts
 src/models/GetProjectBalancers200Response.ts
 src/models/GetProjectClusters200Response.ts
 src/models/GetProjectDatabases200Response.ts
@@ -380,6 +382,7 @@ src/models/ImagesOutResponse.ts
 src/models/IncreaseNodes.ts
 src/models/InfoServicePrice.ts
 src/models/Invoice.ts
+src/models/Ip.ts
 src/models/K8SVersionsResponse.ts
 src/models/Kafka.ts
 src/models/Knowledgebase.ts
@@ -432,10 +435,13 @@ src/models/NotificationSettingChannels.ts
 src/models/NotificationSettingType.ts
 src/models/OS.ts
 src/models/Opensearch.ts
+src/models/Org.ts
 src/models/OutgoingIsDisabled.ts
 src/models/OutgoingIsEnabled.ts
 src/models/PerformActionOnBackupRequest.ts
 src/models/PerformActionOnServerRequest.ts
+src/models/Person.ts
+src/models/Person2.ts
 src/models/Policy.ts
 src/models/Postgres.ts
 src/models/Postgresql.ts
@@ -562,6 +568,7 @@ src/models/UpdateNetworkDrive.ts
 src/models/UpdateNotificationSettingsRequest.ts
 src/models/UpdateNotificationSettingsRequestSettingsInner.ts
 src/models/UpdateNotificationSettingsRequestSettingsInnerChannels.ts
+src/models/UpdatePerson.ts
 src/models/UpdateProject.ts
 src/models/UpdateRule.ts
 src/models/UpdateServer.ts
