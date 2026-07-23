@@ -98,6 +98,7 @@ export * from './ContainerRegistryRepositoriesInner';
 export * from './CreateAdmin';
 export * from './CreateAgent';
 export * from './CreateAgent201Response';
+export * from './CreateAgentV2';
 export * from './CreateApp';
 export * from './CreateApp201Response';
 export * from './CreateBalancer';

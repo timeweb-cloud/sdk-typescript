@@ -126,6 +126,7 @@ src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
 src/models/CreateAgent.ts
 src/models/CreateAgent201Response.ts
+src/models/CreateAgentV2.ts
 src/models/CreateApp.ts
 src/models/CreateApp201Response.ts
 src/models/CreateBalancer.ts

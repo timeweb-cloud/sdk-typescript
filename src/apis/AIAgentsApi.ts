@@ -18,6 +18,7 @@ import type {
   AddTokenPackage,
   CreateAgent,
   CreateAgent201Response,
+  CreateAgentV2,
   GetAccountStatus403Response,
   GetAgentStatistics200Response,
   GetAgents200Response,
@@ -37,6 +38,8 @@ import {
     CreateAgentToJSON,
     CreateAgent201ResponseFromJSON,
     CreateAgent201ResponseToJSON,
+    CreateAgentV2FromJSON,
+    CreateAgentV2ToJSON,
     GetAccountStatus403ResponseFromJSON,
     GetAccountStatus403ResponseToJSON,
     GetAgentStatistics200ResponseFromJSON,
@@ -68,6 +71,10 @@ export interface AddAdditionalTokenPackageRequest {
 
 export interface CreateAgentRequest {
     createAgent: CreateAgent;
+}
+
+export interface CreateAgentV2Request {
+    createAgentV2: CreateAgentV2;
 }
 
 export interface DeleteAgentRequest {
@@ -177,6 +184,49 @@ export class AIAgentsApi extends runtime.BaseAPI {
      */
     async createAgent(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
         const response = await this.createAgentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v2/cloud-ai/agents`, задав необходимые атрибуты.  Агент будет создан с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданном агенте.
+     * Создание AI агента
+     */
+    async createAgentV2Raw(requestParameters: CreateAgentV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgent201Response>> {
+        if (requestParameters.createAgentV2 === null || requestParameters.createAgentV2 === undefined) {
+            throw new runtime.RequiredError('createAgentV2','Required parameter requestParameters.createAgentV2 was null or undefined when calling createAgentV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/cloud-ai/agents`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateAgentV2ToJSON(requestParameters.createAgentV2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateAgent201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v2/cloud-ai/agents`, задав необходимые атрибуты.  Агент будет создан с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданном агенте.
+     * Создание AI агента
+     */
+    async createAgentV2(requestParameters: CreateAgentV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
+        const response = await this.createAgentV2Raw(requestParameters, initOverrides);
         return await response.value();
     }
 

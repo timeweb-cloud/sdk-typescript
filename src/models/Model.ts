@@ -63,6 +63,18 @@ export interface Model {
      */
     isDeprecated: boolean;
     /**
+     * Признак, что поддержка модели остановлена в системе
+     * @type {boolean}
+     * @memberof Model
+     */
+    isStopped: boolean;
+    /**
+     * Дата депрекейта модели у провайдера
+     * @type {Date}
+     * @memberof Model
+     */
+    deprecationDate?: Date | null;
+    /**
      * Признак поддержки режима рассуждения
      * @type {boolean}
      * @memberof Model
@@ -104,6 +116,7 @@ export function instanceOfModel(value: object): boolean {
     isInstance = isInstance && "publicName" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "isDeprecated" in value;
+    isInstance = isInstance && "isStopped" in value;
     isInstance = isInstance && "isReasoning" in value;
     isInstance = isInstance && "version" in value;
 
@@ -126,6 +139,8 @@ export function ModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mod
         'publicName': json['public_name'],
         'type': json['type'],
         'isDeprecated': json['is_deprecated'],
+        'isStopped': json['is_stopped'],
+        'deprecationDate': !exists(json, 'deprecation_date') ? undefined : (json['deprecation_date'] === null ? null : new Date(json['deprecation_date'])),
         'isReasoning': json['is_reasoning'],
         'version': json['version'],
         'paramsInfo': !exists(json, 'params_info') ? undefined : ModelParamsInfoFromJSON(json['params_info']),
@@ -147,6 +162,8 @@ export function ModelToJSON(value?: Model | null): any {
         'public_name': value.publicName,
         'type': value.type,
         'is_deprecated': value.isDeprecated,
+        'is_stopped': value.isStopped,
+        'deprecation_date': value.deprecationDate === undefined ? undefined : (value.deprecationDate === null ? null : value.deprecationDate.toISOString()),
         'is_reasoning': value.isReasoning,
         'version': value.version,
         'params_info': ModelParamsInfoToJSON(value.paramsInfo),
