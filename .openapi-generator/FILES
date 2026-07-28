@@ -325,7 +325,8 @@ src/models/GetKnowledgebasesV2200ResponseMeta.ts
 src/models/GetLocations200Response.ts
 src/models/GetMailboxes200Response.ts
 src/models/GetModels200Response.ts
-src/models/GetModels200ResponseMeta.ts
+src/models/GetModelsV3200Response.ts
+src/models/GetModelsV3200ResponseMeta.ts
 src/models/GetNetworkDrives200Response.ts
 src/models/GetNetworkDrivesAvailableResources200Response.ts
 src/models/GetNetworkDrivesPresets200Response.ts
@@ -406,6 +407,7 @@ src/models/ModelParamsInfo.ts
 src/models/ModelParamsInfoMaxTokens.ts
 src/models/ModelParamsInfoReasoningEffort.ts
 src/models/ModelParamsInfoTemperature.ts
+src/models/ModelV3.ts
 src/models/Mongodb.ts
 src/models/MountNetworkDrive.ts
 src/models/Mysql.ts

@@ -29,6 +29,7 @@ import type {
   GetFinances500Response,
   GetImage404Response,
   GetModels200Response,
+  GetModelsV3200Response,
   UpdateAgent,
 } from '../models/index';
 import {
@@ -60,6 +61,8 @@ import {
     GetImage404ResponseToJSON,
     GetModels200ResponseFromJSON,
     GetModels200ResponseToJSON,
+    GetModelsV3200ResponseFromJSON,
+    GetModelsV3200ResponseToJSON,
     UpdateAgentFromJSON,
     UpdateAgentToJSON,
 } from '../models/index';
@@ -398,7 +401,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
+     * Метод устарел.  Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
      * Получение списка пакетов токенов для агентов
      */
     async getAgentsTokenPackagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentsTokenPackages200Response>> {
@@ -425,7 +428,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
+     * Метод устарел.  Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
      * Получение списка пакетов токенов для агентов
      */
     async getAgentsTokenPackages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentsTokenPackages200Response> {
@@ -470,7 +473,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
+     * Метод устарел — используйте `GET /api/v3/cloud-ai/models`.  Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
      * Получение списка моделей
      */
     async getModelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetModels200Response>> {
@@ -497,11 +500,47 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
+     * Метод устарел — используйте `GET /api/v3/cloud-ai/models`.  Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
      * Получение списка моделей
      */
     async getModels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetModels200Response> {
         const response = await this.getModelsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список доступных AI моделей с их характеристиками, отправьте GET-запрос на `/api/v3/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.  Характеристики модели (цены, лимиты, возможности) возвращаются в словаре `parameter_values`. Актуальные цены за токены — в ключах `parameter_values.cost_in` и `parameter_values.cost_out` (в рублях за 1 токен).
+     * Получение списка моделей
+     */
+    async getModelsV3Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetModelsV3200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v3/cloud-ai/models`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetModelsV3200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список доступных AI моделей с их характеристиками, отправьте GET-запрос на `/api/v3/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.  Характеристики модели (цены, лимиты, возможности) возвращаются в словаре `parameter_values`. Актуальные цены за токены — в ключах `parameter_values.cost_in` и `parameter_values.cost_out` (в рублях за 1 токен).
+     * Получение списка моделей
+     */
+    async getModelsV3(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetModelsV3200Response> {
+        const response = await this.getModelsV3Raw(initOverrides);
         return await response.value();
     }
 

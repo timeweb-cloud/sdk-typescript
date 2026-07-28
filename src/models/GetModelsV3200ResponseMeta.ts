@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetModels200ResponseMeta
+ * @interface GetModelsV3200ResponseMeta
  */
-export interface GetModels200ResponseMeta {
+export interface GetModelsV3200ResponseMeta {
     /**
      * Общее количество моделей
      * @type {number}
-     * @memberof GetModels200ResponseMeta
+     * @memberof GetModelsV3200ResponseMeta
      */
     total: number;
 }
 
 /**
- * Check if a given object implements the GetModels200ResponseMeta interface.
+ * Check if a given object implements the GetModelsV3200ResponseMeta interface.
  */
-export function instanceOfGetModels200ResponseMeta(value: object): boolean {
+export function instanceOfGetModelsV3200ResponseMeta(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "total" in value;
 
     return isInstance;
 }
 
-export function GetModels200ResponseMetaFromJSON(json: any): GetModels200ResponseMeta {
-    return GetModels200ResponseMetaFromJSONTyped(json, false);
+export function GetModelsV3200ResponseMetaFromJSON(json: any): GetModelsV3200ResponseMeta {
+    return GetModelsV3200ResponseMetaFromJSONTyped(json, false);
 }
 
-export function GetModels200ResponseMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetModels200ResponseMeta {
+export function GetModelsV3200ResponseMetaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetModelsV3200ResponseMeta {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -51,7 +51,7 @@ export function GetModels200ResponseMetaFromJSONTyped(json: any, ignoreDiscrimin
     };
 }
 
-export function GetModels200ResponseMetaToJSON(value?: GetModels200ResponseMeta | null): any {
+export function GetModelsV3200ResponseMetaToJSON(value?: GetModelsV3200ResponseMeta | null): any {
     if (value === undefined) {
         return undefined;
     }

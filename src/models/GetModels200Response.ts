@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GetModels200ResponseMeta } from './GetModels200ResponseMeta';
+import type { GetModelsV3200ResponseMeta } from './GetModelsV3200ResponseMeta';
 import {
-    GetModels200ResponseMetaFromJSON,
-    GetModels200ResponseMetaFromJSONTyped,
-    GetModels200ResponseMetaToJSON,
-} from './GetModels200ResponseMeta';
+    GetModelsV3200ResponseMetaFromJSON,
+    GetModelsV3200ResponseMetaFromJSONTyped,
+    GetModelsV3200ResponseMetaToJSON,
+} from './GetModelsV3200ResponseMeta';
 import type { Model } from './Model';
 import {
     ModelFromJSON,
@@ -40,10 +40,10 @@ export interface GetModels200Response {
     models: Array<Model>;
     /**
      * 
-     * @type {GetModels200ResponseMeta}
+     * @type {GetModelsV3200ResponseMeta}
      * @memberof GetModels200Response
      */
-    meta: GetModels200ResponseMeta;
+    meta: GetModelsV3200ResponseMeta;
 }
 
 /**
@@ -68,7 +68,7 @@ export function GetModels200ResponseFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'models': ((json['models'] as Array<any>).map(ModelFromJSON)),
-        'meta': GetModels200ResponseMetaFromJSON(json['meta']),
+        'meta': GetModelsV3200ResponseMetaFromJSON(json['meta']),
     };
 }
 
@@ -82,7 +82,7 @@ export function GetModels200ResponseToJSON(value?: GetModels200Response | null):
     return {
         
         'models': ((value.models as Array<any>).map(ModelToJSON)),
-        'meta': GetModels200ResponseMetaToJSON(value.meta),
+        'meta': GetModelsV3200ResponseMetaToJSON(value.meta),
     };
 }
 
