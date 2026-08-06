@@ -20,17 +20,17 @@ import { exists, mapValues } from '../runtime';
  */
 export interface DatabaseClusterNetworksInnerIpsInner {
     /**
-     * Тип IP-адреса сети
+     * Тип IP-адреса сети.
      * @type {string}
      * @memberof DatabaseClusterNetworksInnerIpsInner
      */
     type: DatabaseClusterNetworksInnerIpsInnerTypeEnum;
     /**
-     * IP-адрес сети
+     * IP-адрес сети.
      * @type {string}
      * @memberof DatabaseClusterNetworksInnerIpsInner
      */
-    ip: string;
+    ip: string | null;
 }
 
 
@@ -38,8 +38,8 @@ export interface DatabaseClusterNetworksInnerIpsInner {
  * @export
  */
 export const DatabaseClusterNetworksInnerIpsInnerTypeEnum = {
-    Ipv4: 'ipv4',
-    Ipv6: 'ipv6'
+    _4: 'ipv_4',
+    _6: 'ipv_6'
 } as const;
 export type DatabaseClusterNetworksInnerIpsInnerTypeEnum = typeof DatabaseClusterNetworksInnerIpsInnerTypeEnum[keyof typeof DatabaseClusterNetworksInnerIpsInnerTypeEnum];
 

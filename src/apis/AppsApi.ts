@@ -21,7 +21,6 @@ import type {
   AvailableFrameworks,
   CreateApp,
   CreateApp201Response,
-  CreateDatabaseBackup409Response,
   CreateDeploy201Response,
   CreateDeployRequest,
   GetAccountStatus403Response,
@@ -41,6 +40,7 @@ import type {
   GetRepositories200Response,
   GetServerStatistics200Response,
   UpdateAppSettings200Response,
+  UpdateDatabaseInstance409Response,
   UpdateSettings,
 } from '../models/index';
 import {
@@ -56,8 +56,6 @@ import {
     CreateAppToJSON,
     CreateApp201ResponseFromJSON,
     CreateApp201ResponseToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateDeploy201ResponseFromJSON,
     CreateDeploy201ResponseToJSON,
     CreateDeployRequestFromJSON,
@@ -96,6 +94,8 @@ import {
     GetServerStatistics200ResponseToJSON,
     UpdateAppSettings200ResponseFromJSON,
     UpdateAppSettings200ResponseToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateSettingsFromJSON,
     UpdateSettingsToJSON,
 } from '../models/index';

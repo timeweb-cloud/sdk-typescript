@@ -116,17 +116,23 @@ export interface Mysql {
      */
     sqlMode?: string;
     /**
-     * Тип кэша запросов (`mysql5` | `mysql` | `mysql8_4`).
+     * Тип кэша запросов (`mysql5`).
      * @type {string}
      * @memberof Mysql
      */
     queryCacheType?: string;
     /**
-     * Объем памяти, выделяемый для кэширования результатов запросов (`mysql5` | `mysql` | `mysql8_4`).
+     * Объем памяти, выделяемый для кэширования результатов запросов (`mysql5`).
      * @type {string}
      * @memberof Mysql
      */
     queryCacheSize?: string;
+    /**
+     * Максимальный размер результата запроса, который может быть закэширован (`mysql5`).
+     * @type {string}
+     * @memberof Mysql
+     */
+    queryCacheLimit?: string;
     /**
      * Режим записи журнала InnoDB при фиксации транзакций (`mysql5` | `mysql` | `mysql8_4`).
      * @type {string}
@@ -352,6 +358,7 @@ export function MysqlFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mys
         'sqlMode': !exists(json, 'sql_mode') ? undefined : json['sql_mode'],
         'queryCacheType': !exists(json, 'query_cache_type') ? undefined : json['query_cache_type'],
         'queryCacheSize': !exists(json, 'query_cache_size') ? undefined : json['query_cache_size'],
+        'queryCacheLimit': !exists(json, 'query_cache_limit') ? undefined : json['query_cache_limit'],
         'innodbFlushLogAtTrxCommit': !exists(json, 'innodb_flush_log_at_trx_commit') ? undefined : json['innodb_flush_log_at_trx_commit'],
         'transactionIsolation': !exists(json, 'transaction_isolation') ? undefined : json['transaction_isolation'],
         'longQueryTime': !exists(json, 'long_query_time') ? undefined : json['long_query_time'],
@@ -413,6 +420,7 @@ export function MysqlToJSON(value?: Mysql | null): any {
         'sql_mode': value.sqlMode,
         'query_cache_type': value.queryCacheType,
         'query_cache_size': value.queryCacheSize,
+        'query_cache_limit': value.queryCacheLimit,
         'innodb_flush_log_at_trx_commit': value.innodbFlushLogAtTrxCommit,
         'transaction_isolation': value.transactionIsolation,
         'long_query_time': value.longQueryTime,

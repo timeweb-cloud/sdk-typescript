@@ -15,7 +15,6 @@
 
 import * as runtime from '../runtime';
 import type {
-  CreateDatabaseBackup409Response,
   CreateDomainMailbox201Response,
   CreateDomainMailboxRequest,
   CreateDomainMailboxV2201Response,
@@ -33,14 +32,13 @@ import type {
   GetFinances500Response,
   GetImage404Response,
   GetMailboxes200Response,
+  UpdateDatabaseInstance409Response,
   UpdateDomainMailInfoRequest,
   UpdateMailbox,
   UpdateMailboxV2,
   UpdateMailboxV2200Response,
 } from '../models/index';
 import {
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateDomainMailbox201ResponseFromJSON,
     CreateDomainMailbox201ResponseToJSON,
     CreateDomainMailboxRequestFromJSON,
@@ -75,6 +73,8 @@ import {
     GetImage404ResponseToJSON,
     GetMailboxes200ResponseFromJSON,
     GetMailboxes200ResponseToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateDomainMailInfoRequestFromJSON,
     UpdateDomainMailInfoRequestToJSON,
     UpdateMailboxFromJSON,

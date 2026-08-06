@@ -31,7 +31,7 @@ export interface CreateDatabaseBackup201Response {
      * @type {Backup}
      * @memberof CreateDatabaseBackup201Response
      */
-    backup: Backup;
+    backup: Backup | null;
 }
 
 /**

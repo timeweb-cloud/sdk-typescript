@@ -19,7 +19,6 @@ import type {
   AddCertificate,
   ClearCache,
   CreateCdnResource201Response,
-  CreateDatabaseBackup409Response,
   CreateHttpResource,
   GetAccountStatus403Response,
   GetCdnCertificateTasks200Response,
@@ -37,6 +36,7 @@ import type {
   GetImage404Response,
   IssueCertificate,
   PreloadCache,
+  UpdateDatabaseInstance409Response,
   UpdateHttpResource,
 } from '../models/index';
 import {
@@ -48,8 +48,6 @@ import {
     ClearCacheToJSON,
     CreateCdnResource201ResponseFromJSON,
     CreateCdnResource201ResponseToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateHttpResourceFromJSON,
     CreateHttpResourceToJSON,
     GetAccountStatus403ResponseFromJSON,
@@ -84,6 +82,8 @@ import {
     IssueCertificateToJSON,
     PreloadCacheFromJSON,
     PreloadCacheToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateHttpResourceFromJSON,
     UpdateHttpResourceToJSON,
 } from '../models/index';

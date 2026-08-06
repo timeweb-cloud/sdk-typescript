@@ -13,24 +13,60 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityZone } from './AvailabilityZone';
+import {
+    AvailabilityZoneFromJSON,
+    AvailabilityZoneFromJSONTyped,
+    AvailabilityZoneToJSON,
+} from './AvailabilityZone';
+import type { DatabaseClusterChildServicesInner } from './DatabaseClusterChildServicesInner';
+import {
+    DatabaseClusterChildServicesInnerFromJSON,
+    DatabaseClusterChildServicesInnerFromJSONTyped,
+    DatabaseClusterChildServicesInnerToJSON,
+} from './DatabaseClusterChildServicesInner';
 import type { DatabaseClusterDisk } from './DatabaseClusterDisk';
 import {
     DatabaseClusterDiskFromJSON,
     DatabaseClusterDiskFromJSONTyped,
     DatabaseClusterDiskToJSON,
 } from './DatabaseClusterDisk';
+import type { DatabaseClusterDiskAutoscaling } from './DatabaseClusterDiskAutoscaling';
+import {
+    DatabaseClusterDiskAutoscalingFromJSON,
+    DatabaseClusterDiskAutoscalingFromJSONTyped,
+    DatabaseClusterDiskAutoscalingToJSON,
+} from './DatabaseClusterDiskAutoscaling';
+import type { DatabaseClusterDomainsInner } from './DatabaseClusterDomainsInner';
+import {
+    DatabaseClusterDomainsInnerFromJSON,
+    DatabaseClusterDomainsInnerFromJSONTyped,
+    DatabaseClusterDomainsInnerToJSON,
+} from './DatabaseClusterDomainsInner';
+import type { DatabaseClusterMaintenanceSlot } from './DatabaseClusterMaintenanceSlot';
+import {
+    DatabaseClusterMaintenanceSlotFromJSON,
+    DatabaseClusterMaintenanceSlotFromJSONTyped,
+    DatabaseClusterMaintenanceSlotToJSON,
+} from './DatabaseClusterMaintenanceSlot';
 import type { DatabaseClusterNetworksInner } from './DatabaseClusterNetworksInner';
 import {
     DatabaseClusterNetworksInnerFromJSON,
     DatabaseClusterNetworksInnerFromJSONTyped,
     DatabaseClusterNetworksInnerToJSON,
 } from './DatabaseClusterNetworksInner';
-import type { DbType } from './DbType';
+import type { DatabaseClusterParentServicesInner } from './DatabaseClusterParentServicesInner';
 import {
-    DbTypeFromJSON,
-    DbTypeFromJSONTyped,
-    DbTypeToJSON,
-} from './DbType';
+    DatabaseClusterParentServicesInnerFromJSON,
+    DatabaseClusterParentServicesInnerFromJSONTyped,
+    DatabaseClusterParentServicesInnerToJSON,
+} from './DatabaseClusterParentServicesInner';
+import type { DatabaseClusterReplicaListInner } from './DatabaseClusterReplicaListInner';
+import {
+    DatabaseClusterReplicaListInnerFromJSON,
+    DatabaseClusterReplicaListInnerFromJSONTyped,
+    DatabaseClusterReplicaListInnerToJSON,
+} from './DatabaseClusterReplicaListInner';
 import type { Mysql } from './Mysql';
 import {
     MysqlFromJSON,
@@ -69,23 +105,29 @@ export interface DatabaseCluster {
      */
     name: string;
     /**
+     * Описание кластера базы данных.
+     * @type {string}
+     * @memberof DatabaseCluster
+     */
+    description: string;
+    /**
      * Список сетей кластера базы данных.
      * @type {Array<DatabaseClusterNetworksInner>}
      * @memberof DatabaseCluster
      */
     networks: Array<DatabaseClusterNetworksInner>;
     /**
-     * Использование IPv6 адреса.
+     * Использование публичного IPv6-адреса.
      * @type {boolean}
      * @memberof DatabaseCluster
      */
-    isPublicIpv6?: boolean;
+    isEnabledPublicIpv6: boolean;
     /**
-     * 
-     * @type {DbType}
+     * Тип базы данных. Список возможных значений шире, чем список типов, доступных при создании нового кластера.
+     * @type {string}
      * @memberof DatabaseCluster
      */
-    type: DbType;
+    type: DatabaseClusterTypeEnum;
     /**
      * Тип хеширования кластера базы данных (mysql5 | mysql | postgres).
      * @type {string}
@@ -105,23 +147,65 @@ export interface DatabaseCluster {
      */
     port: number | null;
     /**
-     * Текущий статус кластера базы данных.
+     * Текущий статус кластера базы данных. Значение `read_only` означает, что запись в кластер заблокирована из-за переполнения диска — чтобы снять блокировку, освободите место или увеличьте размер диска.
      * @type {string}
      * @memberof DatabaseCluster
      */
     status: DatabaseClusterStatusEnum;
     /**
-     * ID тарифа.
+     * ID тарифа. Равен `null` у кластеров, созданных через конфигуратор — в этом случае заполнен `configurator_id`.
      * @type {number}
      * @memberof DatabaseCluster
      */
-    presetId: number;
+    presetId: number | null;
+    /**
+     * ID конфигуратора. Равен `null` у кластеров, созданных по тарифу.
+     * @type {number}
+     * @memberof DatabaseCluster
+     */
+    configuratorId: number | null;
+    /**
+     * Количество ядер процессора.
+     * @type {number}
+     * @memberof DatabaseCluster
+     */
+    cpu: number | null;
+    /**
+     * Частота процессора.
+     * @type {string}
+     * @memberof DatabaseCluster
+     */
+    cpuFrequency: string | null;
+    /**
+     * Используются ли выделенные ядра процессора.
+     * @type {boolean}
+     * @memberof DatabaseCluster
+     */
+    isDedicatedCpu: boolean;
+    /**
+     * Объем оперативной памяти (в Мб).
+     * @type {number}
+     * @memberof DatabaseCluster
+     */
+    ram: number | null;
     /**
      * 
      * @type {DatabaseClusterDisk}
      * @memberof DatabaseCluster
      */
-    disk?: DatabaseClusterDisk | null;
+    disk: DatabaseClusterDisk | null;
+    /**
+     * Подключен ли к кластеру дополнительный диск.
+     * @type {boolean}
+     * @memberof DatabaseCluster
+     */
+    hasAdditionalDisk: boolean;
+    /**
+     * 
+     * @type {DatabaseClusterDiskAutoscaling}
+     * @memberof DatabaseCluster
+     */
+    diskAutoscaling: DatabaseClusterDiskAutoscaling | null;
     /**
      * 
      * @type {Mysql}
@@ -134,6 +218,66 @@ export interface DatabaseCluster {
      * @memberof DatabaseCluster
      */
     isEnabledPublicNetwork: boolean;
+    /**
+     * Включено ли защищенное подключение к кластеру базы данных.
+     * @type {boolean}
+     * @memberof DatabaseCluster
+     */
+    isSecureConnectionEnabled: boolean;
+    /**
+     * Включены ли автоматические резервные копии кластера базы данных.
+     * @type {boolean}
+     * @memberof DatabaseCluster
+     */
+    isAutobackupsEnabled: boolean;
+    /**
+     * Включено ли расписание резервного копирования кластера базы данных.
+     * @type {boolean}
+     * @memberof DatabaseCluster
+     */
+    isBackupScheduleEnabled: boolean;
+    /**
+     * 
+     * @type {AvailabilityZone}
+     * @memberof DatabaseCluster
+     */
+    availabilityZone: AvailabilityZone;
+    /**
+     * ID проекта, в котором находится кластер базы данных.
+     * @type {number}
+     * @memberof DatabaseCluster
+     */
+    projectId?: number;
+    /**
+     * Список реплик кластера базы данных.
+     * @type {Array<DatabaseClusterReplicaListInner>}
+     * @memberof DatabaseCluster
+     */
+    replicaList: Array<DatabaseClusterReplicaListInner>;
+    /**
+     * Список доменов кластера базы данных. Если публичная сеть отключена (`is_enabled_public_network: false`), список всегда пустой.
+     * @type {Array<DatabaseClusterDomainsInner>}
+     * @memberof DatabaseCluster
+     */
+    domains: Array<DatabaseClusterDomainsInner>;
+    /**
+     * Список дочерних сервисов кластера базы данных.
+     * @type {Array<DatabaseClusterChildServicesInner>}
+     * @memberof DatabaseCluster
+     */
+    childServices: Array<DatabaseClusterChildServicesInner>;
+    /**
+     * Список родительских сервисов кластера базы данных.
+     * @type {Array<DatabaseClusterParentServicesInner>}
+     * @memberof DatabaseCluster
+     */
+    parentServices: Array<DatabaseClusterParentServicesInner>;
+    /**
+     * 
+     * @type {DatabaseClusterMaintenanceSlot}
+     * @memberof DatabaseCluster
+     */
+    maintenanceSlot: DatabaseClusterMaintenanceSlot;
 }
 
 
@@ -143,10 +287,49 @@ export interface DatabaseCluster {
 export const DatabaseClusterLocationEnum = {
     Ru1: 'ru-1',
     Ru3: 'ru-3',
+    Pl1: 'pl-1',
     Nl1: 'nl-1',
-    De1: 'de-1'
+    De1: 'de-1',
+    Us2: 'us-2',
+    Us3: 'us-3'
 } as const;
 export type DatabaseClusterLocationEnum = typeof DatabaseClusterLocationEnum[keyof typeof DatabaseClusterLocationEnum];
+
+/**
+ * @export
+ */
+export const DatabaseClusterTypeEnum = {
+    Mysql: 'mysql',
+    Mysql5: 'mysql5',
+    Mysql84: 'mysql8_4',
+    Postgres: 'postgres',
+    Postgres14: 'postgres14',
+    Postgres15: 'postgres15',
+    Postgres16: 'postgres16',
+    Postgres17: 'postgres17',
+    Postgres18: 'postgres18',
+    Redis: 'redis',
+    Redis7: 'redis7',
+    Redis81: 'redis8_1',
+    Valkey: 'valkey',
+    Valkey7: 'valkey7',
+    Valkey81: 'valkey8_1',
+    Valkey91: 'valkey9_1',
+    Mongodb: 'mongodb',
+    Mongodb4: 'mongodb4',
+    Mongodb6: 'mongodb6',
+    Mongodb7: 'mongodb7',
+    Mongodb80: 'mongodb8_0',
+    Opensearch: 'opensearch',
+    Opensearch219: 'opensearch2_19',
+    Clickhouse: 'clickhouse',
+    Clickhouse24: 'clickhouse24',
+    Clickhouse25: 'clickhouse25',
+    Kafka: 'kafka',
+    Rabbitmq: 'rabbitmq',
+    Rabbitmq40: 'rabbitmq4_0'
+} as const;
+export type DatabaseClusterTypeEnum = typeof DatabaseClusterTypeEnum[keyof typeof DatabaseClusterTypeEnum];
 
 /**
  * @export
@@ -170,9 +353,12 @@ export const DatabaseClusterStatusEnum = {
     Error: 'error',
     Blocked: 'blocked',
     BackupRecovery: 'backup_recovery',
+    Transfer: 'transfer',
     Rebooting: 'rebooting',
     TurningOff: 'turning_off',
-    TurningOn: 'turning_on'
+    TurningOn: 'turning_on',
+    ReadOnly: 'read_only',
+    UserTransfer: 'user_transfer'
 } as const;
 export type DatabaseClusterStatusEnum = typeof DatabaseClusterStatusEnum[keyof typeof DatabaseClusterStatusEnum];
 
@@ -186,15 +372,34 @@ export function instanceOfDatabaseCluster(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "location" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "networks" in value;
+    isInstance = isInstance && "isEnabledPublicIpv6" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "hashType" in value;
     isInstance = isInstance && "avatarLink" in value;
     isInstance = isInstance && "port" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "presetId" in value;
+    isInstance = isInstance && "configuratorId" in value;
+    isInstance = isInstance && "cpu" in value;
+    isInstance = isInstance && "cpuFrequency" in value;
+    isInstance = isInstance && "isDedicatedCpu" in value;
+    isInstance = isInstance && "ram" in value;
+    isInstance = isInstance && "disk" in value;
+    isInstance = isInstance && "hasAdditionalDisk" in value;
+    isInstance = isInstance && "diskAutoscaling" in value;
     isInstance = isInstance && "configParameters" in value;
     isInstance = isInstance && "isEnabledPublicNetwork" in value;
+    isInstance = isInstance && "isSecureConnectionEnabled" in value;
+    isInstance = isInstance && "isAutobackupsEnabled" in value;
+    isInstance = isInstance && "isBackupScheduleEnabled" in value;
+    isInstance = isInstance && "availabilityZone" in value;
+    isInstance = isInstance && "replicaList" in value;
+    isInstance = isInstance && "domains" in value;
+    isInstance = isInstance && "childServices" in value;
+    isInstance = isInstance && "parentServices" in value;
+    isInstance = isInstance && "maintenanceSlot" in value;
 
     return isInstance;
 }
@@ -213,17 +418,35 @@ export function DatabaseClusterFromJSONTyped(json: any, ignoreDiscriminator: boo
         'createdAt': json['created_at'],
         'location': json['location'],
         'name': json['name'],
+        'description': json['description'],
         'networks': ((json['networks'] as Array<any>).map(DatabaseClusterNetworksInnerFromJSON)),
-        'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
-        'type': DbTypeFromJSON(json['type']),
+        'isEnabledPublicIpv6': json['is_enabled_public_ipv6'],
+        'type': json['type'],
         'hashType': json['hash_type'],
         'avatarLink': json['avatar_link'],
         'port': json['port'],
         'status': json['status'],
         'presetId': json['preset_id'],
-        'disk': !exists(json, 'disk') ? undefined : DatabaseClusterDiskFromJSON(json['disk']),
+        'configuratorId': json['configurator_id'],
+        'cpu': json['cpu'],
+        'cpuFrequency': json['cpu_frequency'],
+        'isDedicatedCpu': json['is_dedicated_cpu'],
+        'ram': json['ram'],
+        'disk': DatabaseClusterDiskFromJSON(json['disk']),
+        'hasAdditionalDisk': json['has_additional_disk'],
+        'diskAutoscaling': DatabaseClusterDiskAutoscalingFromJSON(json['disk_autoscaling']),
         'configParameters': MysqlFromJSON(json['config_parameters']),
         'isEnabledPublicNetwork': json['is_enabled_public_network'],
+        'isSecureConnectionEnabled': json['is_secure_connection_enabled'],
+        'isAutobackupsEnabled': json['is_autobackups_enabled'],
+        'isBackupScheduleEnabled': json['is_backup_schedule_enabled'],
+        'availabilityZone': AvailabilityZoneFromJSON(json['availability_zone']),
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'replicaList': ((json['replica_list'] as Array<any>).map(DatabaseClusterReplicaListInnerFromJSON)),
+        'domains': ((json['domains'] as Array<any>).map(DatabaseClusterDomainsInnerFromJSON)),
+        'childServices': ((json['child_services'] as Array<any>).map(DatabaseClusterChildServicesInnerFromJSON)),
+        'parentServices': ((json['parent_services'] as Array<any>).map(DatabaseClusterParentServicesInnerFromJSON)),
+        'maintenanceSlot': DatabaseClusterMaintenanceSlotFromJSON(json['maintenance_slot']),
     };
 }
 
@@ -240,17 +463,35 @@ export function DatabaseClusterToJSON(value?: DatabaseCluster | null): any {
         'created_at': value.createdAt,
         'location': value.location,
         'name': value.name,
+        'description': value.description,
         'networks': ((value.networks as Array<any>).map(DatabaseClusterNetworksInnerToJSON)),
-        'is_public_ipv6': value.isPublicIpv6,
-        'type': DbTypeToJSON(value.type),
+        'is_enabled_public_ipv6': value.isEnabledPublicIpv6,
+        'type': value.type,
         'hash_type': value.hashType,
         'avatar_link': value.avatarLink,
         'port': value.port,
         'status': value.status,
         'preset_id': value.presetId,
+        'configurator_id': value.configuratorId,
+        'cpu': value.cpu,
+        'cpu_frequency': value.cpuFrequency,
+        'is_dedicated_cpu': value.isDedicatedCpu,
+        'ram': value.ram,
         'disk': DatabaseClusterDiskToJSON(value.disk),
+        'has_additional_disk': value.hasAdditionalDisk,
+        'disk_autoscaling': DatabaseClusterDiskAutoscalingToJSON(value.diskAutoscaling),
         'config_parameters': MysqlToJSON(value.configParameters),
         'is_enabled_public_network': value.isEnabledPublicNetwork,
+        'is_secure_connection_enabled': value.isSecureConnectionEnabled,
+        'is_autobackups_enabled': value.isAutobackupsEnabled,
+        'is_backup_schedule_enabled': value.isBackupScheduleEnabled,
+        'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
+        'project_id': value.projectId,
+        'replica_list': ((value.replicaList as Array<any>).map(DatabaseClusterReplicaListInnerToJSON)),
+        'domains': ((value.domains as Array<any>).map(DatabaseClusterDomainsInnerToJSON)),
+        'child_services': ((value.childServices as Array<any>).map(DatabaseClusterChildServicesInnerToJSON)),
+        'parent_services': ((value.parentServices as Array<any>).map(DatabaseClusterParentServicesInnerToJSON)),
+        'maintenance_slot': DatabaseClusterMaintenanceSlotToJSON(value.maintenanceSlot),
     };
 }
 

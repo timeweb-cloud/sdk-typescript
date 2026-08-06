@@ -18,7 +18,6 @@ import type {
   AddServerIP201Response,
   AddServerIPRequest,
   AutoBackup,
-  CreateDatabaseBackup409Response,
   CreateServer,
   CreateServer201Response,
   CreateServerDisk201Response,
@@ -29,6 +28,7 @@ import type {
   DeleteServerIPRequest,
   GetAccountStatus403Response,
   GetConfigurators200Response,
+  GetDatabaseAutoBackupsSettings200Response,
   GetFinances400Response,
   GetFinances401Response,
   GetFinances429Response,
@@ -37,7 +37,6 @@ import type {
   GetOsList200Response,
   GetRestorePoint200Response,
   GetRestorePoints200Response,
-  GetServerDiskAutoBackupSettings200Response,
   GetServerDiskBackup200Response,
   GetServerDiskBackups200Response,
   GetServerDisks200Response,
@@ -50,6 +49,7 @@ import type {
   GetSoftware200Response,
   PerformActionOnBackupRequest,
   PerformActionOnServerRequest,
+  UpdateDatabaseInstance409Response,
   UpdateServer,
   UpdateServerDiskBackupRequest,
   UpdateServerDiskRequest,
@@ -64,8 +64,6 @@ import {
     AddServerIPRequestToJSON,
     AutoBackupFromJSON,
     AutoBackupToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateServerFromJSON,
     CreateServerToJSON,
     CreateServer201ResponseFromJSON,
@@ -86,6 +84,8 @@ import {
     GetAccountStatus403ResponseToJSON,
     GetConfigurators200ResponseFromJSON,
     GetConfigurators200ResponseToJSON,
+    GetDatabaseAutoBackupsSettings200ResponseFromJSON,
+    GetDatabaseAutoBackupsSettings200ResponseToJSON,
     GetFinances400ResponseFromJSON,
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
@@ -102,8 +102,6 @@ import {
     GetRestorePoint200ResponseToJSON,
     GetRestorePoints200ResponseFromJSON,
     GetRestorePoints200ResponseToJSON,
-    GetServerDiskAutoBackupSettings200ResponseFromJSON,
-    GetServerDiskAutoBackupSettings200ResponseToJSON,
     GetServerDiskBackup200ResponseFromJSON,
     GetServerDiskBackup200ResponseToJSON,
     GetServerDiskBackups200ResponseFromJSON,
@@ -128,6 +126,8 @@ import {
     PerformActionOnBackupRequestToJSON,
     PerformActionOnServerRequestFromJSON,
     PerformActionOnServerRequestToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateServerFromJSON,
     UpdateServerToJSON,
     UpdateServerDiskBackupRequestFromJSON,
@@ -1065,7 +1065,7 @@ export class ServersApi extends runtime.BaseAPI {
      * Чтобы полученить настройки автобэкапов диска сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/disks/{disk_id}/auto-backups`.
      * Получить настройки автобэкапов диска сервера
      */
-    async getServerDiskAutoBackupSettingsRaw(requestParameters: GetServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetServerDiskAutoBackupSettings200Response>> {
+    async getServerDiskAutoBackupSettingsRaw(requestParameters: GetServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseAutoBackupsSettings200Response>> {
         if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
             throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling getServerDiskAutoBackupSettings.');
         }
@@ -1093,14 +1093,14 @@ export class ServersApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetServerDiskAutoBackupSettings200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseAutoBackupsSettings200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Чтобы полученить настройки автобэкапов диска сервера, отправьте GET-запрос на `/api/v1/servers/{server_id}/disks/{disk_id}/auto-backups`.
      * Получить настройки автобэкапов диска сервера
      */
-    async getServerDiskAutoBackupSettings(requestParameters: GetServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetServerDiskAutoBackupSettings200Response> {
+    async getServerDiskAutoBackupSettings(requestParameters: GetServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseAutoBackupsSettings200Response> {
         const response = await this.getServerDiskAutoBackupSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -2055,7 +2055,7 @@ export class ServersApi extends runtime.BaseAPI {
      * Чтобы изменить настройки автобэкапов диска сервера, отправьте PATCH-запрос на `/api/v1/servers/{server_id}/disks/{disk_id}/auto-backups`.
      * Изменение настроек автобэкапов диска сервера
      */
-    async updateServerDiskAutoBackupSettingsRaw(requestParameters: UpdateServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetServerDiskAutoBackupSettings200Response>> {
+    async updateServerDiskAutoBackupSettingsRaw(requestParameters: UpdateServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseAutoBackupsSettings200Response>> {
         if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
             throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling updateServerDiskAutoBackupSettings.');
         }
@@ -2086,14 +2086,14 @@ export class ServersApi extends runtime.BaseAPI {
             body: AutoBackupToJSON(requestParameters.autoBackup),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetServerDiskAutoBackupSettings200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseAutoBackupsSettings200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Чтобы изменить настройки автобэкапов диска сервера, отправьте PATCH-запрос на `/api/v1/servers/{server_id}/disks/{disk_id}/auto-backups`.
      * Изменение настроек автобэкапов диска сервера
      */
-    async updateServerDiskAutoBackupSettings(requestParameters: UpdateServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetServerDiskAutoBackupSettings200Response> {
+    async updateServerDiskAutoBackupSettings(requestParameters: UpdateServerDiskAutoBackupSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseAutoBackupsSettings200Response> {
         const response = await this.updateServerDiskAutoBackupSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }

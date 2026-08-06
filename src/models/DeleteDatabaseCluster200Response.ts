@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DeleteDatabaseCluster200ResponseDatabaseDelete } from './DeleteDatabaseCluster200ResponseDatabaseDelete';
+import {
+    DeleteDatabaseCluster200ResponseDatabaseDeleteFromJSON,
+    DeleteDatabaseCluster200ResponseDatabaseDeleteFromJSONTyped,
+    DeleteDatabaseCluster200ResponseDatabaseDeleteToJSON,
+} from './DeleteDatabaseCluster200ResponseDatabaseDelete';
+
 /**
  * 
  * @export
@@ -20,11 +27,11 @@ import { exists, mapValues } from '../runtime';
  */
 export interface DeleteDatabaseCluster200Response {
     /**
-     * Хеш, который совместно с кодом авторизации надо будет отправить для удаления
-     * @type {string}
+     * 
+     * @type {DeleteDatabaseCluster200ResponseDatabaseDelete}
      * @memberof DeleteDatabaseCluster200Response
      */
-    hash: string;
+    databaseDelete: DeleteDatabaseCluster200ResponseDatabaseDelete;
 }
 
 /**
@@ -32,7 +39,7 @@ export interface DeleteDatabaseCluster200Response {
  */
 export function instanceOfDeleteDatabaseCluster200Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "hash" in value;
+    isInstance = isInstance && "databaseDelete" in value;
 
     return isInstance;
 }
@@ -47,7 +54,7 @@ export function DeleteDatabaseCluster200ResponseFromJSONTyped(json: any, ignoreD
     }
     return {
         
-        'hash': json['hash'],
+        'databaseDelete': DeleteDatabaseCluster200ResponseDatabaseDeleteFromJSON(json['database_delete']),
     };
 }
 
@@ -60,7 +67,7 @@ export function DeleteDatabaseCluster200ResponseToJSON(value?: DeleteDatabaseClu
     }
     return {
         
-        'hash': value.hash,
+        'database_delete': DeleteDatabaseCluster200ResponseDatabaseDeleteToJSON(value.databaseDelete),
     };
 }
 

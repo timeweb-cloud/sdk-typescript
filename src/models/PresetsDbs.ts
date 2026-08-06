@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { DbType } from './DbType';
-import {
-    DbTypeFromJSON,
-    DbTypeFromJSONTyped,
-    DbTypeToJSON,
-} from './DbType';
-
 /**
  * 
  * @export
@@ -45,29 +38,35 @@ export interface PresetsDbs {
      */
     descriptionShort?: string;
     /**
-     * Описание процессора тарифа.
+     * Количество ядер процессора тарифа.
      * @type {number}
      * @memberof PresetsDbs
      */
     cpu?: number;
     /**
-     * Описание ОЗУ тарифа.
+     * Частота процессора (в ГГц).
+     * @type {string}
+     * @memberof PresetsDbs
+     */
+    cpuFrequency?: string;
+    /**
+     * Объём оперативной памяти тарифа (в Мб).
      * @type {number}
      * @memberof PresetsDbs
      */
     ram?: number;
     /**
-     * Описание диска тарифа.
+     * Размер диска тарифа (в Мб).
      * @type {number}
      * @memberof PresetsDbs
      */
     disk?: number;
     /**
-     * 
-     * @type {DbType}
+     * Семейство СУБД тарифа. Значение не совпадает с типом кластера, который передаётся в поле `type` при создании кластера (`POST /api/v1/databases`): там используется версионированный тип, например `postgres17`. Тарифы для Valkey возвращаются со значением `redis` — отдельного значения `valkey` в этом поле не бывает.
+     * @type {string}
      * @memberof PresetsDbs
      */
-    type?: DbType;
+    type?: PresetsDbsTypeEnum;
     /**
      * Стоимость тарифа базы данных
      * @type {number}
@@ -80,16 +79,42 @@ export interface PresetsDbs {
      * @memberof PresetsDbs
      */
     location?: PresetsDbsLocationEnum;
+    /**
+     * Теги тарифа, в том числе тег группы тарифов, в пределах которой доступна смена тарифа.
+     * @type {Array<string>}
+     * @memberof PresetsDbs
+     */
+    tags?: Array<string>;
 }
 
 
 /**
  * @export
  */
+export const PresetsDbsTypeEnum = {
+    Mysql: 'mysql',
+    Mysql5: 'mysql5',
+    Postgres: 'postgres',
+    Redis: 'redis',
+    Mongodb: 'mongodb',
+    Opensearch: 'opensearch',
+    Clickhouse: 'clickhouse',
+    Kafka: 'kafka',
+    Rabbitmq: 'rabbitmq'
+} as const;
+export type PresetsDbsTypeEnum = typeof PresetsDbsTypeEnum[keyof typeof PresetsDbsTypeEnum];
+
+/**
+ * @export
+ */
 export const PresetsDbsLocationEnum = {
     Ru1: 'ru-1',
+    Ru3: 'ru-3',
     Pl1: 'pl-1',
-    Kz1: 'kz-1'
+    Nl1: 'nl-1',
+    De1: 'de-1',
+    Us2: 'us-2',
+    Us3: 'us-3'
 } as const;
 export type PresetsDbsLocationEnum = typeof PresetsDbsLocationEnum[keyof typeof PresetsDbsLocationEnum];
 
@@ -117,11 +142,13 @@ export function PresetsDbsFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'description': !exists(json, 'description') ? undefined : json['description'],
         'descriptionShort': !exists(json, 'description_short') ? undefined : json['description_short'],
         'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
+        'cpuFrequency': !exists(json, 'cpu_frequency') ? undefined : json['cpu_frequency'],
         'ram': !exists(json, 'ram') ? undefined : json['ram'],
         'disk': !exists(json, 'disk') ? undefined : json['disk'],
-        'type': !exists(json, 'type') ? undefined : DbTypeFromJSON(json['type']),
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'location': !exists(json, 'location') ? undefined : json['location'],
+        'tags': !exists(json, 'tags') ? undefined : json['tags'],
     };
 }
 
@@ -138,11 +165,13 @@ export function PresetsDbsToJSON(value?: PresetsDbs | null): any {
         'description': value.description,
         'description_short': value.descriptionShort,
         'cpu': value.cpu,
+        'cpu_frequency': value.cpuFrequency,
         'ram': value.ram,
         'disk': value.disk,
-        'type': DbTypeToJSON(value.type),
+        'type': value.type,
         'price': value.price,
         'location': value.location,
+        'tags': value.tags,
     };
 }
 

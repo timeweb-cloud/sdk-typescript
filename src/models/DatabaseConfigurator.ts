@@ -13,52 +13,139 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { AutoBackup } from './AutoBackup';
+import type { DatabaseConfiguratorPrices } from './DatabaseConfiguratorPrices';
 import {
-    AutoBackupFromJSON,
-    AutoBackupFromJSONTyped,
-    AutoBackupToJSON,
-} from './AutoBackup';
+    DatabaseConfiguratorPricesFromJSON,
+    DatabaseConfiguratorPricesFromJSONTyped,
+    DatabaseConfiguratorPricesToJSON,
+} from './DatabaseConfiguratorPrices';
+import type { DatabaseConfiguratorRequirements } from './DatabaseConfiguratorRequirements';
+import {
+    DatabaseConfiguratorRequirementsFromJSON,
+    DatabaseConfiguratorRequirementsFromJSONTyped,
+    DatabaseConfiguratorRequirementsToJSON,
+} from './DatabaseConfiguratorRequirements';
 
 /**
- * 
+ * Конфигуратор кластера базы данных — произвольная конфигурация ресурсов вместо готового тарифа
  * @export
- * @interface GetServerDiskAutoBackupSettings200Response
+ * @interface DatabaseConfigurator
  */
-export interface GetServerDiskAutoBackupSettings200Response {
+export interface DatabaseConfigurator {
+    /**
+     * ID конфигуратора. Передаётся при создании кластера в поле `configurator_id`.
+     * @type {number}
+     * @memberof DatabaseConfigurator
+     */
+    id: number;
+    /**
+     * Тип диска.
+     * @type {string}
+     * @memberof DatabaseConfigurator
+     */
+    diskType: DatabaseConfiguratorDiskTypeEnum;
+    /**
+     * Частота процессора (в ГГц).
+     * @type {string}
+     * @memberof DatabaseConfigurator
+     */
+    cpuFrequency: string;
+    /**
+     * Есть возможность подключения локальной сети.
+     * @type {boolean}
+     * @memberof DatabaseConfigurator
+     */
+    isAllowedLocalNetwork: boolean;
+    /**
+     * Географическое расположение конфигуратора.
+     * @type {string}
+     * @memberof DatabaseConfigurator
+     */
+    location: DatabaseConfiguratorLocationEnum;
     /**
      * 
-     * @type {AutoBackup}
-     * @memberof GetServerDiskAutoBackupSettings200Response
+     * @type {DatabaseConfiguratorRequirements}
+     * @memberof DatabaseConfigurator
      */
-    autoBackupsSettings: AutoBackup;
+    requirements: DatabaseConfiguratorRequirements;
+    /**
+     * 
+     * @type {DatabaseConfiguratorPrices}
+     * @memberof DatabaseConfigurator
+     */
+    prices?: DatabaseConfiguratorPrices;
+    /**
+     * Теги конфигуратора, в том числе тег группы, в пределах которой доступна смена конфигурации кластера.
+     * @type {Array<string>}
+     * @memberof DatabaseConfigurator
+     */
+    tags: Array<string>;
 }
 
+
 /**
- * Check if a given object implements the GetServerDiskAutoBackupSettings200Response interface.
+ * @export
  */
-export function instanceOfGetServerDiskAutoBackupSettings200Response(value: object): boolean {
+export const DatabaseConfiguratorDiskTypeEnum = {
+    Ssd: 'ssd',
+    Nvme: 'nvme',
+    Hdd: 'hdd'
+} as const;
+export type DatabaseConfiguratorDiskTypeEnum = typeof DatabaseConfiguratorDiskTypeEnum[keyof typeof DatabaseConfiguratorDiskTypeEnum];
+
+/**
+ * @export
+ */
+export const DatabaseConfiguratorLocationEnum = {
+    Ru1: 'ru-1',
+    Ru3: 'ru-3',
+    Pl1: 'pl-1',
+    Nl1: 'nl-1',
+    De1: 'de-1',
+    Us2: 'us-2',
+    Us3: 'us-3'
+} as const;
+export type DatabaseConfiguratorLocationEnum = typeof DatabaseConfiguratorLocationEnum[keyof typeof DatabaseConfiguratorLocationEnum];
+
+
+/**
+ * Check if a given object implements the DatabaseConfigurator interface.
+ */
+export function instanceOfDatabaseConfigurator(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "autoBackupsSettings" in value;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "diskType" in value;
+    isInstance = isInstance && "cpuFrequency" in value;
+    isInstance = isInstance && "isAllowedLocalNetwork" in value;
+    isInstance = isInstance && "location" in value;
+    isInstance = isInstance && "requirements" in value;
+    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
 
-export function GetServerDiskAutoBackupSettings200ResponseFromJSON(json: any): GetServerDiskAutoBackupSettings200Response {
-    return GetServerDiskAutoBackupSettings200ResponseFromJSONTyped(json, false);
+export function DatabaseConfiguratorFromJSON(json: any): DatabaseConfigurator {
+    return DatabaseConfiguratorFromJSONTyped(json, false);
 }
 
-export function GetServerDiskAutoBackupSettings200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetServerDiskAutoBackupSettings200Response {
+export function DatabaseConfiguratorFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatabaseConfigurator {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'autoBackupsSettings': AutoBackupFromJSON(json['auto_backups_settings']),
+        'id': json['id'],
+        'diskType': json['disk_type'],
+        'cpuFrequency': json['cpu_frequency'],
+        'isAllowedLocalNetwork': json['is_allowed_local_network'],
+        'location': json['location'],
+        'requirements': DatabaseConfiguratorRequirementsFromJSON(json['requirements']),
+        'prices': !exists(json, 'prices') ? undefined : DatabaseConfiguratorPricesFromJSON(json['prices']),
+        'tags': json['tags'],
     };
 }
 
-export function GetServerDiskAutoBackupSettings200ResponseToJSON(value?: GetServerDiskAutoBackupSettings200Response | null): any {
+export function DatabaseConfiguratorToJSON(value?: DatabaseConfigurator | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -67,7 +154,14 @@ export function GetServerDiskAutoBackupSettings200ResponseToJSON(value?: GetServ
     }
     return {
         
-        'auto_backups_settings': AutoBackupToJSON(value.autoBackupsSettings),
+        'id': value.id,
+        'disk_type': value.diskType,
+        'cpu_frequency': value.cpuFrequency,
+        'is_allowed_local_network': value.isAllowedLocalNetwork,
+        'location': value.location,
+        'requirements': DatabaseConfiguratorRequirementsToJSON(value.requirements),
+        'prices': DatabaseConfiguratorPricesToJSON(value.prices),
+        'tags': value.tags,
     };
 }
 

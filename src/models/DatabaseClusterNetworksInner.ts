@@ -21,7 +21,7 @@ import {
 } from './DatabaseClusterNetworksInnerIpsInner';
 
 /**
- * 
+ * Публичная сеть кластера базы данных.
  * @export
  * @interface DatabaseClusterNetworksInner
  */
@@ -45,8 +45,7 @@ export interface DatabaseClusterNetworksInner {
  * @export
  */
 export const DatabaseClusterNetworksInnerTypeEnum = {
-    Public: 'public',
-    Local: 'local'
+    Public: 'public'
 } as const;
 export type DatabaseClusterNetworksInnerTypeEnum = typeof DatabaseClusterNetworksInnerTypeEnum[keyof typeof DatabaseClusterNetworksInnerTypeEnum];
 

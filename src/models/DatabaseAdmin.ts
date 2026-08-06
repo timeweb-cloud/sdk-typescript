@@ -33,7 +33,7 @@ export interface DatabaseAdmin {
      */
     id: number;
     /**
-     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда была создана база данных.
+     * Значение времени, указанное в комбинированном формате даты и времени ISO8601, которое представляет, когда был создан пользователь базы данных.
      * @type {string}
      * @memberof DatabaseAdmin
      */
@@ -63,6 +63,18 @@ export interface DatabaseAdmin {
      */
     host: string | null;
     /**
+     * Флаг, выданы ли пользователю привилегии на все инстансы базы данных
+     * @type {boolean}
+     * @memberof DatabaseAdmin
+     */
+    forAll: boolean;
+    /**
+     * Флаг, был ли сброшен пароль пользователя
+     * @type {boolean}
+     * @memberof DatabaseAdmin
+     */
+    isResetPassword: boolean;
+    /**
      * 
      * @type {Array<DatabaseAdminInstancesInner>}
      * @memberof DatabaseAdmin
@@ -81,6 +93,8 @@ export function instanceOfDatabaseAdmin(value: object): boolean {
     isInstance = isInstance && "password" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "host" in value;
+    isInstance = isInstance && "forAll" in value;
+    isInstance = isInstance && "isResetPassword" in value;
     isInstance = isInstance && "instances" in value;
 
     return isInstance;
@@ -102,6 +116,8 @@ export function DatabaseAdminFromJSONTyped(json: any, ignoreDiscriminator: boole
         'password': json['password'],
         'description': json['description'],
         'host': json['host'],
+        'forAll': json['for_all'],
+        'isResetPassword': json['is_reset_password'],
         'instances': ((json['instances'] as Array<any>).map(DatabaseAdminInstancesInnerFromJSON)),
     };
 }
@@ -121,6 +137,8 @@ export function DatabaseAdminToJSON(value?: DatabaseAdmin | null): any {
         'password': value.password,
         'description': value.description,
         'host': value.host,
+        'for_all': value.forAll,
+        'is_reset_password': value.isResetPassword,
         'instances': ((value.instances as Array<any>).map(DatabaseAdminInstancesInnerToJSON)),
     };
 }

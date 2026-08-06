@@ -19,12 +19,6 @@ import {
     AutoBackupFromJSONTyped,
     AutoBackupToJSON,
 } from './AutoBackup';
-import type { Meta } from './Meta';
-import {
-    MetaFromJSON,
-    MetaFromJSONTyped,
-    MetaToJSON,
-} from './Meta';
 
 /**
  * 
@@ -34,16 +28,10 @@ import {
 export interface GetDatabaseAutoBackupsSettings200Response {
     /**
      * 
-     * @type {Meta}
+     * @type {AutoBackup}
      * @memberof GetDatabaseAutoBackupsSettings200Response
      */
-    meta: Meta;
-    /**
-     * 
-     * @type {Array<AutoBackup>}
-     * @memberof GetDatabaseAutoBackupsSettings200Response
-     */
-    autoBackupsSettings: Array<AutoBackup>;
+    autoBackupsSettings: AutoBackup;
 }
 
 /**
@@ -51,7 +39,6 @@ export interface GetDatabaseAutoBackupsSettings200Response {
  */
 export function instanceOfGetDatabaseAutoBackupsSettings200Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "meta" in value;
     isInstance = isInstance && "autoBackupsSettings" in value;
 
     return isInstance;
@@ -67,8 +54,7 @@ export function GetDatabaseAutoBackupsSettings200ResponseFromJSONTyped(json: any
     }
     return {
         
-        'meta': MetaFromJSON(json['meta']),
-        'autoBackupsSettings': ((json['auto_backups_settings'] as Array<any>).map(AutoBackupFromJSON)),
+        'autoBackupsSettings': AutoBackupFromJSON(json['auto_backups_settings']),
     };
 }
 
@@ -81,8 +67,7 @@ export function GetDatabaseAutoBackupsSettings200ResponseToJSON(value?: GetDatab
     }
     return {
         
-        'meta': MetaToJSON(value.meta),
-        'auto_backups_settings': ((value.autoBackupsSettings as Array<any>).map(AutoBackupToJSON)),
+        'auto_backups_settings': AutoBackupToJSON(value.autoBackupsSettings),
     };
 }
 

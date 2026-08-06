@@ -51,11 +51,17 @@ export interface CreateAdmin {
      */
     instanceId?: number;
     /**
+     * Выдать привилегии на все инстансы базы данных
+     * @type {boolean}
+     * @memberof CreateAdmin
+     */
+    forAll?: boolean;
+    /**
      * Список привилегий пользователя базы данных
      * @type {Array<PropertiesMysql>}
      * @memberof CreateAdmin
      */
-    privileges: Array<PropertiesMysql>;
+    privileges?: Array<PropertiesMysql>;
     /**
      * Описание пользователя базы данных
      * @type {string}
@@ -71,7 +77,6 @@ export function instanceOfCreateAdmin(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "login" in value;
     isInstance = isInstance && "password" in value;
-    isInstance = isInstance && "privileges" in value;
 
     return isInstance;
 }
@@ -90,7 +95,8 @@ export function CreateAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'password': json['password'],
         'host': !exists(json, 'host') ? undefined : json['host'],
         'instanceId': !exists(json, 'instance_id') ? undefined : json['instance_id'],
-        'privileges': ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
+        'forAll': !exists(json, 'for_all') ? undefined : json['for_all'],
+        'privileges': !exists(json, 'privileges') ? undefined : ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
         'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
@@ -108,7 +114,8 @@ export function CreateAdminToJSON(value?: CreateAdmin | null): any {
         'password': value.password,
         'host': value.host,
         'instance_id': value.instanceId,
-        'privileges': ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
+        'for_all': value.forAll,
+        'privileges': value.privileges === undefined ? undefined : ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
         'description': value.description,
     };
 }

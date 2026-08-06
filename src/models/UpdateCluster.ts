@@ -13,12 +13,30 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CreateClusterDiskAutoscaling } from './CreateClusterDiskAutoscaling';
+import {
+    CreateClusterDiskAutoscalingFromJSON,
+    CreateClusterDiskAutoscalingFromJSONTyped,
+    CreateClusterDiskAutoscalingToJSON,
+} from './CreateClusterDiskAutoscaling';
+import type { CreateClusterMaintenanceSlot } from './CreateClusterMaintenanceSlot';
+import {
+    CreateClusterMaintenanceSlotFromJSON,
+    CreateClusterMaintenanceSlotFromJSONTyped,
+    CreateClusterMaintenanceSlotToJSON,
+} from './CreateClusterMaintenanceSlot';
 import type { Mysql } from './Mysql';
 import {
     MysqlFromJSON,
     MysqlFromJSONTyped,
     MysqlToJSON,
 } from './Mysql';
+import type { UpdateClusterConfiguration } from './UpdateClusterConfiguration';
+import {
+    UpdateClusterConfigurationFromJSON,
+    UpdateClusterConfigurationFromJSONTyped,
+    UpdateClusterConfigurationToJSON,
+} from './UpdateClusterConfiguration';
 
 /**
  * 
@@ -33,17 +51,29 @@ export interface UpdateCluster {
      */
     name?: string;
     /**
-     * ID тарифа.
+     * ID тарифа. Нельзя передавать вместе с `configuration`
      * @type {number}
      * @memberof UpdateCluster
      */
     presetId?: number;
     /**
      * 
+     * @type {UpdateClusterConfiguration}
+     * @memberof UpdateCluster
+     */
+    _configuration?: UpdateClusterConfiguration;
+    /**
+     * 
      * @type {Mysql}
      * @memberof UpdateCluster
      */
     configParameters?: Mysql;
+    /**
+     * Тип хеширования базы данных (mysql | postgres).
+     * @type {string}
+     * @memberof UpdateCluster
+     */
+    hashType?: UpdateClusterHashTypeEnum;
     /**
      * Описание кластера базы данных
      * @type {string}
@@ -57,12 +87,41 @@ export interface UpdateCluster {
      */
     isEnabledPublicNetwork?: boolean;
     /**
-     * Использование IPv6 адреса.
+     * Использование публичного IPv6-адреса.
      * @type {boolean}
      * @memberof UpdateCluster
      */
-    isPublicIpv6?: boolean;
+    isEnabledPublicIpv6?: boolean;
+    /**
+     * Включить защищенное подключение к кластеру базы данных
+     * @type {boolean}
+     * @memberof UpdateCluster
+     */
+    isSecureConnectionEnable?: boolean;
+    /**
+     * 
+     * @type {CreateClusterMaintenanceSlot}
+     * @memberof UpdateCluster
+     */
+    maintenanceSlot?: CreateClusterMaintenanceSlot;
+    /**
+     * 
+     * @type {CreateClusterDiskAutoscaling}
+     * @memberof UpdateCluster
+     */
+    diskAutoscaling?: CreateClusterDiskAutoscaling;
 }
+
+
+/**
+ * @export
+ */
+export const UpdateClusterHashTypeEnum = {
+    CachingSha2: 'caching_sha2',
+    MysqlNative: 'mysql_native'
+} as const;
+export type UpdateClusterHashTypeEnum = typeof UpdateClusterHashTypeEnum[keyof typeof UpdateClusterHashTypeEnum];
+
 
 /**
  * Check if a given object implements the UpdateCluster interface.
@@ -85,10 +144,15 @@ export function UpdateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'name': !exists(json, 'name') ? undefined : json['name'],
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
+        '_configuration': !exists(json, 'configuration') ? undefined : UpdateClusterConfigurationFromJSON(json['configuration']),
         'configParameters': !exists(json, 'config_parameters') ? undefined : MysqlFromJSON(json['config_parameters']),
+        'hashType': !exists(json, 'hash_type') ? undefined : json['hash_type'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'isEnabledPublicNetwork': !exists(json, 'is_enabled_public_network') ? undefined : json['is_enabled_public_network'],
-        'isPublicIpv6': !exists(json, 'is_public_ipv6') ? undefined : json['is_public_ipv6'],
+        'isEnabledPublicIpv6': !exists(json, 'is_enabled_public_ipv6') ? undefined : json['is_enabled_public_ipv6'],
+        'isSecureConnectionEnable': !exists(json, 'is_secure_connection_enable') ? undefined : json['is_secure_connection_enable'],
+        'maintenanceSlot': !exists(json, 'maintenance_slot') ? undefined : CreateClusterMaintenanceSlotFromJSON(json['maintenance_slot']),
+        'diskAutoscaling': !exists(json, 'disk_autoscaling') ? undefined : CreateClusterDiskAutoscalingFromJSON(json['disk_autoscaling']),
     };
 }
 
@@ -103,10 +167,15 @@ export function UpdateClusterToJSON(value?: UpdateCluster | null): any {
         
         'name': value.name,
         'preset_id': value.presetId,
+        'configuration': UpdateClusterConfigurationToJSON(value._configuration),
         'config_parameters': MysqlToJSON(value.configParameters),
+        'hash_type': value.hashType,
         'description': value.description,
         'is_enabled_public_network': value.isEnabledPublicNetwork,
-        'is_public_ipv6': value.isPublicIpv6,
+        'is_enabled_public_ipv6': value.isEnabledPublicIpv6,
+        'is_secure_connection_enable': value.isSecureConnectionEnable,
+        'maintenance_slot': CreateClusterMaintenanceSlotToJSON(value.maintenanceSlot),
+        'disk_autoscaling': CreateClusterDiskAutoscalingToJSON(value.diskAutoscaling),
     };
 }
 

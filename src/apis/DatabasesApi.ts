@@ -15,23 +15,35 @@
 
 import * as runtime from '../runtime';
 import type {
-  AutoBackup,
-  ConfigParameters,
+  BackupDownloadUrlRequest,
+  ClusterAction,
   CreateAdmin,
   CreateCluster,
   CreateDatabaseBackup201Response,
-  CreateDatabaseBackup409Response,
+  CreateDatabaseBackupDownloadUrl201Response,
   CreateDatabaseCluster201Response,
   CreateDatabaseInstance201Response,
+  CreateDatabaseS3Backup201Response,
   CreateDatabaseUser201Response,
   CreateInstance,
+  CreateS3Backup,
+  DbParametersByType,
+  DbsCreateBackup,
+  DbsUpdateBackup,
   DeleteDatabaseCluster200Response,
   GetAccountStatus403Response,
   GetDatabaseAutoBackupsSettings200Response,
+  GetDatabaseBackup200Response,
   GetDatabaseBackups200Response,
+  GetDatabaseClusterReplicas200Response,
   GetDatabaseClusterTypes200Response,
   GetDatabaseClusters200Response,
+  GetDatabaseConfigurators200Response,
+  GetDatabaseDefaultParameters200Response,
   GetDatabaseInstances200Response,
+  GetDatabasePreset200Response,
+  GetDatabasePrivileges200Response,
+  GetDatabaseS3Backups200Response,
   GetDatabaseUsers200Response,
   GetDatabasesPresets200Response,
   GetFinances400Response,
@@ -40,44 +52,73 @@ import type {
   GetFinances500Response,
   GetImage404Response,
   UpdateAdmin,
+  UpdateAutoBackup,
   UpdateCluster,
+  UpdateClusterV2,
+  UpdateDatabaseCluster200Response,
+  UpdateDatabaseInstance409Response,
   UpdateInstance,
+  UpdateS3Backup,
 } from '../models/index';
 import {
-    AutoBackupFromJSON,
-    AutoBackupToJSON,
-    ConfigParametersFromJSON,
-    ConfigParametersToJSON,
+    BackupDownloadUrlRequestFromJSON,
+    BackupDownloadUrlRequestToJSON,
+    ClusterActionFromJSON,
+    ClusterActionToJSON,
     CreateAdminFromJSON,
     CreateAdminToJSON,
     CreateClusterFromJSON,
     CreateClusterToJSON,
     CreateDatabaseBackup201ResponseFromJSON,
     CreateDatabaseBackup201ResponseToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
+    CreateDatabaseBackupDownloadUrl201ResponseFromJSON,
+    CreateDatabaseBackupDownloadUrl201ResponseToJSON,
     CreateDatabaseCluster201ResponseFromJSON,
     CreateDatabaseCluster201ResponseToJSON,
     CreateDatabaseInstance201ResponseFromJSON,
     CreateDatabaseInstance201ResponseToJSON,
+    CreateDatabaseS3Backup201ResponseFromJSON,
+    CreateDatabaseS3Backup201ResponseToJSON,
     CreateDatabaseUser201ResponseFromJSON,
     CreateDatabaseUser201ResponseToJSON,
     CreateInstanceFromJSON,
     CreateInstanceToJSON,
+    CreateS3BackupFromJSON,
+    CreateS3BackupToJSON,
+    DbParametersByTypeFromJSON,
+    DbParametersByTypeToJSON,
+    DbsCreateBackupFromJSON,
+    DbsCreateBackupToJSON,
+    DbsUpdateBackupFromJSON,
+    DbsUpdateBackupToJSON,
     DeleteDatabaseCluster200ResponseFromJSON,
     DeleteDatabaseCluster200ResponseToJSON,
     GetAccountStatus403ResponseFromJSON,
     GetAccountStatus403ResponseToJSON,
     GetDatabaseAutoBackupsSettings200ResponseFromJSON,
     GetDatabaseAutoBackupsSettings200ResponseToJSON,
+    GetDatabaseBackup200ResponseFromJSON,
+    GetDatabaseBackup200ResponseToJSON,
     GetDatabaseBackups200ResponseFromJSON,
     GetDatabaseBackups200ResponseToJSON,
+    GetDatabaseClusterReplicas200ResponseFromJSON,
+    GetDatabaseClusterReplicas200ResponseToJSON,
     GetDatabaseClusterTypes200ResponseFromJSON,
     GetDatabaseClusterTypes200ResponseToJSON,
     GetDatabaseClusters200ResponseFromJSON,
     GetDatabaseClusters200ResponseToJSON,
+    GetDatabaseConfigurators200ResponseFromJSON,
+    GetDatabaseConfigurators200ResponseToJSON,
+    GetDatabaseDefaultParameters200ResponseFromJSON,
+    GetDatabaseDefaultParameters200ResponseToJSON,
     GetDatabaseInstances200ResponseFromJSON,
     GetDatabaseInstances200ResponseToJSON,
+    GetDatabasePreset200ResponseFromJSON,
+    GetDatabasePreset200ResponseToJSON,
+    GetDatabasePrivileges200ResponseFromJSON,
+    GetDatabasePrivileges200ResponseToJSON,
+    GetDatabaseS3Backups200ResponseFromJSON,
+    GetDatabaseS3Backups200ResponseToJSON,
     GetDatabaseUsers200ResponseFromJSON,
     GetDatabaseUsers200ResponseToJSON,
     GetDatabasesPresets200ResponseFromJSON,
@@ -94,15 +135,31 @@ import {
     GetImage404ResponseToJSON,
     UpdateAdminFromJSON,
     UpdateAdminToJSON,
+    UpdateAutoBackupFromJSON,
+    UpdateAutoBackupToJSON,
     UpdateClusterFromJSON,
     UpdateClusterToJSON,
+    UpdateClusterV2FromJSON,
+    UpdateClusterV2ToJSON,
+    UpdateDatabaseCluster200ResponseFromJSON,
+    UpdateDatabaseCluster200ResponseToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateInstanceFromJSON,
     UpdateInstanceToJSON,
+    UpdateS3BackupFromJSON,
+    UpdateS3BackupToJSON,
 } from '../models/index';
 
 export interface CreateDatabaseBackupRequest {
     dbId: number;
-    comment?: string;
+    dbsCreateBackup?: DbsCreateBackup;
+}
+
+export interface CreateDatabaseBackupDownloadUrlRequest {
+    dbId: number;
+    backupId: number;
+    backupDownloadUrlRequest: BackupDownloadUrlRequest;
 }
 
 export interface CreateDatabaseClusterRequest {
@@ -112,6 +169,11 @@ export interface CreateDatabaseClusterRequest {
 export interface CreateDatabaseInstanceRequest {
     dbClusterId: number;
     createInstance: CreateInstance;
+}
+
+export interface CreateDatabaseS3BackupRequest {
+    dbId: number;
+    createS3Backup?: CreateS3Backup;
 }
 
 export interface CreateDatabaseUserRequest {
@@ -126,13 +188,16 @@ export interface DeleteDatabaseBackupRequest {
 
 export interface DeleteDatabaseClusterRequest {
     dbClusterId: number;
-    hash?: string;
-    code?: string;
 }
 
 export interface DeleteDatabaseInstanceRequest {
     dbClusterId: number;
     instanceId: number;
+}
+
+export interface DeleteDatabaseS3BackupRequest {
+    dbId: number;
+    backupId: string;
 }
 
 export interface DeleteDatabaseUserRequest {
@@ -159,9 +224,24 @@ export interface GetDatabaseClusterRequest {
     dbClusterId: number;
 }
 
+export interface GetDatabaseClusterReplicasRequest {
+    dbClusterId: number;
+}
+
 export interface GetDatabaseClustersRequest {
     limit?: number;
     offset?: number;
+}
+
+export interface GetDatabaseConfiguratorsRequest {
+    clusterId?: number;
+    withUnavailable?: boolean;
+}
+
+export interface GetDatabaseDefaultParametersRequest {
+    type: GetDatabaseDefaultParametersTypeEnum;
+    ram: number;
+    replicaCount?: number;
 }
 
 export interface GetDatabaseInstanceRequest {
@@ -171,6 +251,23 @@ export interface GetDatabaseInstanceRequest {
 
 export interface GetDatabaseInstancesRequest {
     dbClusterId: number;
+}
+
+export interface GetDatabasePresetRequest {
+    presetId: number;
+}
+
+export interface GetDatabasePrivilegesRequest {
+    dbClusterId: number;
+}
+
+export interface GetDatabaseS3BackupRequest {
+    dbId: number;
+    backupId: string;
+}
+
+export interface GetDatabaseS3BackupsRequest {
+    dbId: number;
 }
 
 export interface GetDatabaseUserRequest {
@@ -183,7 +280,13 @@ export interface GetDatabaseUsersRequest {
 }
 
 export interface GetDatabasesPresetsRequest {
-    dbId?: number;
+    clusterId?: number;
+    withUnavailable?: boolean;
+}
+
+export interface PerformDatabaseClusterActionRequest {
+    dbClusterId: number;
+    clusterAction: ClusterAction;
 }
 
 export interface RestoreDatabaseFromBackupRequest {
@@ -191,9 +294,20 @@ export interface RestoreDatabaseFromBackupRequest {
     backupId: number;
 }
 
+export interface RestoreDatabaseFromS3BackupRequest {
+    dbId: number;
+    backupId: string;
+}
+
 export interface UpdateDatabaseAutoBackupsSettingsRequest {
     dbId: number;
-    autoBackup?: AutoBackup;
+    updateAutoBackup: UpdateAutoBackup;
+}
+
+export interface UpdateDatabaseBackupRequest {
+    dbId: number;
+    backupId: number;
+    dbsUpdateBackup: DbsUpdateBackup;
 }
 
 export interface UpdateDatabaseClusterRequest {
@@ -201,9 +315,21 @@ export interface UpdateDatabaseClusterRequest {
     updateCluster: UpdateCluster;
 }
 
+export interface UpdateDatabaseClusterV2Request {
+    dbClusterId: number;
+    updateClusterV2: UpdateClusterV2;
+}
+
 export interface UpdateDatabaseInstanceRequest {
     dbClusterId: number;
+    instanceId: number;
     updateInstance: UpdateInstance;
+}
+
+export interface UpdateDatabaseS3BackupRequest {
+    dbId: number;
+    backupId: string;
+    updateS3Backup?: UpdateS3Backup;
 }
 
 export interface UpdateDatabaseUserRequest {
@@ -228,11 +354,9 @@ export class DatabasesApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
-        if (requestParameters.comment !== undefined) {
-            queryParameters['comment'] = requestParameters.comment;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -247,6 +371,7 @@ export class DatabasesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: DbsCreateBackupToJSON(requestParameters.dbsCreateBackup),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseBackup201ResponseFromJSON(jsonValue));
@@ -262,7 +387,58 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать кластер базы данных на вашем аккаунте, отправьте POST-запрос на `/api/v1/databases`.   Вместе с кластером будет создан один инстанс базы данных и один пользователь.
+     * Чтобы получить ссылку для скачивания резервной копии базы данных, отправьте POST-запрос на `/api/v1/dbs/{db_id}/backups/{backup_id}/download-url`.   Скачивание резервных копий доступно не для всех кластеров. Если для вашего кластера оно недоступно, метод вернет ошибку со статусом `400`.   Тело ответа будет представлять собой объект JSON с ключом `backup_url`.
+     * Получение ссылки для скачивания бэкапа базы данных
+     */
+    async createDatabaseBackupDownloadUrlRaw(requestParameters: CreateDatabaseBackupDownloadUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseBackupDownloadUrl201Response>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling createDatabaseBackupDownloadUrl.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling createDatabaseBackupDownloadUrl.');
+        }
+
+        if (requestParameters.backupDownloadUrlRequest === null || requestParameters.backupDownloadUrlRequest === undefined) {
+            throw new runtime.RequiredError('backupDownloadUrlRequest','Required parameter requestParameters.backupDownloadUrlRequest was null or undefined when calling createDatabaseBackupDownloadUrl.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/dbs/{db_id}/backups/{backup_id}/download-url`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: BackupDownloadUrlRequestToJSON(requestParameters.backupDownloadUrlRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseBackupDownloadUrl201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить ссылку для скачивания резервной копии базы данных, отправьте POST-запрос на `/api/v1/dbs/{db_id}/backups/{backup_id}/download-url`.   Скачивание резервных копий доступно не для всех кластеров. Если для вашего кластера оно недоступно, метод вернет ошибку со статусом `400`.   Тело ответа будет представлять собой объект JSON с ключом `backup_url`.
+     * Получение ссылки для скачивания бэкапа базы данных
+     */
+    async createDatabaseBackupDownloadUrl(requestParameters: CreateDatabaseBackupDownloadUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseBackupDownloadUrl201Response> {
+        const response = await this.createDatabaseBackupDownloadUrlRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы создать кластер базы данных на вашем аккаунте, отправьте POST-запрос на `/api/v1/databases`.   Вместе с кластером будет создан один инстанс базы данных и один пользователь.   Размер кластера задается либо тарифом (`preset_id`), либо конфигуратором (`configuration`). Эти поля взаимоисключающие, но одно из них передать обязательно — запрос без обоих вернется с ошибкой.
      * Создание кластера базы данных
      */
     async createDatabaseClusterRaw(requestParameters: CreateDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseCluster201Response>> {
@@ -296,7 +472,7 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать кластер базы данных на вашем аккаунте, отправьте POST-запрос на `/api/v1/databases`.   Вместе с кластером будет создан один инстанс базы данных и один пользователь.
+     * Чтобы создать кластер базы данных на вашем аккаунте, отправьте POST-запрос на `/api/v1/databases`.   Вместе с кластером будет создан один инстанс базы данных и один пользователь.   Размер кластера задается либо тарифом (`preset_id`), либо конфигуратором (`configuration`). Эти поля взаимоисключающие, но одно из них передать обязательно — запрос без обоих вернется с ошибкой.
      * Создание кластера базы данных
      */
     async createDatabaseCluster(requestParameters: CreateDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseCluster201Response> {
@@ -348,6 +524,49 @@ export class DatabasesApi extends runtime.BaseAPI {
      */
     async createDatabaseInstance(requestParameters: CreateDatabaseInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseInstance201Response> {
         const response = await this.createDatabaseInstanceRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы создать резервную копию кластера базы данных в объектном хранилище, отправьте POST-запрос на `/api/v2/databases/{db_id}/backups`.   Тело запроса необязательно: единственное поле `comment` можно не передавать. Тело ответа будет представлять собой объект JSON с ключом `backup`.   Копия создается асинхронно. Пока она создается, ее статус — `running`, и восстановиться из нее нельзя. Дождитесь статуса `success`, опрашивая `/api/v2/databases/{db_id}/backups/{backup_id}`.
+     * Создание S3-бэкапа базы данных
+     */
+    async createDatabaseS3BackupRaw(requestParameters: CreateDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseS3Backup201Response>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling createDatabaseS3Backup.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_id}/backups`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateS3BackupToJSON(requestParameters.createS3Backup),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseS3Backup201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать резервную копию кластера базы данных в объектном хранилище, отправьте POST-запрос на `/api/v2/databases/{db_id}/backups`.   Тело запроса необязательно: единственное поле `comment` можно не передавать. Тело ответа будет представлять собой объект JSON с ключом `backup`.   Копия создается асинхронно. Пока она создается, ее статус — `running`, и восстановиться из нее нельзя. Дождитесь статуса `success`, опрашивая `/api/v2/databases/{db_id}/backups/{backup_id}`.
+     * Создание S3-бэкапа базы данных
+     */
+    async createDatabaseS3Backup(requestParameters: CreateDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseS3Backup201Response> {
+        const response = await this.createDatabaseS3BackupRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -452,14 +671,6 @@ export class DatabasesApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
-        if (requestParameters.hash !== undefined) {
-            queryParameters['hash'] = requestParameters.hash;
-        }
-
-        if (requestParameters.code !== undefined) {
-            queryParameters['code'] = requestParameters.code;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.accessToken) {
@@ -530,6 +741,49 @@ export class DatabasesApi extends runtime.BaseAPI {
      */
     async deleteDatabaseInstance(requestParameters: DeleteDatabaseInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteDatabaseInstanceRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы удалить резервную копию кластера базы данных из объектного хранилища, отправьте DELETE-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}`.   Копия удаляется безвозвратно, тело ответа пустое. На резервные копии из `/api/v1/dbs/{db_id}/backups/{backup_id}` этот метод не действует — они удаляются отдельным запросом.
+     * Удаление S3-бэкапа базы данных
+     */
+    async deleteDatabaseS3BackupRaw(requestParameters: DeleteDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling deleteDatabaseS3Backup.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling deleteDatabaseS3Backup.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_id}/backups/{backup_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы удалить резервную копию кластера базы данных из объектного хранилища, отправьте DELETE-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}`.   Копия удаляется безвозвратно, тело ответа пустое. На резервные копии из `/api/v1/dbs/{db_id}/backups/{backup_id}` этот метод не действует — они удаляются отдельным запросом.
+     * Удаление S3-бэкапа базы данных
+     */
+    async deleteDatabaseS3Backup(requestParameters: DeleteDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteDatabaseS3BackupRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -619,7 +873,7 @@ export class DatabasesApi extends runtime.BaseAPI {
      * Чтобы получить бэкап базы данных, отправьте запрос GET в `api/v1/dbs/{db_id}/backups/{backup_id}`. 
      * Получение бэкапа базы данных
      */
-    async getDatabaseBackupRaw(requestParameters: GetDatabaseBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseBackup201Response>> {
+    async getDatabaseBackupRaw(requestParameters: GetDatabaseBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseBackup200Response>> {
         if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
             throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling getDatabaseBackup.');
         }
@@ -647,14 +901,14 @@ export class DatabasesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseBackup201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseBackup200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Чтобы получить бэкап базы данных, отправьте запрос GET в `api/v1/dbs/{db_id}/backups/{backup_id}`. 
      * Получение бэкапа базы данных
      */
-    async getDatabaseBackup(requestParameters: GetDatabaseBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseBackup201Response> {
+    async getDatabaseBackup(requestParameters: GetDatabaseBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseBackup200Response> {
         const response = await this.getDatabaseBackupRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -748,6 +1002,46 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы получить список реплик кластера базы данных, отправьте GET-запрос на `/api/v1/databases/{db_cluster_id}/replicas`.   Тело ответа будет представлять собой объект JSON с ключом `replicas`.
+     * Получение списка реплик кластера базы данных
+     */
+    async getDatabaseClusterReplicasRaw(requestParameters: GetDatabaseClusterReplicasRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseClusterReplicas200Response>> {
+        if (requestParameters.dbClusterId === null || requestParameters.dbClusterId === undefined) {
+            throw new runtime.RequiredError('dbClusterId','Required parameter requestParameters.dbClusterId was null or undefined when calling getDatabaseClusterReplicas.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/databases/{db_cluster_id}/replicas`.replace(`{${"db_cluster_id"}}`, encodeURIComponent(String(requestParameters.dbClusterId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseClusterReplicas200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список реплик кластера базы данных, отправьте GET-запрос на `/api/v1/databases/{db_cluster_id}/replicas`.   Тело ответа будет представлять собой объект JSON с ключом `replicas`.
+     * Получение списка реплик кластера базы данных
+     */
+    async getDatabaseClusterReplicas(requestParameters: GetDatabaseClusterReplicasRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseClusterReplicas200Response> {
+        const response = await this.getDatabaseClusterReplicasRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Чтобы получить список типов баз данных на вашем аккаунте, отправьте GET-запрос на `/api/v1/database-types`.
      * Получение списка типов кластеров баз данных
      */
@@ -824,6 +1118,106 @@ export class DatabasesApi extends runtime.BaseAPI {
      */
     async getDatabaseClusters(requestParameters: GetDatabaseClustersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseClusters200Response> {
         const response = await this.getDatabaseClustersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список конфигураторов баз данных, отправьте GET-запрос на `/api/v1/configurator/databases`.   Конфигуратор позволяет создать кластер с произвольным количеством ресурсов вместо готового тарифа: его ID передается при создании кластера в поле `configuration.configurator_id`, а допустимые значения ресурсов ограничены объектом `requirements`.   Тело ответа будет представлять собой объект JSON с ключом `database_configurators`.
+     * Получение списка конфигураторов баз данных
+     */
+    async getDatabaseConfiguratorsRaw(requestParameters: GetDatabaseConfiguratorsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseConfigurators200Response>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.clusterId !== undefined) {
+            queryParameters['cluster_id'] = requestParameters.clusterId;
+        }
+
+        if (requestParameters.withUnavailable !== undefined) {
+            queryParameters['with_unavailable'] = requestParameters.withUnavailable;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/configurator/databases`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseConfigurators200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список конфигураторов баз данных, отправьте GET-запрос на `/api/v1/configurator/databases`.   Конфигуратор позволяет создать кластер с произвольным количеством ресурсов вместо готового тарифа: его ID передается при создании кластера в поле `configuration.configurator_id`, а допустимые значения ресурсов ограничены объектом `requirements`.   Тело ответа будет представлять собой объект JSON с ключом `database_configurators`.
+     * Получение списка конфигураторов баз данных
+     */
+    async getDatabaseConfigurators(requestParameters: GetDatabaseConfiguratorsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseConfigurators200Response> {
+        const response = await this.getDatabaseConfiguratorsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить рекомендуемые значения параметров базы данных, отправьте GET-запрос на `/api/v1/dbs/default-parameters`.   Значения рассчитываются для указанного типа кластера, объема оперативной памяти и количества реплик — их можно передать при создании кластера в поле `config_parameters`. Список имен параметров, доступных для каждого типа кластера, возвращает `GET /api/v1/dbs/parameters`.   Тело ответа будет представлять собой объект JSON с ключом `config_params`. Рекомендуемые значения рассчитываются только для кластеров MySQL, PostgreSQL и Valkey — для остальных типов возвращается пустой объект.
+     * Получение рекомендуемых значений параметров баз данных
+     */
+    async getDatabaseDefaultParametersRaw(requestParameters: GetDatabaseDefaultParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseDefaultParameters200Response>> {
+        if (requestParameters.type === null || requestParameters.type === undefined) {
+            throw new runtime.RequiredError('type','Required parameter requestParameters.type was null or undefined when calling getDatabaseDefaultParameters.');
+        }
+
+        if (requestParameters.ram === null || requestParameters.ram === undefined) {
+            throw new runtime.RequiredError('ram','Required parameter requestParameters.ram was null or undefined when calling getDatabaseDefaultParameters.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.type !== undefined) {
+            queryParameters['type'] = requestParameters.type;
+        }
+
+        if (requestParameters.ram !== undefined) {
+            queryParameters['ram'] = requestParameters.ram;
+        }
+
+        if (requestParameters.replicaCount !== undefined) {
+            queryParameters['replica_count'] = requestParameters.replicaCount;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/dbs/default-parameters`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseDefaultParameters200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить рекомендуемые значения параметров базы данных, отправьте GET-запрос на `/api/v1/dbs/default-parameters`.   Значения рассчитываются для указанного типа кластера, объема оперативной памяти и количества реплик — их можно передать при создании кластера в поле `config_parameters`. Список имен параметров, доступных для каждого типа кластера, возвращает `GET /api/v1/dbs/parameters`.   Тело ответа будет представлять собой объект JSON с ключом `config_params`. Рекомендуемые значения рассчитываются только для кластеров MySQL, PostgreSQL и Valkey — для остальных типов возвращается пустой объект.
+     * Получение рекомендуемых значений параметров баз данных
+     */
+    async getDatabaseDefaultParameters(requestParameters: GetDatabaseDefaultParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseDefaultParameters200Response> {
+        const response = await this.getDatabaseDefaultParametersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -912,10 +1306,10 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список параметров баз данных, отправьте GET-запрос на `/api/v1/dbs/parameters`.
+     * Чтобы получить список параметров баз данных, отправьте GET-запрос на `/api/v1/dbs/parameters`.   Ответ содержит только имена параметров, доступных для каждого типа кластера. Рекомендуемые значения этих параметров для конкретной конфигурации возвращает `GET /api/v1/dbs/default-parameters`.
      * Получение списка параметров баз данных
      */
-    async getDatabaseParametersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ConfigParameters>> {
+    async getDatabaseParametersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DbParametersByType>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -935,15 +1329,179 @@ export class DatabasesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ConfigParametersFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => DbParametersByTypeFromJSON(jsonValue));
     }
 
     /**
-     * Чтобы получить список параметров баз данных, отправьте GET-запрос на `/api/v1/dbs/parameters`.
+     * Чтобы получить список параметров баз данных, отправьте GET-запрос на `/api/v1/dbs/parameters`.   Ответ содержит только имена параметров, доступных для каждого типа кластера. Рекомендуемые значения этих параметров для конкретной конфигурации возвращает `GET /api/v1/dbs/default-parameters`.
      * Получение списка параметров баз данных
      */
-    async getDatabaseParameters(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ConfigParameters> {
+    async getDatabaseParameters(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DbParametersByType> {
         const response = await this.getDatabaseParametersRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить тариф для базы данных, отправьте GET-запрос на `/api/v2/dbs/presets/{preset_id}`.   Тело ответа будет представлять собой объект JSON с ключом `databases_preset`.
+     * Получение тарифа для базы данных
+     */
+    async getDatabasePresetRaw(requestParameters: GetDatabasePresetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabasePreset200Response>> {
+        if (requestParameters.presetId === null || requestParameters.presetId === undefined) {
+            throw new runtime.RequiredError('presetId','Required parameter requestParameters.presetId was null or undefined when calling getDatabasePreset.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/dbs/presets/{preset_id}`.replace(`{${"preset_id"}}`, encodeURIComponent(String(requestParameters.presetId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabasePreset200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить тариф для базы данных, отправьте GET-запрос на `/api/v2/dbs/presets/{preset_id}`.   Тело ответа будет представлять собой объект JSON с ключом `databases_preset`.
+     * Получение тарифа для базы данных
+     */
+    async getDatabasePreset(requestParameters: GetDatabasePresetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabasePreset200Response> {
+        const response = await this.getDatabasePresetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список привилегий, которые можно выдать пользователям кластера базы данных, отправьте GET-запрос на `/api/v1/databases/{db_cluster_id}/privileges`.\\    Список зависит от типа СУБД кластера и определяется сервером автоматически: возвращаются только те привилегии, которые допустимы для этого кластера. Используйте его, чтобы заполнить поле `privileges` при <a href=\'#tag/Bazy-dannyh/operation/createDatabaseUser\'>создании</a> или <a href=\'#tag/Bazy-dannyh/operation/updateDatabaseUser\'>изменении</a> пользователя базы данных.
+     * Получение привилегий кластера базы данных
+     */
+    async getDatabasePrivilegesRaw(requestParameters: GetDatabasePrivilegesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabasePrivileges200Response>> {
+        if (requestParameters.dbClusterId === null || requestParameters.dbClusterId === undefined) {
+            throw new runtime.RequiredError('dbClusterId','Required parameter requestParameters.dbClusterId was null or undefined when calling getDatabasePrivileges.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/databases/{db_cluster_id}/privileges`.replace(`{${"db_cluster_id"}}`, encodeURIComponent(String(requestParameters.dbClusterId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabasePrivileges200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список привилегий, которые можно выдать пользователям кластера базы данных, отправьте GET-запрос на `/api/v1/databases/{db_cluster_id}/privileges`.\\    Список зависит от типа СУБД кластера и определяется сервером автоматически: возвращаются только те привилегии, которые допустимы для этого кластера. Используйте его, чтобы заполнить поле `privileges` при <a href=\'#tag/Bazy-dannyh/operation/createDatabaseUser\'>создании</a> или <a href=\'#tag/Bazy-dannyh/operation/updateDatabaseUser\'>изменении</a> пользователя базы данных.
+     * Получение привилегий кластера базы данных
+     */
+    async getDatabasePrivileges(requestParameters: GetDatabasePrivilegesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabasePrivileges200Response> {
+        const response = await this.getDatabasePrivilegesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить информацию о резервной копии кластера базы данных в объектном хранилище, отправьте GET-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}`.   Тело ответа будет представлять собой объект JSON с ключом `backup`. Обратите внимание, что `backup_id` здесь — строка в формате UUID, а не число, как в `/api/v1/dbs/{db_id}/backups/{backup_id}`.
+     * Получение S3-бэкапа базы данных
+     */
+    async getDatabaseS3BackupRaw(requestParameters: GetDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseS3Backup201Response>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling getDatabaseS3Backup.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling getDatabaseS3Backup.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_id}/backups/{backup_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseS3Backup201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить информацию о резервной копии кластера базы данных в объектном хранилище, отправьте GET-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}`.   Тело ответа будет представлять собой объект JSON с ключом `backup`. Обратите внимание, что `backup_id` здесь — строка в формате UUID, а не число, как в `/api/v1/dbs/{db_id}/backups/{backup_id}`.
+     * Получение S3-бэкапа базы данных
+     */
+    async getDatabaseS3Backup(requestParameters: GetDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseS3Backup201Response> {
+        const response = await this.getDatabaseS3BackupRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список резервных копий кластера базы данных в объектном хранилище, отправьте GET-запрос на `/api/v2/databases/{db_id}/backups`.   Тело ответа будет представлять собой объект JSON с ключом `backups`. Копии отсортированы по дате создания по убыванию — сначала самые свежие.   Резервное копирование в объектное хранилище доступно для кластеров MySQL и PostgreSQL. Идентификатор такой копии — строка в формате UUID; это отдельный от `/api/v1/dbs/{db_id}/backups` механизм, и идентификаторы копий между ними не взаимозаменяемы.
+     * Список S3-бэкапов базы данных
+     */
+    async getDatabaseS3BackupsRaw(requestParameters: GetDatabaseS3BackupsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseS3Backups200Response>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling getDatabaseS3Backups.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_id}/backups`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseS3Backups200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список резервных копий кластера базы данных в объектном хранилище, отправьте GET-запрос на `/api/v2/databases/{db_id}/backups`.   Тело ответа будет представлять собой объект JSON с ключом `backups`. Копии отсортированы по дате создания по убыванию — сначала самые свежие.   Резервное копирование в объектное хранилище доступно для кластеров MySQL и PostgreSQL. Идентификатор такой копии — строка в формате UUID; это отдельный от `/api/v1/dbs/{db_id}/backups` механизм, и идентификаторы копий между ними не взаимозаменяемы.
+     * Список S3-бэкапов базы данных
+     */
+    async getDatabaseS3Backups(requestParameters: GetDatabaseS3BackupsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseS3Backups200Response> {
+        const response = await this.getDatabaseS3BackupsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1032,14 +1590,18 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
+     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Без параметров возвращаются тарифы, доступные к заказу — этот список используется при создании кластера. Если передать `cluster_id`, вернутся тарифы группы, в пределах которой можно сменить тариф указанного кластера.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
     async getDatabasesPresetsRaw(requestParameters: GetDatabasesPresetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabasesPresets200Response>> {
         const queryParameters: any = {};
 
-        if (requestParameters.dbId !== undefined) {
-            queryParameters['db_id'] = requestParameters.dbId;
+        if (requestParameters.clusterId !== undefined) {
+            queryParameters['cluster_id'] = requestParameters.clusterId;
+        }
+
+        if (requestParameters.withUnavailable !== undefined) {
+            queryParameters['with_unavailable'] = requestParameters.withUnavailable;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -1063,12 +1625,58 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
+     * Чтобы получить список тарифов для баз данных, отправьте GET-запрос на `/api/v2/presets/dbs`.   Без параметров возвращаются тарифы, доступные к заказу — этот список используется при создании кластера. Если передать `cluster_id`, вернутся тарифы группы, в пределах которой можно сменить тариф указанного кластера.   Тело ответа будет представлять собой объект JSON с ключом `databases_presets`.
      * Получение списка тарифов для баз данных
      */
     async getDatabasesPresets(requestParameters: GetDatabasesPresetsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabasesPresets200Response> {
         const response = await this.getDatabasesPresetsRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Чтобы выполнить действие над кластером базы данных, отправьте POST-запрос на `/api/v1/databases/{db_cluster_id}/action`.   Доступные действия: `reboot` — перезагрузка кластера, `shutdown` — выключение кластера, `start` — включение кластера.
+     * Выполнение действия над кластером базы данных
+     */
+    async performDatabaseClusterActionRaw(requestParameters: PerformDatabaseClusterActionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.dbClusterId === null || requestParameters.dbClusterId === undefined) {
+            throw new runtime.RequiredError('dbClusterId','Required parameter requestParameters.dbClusterId was null or undefined when calling performDatabaseClusterAction.');
+        }
+
+        if (requestParameters.clusterAction === null || requestParameters.clusterAction === undefined) {
+            throw new runtime.RequiredError('clusterAction','Required parameter requestParameters.clusterAction was null or undefined when calling performDatabaseClusterAction.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/databases/{db_cluster_id}/action`.replace(`{${"db_cluster_id"}}`, encodeURIComponent(String(requestParameters.dbClusterId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ClusterActionToJSON(requestParameters.clusterAction),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы выполнить действие над кластером базы данных, отправьте POST-запрос на `/api/v1/databases/{db_cluster_id}/action`.   Доступные действия: `reboot` — перезагрузка кластера, `shutdown` — выключение кластера, `start` — включение кластера.
+     * Выполнение действия над кластером базы данных
+     */
+    async performDatabaseClusterAction(requestParameters: PerformDatabaseClusterActionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.performDatabaseClusterActionRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -1115,12 +1723,59 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Чтобы восстановить кластер базы данных из резервной копии в объектном хранилище, отправьте POST-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}/restore`.   Тела запроса нет, тело ответа пустое. Восстановиться можно только из копии со статусом `success`.   Сразу после запуска кластер переходит в статус `backup_recovery`. Пока восстановление не завершится, создание, изменение и удаление резервных копий, а также повторный запуск восстановления недоступны.
+     * Восстановление базы данных из S3-бэкапа
+     */
+    async restoreDatabaseFromS3BackupRaw(requestParameters: RestoreDatabaseFromS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling restoreDatabaseFromS3Backup.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling restoreDatabaseFromS3Backup.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_id}/backups/{backup_id}/restore`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы восстановить кластер базы данных из резервной копии в объектном хранилище, отправьте POST-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}/restore`.   Тела запроса нет, тело ответа пустое. Восстановиться можно только из копии со статусом `success`.   Сразу после запуска кластер переходит в статус `backup_recovery`. Пока восстановление не завершится, создание, изменение и удаление резервных копий, а также повторный запуск восстановления недоступны.
+     * Восстановление базы данных из S3-бэкапа
+     */
+    async restoreDatabaseFromS3Backup(requestParameters: RestoreDatabaseFromS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.restoreDatabaseFromS3BackupRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Чтобы изменить список настроек автобэкапов базы данных, отправьте запрос PATCH в `api/v1/dbs/{db_id}/auto-backups`
      * Изменение настроек автобэкапов базы данных
      */
     async updateDatabaseAutoBackupsSettingsRaw(requestParameters: UpdateDatabaseAutoBackupsSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseAutoBackupsSettings200Response>> {
         if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
             throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling updateDatabaseAutoBackupsSettings.');
+        }
+
+        if (requestParameters.updateAutoBackup === null || requestParameters.updateAutoBackup === undefined) {
+            throw new runtime.RequiredError('updateAutoBackup','Required parameter requestParameters.updateAutoBackup was null or undefined when calling updateDatabaseAutoBackupsSettings.');
         }
 
         const queryParameters: any = {};
@@ -1142,7 +1797,7 @@ export class DatabasesApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: AutoBackupToJSON(requestParameters.autoBackup),
+            body: UpdateAutoBackupToJSON(requestParameters.updateAutoBackup),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseAutoBackupsSettings200ResponseFromJSON(jsonValue));
@@ -1158,10 +1813,61 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы изменить кластер базы данных на вашем аккаунте, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}`.
+     * Чтобы изменить комментарий к бэкапу базы данных, отправьте PATCH-запрос на `/api/v1/dbs/{db_id}/backups/{backup_id}`.  Тело ответа будет представлять собой объект JSON с ключом `backup`. 
+     * Изменение комментария к бэкапу базы данных
+     */
+    async updateDatabaseBackupRaw(requestParameters: UpdateDatabaseBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetDatabaseBackup200Response>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling updateDatabaseBackup.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling updateDatabaseBackup.');
+        }
+
+        if (requestParameters.dbsUpdateBackup === null || requestParameters.dbsUpdateBackup === undefined) {
+            throw new runtime.RequiredError('dbsUpdateBackup','Required parameter requestParameters.dbsUpdateBackup was null or undefined when calling updateDatabaseBackup.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/dbs/{db_id}/backups/{backup_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DbsUpdateBackupToJSON(requestParameters.dbsUpdateBackup),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetDatabaseBackup200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы изменить комментарий к бэкапу базы данных, отправьте PATCH-запрос на `/api/v1/dbs/{db_id}/backups/{backup_id}`.  Тело ответа будет представлять собой объект JSON с ключом `backup`. 
+     * Изменение комментария к бэкапу базы данных
+     */
+    async updateDatabaseBackup(requestParameters: UpdateDatabaseBackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetDatabaseBackup200Response> {
+        const response = await this.updateDatabaseBackupRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы изменить кластер базы данных на вашем аккаунте, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}`.   Размер кластера задается либо тарифом (`preset_id`), либо конфигуратором (`configuration`) — эти поля взаимоисключающие.
      * Изменение кластера базы данных
      */
-    async updateDatabaseClusterRaw(requestParameters: UpdateDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseCluster201Response>> {
+    async updateDatabaseClusterRaw(requestParameters: UpdateDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateDatabaseCluster200Response>> {
         if (requestParameters.dbClusterId === null || requestParameters.dbClusterId === undefined) {
             throw new runtime.RequiredError('dbClusterId','Required parameter requestParameters.dbClusterId was null or undefined when calling updateDatabaseCluster.');
         }
@@ -1192,25 +1898,76 @@ export class DatabasesApi extends runtime.BaseAPI {
             body: UpdateClusterToJSON(requestParameters.updateCluster),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseCluster201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UpdateDatabaseCluster200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Чтобы изменить кластер базы данных на вашем аккаунте, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}`.
+     * Чтобы изменить кластер базы данных на вашем аккаунте, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}`.   Размер кластера задается либо тарифом (`preset_id`), либо конфигуратором (`configuration`) — эти поля взаимоисключающие.
      * Изменение кластера базы данных
      */
-    async updateDatabaseCluster(requestParameters: UpdateDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseCluster201Response> {
+    async updateDatabaseCluster(requestParameters: UpdateDatabaseClusterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateDatabaseCluster200Response> {
         const response = await this.updateDatabaseClusterRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Чтобы изменить инстанс базы данных, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}/instances/{instance_id}`.
+     * Чтобы изменить кластер базы данных на вашем аккаунте, отправьте PATCH-запрос на `/api/v2/databases/{db_cluster_id}`.   В отличие от `/api/v1/databases/{db_cluster_id}`, эта версия дополнительно позволяет привязать плавающий IP-адрес (`floating_ip`).   Размер кластера задается либо тарифом (`preset_id`), либо конфигуратором (`configuration`) — эти поля взаимоисключающие.
+     * Изменение кластера базы данных (v2)
+     */
+    async updateDatabaseClusterV2Raw(requestParameters: UpdateDatabaseClusterV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateDatabaseCluster200Response>> {
+        if (requestParameters.dbClusterId === null || requestParameters.dbClusterId === undefined) {
+            throw new runtime.RequiredError('dbClusterId','Required parameter requestParameters.dbClusterId was null or undefined when calling updateDatabaseClusterV2.');
+        }
+
+        if (requestParameters.updateClusterV2 === null || requestParameters.updateClusterV2 === undefined) {
+            throw new runtime.RequiredError('updateClusterV2','Required parameter requestParameters.updateClusterV2 was null or undefined when calling updateDatabaseClusterV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_cluster_id}`.replace(`{${"db_cluster_id"}}`, encodeURIComponent(String(requestParameters.dbClusterId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateClusterV2ToJSON(requestParameters.updateClusterV2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UpdateDatabaseCluster200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы изменить кластер базы данных на вашем аккаунте, отправьте PATCH-запрос на `/api/v2/databases/{db_cluster_id}`.   В отличие от `/api/v1/databases/{db_cluster_id}`, эта версия дополнительно позволяет привязать плавающий IP-адрес (`floating_ip`).   Размер кластера задается либо тарифом (`preset_id`), либо конфигуратором (`configuration`) — эти поля взаимоисключающие.
+     * Изменение кластера базы данных (v2)
+     */
+    async updateDatabaseClusterV2(requestParameters: UpdateDatabaseClusterV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateDatabaseCluster200Response> {
+        const response = await this.updateDatabaseClusterV2Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы изменить инстанс базы данных, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}/instances/{instance_id}`.   Изменить название базы данных (`name`) и ее владельца (`owner_id`) можно только в кластере PostgreSQL, а настройки топика (`config_parameters`) — только в кластере Kafka. Если один из этих трех параметров передан для неподходящего типа кластера, запрос вернется с ошибкой 409.   Расширения (`extensions`) применимы к кластерам PostgreSQL и RabbitMQ.
      * Изменение инстанса базы данных
      */
     async updateDatabaseInstanceRaw(requestParameters: UpdateDatabaseInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseInstance201Response>> {
         if (requestParameters.dbClusterId === null || requestParameters.dbClusterId === undefined) {
             throw new runtime.RequiredError('dbClusterId','Required parameter requestParameters.dbClusterId was null or undefined when calling updateDatabaseInstance.');
+        }
+
+        if (requestParameters.instanceId === null || requestParameters.instanceId === undefined) {
+            throw new runtime.RequiredError('instanceId','Required parameter requestParameters.instanceId was null or undefined when calling updateDatabaseInstance.');
         }
 
         if (requestParameters.updateInstance === null || requestParameters.updateInstance === undefined) {
@@ -1232,7 +1989,7 @@ export class DatabasesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/databases/{db_cluster_id}/instances/{instance_id}`.replace(`{${"db_cluster_id"}}`, encodeURIComponent(String(requestParameters.dbClusterId))),
+            path: `/api/v1/databases/{db_cluster_id}/instances/{instance_id}`.replace(`{${"db_cluster_id"}}`, encodeURIComponent(String(requestParameters.dbClusterId))).replace(`{${"instance_id"}}`, encodeURIComponent(String(requestParameters.instanceId))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -1243,11 +2000,58 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы изменить инстанс базы данных, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}/instances/{instance_id}`.
+     * Чтобы изменить инстанс базы данных, отправьте PATCH-запрос на `/api/v1/databases/{db_cluster_id}/instances/{instance_id}`.   Изменить название базы данных (`name`) и ее владельца (`owner_id`) можно только в кластере PostgreSQL, а настройки топика (`config_parameters`) — только в кластере Kafka. Если один из этих трех параметров передан для неподходящего типа кластера, запрос вернется с ошибкой 409.   Расширения (`extensions`) применимы к кластерам PostgreSQL и RabbitMQ.
      * Изменение инстанса базы данных
      */
     async updateDatabaseInstance(requestParameters: UpdateDatabaseInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseInstance201Response> {
         const response = await this.updateDatabaseInstanceRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы изменить комментарий к резервной копии кластера базы данных, отправьте PATCH-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}`.   Изменить можно только комментарий: других полей метод не принимает, сама резервная копия при этом не пересоздается. Тело ответа будет представлять собой объект JSON с ключом `backup`.
+     * Изменение комментария S3-бэкапа базы данных
+     */
+    async updateDatabaseS3BackupRaw(requestParameters: UpdateDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDatabaseS3Backup201Response>> {
+        if (requestParameters.dbId === null || requestParameters.dbId === undefined) {
+            throw new runtime.RequiredError('dbId','Required parameter requestParameters.dbId was null or undefined when calling updateDatabaseS3Backup.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling updateDatabaseS3Backup.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/databases/{db_id}/backups/{backup_id}`.replace(`{${"db_id"}}`, encodeURIComponent(String(requestParameters.dbId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateS3BackupToJSON(requestParameters.updateS3Backup),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateDatabaseS3Backup201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы изменить комментарий к резервной копии кластера базы данных, отправьте PATCH-запрос на `/api/v2/databases/{db_id}/backups/{backup_id}`.   Изменить можно только комментарий: других полей метод не принимает, сама резервная копия при этом не пересоздается. Тело ответа будет представлять собой объект JSON с ключом `backup`.
+     * Изменение комментария S3-бэкапа базы данных
+     */
+    async updateDatabaseS3Backup(requestParameters: UpdateDatabaseS3BackupRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateDatabaseS3Backup201Response> {
+        const response = await this.updateDatabaseS3BackupRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1303,3 +2107,39 @@ export class DatabasesApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const GetDatabaseDefaultParametersTypeEnum = {
+    Mysql5: 'mysql5',
+    Mysql: 'mysql',
+    Mysql84: 'mysql8_4',
+    Postgres: 'postgres',
+    Postgres14: 'postgres14',
+    Postgres15: 'postgres15',
+    Postgres16: 'postgres16',
+    Postgres17: 'postgres17',
+    Postgres18: 'postgres18',
+    Redis: 'redis',
+    Redis7: 'redis7',
+    Redis81: 'redis8_1',
+    Valkey: 'valkey',
+    Valkey7: 'valkey7',
+    Valkey81: 'valkey8_1',
+    Valkey91: 'valkey9_1',
+    Mongodb4: 'mongodb4',
+    Mongodb: 'mongodb',
+    Mongodb6: 'mongodb6',
+    Mongodb7: 'mongodb7',
+    Mongodb80: 'mongodb8_0',
+    Opensearch: 'opensearch',
+    Opensearch219: 'opensearch2_19',
+    Clickhouse: 'clickhouse',
+    Clickhouse24: 'clickhouse24',
+    Clickhouse25: 'clickhouse25',
+    Kafka: 'kafka',
+    Rabbitmq: 'rabbitmq',
+    Rabbitmq40: 'rabbitmq4_0'
+} as const;
+export type GetDatabaseDefaultParametersTypeEnum = typeof GetDatabaseDefaultParametersTypeEnum[keyof typeof GetDatabaseDefaultParametersTypeEnum];

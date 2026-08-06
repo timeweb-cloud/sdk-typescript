@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DatabaseExtensions } from './DatabaseExtensions';
+import {
+    DatabaseExtensionsFromJSON,
+    DatabaseExtensionsFromJSONTyped,
+    DatabaseExtensionsToJSON,
+} from './DatabaseExtensions';
+import type { KafkaConfigParameters } from './KafkaConfigParameters';
+import {
+    KafkaConfigParametersFromJSON,
+    KafkaConfigParametersFromJSONTyped,
+    KafkaConfigParametersToJSON,
+} from './KafkaConfigParameters';
+
 /**
  * База данных
  * @export
@@ -43,6 +56,24 @@ export interface DatabaseInstance {
      * @memberof DatabaseInstance
      */
     description: string;
+    /**
+     * 
+     * @type {DatabaseExtensions}
+     * @memberof DatabaseInstance
+     */
+    extensions: DatabaseExtensions;
+    /**
+     * ID администратора базы данных, который является владельцем этой базы данных. `null`, если владелец не задан.
+     * @type {number}
+     * @memberof DatabaseInstance
+     */
+    ownerId: number | null;
+    /**
+     * 
+     * @type {KafkaConfigParameters}
+     * @memberof DatabaseInstance
+     */
+    configParameters: KafkaConfigParameters;
 }
 
 /**
@@ -54,6 +85,9 @@ export function instanceOfDatabaseInstance(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "extensions" in value;
+    isInstance = isInstance && "ownerId" in value;
+    isInstance = isInstance && "configParameters" in value;
 
     return isInstance;
 }
@@ -72,6 +106,9 @@ export function DatabaseInstanceFromJSONTyped(json: any, ignoreDiscriminator: bo
         'createdAt': json['created_at'],
         'name': json['name'],
         'description': json['description'],
+        'extensions': DatabaseExtensionsFromJSON(json['extensions']),
+        'ownerId': json['owner_id'],
+        'configParameters': KafkaConfigParametersFromJSON(json['config_parameters']),
     };
 }
 
@@ -88,6 +125,9 @@ export function DatabaseInstanceToJSON(value?: DatabaseInstance | null): any {
         'created_at': value.createdAt,
         'name': value.name,
         'description': value.description,
+        'extensions': DatabaseExtensionsToJSON(value.extensions),
+        'owner_id': value.ownerId,
+        'config_parameters': KafkaConfigParametersToJSON(value.configParameters),
     };
 }
 

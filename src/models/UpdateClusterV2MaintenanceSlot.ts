@@ -14,67 +14,54 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Период технического обслуживания кластера базы данных.
  * @export
- * @interface CreateDatabaseBackup409Response
+ * @interface UpdateClusterV2MaintenanceSlot
  */
-export interface CreateDatabaseBackup409Response {
+export interface UpdateClusterV2MaintenanceSlot {
     /**
-     * Короткий идентификатор, соответствующий возвращаемому коду состояния HTTP.
-     * @type {number}
-     * @memberof CreateDatabaseBackup409Response
-     */
-    statusCode: number;
-    /**
-     * Сообщение, предоставляющее дополнительную информацию об ошибке, в том числе сведения, помогающие устранить ее, когда это возможно.
+     * 
      * @type {string}
-     * @memberof CreateDatabaseBackup409Response
+     * @memberof UpdateClusterV2MaintenanceSlot
      */
-    message?: string;
-    /**
-     * Краткое описание ошибки HTTP на основе статуса.
-     * @type {string}
-     * @memberof CreateDatabaseBackup409Response
-     */
-    errorCode: string;
-    /**
-     * ID запроса, который можно указывать при обращении в службу технической поддержки, чтобы помочь определить проблему.
-     * @type {string}
-     * @memberof CreateDatabaseBackup409Response
-     */
-    responseId: string;
+    type: UpdateClusterV2MaintenanceSlotTypeEnum;
 }
 
+
 /**
- * Check if a given object implements the CreateDatabaseBackup409Response interface.
+ * @export
  */
-export function instanceOfCreateDatabaseBackup409Response(value: object): boolean {
+export const UpdateClusterV2MaintenanceSlotTypeEnum = {
+    AnyTime: 'any_time'
+} as const;
+export type UpdateClusterV2MaintenanceSlotTypeEnum = typeof UpdateClusterV2MaintenanceSlotTypeEnum[keyof typeof UpdateClusterV2MaintenanceSlotTypeEnum];
+
+
+/**
+ * Check if a given object implements the UpdateClusterV2MaintenanceSlot interface.
+ */
+export function instanceOfUpdateClusterV2MaintenanceSlot(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "statusCode" in value;
-    isInstance = isInstance && "errorCode" in value;
-    isInstance = isInstance && "responseId" in value;
+    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
 
-export function CreateDatabaseBackup409ResponseFromJSON(json: any): CreateDatabaseBackup409Response {
-    return CreateDatabaseBackup409ResponseFromJSONTyped(json, false);
+export function UpdateClusterV2MaintenanceSlotFromJSON(json: any): UpdateClusterV2MaintenanceSlot {
+    return UpdateClusterV2MaintenanceSlotFromJSONTyped(json, false);
 }
 
-export function CreateDatabaseBackup409ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateDatabaseBackup409Response {
+export function UpdateClusterV2MaintenanceSlotFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateClusterV2MaintenanceSlot {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'statusCode': json['status_code'],
-        'message': !exists(json, 'message') ? undefined : json['message'],
-        'errorCode': json['error_code'],
-        'responseId': json['response_id'],
+        'type': json['type'],
     };
 }
 
-export function CreateDatabaseBackup409ResponseToJSON(value?: CreateDatabaseBackup409Response | null): any {
+export function UpdateClusterV2MaintenanceSlotToJSON(value?: UpdateClusterV2MaintenanceSlot | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -83,10 +70,7 @@ export function CreateDatabaseBackup409ResponseToJSON(value?: CreateDatabaseBack
     }
     return {
         
-        'status_code': value.statusCode,
-        'message': value.message,
-        'error_code': value.errorCode,
-        'response_id': value.responseId,
+        'type': value.type,
     };
 }
 

@@ -25,12 +25,36 @@ import {
     CreateClusterAdminFromJSONTyped,
     CreateClusterAdminToJSON,
 } from './CreateClusterAdmin';
+import type { CreateClusterBackupSchedule } from './CreateClusterBackupSchedule';
+import {
+    CreateClusterBackupScheduleFromJSON,
+    CreateClusterBackupScheduleFromJSONTyped,
+    CreateClusterBackupScheduleToJSON,
+} from './CreateClusterBackupSchedule';
+import type { CreateClusterConfiguration } from './CreateClusterConfiguration';
+import {
+    CreateClusterConfigurationFromJSON,
+    CreateClusterConfigurationFromJSONTyped,
+    CreateClusterConfigurationToJSON,
+} from './CreateClusterConfiguration';
+import type { CreateClusterDiskAutoscaling } from './CreateClusterDiskAutoscaling';
+import {
+    CreateClusterDiskAutoscalingFromJSON,
+    CreateClusterDiskAutoscalingFromJSONTyped,
+    CreateClusterDiskAutoscalingToJSON,
+} from './CreateClusterDiskAutoscaling';
 import type { CreateClusterInstance } from './CreateClusterInstance';
 import {
     CreateClusterInstanceFromJSON,
     CreateClusterInstanceFromJSONTyped,
     CreateClusterInstanceToJSON,
 } from './CreateClusterInstance';
+import type { CreateClusterMaintenanceSlot } from './CreateClusterMaintenanceSlot';
+import {
+    CreateClusterMaintenanceSlotFromJSON,
+    CreateClusterMaintenanceSlotFromJSONTyped,
+    CreateClusterMaintenanceSlotToJSON,
+} from './CreateClusterMaintenanceSlot';
 import type { CreateDbAutoBackups } from './CreateDbAutoBackups';
 import {
     CreateDbAutoBackupsFromJSON,
@@ -99,17 +123,17 @@ export interface CreateCluster {
      */
     hashType?: CreateClusterHashTypeEnum;
     /**
-     * ID тарифа. Нельзя передавать вместе с `configurator_id`
+     * ID тарифа. Нельзя передавать вместе с `configuration`
      * @type {number}
      * @memberof CreateCluster
      */
     presetId?: number;
     /**
-     * ID конфигуратора. Нельзя передавать вместе с `preset_id`
-     * @type {number}
+     * 
+     * @type {CreateClusterConfiguration}
      * @memberof CreateCluster
      */
-    configuratorId?: number;
+    _configuration?: CreateClusterConfiguration;
     /**
      * ID проекта.
      * @type {number}
@@ -158,6 +182,24 @@ export interface CreateCluster {
      * @memberof CreateCluster
      */
     autoBackups?: CreateDbAutoBackups;
+    /**
+     * 
+     * @type {CreateClusterBackupSchedule}
+     * @memberof CreateCluster
+     */
+    backupSchedule?: CreateClusterBackupSchedule;
+    /**
+     * 
+     * @type {CreateClusterMaintenanceSlot}
+     * @memberof CreateCluster
+     */
+    maintenanceSlot?: CreateClusterMaintenanceSlot;
+    /**
+     * 
+     * @type {CreateClusterDiskAutoscaling}
+     * @memberof CreateCluster
+     */
+    diskAutoscaling?: CreateClusterDiskAutoscaling;
 }
 
 
@@ -198,7 +240,7 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'instance': !exists(json, 'instance') ? undefined : CreateClusterInstanceFromJSON(json['instance']),
         'hashType': !exists(json, 'hash_type') ? undefined : json['hash_type'],
         'presetId': !exists(json, 'preset_id') ? undefined : json['preset_id'],
-        'configuratorId': !exists(json, 'configurator_id') ? undefined : json['configurator_id'],
+        '_configuration': !exists(json, 'configuration') ? undefined : CreateClusterConfigurationFromJSON(json['configuration']),
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
         'configParameters': !exists(json, 'config_parameters') ? undefined : MysqlFromJSON(json['config_parameters']),
         'replication': !exists(json, 'replication') ? undefined : DbReplicationFromJSON(json['replication']),
@@ -207,6 +249,9 @@ export function CreateClusterFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': !exists(json, 'description') ? undefined : json['description'],
         'availabilityZone': !exists(json, 'availability_zone') ? undefined : AvailabilityZoneFromJSON(json['availability_zone']),
         'autoBackups': !exists(json, 'auto_backups') ? undefined : CreateDbAutoBackupsFromJSON(json['auto_backups']),
+        'backupSchedule': !exists(json, 'backup_schedule') ? undefined : CreateClusterBackupScheduleFromJSON(json['backup_schedule']),
+        'maintenanceSlot': !exists(json, 'maintenance_slot') ? undefined : CreateClusterMaintenanceSlotFromJSON(json['maintenance_slot']),
+        'diskAutoscaling': !exists(json, 'disk_autoscaling') ? undefined : CreateClusterDiskAutoscalingFromJSON(json['disk_autoscaling']),
     };
 }
 
@@ -225,7 +270,7 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
         'instance': CreateClusterInstanceToJSON(value.instance),
         'hash_type': value.hashType,
         'preset_id': value.presetId,
-        'configurator_id': value.configuratorId,
+        'configuration': CreateClusterConfigurationToJSON(value._configuration),
         'project_id': value.projectId,
         'config_parameters': MysqlToJSON(value.configParameters),
         'replication': DbReplicationToJSON(value.replication),
@@ -234,6 +279,9 @@ export function CreateClusterToJSON(value?: CreateCluster | null): any {
         'description': value.description,
         'availability_zone': AvailabilityZoneToJSON(value.availabilityZone),
         'auto_backups': CreateDbAutoBackupsToJSON(value.autoBackups),
+        'backup_schedule': CreateClusterBackupScheduleToJSON(value.backupSchedule),
+        'maintenance_slot': CreateClusterMaintenanceSlotToJSON(value.maintenanceSlot),
+        'disk_autoscaling': CreateClusterDiskAutoscalingToJSON(value.diskAutoscaling),
     };
 }
 

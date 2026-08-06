@@ -18,14 +18,11 @@
  * @export
  */
 export const Clickhouse = {
-    Alter: 'ALTER',
     AlterTable: 'ALTER_TABLE',
     AlterView: 'ALTER_VIEW',
-    Create: 'CREATE',
     CreateView: 'CREATE_VIEW',
     CreateDictionary: 'CREATE_DICTIONARY',
     CreateTable: 'CREATE_TABLE',
-    Drop: 'DROP',
     DropTable: 'DROP_TABLE',
     DropView: 'DROP_VIEW',
     DropDictionary: 'DROP_DICTIONARY',

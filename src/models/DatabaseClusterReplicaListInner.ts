@@ -13,77 +13,106 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ConfigParametersMysql } from './ConfigParametersMysql';
+import type { DatabaseClusterReplicaListInnerDisk } from './DatabaseClusterReplicaListInnerDisk';
 import {
-    ConfigParametersMysqlFromJSON,
-    ConfigParametersMysqlFromJSONTyped,
-    ConfigParametersMysqlToJSON,
-} from './ConfigParametersMysql';
-import type { ConfigParametersPostgres } from './ConfigParametersPostgres';
-import {
-    ConfigParametersPostgresFromJSON,
-    ConfigParametersPostgresFromJSONTyped,
-    ConfigParametersPostgresToJSON,
-} from './ConfigParametersPostgres';
-import type { ConfigParametersValkey } from './ConfigParametersValkey';
-import {
-    ConfigParametersValkeyFromJSON,
-    ConfigParametersValkeyFromJSONTyped,
-    ConfigParametersValkeyToJSON,
-} from './ConfigParametersValkey';
+    DatabaseClusterReplicaListInnerDiskFromJSON,
+    DatabaseClusterReplicaListInnerDiskFromJSONTyped,
+    DatabaseClusterReplicaListInnerDiskToJSON,
+} from './DatabaseClusterReplicaListInnerDisk';
 
 /**
- * Параметры базы данных
+ * 
  * @export
- * @interface ConfigParameters
+ * @interface DatabaseClusterReplicaListInner
  */
-export interface ConfigParameters {
+export interface DatabaseClusterReplicaListInner {
+    /**
+     * ID реплики.
+     * @type {number}
+     * @memberof DatabaseClusterReplicaListInner
+     */
+    id: number;
+    /**
+     * ID кластера базы данных, которому принадлежит реплика.
+     * @type {number}
+     * @memberof DatabaseClusterReplicaListInner
+     */
+    dbId: number;
+    /**
+     * Текущий статус реплики.
+     * @type {string}
+     * @memberof DatabaseClusterReplicaListInner
+     */
+    status: DatabaseClusterReplicaListInnerStatusEnum;
+    /**
+     * Адрес реплики в локальной сети.
+     * @type {string}
+     * @memberof DatabaseClusterReplicaListInner
+     */
+    localIp: string;
     /**
      * 
-     * @type {ConfigParametersMysql}
-     * @memberof ConfigParameters
+     * @type {DatabaseClusterReplicaListInnerDisk}
+     * @memberof DatabaseClusterReplicaListInner
      */
-    mysql?: ConfigParametersMysql;
-    /**
-     * 
-     * @type {ConfigParametersPostgres}
-     * @memberof ConfigParameters
-     */
-    postgres?: ConfigParametersPostgres;
-    /**
-     * 
-     * @type {ConfigParametersValkey}
-     * @memberof ConfigParameters
-     */
-    valkey?: ConfigParametersValkey;
+    disk?: DatabaseClusterReplicaListInnerDisk | null;
 }
 
+
 /**
- * Check if a given object implements the ConfigParameters interface.
+ * @export
  */
-export function instanceOfConfigParameters(value: object): boolean {
+export const DatabaseClusterReplicaListInnerStatusEnum = {
+    Started: 'started',
+    Starting: 'starting',
+    Stopped: 'stopped',
+    NoPaid: 'no_paid',
+    LanTransfer: 'lan_transfer',
+    Error: 'error',
+    Blocked: 'blocked',
+    BackupRecovery: 'backup_recovery',
+    Transfer: 'transfer',
+    Rebooting: 'rebooting',
+    TurningOff: 'turning_off',
+    TurningOn: 'turning_on',
+    ReadOnly: 'read_only',
+    UserTransfer: 'user_transfer'
+} as const;
+export type DatabaseClusterReplicaListInnerStatusEnum = typeof DatabaseClusterReplicaListInnerStatusEnum[keyof typeof DatabaseClusterReplicaListInnerStatusEnum];
+
+
+/**
+ * Check if a given object implements the DatabaseClusterReplicaListInner interface.
+ */
+export function instanceOfDatabaseClusterReplicaListInner(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "dbId" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "localIp" in value;
 
     return isInstance;
 }
 
-export function ConfigParametersFromJSON(json: any): ConfigParameters {
-    return ConfigParametersFromJSONTyped(json, false);
+export function DatabaseClusterReplicaListInnerFromJSON(json: any): DatabaseClusterReplicaListInner {
+    return DatabaseClusterReplicaListInnerFromJSONTyped(json, false);
 }
 
-export function ConfigParametersFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfigParameters {
+export function DatabaseClusterReplicaListInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatabaseClusterReplicaListInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'mysql': !exists(json, 'mysql') ? undefined : ConfigParametersMysqlFromJSON(json['mysql']),
-        'postgres': !exists(json, 'postgres') ? undefined : ConfigParametersPostgresFromJSON(json['postgres']),
-        'valkey': !exists(json, 'valkey') ? undefined : ConfigParametersValkeyFromJSON(json['valkey']),
+        'id': json['id'],
+        'dbId': json['db_id'],
+        'status': json['status'],
+        'localIp': json['local_ip'],
+        'disk': !exists(json, 'disk') ? undefined : DatabaseClusterReplicaListInnerDiskFromJSON(json['disk']),
     };
 }
 
-export function ConfigParametersToJSON(value?: ConfigParameters | null): any {
+export function DatabaseClusterReplicaListInnerToJSON(value?: DatabaseClusterReplicaListInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -92,9 +121,11 @@ export function ConfigParametersToJSON(value?: ConfigParameters | null): any {
     }
     return {
         
-        'mysql': ConfigParametersMysqlToJSON(value.mysql),
-        'postgres': ConfigParametersPostgresToJSON(value.postgres),
-        'valkey': ConfigParametersValkeyToJSON(value.valkey),
+        'id': value.id,
+        'db_id': value.dbId,
+        'status': value.status,
+        'local_ip': value.localIp,
+        'disk': DatabaseClusterReplicaListInnerDiskToJSON(value.disk),
     };
 }
 

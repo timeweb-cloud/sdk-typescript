@@ -26,6 +26,12 @@ export interface Valkey {
      */
     clientOutputBufferLimitNormal?: string;
     /**
+     * Настройка уведомлений о событиях пространства ключей (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * @type {string}
+     * @memberof Valkey
+     */
+    notifyKeyspaceEvents?: string;
+    /**
      * Ограничение буфера вывода для клиентов pub/sub. Формат: `hard-limit soft-limit soft-seconds` (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
      * @type {string}
      * @memberof Valkey
@@ -107,6 +113,7 @@ export function ValkeyFromJSONTyped(json: any, ignoreDiscriminator: boolean): Va
     return {
         
         'clientOutputBufferLimitNormal': !exists(json, 'client-output-buffer-limit normal') ? undefined : json['client-output-buffer-limit normal'],
+        'notifyKeyspaceEvents': !exists(json, 'notify-keyspace-events') ? undefined : json['notify-keyspace-events'],
         'clientOutputBufferLimitPubsub': !exists(json, 'client-output-buffer-limit pubsub') ? undefined : json['client-output-buffer-limit pubsub'],
         'databases': !exists(json, 'databases') ? undefined : json['databases'],
         'timeout': !exists(json, 'timeout') ? undefined : json['timeout'],
@@ -130,6 +137,7 @@ export function ValkeyToJSON(value?: Valkey | null): any {
     return {
         
         'client-output-buffer-limit normal': value.clientOutputBufferLimitNormal,
+        'notify-keyspace-events': value.notifyKeyspaceEvents,
         'client-output-buffer-limit pubsub': value.clientOutputBufferLimitPubsub,
         'databases': value.databases,
         'timeout': value.timeout,

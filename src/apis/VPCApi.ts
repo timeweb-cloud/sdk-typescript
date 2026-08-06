@@ -15,7 +15,6 @@
 
 import * as runtime from '../runtime';
 import type {
-  CreateDatabaseBackup409Response,
   CreateVPC201Response,
   CreateVpc,
   GetAccountStatus403Response,
@@ -27,11 +26,10 @@ import type {
   GetVPCPorts200Response,
   GetVPCServices200Response,
   GetVPCs200Response,
+  UpdateDatabaseInstance409Response,
   UpdateVpc,
 } from '../models/index';
 import {
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateVPC201ResponseFromJSON,
     CreateVPC201ResponseToJSON,
     CreateVpcFromJSON,
@@ -54,6 +52,8 @@ import {
     GetVPCServices200ResponseToJSON,
     GetVPCs200ResponseFromJSON,
     GetVPCs200ResponseToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateVpcFromJSON,
     UpdateVpcToJSON,
 } from '../models/index';

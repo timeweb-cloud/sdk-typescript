@@ -16,7 +16,6 @@
 import * as runtime from '../runtime';
 import type {
   BindFloatingIp,
-  CreateDatabaseBackup409Response,
   CreateFloatingIp,
   CreateFloatingIp201Response,
   GetAccountStatus403Response,
@@ -26,13 +25,12 @@ import type {
   GetFinances500Response,
   GetFloatingIps200Response,
   GetImage404Response,
+  UpdateDatabaseInstance409Response,
   UpdateFloatingIp,
 } from '../models/index';
 import {
     BindFloatingIpFromJSON,
     BindFloatingIpToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateFloatingIpFromJSON,
     CreateFloatingIpToJSON,
     CreateFloatingIp201ResponseFromJSON,
@@ -51,6 +49,8 @@ import {
     GetFloatingIps200ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateFloatingIpFromJSON,
     UpdateFloatingIpToJSON,
 } from '../models/index';

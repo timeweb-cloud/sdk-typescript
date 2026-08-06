@@ -14,113 +14,56 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Параметры Valkey (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`)
+ * Действие над кластером базы данных
  * @export
- * @interface ConfigParametersValkey
+ * @interface ClusterAction
  */
-export interface ConfigParametersValkey {
+export interface ClusterAction {
     /**
-     * Ограничение буфера вывода для обычных клиентских подключений. Формат: `hard-limit soft-limit soft-seconds` (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
+     * Действие над кластером базы данных: `reboot` — перезагрузить, `shutdown` — выключить, `start` — включить.
      * @type {string}
-     * @memberof ConfigParametersValkey
+     * @memberof ClusterAction
      */
-    clientOutputBufferLimitNormal?: string;
-    /**
-     * Ограничение буфера вывода для клиентов pub/sub. Формат: `hard-limit soft-limit soft-seconds` (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    clientOutputBufferLimitPubsub?: string;
-    /**
-     * Количество логических баз данных на сервере (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    databases?: string;
-    /**
-     * Время ожидания в секундах перед закрытием неактивного клиентского соединения. `0` — отключено (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    timeout?: string;
-    /**
-     * Политика вытеснения ключей при достижении лимита памяти (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    maxmemoryPolicy?: string;
-    /**
-     * Минимальное время выполнения команды в микросекундах для записи в журнал медленных команд (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    slowlogLogSlowerThan?: string;
-    /**
-     * Максимальное количество записей, хранящихся в журнале медленных команд (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    slowlogMaxLen?: string;
-    /**
-     * Условие создания снимка RDB на диск. Формат: `seconds changes` — сохранение выполняется, если за указанное время было сделано не менее указанного количества изменений (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    save?: string;
-    /**
-     * Включение режима AOF (Append Only File) для персистентного хранения данных (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    appendonly?: string;
-    /**
-     * Режим синхронизации AOF-файла с диском: `always` — при каждой записи, `everysec` — раз в секунду, `no` — управление передаётся ОС (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    appendfsync?: string;
-    /**
-     * Интервал проверки активности TCP-соединения в секундах. `0` — отключено (`valkey` | `valkey7` | `valkey8_1` | `valkey9_1`).
-     * @type {string}
-     * @memberof ConfigParametersValkey
-     */
-    tcpKeepalive?: string;
+    action: ClusterActionActionEnum;
 }
 
+
 /**
- * Check if a given object implements the ConfigParametersValkey interface.
+ * @export
  */
-export function instanceOfConfigParametersValkey(value: object): boolean {
+export const ClusterActionActionEnum = {
+    Reboot: 'reboot',
+    Shutdown: 'shutdown',
+    Start: 'start'
+} as const;
+export type ClusterActionActionEnum = typeof ClusterActionActionEnum[keyof typeof ClusterActionActionEnum];
+
+
+/**
+ * Check if a given object implements the ClusterAction interface.
+ */
+export function instanceOfClusterAction(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "action" in value;
 
     return isInstance;
 }
 
-export function ConfigParametersValkeyFromJSON(json: any): ConfigParametersValkey {
-    return ConfigParametersValkeyFromJSONTyped(json, false);
+export function ClusterActionFromJSON(json: any): ClusterAction {
+    return ClusterActionFromJSONTyped(json, false);
 }
 
-export function ConfigParametersValkeyFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfigParametersValkey {
+export function ClusterActionFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClusterAction {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'clientOutputBufferLimitNormal': !exists(json, 'client-output-buffer-limit normal') ? undefined : json['client-output-buffer-limit normal'],
-        'clientOutputBufferLimitPubsub': !exists(json, 'client-output-buffer-limit pubsub') ? undefined : json['client-output-buffer-limit pubsub'],
-        'databases': !exists(json, 'databases') ? undefined : json['databases'],
-        'timeout': !exists(json, 'timeout') ? undefined : json['timeout'],
-        'maxmemoryPolicy': !exists(json, 'maxmemory-policy') ? undefined : json['maxmemory-policy'],
-        'slowlogLogSlowerThan': !exists(json, 'slowlog-log-slower-than') ? undefined : json['slowlog-log-slower-than'],
-        'slowlogMaxLen': !exists(json, 'slowlog-max-len') ? undefined : json['slowlog-max-len'],
-        'save': !exists(json, 'save') ? undefined : json['save'],
-        'appendonly': !exists(json, 'appendonly') ? undefined : json['appendonly'],
-        'appendfsync': !exists(json, 'appendfsync') ? undefined : json['appendfsync'],
-        'tcpKeepalive': !exists(json, 'tcp-keepalive') ? undefined : json['tcp-keepalive'],
+        'action': json['action'],
     };
 }
 
-export function ConfigParametersValkeyToJSON(value?: ConfigParametersValkey | null): any {
+export function ClusterActionToJSON(value?: ClusterAction | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -129,17 +72,7 @@ export function ConfigParametersValkeyToJSON(value?: ConfigParametersValkey | nu
     }
     return {
         
-        'client-output-buffer-limit normal': value.clientOutputBufferLimitNormal,
-        'client-output-buffer-limit pubsub': value.clientOutputBufferLimitPubsub,
-        'databases': value.databases,
-        'timeout': value.timeout,
-        'maxmemory-policy': value.maxmemoryPolicy,
-        'slowlog-log-slower-than': value.slowlogLogSlowerThan,
-        'slowlog-max-len': value.slowlogMaxLen,
-        'save': value.save,
-        'appendonly': value.appendonly,
-        'appendfsync': value.appendfsync,
-        'tcp-keepalive': value.tcpKeepalive,
+        'action': value.action,
     };
 }
 

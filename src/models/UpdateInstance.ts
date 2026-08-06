@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DatabaseExtensions } from './DatabaseExtensions';
+import {
+    DatabaseExtensionsFromJSON,
+    DatabaseExtensionsFromJSONTyped,
+    DatabaseExtensionsToJSON,
+} from './DatabaseExtensions';
+import type { UpdateKafkaConfigParameters } from './UpdateKafkaConfigParameters';
+import {
+    UpdateKafkaConfigParametersFromJSON,
+    UpdateKafkaConfigParametersFromJSONTyped,
+    UpdateKafkaConfigParametersToJSON,
+} from './UpdateKafkaConfigParameters';
+
 /**
  * 
  * @export
@@ -31,6 +44,24 @@ export interface UpdateInstance {
      * @memberof UpdateInstance
      */
     description?: string;
+    /**
+     * ID пользователя базы данных, который станет владельцем инстанса. Доступно только в кластерах PostgreSQL
+     * @type {number}
+     * @memberof UpdateInstance
+     */
+    ownerId?: number;
+    /**
+     * 
+     * @type {DatabaseExtensions}
+     * @memberof UpdateInstance
+     */
+    extensions?: DatabaseExtensions;
+    /**
+     * 
+     * @type {UpdateKafkaConfigParameters}
+     * @memberof UpdateInstance
+     */
+    configParameters?: UpdateKafkaConfigParameters;
 }
 
 /**
@@ -54,6 +85,9 @@ export function UpdateInstanceFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'name': !exists(json, 'name') ? undefined : json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
+        'ownerId': !exists(json, 'owner_id') ? undefined : json['owner_id'],
+        'extensions': !exists(json, 'extensions') ? undefined : DatabaseExtensionsFromJSON(json['extensions']),
+        'configParameters': !exists(json, 'config_parameters') ? undefined : UpdateKafkaConfigParametersFromJSON(json['config_parameters']),
     };
 }
 
@@ -68,6 +102,9 @@ export function UpdateInstanceToJSON(value?: UpdateInstance | null): any {
         
         'name': value.name,
         'description': value.description,
+        'owner_id': value.ownerId,
+        'extensions': DatabaseExtensionsToJSON(value.extensions),
+        'config_parameters': UpdateKafkaConfigParametersToJSON(value.configParameters),
     };
 }
 

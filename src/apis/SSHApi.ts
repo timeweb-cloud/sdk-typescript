@@ -16,7 +16,6 @@
 import * as runtime from '../runtime';
 import type {
   AddKeyToServerRequest,
-  CreateDatabaseBackup409Response,
   CreateKey201Response,
   CreateKeyRequest,
   GetAccountStatus403Response,
@@ -27,13 +26,12 @@ import type {
   GetImage404Response,
   GetKey200Response,
   GetKeys200Response,
+  UpdateDatabaseInstance409Response,
   UpdateKeyRequest,
 } from '../models/index';
 import {
     AddKeyToServerRequestFromJSON,
     AddKeyToServerRequestToJSON,
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateKey201ResponseFromJSON,
     CreateKey201ResponseToJSON,
     CreateKeyRequestFromJSON,
@@ -54,6 +52,8 @@ import {
     GetKey200ResponseToJSON,
     GetKeys200ResponseFromJSON,
     GetKeys200ResponseToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateKeyRequestFromJSON,
     UpdateKeyRequestToJSON,
 } from '../models/index';

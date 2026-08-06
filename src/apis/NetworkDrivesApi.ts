@@ -15,7 +15,6 @@
 
 import * as runtime from '../runtime';
 import type {
-  CreateDatabaseBackup409Response,
   CreateNetworkDrive,
   CreateNetworkDrive201Response,
   GetAccountStatus403Response,
@@ -28,11 +27,10 @@ import type {
   GetNetworkDrivesAvailableResources200Response,
   GetNetworkDrivesPresets200Response,
   MountNetworkDrive,
+  UpdateDatabaseInstance409Response,
   UpdateNetworkDrive,
 } from '../models/index';
 import {
-    CreateDatabaseBackup409ResponseFromJSON,
-    CreateDatabaseBackup409ResponseToJSON,
     CreateNetworkDriveFromJSON,
     CreateNetworkDriveToJSON,
     CreateNetworkDrive201ResponseFromJSON,
@@ -57,6 +55,8 @@ import {
     GetNetworkDrivesPresets200ResponseToJSON,
     MountNetworkDriveFromJSON,
     MountNetworkDriveToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
     UpdateNetworkDriveFromJSON,
     UpdateNetworkDriveToJSON,
 } from '../models/index';

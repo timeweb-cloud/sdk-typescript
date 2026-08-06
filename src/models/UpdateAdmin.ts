@@ -27,6 +27,12 @@ import {
  */
 export interface UpdateAdmin {
     /**
+     * Новое имя пользователя базы данных. Переименование доступно только в кластерах PostgreSQL
+     * @type {string}
+     * @memberof UpdateAdmin
+     */
+    login?: string;
+    /**
      * Пароль пользователя базы данных
      * @type {string}
      * @memberof UpdateAdmin
@@ -50,6 +56,12 @@ export interface UpdateAdmin {
      * @memberof UpdateAdmin
      */
     instanceId?: number;
+    /**
+     * Выдать привилегии на все инстансы базы данных
+     * @type {boolean}
+     * @memberof UpdateAdmin
+     */
+    forAll?: boolean;
 }
 
 /**
@@ -71,10 +83,12 @@ export function UpdateAdminFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
+        'login': !exists(json, 'login') ? undefined : json['login'],
         'password': !exists(json, 'password') ? undefined : json['password'],
         'privileges': !exists(json, 'privileges') ? undefined : ((json['privileges'] as Array<any>).map(PropertiesMysqlFromJSON)),
         'description': !exists(json, 'description') ? undefined : json['description'],
         'instanceId': !exists(json, 'instance_id') ? undefined : json['instance_id'],
+        'forAll': !exists(json, 'for_all') ? undefined : json['for_all'],
     };
 }
 
@@ -87,10 +101,12 @@ export function UpdateAdminToJSON(value?: UpdateAdmin | null): any {
     }
     return {
         
+        'login': value.login,
         'password': value.password,
         'privileges': value.privileges === undefined ? undefined : ((value.privileges as Array<any>).map(PropertiesMysqlToJSON)),
         'description': value.description,
         'instance_id': value.instanceId,
+        'for_all': value.forAll,
     };
 }
 
