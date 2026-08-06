@@ -7,6 +7,7 @@ src/apis/AIAgentsApi.ts
 src/apis/AccountApi.ts
 src/apis/AppsApi.ts
 src/apis/BalancersApi.ts
+src/apis/CDNApi.ts
 src/apis/ContainerRegistryApi.ts
 src/apis/DatabasesApi.ts
 src/apis/DedicatedServersApi.ts
@@ -31,6 +32,8 @@ src/index.ts
 src/models/AddBalancerToProject200Response.ts
 src/models/AddBalancerToProjectRequest.ts
 src/models/AddBitbucket.ts
+src/models/AddCdnCertificate422Response.ts
+src/models/AddCertificate.ts
 src/models/AddClusterToProjectRequest.ts
 src/models/AddCountries.ts
 src/models/AddCountriesToAllowedList201Response.ts
@@ -99,7 +102,10 @@ src/models/BucketDiskStats.ts
 src/models/BucketUser.ts
 src/models/BucketWebsiteConfig.ts
 src/models/BucketWebsiteConfigErrorPagesInner.ts
+src/models/Certificate.ts
+src/models/CertificateTask.ts
 src/models/CheckDomain200Response.ts
+src/models/ClearCache.ts
 src/models/Clickhouse.ts
 src/models/ClusterEdit.ts
 src/models/ClusterEditOidcProvider.ts
@@ -117,10 +123,28 @@ src/models/ClustersResponse.ts
 src/models/Commit.ts
 src/models/ComponentsSchemasBaseError.ts
 src/models/ComponentsSchemasMeta.ts
+src/models/ConfigAccess.ts
+src/models/ConfigCache.ts
+src/models/ConfigCacheAlwaysOnline.ts
+src/models/ConfigCacheBrowser.ts
+src/models/ConfigCacheCdn.ts
+src/models/ConfigCacheCdnTtl.ts
+src/models/ConfigCacheQueryArgs.ts
+src/models/ConfigDelivery.ts
+src/models/ConfigDeliveryPackaging.ts
+src/models/ConfigDeliveryPackagingMp4.ts
+src/models/ConfigDomains.ts
+src/models/ConfigHttpHeaders.ts
+src/models/ConfigHttpHeadersCors.ts
+src/models/ConfigOrigin.ts
+src/models/ConfigOriginAws.ts
 src/models/ConfigParameters.ts
 src/models/ConfigParametersMysql.ts
 src/models/ConfigParametersPostgres.ts
 src/models/ConfigParametersValkey.ts
+src/models/ConfigRobots.ts
+src/models/ConfigSecurity.ts
+src/models/ConfigSecuritySecureToken.ts
 src/models/ContainerRegistryPresetsInner.ts
 src/models/ContainerRegistryRepositoriesInner.ts
 src/models/CreateAdmin.ts
@@ -133,6 +157,7 @@ src/models/CreateBalancer.ts
 src/models/CreateBalancer200Response.ts
 src/models/CreateBalancerCertificates.ts
 src/models/CreateBalancerRule200Response.ts
+src/models/CreateCdnResource201Response.ts
 src/models/CreateCluster.ts
 src/models/CreateClusterAdmin.ts
 src/models/CreateClusterInstance.ts
@@ -157,6 +182,7 @@ src/models/CreateDomainMailboxV2Request.ts
 src/models/CreateDomainRequest201Response.ts
 src/models/CreateFloatingIp.ts
 src/models/CreateFloatingIp201Response.ts
+src/models/CreateHttpResource.ts
 src/models/CreateInstance.ts
 src/models/CreateKey201Response.ts
 src/models/CreateKeyRequest.ts
@@ -286,6 +312,14 @@ src/models/GetBalancerRules200Response.ts
 src/models/GetBalancers200Response.ts
 src/models/GetBalancersPresets200Response.ts
 src/models/GetBranches200Response.ts
+src/models/GetCdnCertificateTasks200Response.ts
+src/models/GetCdnCertificates200Response.ts
+src/models/GetCdnOriginNodes200Response.ts
+src/models/GetCdnPresets200Response.ts
+src/models/GetCdnResourceConfiguration200Response.ts
+src/models/GetCdnResourceNodes200Response.ts
+src/models/GetCdnResourceStatistics200Response.ts
+src/models/GetCdnResources200Response.ts
 src/models/GetCommits200Response.ts
 src/models/GetConfigurators200Response.ts
 src/models/GetCountries200Response.ts
@@ -370,6 +404,8 @@ src/models/GetTLDs200Response.ts
 src/models/GetVPCPorts200Response.ts
 src/models/GetVPCServices200Response.ts
 src/models/GetVPCs200Response.ts
+src/models/HttpResource.ts
+src/models/HttpResourceConfig.ts
 src/models/Image.ts
 src/models/ImageDownload.ts
 src/models/ImageDownloadResponse.ts
@@ -385,6 +421,7 @@ src/models/IncreaseNodes.ts
 src/models/InfoServicePrice.ts
 src/models/Invoice.ts
 src/models/Ip.ts
+src/models/IssueCertificate.ts
 src/models/K8SVersionsResponse.ts
 src/models/Kafka.ts
 src/models/Knowledgebase.ts
@@ -439,6 +476,8 @@ src/models/NotificationSettingType.ts
 src/models/OS.ts
 src/models/Opensearch.ts
 src/models/Org.ts
+src/models/OriginNode.ts
+src/models/OriginServer.ts
 src/models/OutgoingIsDisabled.ts
 src/models/OutgoingIsEnabled.ts
 src/models/PerformActionOnBackupRequest.ts
@@ -448,6 +487,8 @@ src/models/Person2.ts
 src/models/Policy.ts
 src/models/Postgres.ts
 src/models/Postgresql.ts
+src/models/PreloadCache.ts
+src/models/Preset.ts
 src/models/PresetsBalancer.ts
 src/models/PresetsDbs.ts
 src/models/PresetsResponse.ts
@@ -535,6 +576,9 @@ src/models/StaticRouteIn.ts
 src/models/StaticRouteOut.ts
 src/models/StaticRouteResponse.ts
 src/models/StaticRoutesResponse.ts
+src/models/Statistics.ts
+src/models/StatisticsRequestsInner.ts
+src/models/StatisticsTrafficInner.ts
 src/models/Status.ts
 src/models/StatusCompanyInfo.ts
 src/models/Subdomain.ts
@@ -543,6 +587,7 @@ src/models/TokenPackage.ts
 src/models/TokenStatistic.ts
 src/models/TopLevelDomain.ts
 src/models/TopLevelDomainAllowedBuyPeriodsInner.ts
+src/models/TrafficUsage.ts
 src/models/TransferStatus.ts
 src/models/TransferStatusErrorsInner.ts
 src/models/TransferStorageRequest.ts
@@ -561,6 +606,7 @@ src/models/UpdateDomainMailInfoRequest.ts
 src/models/UpdateDomainNameServers.ts
 src/models/UpdateDomainNameServersNameServersInner.ts
 src/models/UpdateFloatingIp.ts
+src/models/UpdateHttpResource.ts
 src/models/UpdateInstance.ts
 src/models/UpdateKeyRequest.ts
 src/models/UpdateKnowledgebase.ts
@@ -592,6 +638,7 @@ src/models/UploadSuccessful.ts
 src/models/UploadSuccessfulResponse.ts
 src/models/UrlStatus.ts
 src/models/Use.ts
+src/models/UserNode.ts
 src/models/Valkey.ts
 src/models/Vds.ts
 src/models/VdsDisksInner.ts
