@@ -19,6 +19,12 @@ import {
     ImageStatusFromJSONTyped,
     ImageStatusToJSON,
 } from './ImageStatus';
+import type { Location } from './Location';
+import {
+    LocationFromJSON,
+    LocationFromJSONTyped,
+    LocationToJSON,
+} from './Location';
 import type { OS } from './OS';
 import {
     OSFromJSON,
@@ -87,11 +93,11 @@ export interface Image {
      */
     diskId: number;
     /**
-     * Локация образа.
-     * @type {string}
+     * 
+     * @type {Location}
      * @memberof Image
      */
-    location: ImageLocationEnum;
+    location: Location;
     /**
      * 
      * @type {OS}
@@ -118,18 +124,6 @@ export interface Image {
     type: ImageTypeEnum;
 }
 
-
-/**
- * @export
- */
-export const ImageLocationEnum = {
-    Ru1: 'ru-1',
-    Ru2: 'ru-2',
-    Pl1: 'pl-1',
-    Kz1: 'kz-1',
-    Nl1: 'nl-1'
-} as const;
-export type ImageLocationEnum = typeof ImageLocationEnum[keyof typeof ImageLocationEnum];
 
 /**
  * @export
@@ -183,7 +177,7 @@ export function ImageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ima
         'name': json['name'],
         'description': json['description'],
         'diskId': json['disk_id'],
-        'location': json['location'],
+        'location': LocationFromJSON(json['location']),
         'os': OSFromJSON(json['os']),
         'progress': json['progress'],
         'isCustom': json['is_custom'],
@@ -209,7 +203,7 @@ export function ImageToJSON(value?: Image | null): any {
         'name': value.name,
         'description': value.description,
         'disk_id': value.diskId,
-        'location': value.location,
+        'location': LocationToJSON(value.location),
         'os': OSToJSON(value.os),
         'progress': value.progress,
         'is_custom': value.isCustom,

@@ -21,9 +21,13 @@ export const Location = {
     Ru1: 'ru-1',
     Ru2: 'ru-2',
     Ru3: 'ru-3',
+    Ru4: 'ru-4',
+    Ru5: 'ru-5',
     Pl1: 'pl-1',
     Kz1: 'kz-1',
-    Nl1: 'nl-1'
+    Nl1: 'nl-1',
+    De1: 'de-1',
+    Us4: 'us-4'
 } as const;
 export type Location = typeof Location[keyof typeof Location];
 
