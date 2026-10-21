@@ -16,39 +16,67 @@
 import * as runtime from '../runtime';
 import type {
   AddTokenPackage,
+  ChangeAgentModel,
   CreateAgent,
   CreateAgent201Response,
+  CreateAgentEntityLimit,
+  CreateAgentEntityLimit201Response,
   CreateAgentV2,
+  DeleteAgent,
+  ExportAgentChatsCsv200Response,
   GetAccountStatus403Response,
+  GetAgentChatList200Response,
+  GetAgentChatMessages200Response,
+  GetAgentEntityLimits200Response,
   GetAgentStatistics200Response,
+  GetAgentV3200Response,
   GetAgents200Response,
-  GetAgentsTokenPackages200Response,
+  GetAgentsV3200Response,
   GetFinances400Response,
   GetFinances401Response,
   GetFinances429Response,
   GetFinances500Response,
   GetImage404Response,
-  GetModels200Response,
-  GetModelsV3200Response,
+  SyncAgentEntityLimits,
   UpdateAgent,
+  UpdateAgentEntityLimit,
+  UpdateDatabaseInstance409Response,
 } from '../models/index';
 import {
     AddTokenPackageFromJSON,
     AddTokenPackageToJSON,
+    ChangeAgentModelFromJSON,
+    ChangeAgentModelToJSON,
     CreateAgentFromJSON,
     CreateAgentToJSON,
     CreateAgent201ResponseFromJSON,
     CreateAgent201ResponseToJSON,
+    CreateAgentEntityLimitFromJSON,
+    CreateAgentEntityLimitToJSON,
+    CreateAgentEntityLimit201ResponseFromJSON,
+    CreateAgentEntityLimit201ResponseToJSON,
     CreateAgentV2FromJSON,
     CreateAgentV2ToJSON,
+    DeleteAgentFromJSON,
+    DeleteAgentToJSON,
+    ExportAgentChatsCsv200ResponseFromJSON,
+    ExportAgentChatsCsv200ResponseToJSON,
     GetAccountStatus403ResponseFromJSON,
     GetAccountStatus403ResponseToJSON,
+    GetAgentChatList200ResponseFromJSON,
+    GetAgentChatList200ResponseToJSON,
+    GetAgentChatMessages200ResponseFromJSON,
+    GetAgentChatMessages200ResponseToJSON,
+    GetAgentEntityLimits200ResponseFromJSON,
+    GetAgentEntityLimits200ResponseToJSON,
     GetAgentStatistics200ResponseFromJSON,
     GetAgentStatistics200ResponseToJSON,
+    GetAgentV3200ResponseFromJSON,
+    GetAgentV3200ResponseToJSON,
     GetAgents200ResponseFromJSON,
     GetAgents200ResponseToJSON,
-    GetAgentsTokenPackages200ResponseFromJSON,
-    GetAgentsTokenPackages200ResponseToJSON,
+    GetAgentsV3200ResponseFromJSON,
+    GetAgentsV3200ResponseToJSON,
     GetFinances400ResponseFromJSON,
     GetFinances400ResponseToJSON,
     GetFinances401ResponseFromJSON,
@@ -59,12 +87,14 @@ import {
     GetFinances500ResponseToJSON,
     GetImage404ResponseFromJSON,
     GetImage404ResponseToJSON,
-    GetModels200ResponseFromJSON,
-    GetModels200ResponseToJSON,
-    GetModelsV3200ResponseFromJSON,
-    GetModelsV3200ResponseToJSON,
+    SyncAgentEntityLimitsFromJSON,
+    SyncAgentEntityLimitsToJSON,
     UpdateAgentFromJSON,
     UpdateAgentToJSON,
+    UpdateAgentEntityLimitFromJSON,
+    UpdateAgentEntityLimitToJSON,
+    UpdateDatabaseInstance409ResponseFromJSON,
+    UpdateDatabaseInstance409ResponseToJSON,
 } from '../models/index';
 
 export interface AddAdditionalTokenPackageRequest {
@@ -72,8 +102,18 @@ export interface AddAdditionalTokenPackageRequest {
     addTokenPackage?: AddTokenPackage;
 }
 
+export interface ChangeAgentModelRequest {
+    id: number;
+    changeAgentModel: ChangeAgentModel;
+}
+
 export interface CreateAgentRequest {
     createAgent: CreateAgent;
+}
+
+export interface CreateAgentEntityLimitRequest {
+    id: number;
+    createAgentEntityLimit: CreateAgentEntityLimit;
 }
 
 export interface CreateAgentV2Request {
@@ -82,10 +122,57 @@ export interface CreateAgentV2Request {
 
 export interface DeleteAgentRequest {
     id: number;
+    deleteAgent?: DeleteAgent;
+}
+
+export interface DeleteAgentEntityLimitRequest {
+    id: number;
+    limitId: string;
+}
+
+export interface ExportAgentChatsCsvRequest {
+    id: number;
+    offset?: number;
+    limit?: number;
+    order?: ExportAgentChatsCsvOrderEnum;
+    from?: Date;
+    to?: Date;
+    locale?: ExportAgentChatsCsvLocaleEnum;
 }
 
 export interface GetAgentRequest {
     id: number;
+}
+
+export interface GetAgentChatListRequest {
+    id: number;
+    offset?: number;
+    limit?: number;
+    order?: GetAgentChatListOrderEnum;
+    from?: Date;
+    to?: Date;
+    reactionType?: GetAgentChatListReactionTypeEnum;
+    responseTimeRanges?: Array<string>;
+}
+
+export interface GetAgentChatMessagesRequest {
+    id: number;
+    chatId: string;
+    offset?: number;
+    limit?: number;
+    order?: GetAgentChatMessagesOrderEnum;
+    from?: Date;
+    to?: Date;
+}
+
+export interface GetAgentEntityLimitRequest {
+    id: number;
+    limitId: string;
+}
+
+export interface GetAgentEntityLimitsRequest {
+    id: number;
+    limitType?: GetAgentEntityLimitsLimitTypeEnum;
 }
 
 export interface GetAgentStatisticsRequest {
@@ -95,9 +182,24 @@ export interface GetAgentStatisticsRequest {
     interval?: number;
 }
 
+export interface GetAgentV3Request {
+    id: number;
+}
+
+export interface SyncAgentEntityLimitsRequest {
+    id: number;
+    syncAgentEntityLimits: SyncAgentEntityLimits;
+}
+
 export interface UpdateAgentRequest {
     id: number;
     updateAgent: UpdateAgent;
+}
+
+export interface UpdateAgentEntityLimitRequest {
+    id: number;
+    limitId: string;
+    updateAgentEntityLimit: UpdateAgentEntityLimit;
 }
 
 /**
@@ -106,7 +208,7 @@ export interface UpdateAgentRequest {
 export class AIAgentsApi extends runtime.BaseAPI {
 
     /**
-     * Чтобы добавить дополнительный пакет токенов для AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents/{id}/add-additional-token-package`.
+     * Чтобы докупить дополнительные пакеты токенов для AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents/{id}/add-additional-token-package`.  Метод относится к устаревшей схеме оплаты пакетами токенов и работает только для агентов с пакетом (`token_package_id` в ответе агента). Для агентов с поресурсной оплатой вернётся 400 `per-resource_agents_do_not_support_additional_token_packages`. Стоимость (цена дополнительного пакета модели агента × `count`) сразу списывается с баланса; при нехватке средств — 400 `insufficient_balance`, если подписка агента истекла — 400 `subscription_expired`. После покупки заблокированный агент разблокируется.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Добавление дополнительного пакета токенов
      */
     async addAdditionalTokenPackageRaw(requestParameters: AddAdditionalTokenPackageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -140,7 +242,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы добавить дополнительный пакет токенов для AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents/{id}/add-additional-token-package`.
+     * Чтобы докупить дополнительные пакеты токенов для AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents/{id}/add-additional-token-package`.  Метод относится к устаревшей схеме оплаты пакетами токенов и работает только для агентов с пакетом (`token_package_id` в ответе агента). Для агентов с поресурсной оплатой вернётся 400 `per-resource_agents_do_not_support_additional_token_packages`. Стоимость (цена дополнительного пакета модели агента × `count`) сразу списывается с баланса; при нехватке средств — 400 `insufficient_balance`, если подписка агента истекла — 400 `subscription_expired`. После покупки заблокированный агент разблокируется.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Добавление дополнительного пакета токенов
      */
     async addAdditionalTokenPackage(requestParameters: AddAdditionalTokenPackageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -148,7 +250,54 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents`, задав необходимые атрибуты.  Агент будет создан с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданном агенте.
+     * Чтобы сменить основную модель AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}/model`.  Параметры модели из `settings.model`, которые новая модель не поддерживает, отбрасываются. Смена модели доступна только агентам с поресурсной оплатой (для агента с пакетом токенов — 400 `model_change_is_allowed_only_for_per-resource_account_and_agent`). Если модель не найдена или недоступна — 404 `model_not_found`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Смена модели AI агента
+     */
+    async changeAgentModelRaw(requestParameters: ChangeAgentModelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgent201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling changeAgentModel.');
+        }
+
+        if (requestParameters.changeAgentModel === null || requestParameters.changeAgentModel === undefined) {
+            throw new runtime.RequiredError('changeAgentModel','Required parameter requestParameters.changeAgentModel was null or undefined when calling changeAgentModel.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/model`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ChangeAgentModelToJSON(requestParameters.changeAgentModel),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateAgent201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы сменить основную модель AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}/model`.  Параметры модели из `settings.model`, которые новая модель не поддерживает, отбрасываются. Смена модели доступна только агентам с поресурсной оплатой (для агента с пакетом токенов — 400 `model_change_is_allowed_only_for_per-resource_account_and_agent`). Если модель не найдена или недоступна — 404 `model_not_found`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Смена модели AI агента
+     */
+    async changeAgentModel(requestParameters: ChangeAgentModelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
+        const response = await this.changeAgentModelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents`, задав необходимые атрибуты.  Метод устарел — используйте `POST /api/v2/cloud-ai/agents`. Поле `token_package_id` обязательно, но не учитывается: агент всегда создаётся с поресурсной оплатой (оплачиваются фактические запросы к модели).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Создание AI агента
      */
     async createAgentRaw(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgent201Response>> {
@@ -182,7 +331,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents`, задав необходимые атрибуты.  Агент будет создан с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданном агенте.
+     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents`, задав необходимые атрибуты.  Метод устарел — используйте `POST /api/v2/cloud-ai/agents`. Поле `token_package_id` обязательно, но не учитывается: агент всегда создаётся с поресурсной оплатой (оплачиваются фактические запросы к модели).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Создание AI агента
      */
     async createAgent(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
@@ -191,7 +340,54 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v2/cloud-ai/agents`, задав необходимые атрибуты.  Агент будет создан с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданном агенте.
+     * Чтобы создать лимит AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits`.  Лимиты агента ограничивают расход на его запросы за период (`hour`, `day`, `week`, `month`) — в токенах (`limit`) или в деньгах (`money_limit`, приоритетнее). Лимит действует на все модели агента (`model_id` = `null`) или на одну модель. При достижении лимита запросы к агенту отклоняются до конца периода.  Нужно передать `limit` или `money_limit` (иначе — 400 `entity_keys_limit_value_required`). Если лимит с тем же периодом и моделью уже есть — 409 `entity_keys_limit_already_exists` (измените его или используйте синхронизацию).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Создание лимита агента
+     */
+    async createAgentEntityLimitRaw(requestParameters: CreateAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgentEntityLimit201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createAgentEntityLimit.');
+        }
+
+        if (requestParameters.createAgentEntityLimit === null || requestParameters.createAgentEntityLimit === undefined) {
+            throw new runtime.RequiredError('createAgentEntityLimit','Required parameter requestParameters.createAgentEntityLimit was null or undefined when calling createAgentEntityLimit.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/entity-limits`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateAgentEntityLimitToJSON(requestParameters.createAgentEntityLimit),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateAgentEntityLimit201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать лимит AI агента, отправьте POST-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits`.  Лимиты агента ограничивают расход на его запросы за период (`hour`, `day`, `week`, `month`) — в токенах (`limit`) или в деньгах (`money_limit`, приоритетнее). Лимит действует на все модели агента (`model_id` = `null`) или на одну модель. При достижении лимита запросы к агенту отклоняются до конца периода.  Нужно передать `limit` или `money_limit` (иначе — 400 `entity_keys_limit_value_required`). Если лимит с тем же периодом и моделью уже есть — 409 `entity_keys_limit_already_exists` (измените его или используйте синхронизацию).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Создание лимита агента
+     */
+    async createAgentEntityLimit(requestParameters: CreateAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgentEntityLimit201Response> {
+        const response = await this.createAgentEntityLimitRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v2/cloud-ai/agents`, задав необходимые атрибуты.  Агент создаётся с поресурсной оплатой: оплачиваются фактические запросы к модели. Если не переданы настройки виджета, подставляются значения по умолчанию. Дневной лимит расходов можно задать сразу полем `money_limit`, остальные лимиты — через лимиты агента (`/api/v1/cloud-ai/agents/{id}/entity-limits`).  Если модель не найдена или недоступна, вернётся 404 `model_not_found`; если модель не поддерживается — 400 `model_not_supported`; недопустимые параметры модели в `settings.model` — 400.  Вызывать созданного агента из своих приложений можно через OpenAI-совместимое API по его `access_id` — см. [документацию](https://agent.timeweb.cloud/docs).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Создание AI агента
      */
     async createAgentV2Raw(requestParameters: CreateAgentV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgent201Response>> {
@@ -225,7 +421,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v2/cloud-ai/agents`, задав необходимые атрибуты.  Агент будет создан с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданном агенте.
+     * Чтобы создать AI агента, отправьте POST-запрос на `/api/v2/cloud-ai/agents`, задав необходимые атрибуты.  Агент создаётся с поресурсной оплатой: оплачиваются фактические запросы к модели. Если не переданы настройки виджета, подставляются значения по умолчанию. Дневной лимит расходов можно задать сразу полем `money_limit`, остальные лимиты — через лимиты агента (`/api/v1/cloud-ai/agents/{id}/entity-limits`).  Если модель не найдена или недоступна, вернётся 404 `model_not_found`; если модель не поддерживается — 400 `model_not_supported`; недопустимые параметры модели в `settings.model` — 400.  Вызывать созданного агента из своих приложений можно через OpenAI-совместимое API по его `access_id` — см. [документацию](https://agent.timeweb.cloud/docs).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Создание AI агента
      */
     async createAgentV2(requestParameters: CreateAgentV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
@@ -234,12 +430,58 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/agents/{id}`.
+     * Чтобы удалить AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/agents/{id}`.  Вместе с агентом отключаются его базы знаний, навыки и интеграции (Telegram, MAX, Jivo, Crisp). В теле запроса можно необязательно указать причину удаления.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Удаление AI агента
      */
     async deleteAgentRaw(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteAgent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeleteAgentToJSON(requestParameters.deleteAgent),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы удалить AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/agents/{id}`.  Вместе с агентом отключаются его базы знаний, навыки и интеграции (Telegram, MAX, Jivo, Crisp). В теле запроса можно необязательно указать причину удаления.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Удаление AI агента
+     */
+    async deleteAgent(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteAgentRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы удалить лимит AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Удаление лимита агента
+     */
+    async deleteAgentEntityLimitRaw(requestParameters: DeleteAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteAgentEntityLimit.');
+        }
+
+        if (requestParameters.limitId === null || requestParameters.limitId === undefined) {
+            throw new runtime.RequiredError('limitId','Required parameter requestParameters.limitId was null or undefined when calling deleteAgentEntityLimit.');
         }
 
         const queryParameters: any = {};
@@ -255,7 +497,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/cloud-ai/agents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"limit_id"}}`, encodeURIComponent(String(requestParameters.limitId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -265,15 +507,79 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/agents/{id}`.
-     * Удаление AI агента
+     * Чтобы удалить лимит AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Удаление лимита агента
      */
-    async deleteAgent(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteAgentRaw(requestParameters, initOverrides);
+    async deleteAgentEntityLimit(requestParameters: DeleteAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteAgentEntityLimitRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Чтобы получить информацию об AI агенте, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}`.
+     * Чтобы выгрузить чаты AI агента в формате CSV, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/chats/docs`.  CSV возвращается строкой в поле `chats_csv.csv` тела JSON. `limit` и `offset` применяются к сообщениям, а не к чатам. Если передан `from`, выгружаются сообщения от `from` до `to` (по умолчанию — до текущего момента). Чаты внешнего чата не выгружаются.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Выгрузка чатов агента в CSV
+     */
+    async exportAgentChatsCsvRaw(requestParameters: ExportAgentChatsCsvRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExportAgentChatsCsv200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling exportAgentChatsCsv.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.order !== undefined) {
+            queryParameters['order'] = requestParameters.order;
+        }
+
+        if (requestParameters.from !== undefined) {
+            queryParameters['from'] = (requestParameters.from as any).toISOString();
+        }
+
+        if (requestParameters.to !== undefined) {
+            queryParameters['to'] = (requestParameters.to as any).toISOString();
+        }
+
+        if (requestParameters.locale !== undefined) {
+            queryParameters['locale'] = requestParameters.locale;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/chats/docs`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExportAgentChatsCsv200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы выгрузить чаты AI агента в формате CSV, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/chats/docs`.  CSV возвращается строкой в поле `chats_csv.csv` тела JSON. `limit` и `offset` применяются к сообщениям, а не к чатам. Если передан `from`, выгружаются сообщения от `from` до `to` (по умолчанию — до текущего момента). Чаты внешнего чата не выгружаются.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Выгрузка чатов агента в CSV
+     */
+    async exportAgentChatsCsv(requestParameters: ExportAgentChatsCsvRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExportAgentChatsCsv200Response> {
+        const response = await this.exportAgentChatsCsvRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить информацию об AI агенте, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
      * Получение AI агента
      */
     async getAgentRaw(requestParameters: GetAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgent201Response>> {
@@ -304,7 +610,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить информацию об AI агенте, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}`.
+     * Чтобы получить информацию об AI агенте, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
      * Получение AI агента
      */
     async getAgent(requestParameters: GetAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
@@ -313,7 +619,227 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить статистику использования токенов AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/statistic`.  Можно указать временной диапазон и интервал агрегации.
+     * Чтобы получить список чатов (диалогов) AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/chat-list`.  Для каждого чата возвращаются первое сообщение пользователя, количество оценок и среднее время ответа. Чаты внешнего чата сюда не входят. Фильтр по периоду применяется, только если переданы оба параметра `from` и `to`. В `meta.metrics` — сводка по чатам для фильтров.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение списка чатов агента
+     */
+    async getAgentChatListRaw(requestParameters: GetAgentChatListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentChatList200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgentChatList.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.order !== undefined) {
+            queryParameters['order'] = requestParameters.order;
+        }
+
+        if (requestParameters.from !== undefined) {
+            queryParameters['from'] = (requestParameters.from as any).toISOString();
+        }
+
+        if (requestParameters.to !== undefined) {
+            queryParameters['to'] = (requestParameters.to as any).toISOString();
+        }
+
+        if (requestParameters.reactionType !== undefined) {
+            queryParameters['reaction_type'] = requestParameters.reactionType;
+        }
+
+        if (requestParameters.responseTimeRanges) {
+            queryParameters['response_time_ranges'] = requestParameters.responseTimeRanges;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/chat-list`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentChatList200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список чатов (диалогов) AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/chat-list`.  Для каждого чата возвращаются первое сообщение пользователя, количество оценок и среднее время ответа. Чаты внешнего чата сюда не входят. Фильтр по периоду применяется, только если переданы оба параметра `from` и `to`. В `meta.metrics` — сводка по чатам для фильтров.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение списка чатов агента
+     */
+    async getAgentChatList(requestParameters: GetAgentChatListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentChatList200Response> {
+        const response = await this.getAgentChatListRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить сообщения чата AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/chat-list/{chat_id}/messages`.  Возвращаются сообщения пользователя и ответы агента. Фильтр по периоду применяется, только если переданы оба параметра `from` и `to`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение сообщений чата агента
+     */
+    async getAgentChatMessagesRaw(requestParameters: GetAgentChatMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentChatMessages200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgentChatMessages.');
+        }
+
+        if (requestParameters.chatId === null || requestParameters.chatId === undefined) {
+            throw new runtime.RequiredError('chatId','Required parameter requestParameters.chatId was null or undefined when calling getAgentChatMessages.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.order !== undefined) {
+            queryParameters['order'] = requestParameters.order;
+        }
+
+        if (requestParameters.from !== undefined) {
+            queryParameters['from'] = (requestParameters.from as any).toISOString();
+        }
+
+        if (requestParameters.to !== undefined) {
+            queryParameters['to'] = (requestParameters.to as any).toISOString();
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/chat-list/{chat_id}/messages`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"chat_id"}}`, encodeURIComponent(String(requestParameters.chatId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentChatMessages200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить сообщения чата AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/chat-list/{chat_id}/messages`.  Возвращаются сообщения пользователя и ответы агента. Фильтр по периоду применяется, только если переданы оба параметра `from` и `to`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение сообщений чата агента
+     */
+    async getAgentChatMessages(requestParameters: GetAgentChatMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentChatMessages200Response> {
+        const response = await this.getAgentChatMessagesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить лимит AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение лимита агента
+     */
+    async getAgentEntityLimitRaw(requestParameters: GetAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgentEntityLimit201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgentEntityLimit.');
+        }
+
+        if (requestParameters.limitId === null || requestParameters.limitId === undefined) {
+            throw new runtime.RequiredError('limitId','Required parameter requestParameters.limitId was null or undefined when calling getAgentEntityLimit.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"limit_id"}}`, encodeURIComponent(String(requestParameters.limitId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateAgentEntityLimit201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить лимит AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение лимита агента
+     */
+    async getAgentEntityLimit(requestParameters: GetAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgentEntityLimit201Response> {
+        const response = await this.getAgentEntityLimitRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить лимиты AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits`.  Лимиты агента ограничивают расход на его запросы за период (`hour`, `day`, `week`, `month`) — в токенах (`limit`) или в деньгах (`money_limit`, приоритетнее). Лимит действует на все модели агента (`model_id` = `null`) или на одну модель. При достижении лимита запросы к агенту отклоняются до конца периода.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение лимитов агента
+     */
+    async getAgentEntityLimitsRaw(requestParameters: GetAgentEntityLimitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentEntityLimits200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgentEntityLimits.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.limitType !== undefined) {
+            queryParameters['limit_type'] = requestParameters.limitType;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/entity-limits`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentEntityLimits200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить лимиты AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits`.  Лимиты агента ограничивают расход на его запросы за период (`hour`, `day`, `week`, `month`) — в токенах (`limit`) или в деньгах (`money_limit`, приоритетнее). Лимит действует на все модели агента (`model_id` = `null`) или на одну модель. При достижении лимита запросы к агенту отклоняются до конца периода.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение лимитов агента
+     */
+    async getAgentEntityLimits(requestParameters: GetAgentEntityLimitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentEntityLimits200Response> {
+        const response = await this.getAgentEntityLimitsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить статистику использования токенов AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/statistic`.  Статистика разбита на интервалы длиной `interval` минут: для каждого интервала возвращается по точке на каждую модель, к которой были запросы за период, а для интервалов без запросов — одна нулевая точка без `model_name`. По умолчанию возвращаются последние 24 часа.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
      * Получение статистики использования токенов агента
      */
     async getAgentStatisticsRaw(requestParameters: GetAgentStatisticsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentStatistics200Response>> {
@@ -356,7 +882,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить статистику использования токенов AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/statistic`.  Можно указать временной диапазон и интервал агрегации.
+     * Чтобы получить статистику использования токенов AI агента, отправьте GET-запрос на `/api/v1/cloud-ai/agents/{id}/statistic`.  Статистика разбита на интервалы длиной `interval` минут: для каждого интервала возвращается по точке на каждую модель, к которой были запросы за период, а для интервалов без запросов — одна нулевая точка без `model_name`. По умолчанию возвращаются последние 24 часа.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
      * Получение статистики использования токенов агента
      */
     async getAgentStatistics(requestParameters: GetAgentStatisticsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentStatistics200Response> {
@@ -365,7 +891,47 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/agents`.  Тело ответа будет представлять собой объект JSON с ключом `agents`.
+     * Чтобы получить информацию об AI агенте, отправьте GET-запрос на `/api/v3/cloud-ai/agents/{id}`.  Отличается от `/api/v1/cloud-ai/agents/{id}` тем, что вместо `knowledge_bases_ids` возвращает `knowledge_bases` — подключённые базы знаний с режимом поиска.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение AI агента (v3)
+     */
+    async getAgentV3Raw(requestParameters: GetAgentV3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentV3200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgentV3.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v3/cloud-ai/agents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentV3200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить информацию об AI агенте, отправьте GET-запрос на `/api/v3/cloud-ai/agents/{id}`.  Отличается от `/api/v1/cloud-ai/agents/{id}` тем, что вместо `knowledge_bases_ids` возвращает `knowledge_bases` — подключённые базы знаний с режимом поиска.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение AI агента (v3)
+     */
+    async getAgentV3(requestParameters: GetAgentV3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentV3200Response> {
+        const response = await this.getAgentV3Raw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить список AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/agents`.  Возвращаются все агенты аккаунта (без пагинации), включая приостановленных и заблокированных. Тело ответа будет представлять собой объект JSON с ключами `agents` и `meta`. Подключённые базы знаний вместе с режимом поиска возвращает метод `/api/v3/cloud-ai/agents`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
      * Получение списка AI агентов
      */
     async getAgentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgents200Response>> {
@@ -392,7 +958,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/agents`.  Тело ответа будет представлять собой объект JSON с ключом `agents`.
+     * Чтобы получить список AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/agents`.  Возвращаются все агенты аккаунта (без пагинации), включая приостановленных и заблокированных. Тело ответа будет представлять собой объект JSON с ключами `agents` и `meta`. Подключённые базы знаний вместе с режимом поиска возвращает метод `/api/v3/cloud-ai/agents`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
      * Получение списка AI агентов
      */
     async getAgents(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgents200Response> {
@@ -401,10 +967,10 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Метод устарел.  Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
-     * Получение списка пакетов токенов для агентов
+     * Чтобы получить список AI агентов, отправьте GET-запрос на `/api/v3/cloud-ai/agents`.  Отличается от `/api/v1/cloud-ai/agents` тем, что вместо `knowledge_bases_ids` возвращает `knowledge_bases` — подключённые базы знаний с режимом поиска.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение списка AI агентов (v3)
      */
-    async getAgentsTokenPackagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentsTokenPackages200Response>> {
+    async getAgentsV3Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentsV3200Response>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -418,32 +984,42 @@ export class AIAgentsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/cloud-ai/token-packages/agents`,
+            path: `/api/v3/cloud-ai/agents`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentsTokenPackages200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentsV3200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Метод устарел.  Чтобы получить список доступных пакетов токенов для AI агентов, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/agents`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
-     * Получение списка пакетов токенов для агентов
+     * Чтобы получить список AI агентов, отправьте GET-запрос на `/api/v3/cloud-ai/agents`.  Отличается от `/api/v1/cloud-ai/agents` тем, что вместо `knowledge_bases_ids` возвращает `knowledge_bases` — подключённые базы знаний с режимом поиска.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:read`.
+     * Получение списка AI агентов (v3)
      */
-    async getAgentsTokenPackages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentsTokenPackages200Response> {
-        const response = await this.getAgentsTokenPackagesRaw(initOverrides);
+    async getAgentsV3(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentsV3200Response> {
+        const response = await this.getAgentsV3Raw(initOverrides);
         return await response.value();
     }
 
     /**
-     * Чтобы получить список доступных пакетов токенов для баз знаний, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
-     * Получение списка пакетов токенов для баз знаний
+     * Чтобы задать полный набор лимитов AI агента за период, отправьте PUT-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/sync`.  Лимиты из запроса создаются или обновляются (сопоставление по `model_id`), а лимиты этого периода, которых нет в запросе, удаляются. Лимиты других периодов не затрагиваются. В ответе — актуальные лимиты периода. Если лимиты одновременно изменил другой запрос, вернётся 409 `entity_keys_limits_sync_conflict` — повторите запрос.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Синхронизация лимитов агента за период
      */
-    async getKnowledgebasesTokenPackagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentsTokenPackages200Response>> {
+    async syncAgentEntityLimitsRaw(requestParameters: SyncAgentEntityLimitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgentEntityLimits200Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling syncAgentEntityLimits.');
+        }
+
+        if (requestParameters.syncAgentEntityLimits === null || requestParameters.syncAgentEntityLimits === undefined) {
+            throw new runtime.RequiredError('syncAgentEntityLimits','Required parameter requestParameters.syncAgentEntityLimits was null or undefined when calling syncAgentEntityLimits.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -454,98 +1030,27 @@ export class AIAgentsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/cloud-ai/token-packages/knowledge-bases`,
-            method: 'GET',
+            path: `/api/v1/cloud-ai/agents/{id}/entity-limits/sync`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
+            body: SyncAgentEntityLimitsToJSON(requestParameters.syncAgentEntityLimits),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentsTokenPackages200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgentEntityLimits200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Чтобы получить список доступных пакетов токенов для баз знаний, отправьте GET-запрос на `/api/v1/cloud-ai/token-packages/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключом `token_packages`.
-     * Получение списка пакетов токенов для баз знаний
+     * Чтобы задать полный набор лимитов AI агента за период, отправьте PUT-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/sync`.  Лимиты из запроса создаются или обновляются (сопоставление по `model_id`), а лимиты этого периода, которых нет в запросе, удаляются. Лимиты других периодов не затрагиваются. В ответе — актуальные лимиты периода. Если лимиты одновременно изменил другой запрос, вернётся 409 `entity_keys_limits_sync_conflict` — повторите запрос.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Синхронизация лимитов агента за период
      */
-    async getKnowledgebasesTokenPackages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentsTokenPackages200Response> {
-        const response = await this.getKnowledgebasesTokenPackagesRaw(initOverrides);
+    async syncAgentEntityLimits(requestParameters: SyncAgentEntityLimitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgentEntityLimits200Response> {
+        const response = await this.syncAgentEntityLimitsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Метод устарел — используйте `GET /api/v3/cloud-ai/models`.  Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
-     * Получение списка моделей
-     */
-    async getModelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetModels200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/cloud-ai/models`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetModels200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Метод устарел — используйте `GET /api/v3/cloud-ai/models`.  Чтобы получить список доступных AI моделей, отправьте GET-запрос на `/api/v1/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.
-     * Получение списка моделей
-     */
-    async getModels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetModels200Response> {
-        const response = await this.getModelsRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Чтобы получить список доступных AI моделей с их характеристиками, отправьте GET-запрос на `/api/v3/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.  Характеристики модели (цены, лимиты, возможности) возвращаются в словаре `parameter_values`. Актуальные цены за токены — в ключах `parameter_values.cost_in` и `parameter_values.cost_out` (в рублях за 1 токен).
-     * Получение списка моделей
-     */
-    async getModelsV3Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetModelsV3200Response>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v3/cloud-ai/models`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetModelsV3200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Чтобы получить список доступных AI моделей с их характеристиками, отправьте GET-запрос на `/api/v3/cloud-ai/models`.  Тело ответа будет представлять собой объект JSON с ключом `models`.  Характеристики модели (цены, лимиты, возможности) возвращаются в словаре `parameter_values`. Актуальные цены за токены — в ключах `parameter_values.cost_in` и `parameter_values.cost_out` (в рублях за 1 токен).
-     * Получение списка моделей
-     */
-    async getModelsV3(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetModelsV3200Response> {
-        const response = await this.getModelsV3Raw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Чтобы обновить AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}`.
+     * Чтобы обновить AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}`, передав изменяемые поля.  Особенности: - `settings` заменяются целиком (кроме `web_search_allowed_sites`, `additional_models` и `memory_enabled`, которые сохраняются, если не переданы) — передавайте полный объект настроек, включая `widget`; - основную модель меняет отдельный метод `PATCH /api/v1/cloud-ai/agents/{id}/model`; - поле `token_limit` больше не поддерживается: запрос с ним отклоняется с кодом 410 — лимиты задаются через `/api/v1/cloud-ai/agents/{id}/entity-limits`; - ошибки привязки `ai_gateway_key_id`: 400 `ai_gateway_key_not_found`, `agent_is_already_migrated_to_another_ai_gateway_key`, `agent_is_not_eligible_for_ai_gateway_migration`; 503 — проверку временно не удалось выполнить; - изменить статус заблокированного или удалённого агента нельзя (400 `agent_can\'t_change_status`).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Обновление AI агента
      */
     async updateAgentRaw(requestParameters: UpdateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgent201Response>> {
@@ -583,7 +1088,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы обновить AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}`.
+     * Чтобы обновить AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}`, передав изменяемые поля.  Особенности: - `settings` заменяются целиком (кроме `web_search_allowed_sites`, `additional_models` и `memory_enabled`, которые сохраняются, если не переданы) — передавайте полный объект настроек, включая `widget`; - основную модель меняет отдельный метод `PATCH /api/v1/cloud-ai/agents/{id}/model`; - поле `token_limit` больше не поддерживается: запрос с ним отклоняется с кодом 410 — лимиты задаются через `/api/v1/cloud-ai/agents/{id}/entity-limits`; - ошибки привязки `ai_gateway_key_id`: 400 `ai_gateway_key_not_found`, `agent_is_already_migrated_to_another_ai_gateway_key`, `agent_is_not_eligible_for_ai_gateway_migration`; 503 — проверку временно не удалось выполнить; - изменить статус заблокированного или удалённого агента нельзя (400 `agent_can\'t_change_status`).  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
      * Обновление AI агента
      */
     async updateAgent(requestParameters: UpdateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgent201Response> {
@@ -591,4 +1096,108 @@ export class AIAgentsApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Чтобы изменить значение лимита AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.  Непереданные поля не меняются. Снять денежный лимит (`money_limit`: `null`) можно только вместе с передачей `limit`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Изменение лимита агента
+     */
+    async updateAgentEntityLimitRaw(requestParameters: UpdateAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAgentEntityLimit201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateAgentEntityLimit.');
+        }
+
+        if (requestParameters.limitId === null || requestParameters.limitId === undefined) {
+            throw new runtime.RequiredError('limitId','Required parameter requestParameters.limitId was null or undefined when calling updateAgentEntityLimit.');
+        }
+
+        if (requestParameters.updateAgentEntityLimit === null || requestParameters.updateAgentEntityLimit === undefined) {
+            throw new runtime.RequiredError('updateAgentEntityLimit','Required parameter requestParameters.updateAgentEntityLimit was null or undefined when calling updateAgentEntityLimit.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"limit_id"}}`, encodeURIComponent(String(requestParameters.limitId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateAgentEntityLimitToJSON(requestParameters.updateAgentEntityLimit),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateAgentEntityLimit201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы изменить значение лимита AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/agents/{id}/entity-limits/{limit_id}`.  Непереданные поля не меняются. Снять денежный лимит (`money_limit`: `null`) можно только вместе с передачей `limit`.  Для токенов дополнительных пользователей аккаунта нужна роль `ai:write`.
+     * Изменение лимита агента
+     */
+    async updateAgentEntityLimit(requestParameters: UpdateAgentEntityLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAgentEntityLimit201Response> {
+        const response = await this.updateAgentEntityLimitRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }
+
+/**
+ * @export
+ */
+export const ExportAgentChatsCsvOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type ExportAgentChatsCsvOrderEnum = typeof ExportAgentChatsCsvOrderEnum[keyof typeof ExportAgentChatsCsvOrderEnum];
+/**
+ * @export
+ */
+export const ExportAgentChatsCsvLocaleEnum = {
+    Ru: 'ru',
+    En: 'en'
+} as const;
+export type ExportAgentChatsCsvLocaleEnum = typeof ExportAgentChatsCsvLocaleEnum[keyof typeof ExportAgentChatsCsvLocaleEnum];
+/**
+ * @export
+ */
+export const GetAgentChatListOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetAgentChatListOrderEnum = typeof GetAgentChatListOrderEnum[keyof typeof GetAgentChatListOrderEnum];
+/**
+ * @export
+ */
+export const GetAgentChatListReactionTypeEnum = {
+    Likes: 'likes',
+    Dislikes: 'dislikes',
+    With: 'with',
+    None: 'none'
+} as const;
+export type GetAgentChatListReactionTypeEnum = typeof GetAgentChatListReactionTypeEnum[keyof typeof GetAgentChatListReactionTypeEnum];
+/**
+ * @export
+ */
+export const GetAgentChatMessagesOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetAgentChatMessagesOrderEnum = typeof GetAgentChatMessagesOrderEnum[keyof typeof GetAgentChatMessagesOrderEnum];
+/**
+ * @export
+ */
+export const GetAgentEntityLimitsLimitTypeEnum = {
+    Hour: 'hour',
+    Day: 'day',
+    Week: 'week',
+    Month: 'month'
+} as const;
+export type GetAgentEntityLimitsLimitTypeEnum = typeof GetAgentEntityLimitsLimitTypeEnum[keyof typeof GetAgentEntityLimitsLimitTypeEnum];

@@ -14,29 +14,84 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Дополнительные детали, зависящие от типа статуса
+ * Подробности, набор полей зависит от состояния. Могут присутствовать и другие поля
  * @export
  * @interface DocumentStatusInfoDetails
  */
 export interface DocumentStatusInfoDetails {
+    [key: string]: any | any;
     /**
-     * Время начала индексации
+     * `indexing`: время начала индексации
      * @type {Date}
      * @memberof DocumentStatusInfoDetails
      */
     startedAt?: Date;
     /**
-     * Текущий этап индексации
+     * `indexing`: текущий этап
      * @type {string}
      * @memberof DocumentStatusInfoDetails
      */
     currentStage?: string;
     /**
-     * Прогресс в процентах (0-100)
+     * `indexing`: прогресс в процентах
      * @type {number}
      * @memberof DocumentStatusInfoDetails
      */
     progress?: number;
+    /**
+     * `indexed`: длительность индексации в миллисекундах
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    indexingDurationMs?: number;
+    /**
+     * `indexed`: израсходовано токенов
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    tokensUsed?: number;
+    /**
+     * `indexed`: оценка количества токенов перед индексацией
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    tokensEstimated?: number;
+    /**
+     * `indexed`: количество фрагментов, на которые разбит документ
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    chunksCount?: number;
+    /**
+     * `INSUFFICIENT_TOKENS`: сколько токенов нужно
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    needed?: number;
+    /**
+     * `INSUFFICIENT_TOKENS`: сколько токенов доступно
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    available?: number;
+    /**
+     * `INSUFFICIENT_TOKENS`: оценка без запаса
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    estimated?: number;
+    /**
+     * `CRITICAL_BALANCE`, `NEGATIVE_BALANCE`: текущий остаток токенов
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    balance?: number;
+    /**
+     * `CRITICAL_BALANCE`: минимально необходимый остаток
+     * @type {number}
+     * @memberof DocumentStatusInfoDetails
+     */
+    minRequired?: number;
 }
 
 /**
@@ -58,9 +113,19 @@ export function DocumentStatusInfoDetailsFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
+            ...json,
         'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
         'currentStage': !exists(json, 'current_stage') ? undefined : json['current_stage'],
         'progress': !exists(json, 'progress') ? undefined : json['progress'],
+        'indexingDurationMs': !exists(json, 'indexing_duration_ms') ? undefined : json['indexing_duration_ms'],
+        'tokensUsed': !exists(json, 'tokens_used') ? undefined : json['tokens_used'],
+        'tokensEstimated': !exists(json, 'tokens_estimated') ? undefined : json['tokens_estimated'],
+        'chunksCount': !exists(json, 'chunks_count') ? undefined : json['chunks_count'],
+        'needed': !exists(json, 'needed') ? undefined : json['needed'],
+        'available': !exists(json, 'available') ? undefined : json['available'],
+        'estimated': !exists(json, 'estimated') ? undefined : json['estimated'],
+        'balance': !exists(json, 'balance') ? undefined : json['balance'],
+        'minRequired': !exists(json, 'min_required') ? undefined : json['min_required'],
     };
 }
 
@@ -73,9 +138,19 @@ export function DocumentStatusInfoDetailsToJSON(value?: DocumentStatusInfoDetail
     }
     return {
         
+            ...value,
         'started_at': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'current_stage': value.currentStage,
         'progress': value.progress,
+        'indexing_duration_ms': value.indexingDurationMs,
+        'tokens_used': value.tokensUsed,
+        'tokens_estimated': value.tokensEstimated,
+        'chunks_count': value.chunksCount,
+        'needed': value.needed,
+        'available': value.available,
+        'estimated': value.estimated,
+        'balance': value.balance,
+        'min_required': value.minRequired,
     };
 }
 

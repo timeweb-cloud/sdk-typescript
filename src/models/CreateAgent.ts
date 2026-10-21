@@ -21,7 +21,7 @@ import {
 } from './AgentSettings';
 
 /**
- * Данные для создания AI агента
+ * Данные для создания AI агента (устаревший метод API v1)
  * @export
  * @interface CreateAgent
  */
@@ -39,23 +39,17 @@ export interface CreateAgent {
      */
     description?: string;
     /**
-     * Тип доступа к агенту
+     * Тип доступа: `public` — агент отвечает анонимным посетителям сайта через виджет; `private` — только по токену аккаунта.
      * @type {string}
      * @memberof CreateAgent
      */
     accessType: CreateAgentAccessTypeEnum;
     /**
-     * ID модели
+     * ID основной модели агента
      * @type {number}
      * @memberof CreateAgent
      */
     modelId: number;
-    /**
-     * ID пакета токенов
-     * @type {number}
-     * @memberof CreateAgent
-     */
-    tokenPackageId: number;
     /**
      * 
      * @type {AgentSettings}
@@ -63,11 +57,23 @@ export interface CreateAgent {
      */
     settings: AgentSettings;
     /**
-     * ID проекта
+     * ID проекта, в который нужно добавить агента. По умолчанию — проект по умолчанию.
      * @type {number}
      * @memberof CreateAgent
      */
     projectId?: number;
+    /**
+     * Включить веб-поиск
+     * @type {boolean}
+     * @memberof CreateAgent
+     */
+    isWebSearchEnabled?: boolean;
+    /**
+     * ID пакета токенов. Обязателен для совместимости, но не учитывается: агент всегда создаётся с поресурсной оплатой.
+     * @type {number}
+     * @memberof CreateAgent
+     */
+    tokenPackageId: number;
 }
 
 
@@ -89,8 +95,8 @@ export function instanceOfCreateAgent(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "accessType" in value;
     isInstance = isInstance && "modelId" in value;
-    isInstance = isInstance && "tokenPackageId" in value;
     isInstance = isInstance && "settings" in value;
+    isInstance = isInstance && "tokenPackageId" in value;
 
     return isInstance;
 }
@@ -109,9 +115,10 @@ export function CreateAgentFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'description': !exists(json, 'description') ? undefined : json['description'],
         'accessType': json['access_type'],
         'modelId': json['model_id'],
-        'tokenPackageId': json['token_package_id'],
         'settings': AgentSettingsFromJSON(json['settings']),
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'isWebSearchEnabled': !exists(json, 'is_web_search_enabled') ? undefined : json['is_web_search_enabled'],
+        'tokenPackageId': json['token_package_id'],
     };
 }
 
@@ -128,9 +135,10 @@ export function CreateAgentToJSON(value?: CreateAgent | null): any {
         'description': value.description,
         'access_type': value.accessType,
         'model_id': value.modelId,
-        'token_package_id': value.tokenPackageId,
         'settings': AgentSettingsToJSON(value.settings),
         'project_id': value.projectId,
+        'is_web_search_enabled': value.isWebSearchEnabled,
+        'token_package_id': value.tokenPackageId,
     };
 }
 

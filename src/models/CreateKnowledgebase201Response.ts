@@ -31,7 +31,7 @@ export interface CreateKnowledgebase201Response {
      * @type {Knowledgebase}
      * @memberof CreateKnowledgebase201Response
      */
-    knowledgebase: Knowledgebase;
+    knowledgeBase: Knowledgebase;
 }
 
 /**
@@ -39,7 +39,7 @@ export interface CreateKnowledgebase201Response {
  */
 export function instanceOfCreateKnowledgebase201Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "knowledgebase" in value;
+    isInstance = isInstance && "knowledgeBase" in value;
 
     return isInstance;
 }
@@ -54,7 +54,7 @@ export function CreateKnowledgebase201ResponseFromJSONTyped(json: any, ignoreDis
     }
     return {
         
-        'knowledgebase': KnowledgebaseFromJSON(json['knowledgebase']),
+        'knowledgeBase': KnowledgebaseFromJSON(json['knowledge_base']),
     };
 }
 
@@ -67,7 +67,7 @@ export function CreateKnowledgebase201ResponseToJSON(value?: CreateKnowledgebase
     }
     return {
         
-        'knowledgebase': KnowledgebaseToJSON(value.knowledgebase),
+        'knowledge_base': KnowledgebaseToJSON(value.knowledgeBase),
     };
 }
 

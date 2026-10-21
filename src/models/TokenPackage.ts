@@ -20,31 +20,37 @@ import { exists, mapValues } from '../runtime';
  */
 export interface TokenPackage {
     /**
-     * Уникальный идентификатор пакета
+     * ID пакета
      * @type {number}
      * @memberof TokenPackage
      */
     id: number;
     /**
-     * ID модели, к которой применяется пакет токенов
+     * ID модели, к которой относится пакет
      * @type {number}
      * @memberof TokenPackage
      */
     modelId: number;
     /**
-     * Название пакета токенов
+     * ID тарифа пакета в биллинге
+     * @type {number}
+     * @memberof TokenPackage
+     */
+    serviceTypeId: number;
+    /**
+     * Название пакета
      * @type {string}
      * @memberof TokenPackage
      */
     name: string;
     /**
-     * Тип пакета (base - базовый, additional - дополнительный, promo - промо)
+     * Тип пакета: `base` — пакет подписки, `additional` — дополнительный пакет, `promo` — промо-пакет
      * @type {string}
      * @memberof TokenPackage
      */
     packageType: TokenPackagePackageTypeEnum;
     /**
-     * Тип сущности, к которой относится пакет (agent - агент, knowledgebase - база знаний)
+     * Для чего пакет: `agent` — AI агент, `knowledgebase` — база знаний
      * @type {string}
      * @memberof TokenPackage
      */
@@ -56,19 +62,19 @@ export interface TokenPackage {
      */
     tokenAmount: number;
     /**
-     * Цена пакета в целых единицах
+     * Цена пакета в рублях
      * @type {number}
      * @memberof TokenPackage
      */
     price: number;
     /**
-     * Продолжительность пакета в днях (null для дополнительных пакетов)
+     * Период подписки в днях. `null` для дополнительных пакетов
      * @type {number}
      * @memberof TokenPackage
      */
-    durationDays?: number | null;
+    durationDays: number | null;
     /**
-     * Флаг, указывающий доступность пакета
+     * Пакет доступен для покупки
      * @type {boolean}
      * @memberof TokenPackage
      */
@@ -103,11 +109,13 @@ export function instanceOfTokenPackage(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "modelId" in value;
+    isInstance = isInstance && "serviceTypeId" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "packageType" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "tokenAmount" in value;
     isInstance = isInstance && "price" in value;
+    isInstance = isInstance && "durationDays" in value;
     isInstance = isInstance && "isAvailable" in value;
 
     return isInstance;
@@ -125,12 +133,13 @@ export function TokenPackageFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'id': json['id'],
         'modelId': json['model_id'],
+        'serviceTypeId': json['service_type_id'],
         'name': json['name'],
         'packageType': json['package_type'],
         'type': json['type'],
         'tokenAmount': json['token_amount'],
         'price': json['price'],
-        'durationDays': !exists(json, 'duration_days') ? undefined : json['duration_days'],
+        'durationDays': json['duration_days'],
         'isAvailable': json['is_available'],
     };
 }
@@ -146,6 +155,7 @@ export function TokenPackageToJSON(value?: TokenPackage | null): any {
         
         'id': value.id,
         'model_id': value.modelId,
+        'service_type_id': value.serviceTypeId,
         'name': value.name,
         'package_type': value.packageType,
         'type': value.type,

@@ -32,25 +32,25 @@ export interface CreateKnowledgebase {
      */
     description?: string;
     /**
-     * ID пресета базы данных
+     * ID тарифа кластера OpenSearch, который будет создан для базы знаний. Список тарифов баз данных — `GET /api/v2/presets/dbs`
      * @type {number}
      * @memberof CreateKnowledgebase
      */
     dbaasPresetId: number;
     /**
-     * ID сети
+     * ID приватной сети (VPC), в которой будет создан кластер
      * @type {string}
      * @memberof CreateKnowledgebase
      */
     networkId: string;
     /**
-     * ID пакета токенов
+     * ID пакета токенов подписки. Подходят только базовые пакеты (`package_type: base`) из `GET /api/v1/cloud-ai/token-packages/knowledge-bases`
      * @type {number}
      * @memberof CreateKnowledgebase
      */
     tokenPackageId: number;
     /**
-     * ID проекта
+     * ID проекта, в который нужно добавить базу знаний
      * @type {number}
      * @memberof CreateKnowledgebase
      */

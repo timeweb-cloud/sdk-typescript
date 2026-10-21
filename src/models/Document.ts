@@ -19,15 +19,21 @@ import {
     DocumentStatusInfoFromJSONTyped,
     DocumentStatusInfoToJSON,
 } from './DocumentStatusInfo';
+import type { IndexingSchedule } from './IndexingSchedule';
+import {
+    IndexingScheduleFromJSON,
+    IndexingScheduleFromJSONTyped,
+    IndexingScheduleToJSON,
+} from './IndexingSchedule';
 
 /**
- * Документ в базе знаний
+ * Документ базы знаний
  * @export
  * @interface Document
  */
 export interface Document {
     /**
-     * Уникальный идентификатор документа
+     * ID документа
      * @type {number}
      * @memberof Document
      */
@@ -39,37 +45,59 @@ export interface Document {
      */
     name: string;
     /**
-     * Размер документа в байтах
+     * Размер в байтах. Для документа по ссылке — значение заголовка `Content-Length` на момент добавления, `0`, если сервер его не вернул
      * @type {number}
      * @memberof Document
      */
     size: number;
     /**
-     * Статус индексации документа
+     * Статус индексации:
+     * - `new` — документ добавлен и ждёт индексации
+     * - `indexing` — индексируется
+     * - `indexed` — проиндексирован, используется в поиске
+     * - `error` — ошибка индексации, подробности в `status_info`
      * @type {string}
      * @memberof Document
      */
     status: DocumentStatusEnum;
     /**
-     * Версия индексации
+     * Тип документа: `file` — загруженный файл, `link` — документ по ссылке
      * @type {string}
      * @memberof Document
      */
-    indexingVersion?: string | null;
+    type: DocumentTypeEnum;
+    /**
+     * 
+     * @type {IndexingSchedule}
+     * @memberof Document
+     */
+    indexingSchedule: IndexingSchedule;
+    /**
+     * Версия индексации документа
+     * @type {string}
+     * @memberof Document
+     */
+    indexingVersion: string | null;
     /**
      * 
      * @type {DocumentStatusInfo}
      * @memberof Document
      */
-    statusInfo?: DocumentStatusInfo | null;
+    statusInfo: DocumentStatusInfo | null;
     /**
-     * Дата создания документа
+     * URL документа. Только для документов типа `link`
+     * @type {string}
+     * @memberof Document
+     */
+    link?: string;
+    /**
+     * Дата и время добавления документа
      * @type {Date}
      * @memberof Document
      */
     createdAt: Date;
     /**
-     * Дата обновления документа
+     * Дата и время последнего изменения документа
      * @type {Date}
      * @memberof Document
      */
@@ -82,11 +110,20 @@ export interface Document {
  */
 export const DocumentStatusEnum = {
     New: 'new',
-    Indexed: 'indexed',
     Indexing: 'indexing',
+    Indexed: 'indexed',
     Error: 'error'
 } as const;
 export type DocumentStatusEnum = typeof DocumentStatusEnum[keyof typeof DocumentStatusEnum];
+
+/**
+ * @export
+ */
+export const DocumentTypeEnum = {
+    File: 'file',
+    Link: 'link'
+} as const;
+export type DocumentTypeEnum = typeof DocumentTypeEnum[keyof typeof DocumentTypeEnum];
 
 
 /**
@@ -98,6 +135,10 @@ export function instanceOfDocument(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "size" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "indexingSchedule" in value;
+    isInstance = isInstance && "indexingVersion" in value;
+    isInstance = isInstance && "statusInfo" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
 
@@ -118,8 +159,11 @@ export function DocumentFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'name': json['name'],
         'size': json['size'],
         'status': json['status'],
-        'indexingVersion': !exists(json, 'indexing_version') ? undefined : json['indexing_version'],
-        'statusInfo': !exists(json, 'status_info') ? undefined : DocumentStatusInfoFromJSON(json['status_info']),
+        'type': json['type'],
+        'indexingSchedule': IndexingScheduleFromJSON(json['indexing_schedule']),
+        'indexingVersion': json['indexing_version'],
+        'statusInfo': DocumentStatusInfoFromJSON(json['status_info']),
+        'link': !exists(json, 'link') ? undefined : json['link'],
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
     };
@@ -138,8 +182,11 @@ export function DocumentToJSON(value?: Document | null): any {
         'name': value.name,
         'size': value.size,
         'status': value.status,
+        'type': value.type,
+        'indexing_schedule': IndexingScheduleToJSON(value.indexingSchedule),
         'indexing_version': value.indexingVersion,
         'status_info': DocumentStatusInfoToJSON(value.statusInfo),
+        'link': value.link,
         'created_at': (value.createdAt.toISOString()),
         'updated_at': (value.updatedAt.toISOString()),
     };

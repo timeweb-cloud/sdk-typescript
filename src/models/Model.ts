@@ -13,73 +13,63 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { ModelParamsInfo } from './ModelParamsInfo';
+import type { ModelParamInfo } from './ModelParamInfo';
 import {
-    ModelParamsInfoFromJSON,
-    ModelParamsInfoFromJSONTyped,
-    ModelParamsInfoToJSON,
-} from './ModelParamsInfo';
+    ModelParamInfoFromJSON,
+    ModelParamInfoFromJSONTyped,
+    ModelParamInfoToJSON,
+} from './ModelParamInfo';
 
 /**
- * Модель AI
+ * AI модель
  * @export
  * @interface Model
  */
 export interface Model {
     /**
-     * Уникальный идентификатор модели
+     * ID модели
      * @type {number}
      * @memberof Model
      */
     id: number;
     /**
-     * ID провайдера, который предоставляет модель
+     * ID провайдера модели
      * @type {number}
      * @memberof Model
      */
     providerId: number;
     /**
-     * Название модели
+     * Семейство модели
      * @type {string}
      * @memberof Model
      */
     name: string;
     /**
-     * Публичное имя модели
+     * Отображаемое название модели
      * @type {string}
      * @memberof Model
      */
     publicName: string;
     /**
-     * Тип модели (llm - языковая модель, embedding - модель для эмбеддингов)
+     * Идентификатор модели с префиксом провайдера — передаётся в поле `model` запросов к AI Gateway
+     * @type {string}
+     * @memberof Model
+     */
+    modelName: string;
+    /**
+     * Тип модели:
+     * - `llm` — языковая модель
+     * - `hosted-llm` — языковая модель, размещённая в Timeweb Cloud
+     * - `embedding` — модель эмбеддингов
+     * - `image` — генерация изображений
+     * - `audio` — работа с аудио
+     * - `video` — генерация видео
+     * - `moderation` — модерация контента
+     * - `system-one` — служебная модель с собственным API
      * @type {string}
      * @memberof Model
      */
     type: ModelTypeEnum;
-    /**
-     * Признак, что модель устарела
-     * @type {boolean}
-     * @memberof Model
-     */
-    isDeprecated: boolean;
-    /**
-     * Признак, что поддержка модели остановлена в системе
-     * @type {boolean}
-     * @memberof Model
-     */
-    isStopped: boolean;
-    /**
-     * Дата депрекейта модели у провайдера
-     * @type {Date}
-     * @memberof Model
-     */
-    deprecationDate?: Date | null;
-    /**
-     * Признак поддержки режима рассуждения
-     * @type {boolean}
-     * @memberof Model
-     */
-    isReasoning: boolean;
     /**
      * Версия модели
      * @type {string}
@@ -87,11 +77,35 @@ export interface Model {
      */
     version: string;
     /**
-     * 
-     * @type {ModelParamsInfo}
+     * Модель устарела и недоступна для выбора в новых агентах
+     * @type {boolean}
      * @memberof Model
      */
-    paramsInfo?: ModelParamsInfo | null;
+    isDeprecated: boolean;
+    /**
+     * Поддержка модели остановлена: запросы к ней не выполняются
+     * @type {boolean}
+     * @memberof Model
+     */
+    isStopped: boolean;
+    /**
+     * Дата отключения модели у провайдера. `null`, если отключение не запланировано
+     * @type {Date}
+     * @memberof Model
+     */
+    deprecationDate: Date | null;
+    /**
+     * Модель поддерживает режим рассуждений
+     * @type {boolean}
+     * @memberof Model
+     */
+    isReasoning: boolean;
+    /**
+     * Параметры генерации, которые можно настроить у агента с этой моделью. Ключ — имя параметра (`temperature`, `top_p`, `max_tokens`, `reasoning_effort` и т.д.). `null`, если параметры не заданы
+     * @type {{ [key: string]: ModelParamInfo; }}
+     * @memberof Model
+     */
+    paramsInfo: { [key: string]: ModelParamInfo; } | null;
 }
 
 
@@ -100,7 +114,13 @@ export interface Model {
  */
 export const ModelTypeEnum = {
     Llm: 'llm',
-    Embedding: 'embedding'
+    HostedLlm: 'hosted-llm',
+    Embedding: 'embedding',
+    Image: 'image',
+    Audio: 'audio',
+    Video: 'video',
+    Moderation: 'moderation',
+    SystemOne: 'system-one'
 } as const;
 export type ModelTypeEnum = typeof ModelTypeEnum[keyof typeof ModelTypeEnum];
 
@@ -114,11 +134,14 @@ export function instanceOfModel(value: object): boolean {
     isInstance = isInstance && "providerId" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "publicName" in value;
+    isInstance = isInstance && "modelName" in value;
     isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "version" in value;
     isInstance = isInstance && "isDeprecated" in value;
     isInstance = isInstance && "isStopped" in value;
+    isInstance = isInstance && "deprecationDate" in value;
     isInstance = isInstance && "isReasoning" in value;
-    isInstance = isInstance && "version" in value;
+    isInstance = isInstance && "paramsInfo" in value;
 
     return isInstance;
 }
@@ -137,13 +160,14 @@ export function ModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mod
         'providerId': json['provider_id'],
         'name': json['name'],
         'publicName': json['public_name'],
+        'modelName': json['model_name'],
         'type': json['type'],
+        'version': json['version'],
         'isDeprecated': json['is_deprecated'],
         'isStopped': json['is_stopped'],
-        'deprecationDate': !exists(json, 'deprecation_date') ? undefined : (json['deprecation_date'] === null ? null : new Date(json['deprecation_date'])),
+        'deprecationDate': (json['deprecation_date'] === null ? null : new Date(json['deprecation_date'])),
         'isReasoning': json['is_reasoning'],
-        'version': json['version'],
-        'paramsInfo': !exists(json, 'params_info') ? undefined : ModelParamsInfoFromJSON(json['params_info']),
+        'paramsInfo': (json['params_info'] === null ? null : mapValues(json['params_info'], ModelParamInfoFromJSON)),
     };
 }
 
@@ -160,13 +184,14 @@ export function ModelToJSON(value?: Model | null): any {
         'provider_id': value.providerId,
         'name': value.name,
         'public_name': value.publicName,
+        'model_name': value.modelName,
         'type': value.type,
+        'version': value.version,
         'is_deprecated': value.isDeprecated,
         'is_stopped': value.isStopped,
-        'deprecation_date': value.deprecationDate === undefined ? undefined : (value.deprecationDate === null ? null : value.deprecationDate.toISOString()),
+        'deprecation_date': (value.deprecationDate === null ? null : value.deprecationDate.toISOString()),
         'is_reasoning': value.isReasoning,
-        'version': value.version,
-        'params_info': ModelParamsInfoToJSON(value.paramsInfo),
+        'params_info': (value.paramsInfo === null ? null : mapValues(value.paramsInfo, ModelParamInfoToJSON)),
     };
 }
 

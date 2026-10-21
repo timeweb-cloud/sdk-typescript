@@ -13,21 +13,33 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AgentAdditionalModel } from './AgentAdditionalModel';
+import {
+    AgentAdditionalModelFromJSON,
+    AgentAdditionalModelFromJSONTyped,
+    AgentAdditionalModelToJSON,
+} from './AgentAdditionalModel';
 import type { AgentSettings } from './AgentSettings';
 import {
     AgentSettingsFromJSON,
     AgentSettingsFromJSONTyped,
     AgentSettingsToJSON,
 } from './AgentSettings';
+import type { AgentToolsInner } from './AgentToolsInner';
+import {
+    AgentToolsInnerFromJSON,
+    AgentToolsInnerFromJSONTyped,
+    AgentToolsInnerToJSON,
+} from './AgentToolsInner';
 
 /**
- * AI Agent
+ * AI агент
  * @export
  * @interface Agent
  */
 export interface Agent {
     /**
-     * Уникальный идентификатор агента
+     * ID агента
      * @type {number}
      * @memberof Agent
      */
@@ -43,15 +55,21 @@ export interface Agent {
      * @type {string}
      * @memberof Agent
      */
-    description: string;
+    description: string | null;
     /**
-     * ID модели
+     * ID проекта, в котором находится агент
+     * @type {number}
+     * @memberof Agent
+     */
+    projectId?: number;
+    /**
+     * ID основной модели агента
      * @type {number}
      * @memberof Agent
      */
     modelId: number;
     /**
-     * ID провайдера
+     * ID провайдера модели
      * @type {number}
      * @memberof Agent
      */
@@ -63,65 +81,112 @@ export interface Agent {
      */
     settings: AgentSettings;
     /**
-     * Статус агента
+     * Статус агента:
+     * - `active` — работает;
+     * - `suspended` — приостановлен владельцем;
+     * - `blocked` — заблокирован (для агентов с пакетом токенов — закончились токены или подписка);
+     * - `deleted` — удалён.
      * @type {string}
      * @memberof Agent
      */
     status: AgentStatusEnum;
     /**
-     * Тип доступа к агенту
+     * Тип доступа: `public` — агент отвечает анонимным посетителям сайта через виджет; `private` — только по токену аккаунта.
      * @type {string}
      * @memberof Agent
      */
     accessType: AgentAccessTypeEnum;
     /**
-     * Всего токенов выделено агенту
+     * Идентификатор доступа агента. Используется для вызова агента из своих приложений через OpenAI-совместимое API (см. https://agent.timeweb.cloud/docs) и для встраивания виджета.
+     * @type {string}
+     * @memberof Agent
+     */
+    accessId: string;
+    /**
+     * Устарело. Дневной лимит агента в токенах без привязки к модели, если он задан; `0` — такого лимита нет. Лимиты в деньгах, по моделям и за другие периоды здесь не отражаются — используйте лимиты агента (`/api/v1/cloud-ai/agents/{id}/entity-limits`).
+     * @type {number}
+     * @memberof Agent
+     * @deprecated
+     */
+    tokenLimit: number;
+    /**
+     * Всего токенов в пакете. Только для агентов с пакетом токенов (устаревшая схема оплаты).
      * @type {number}
      * @memberof Agent
      */
-    totalTokens: number;
+    totalTokens?: number;
     /**
-     * Использовано токенов
+     * Использовано токенов пакета. Для агентов с поресурсной оплатой — `null`.
      * @type {number}
      * @memberof Agent
      */
-    usedTokens: number;
+    usedTokens: number | null;
     /**
-     * Осталось токенов
+     * Осталось токенов в пакете. Только для агентов с пакетом токенов.
      * @type {number}
      * @memberof Agent
      */
-    remainingTokens: number;
+    remainingTokens?: number;
     /**
-     * ID пакета токенов
+     * ID пакета токенов. Только для агентов с пакетом токенов; у агентов с поресурсной оплатой поле отсутствует.
      * @type {number}
      * @memberof Agent
      */
-    tokenPackageId: number;
+    tokenPackageId?: number;
     /**
-     * Дата обновления подписки
+     * Дата продления подписки на пакет токенов. Только для агентов с пакетом токенов.
      * @type {Date}
      * @memberof Agent
      */
-    subscriptionRenewalDate: Date;
+    subscriptionRenewalDate?: Date;
     /**
-     * ID баз знаний, связанных с агентом
+     * Включена ли автоматическая докупка пакетов токенов
+     * @type {boolean}
+     * @memberof Agent
+     */
+    autoBuyAdditionalTokens: boolean;
+    /**
+     * Инструменты, подключённые к агенту
+     * @type {Array<AgentToolsInner>}
+     * @memberof Agent
+     */
+    tools: Array<AgentToolsInner>;
+    /**
+     * ID дополнительных моделей агента
      * @type {Array<number>}
      * @memberof Agent
      */
-    knowledgeBasesIds: Array<number>;
+    additionalModelIds: Array<number>;
     /**
-     * ID доступа
-     * @type {number}
+     * Дополнительные модели агента с настройками
+     * @type {Array<AgentAdditionalModel>}
      * @memberof Agent
      */
-    accessId: number;
+    additionalModels: Array<AgentAdditionalModel>;
+    /**
+     * Включён ли веб-поиск
+     * @type {boolean}
+     * @memberof Agent
+     */
+    isWebSearchEnabled: boolean;
+    /**
+     * ID ключа AI Gateway, к которому привязан агент. `null` — агента можно привязать к ключу (см. обновление агента); поле отсутствует — привязка недоступна.
+     * @type {string}
+     * @memberof Agent
+     */
+    aiGatewayKeyId?: string | null;
     /**
      * Дата создания агента
      * @type {Date}
      * @memberof Agent
      */
     createdAt: Date;
+    /**
+     * ID баз знаний, подключённых к агенту
+     * @type {Array<number>}
+     * @memberof Agent
+     */
+    knowledgeBasesIds: Array<number>;
 }
 
 
@@ -159,14 +224,16 @@ export function instanceOfAgent(value: object): boolean {
     isInstance = isInstance && "settings" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "accessType" in value;
-    isInstance = isInstance && "totalTokens" in value;
-    isInstance = isInstance && "usedTokens" in value;
-    isInstance = isInstance && "remainingTokens" in value;
-    isInstance = isInstance && "tokenPackageId" in value;
-    isInstance = isInstance && "subscriptionRenewalDate" in value;
-    isInstance = isInstance && "knowledgeBasesIds" in value;
     isInstance = isInstance && "accessId" in value;
+    isInstance = isInstance && "tokenLimit" in value;
+    isInstance = isInstance && "usedTokens" in value;
+    isInstance = isInstance && "autoBuyAdditionalTokens" in value;
+    isInstance = isInstance && "tools" in value;
+    isInstance = isInstance && "additionalModelIds" in value;
+    isInstance = isInstance && "additionalModels" in value;
+    isInstance = isInstance && "isWebSearchEnabled" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "knowledgeBasesIds" in value;
 
     return isInstance;
 }
@@ -184,19 +251,27 @@ export function AgentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Age
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
         'modelId': json['model_id'],
         'providerId': json['provider_id'],
         'settings': AgentSettingsFromJSON(json['settings']),
         'status': json['status'],
         'accessType': json['access_type'],
-        'totalTokens': json['total_tokens'],
-        'usedTokens': json['used_tokens'],
-        'remainingTokens': json['remaining_tokens'],
-        'tokenPackageId': json['token_package_id'],
-        'subscriptionRenewalDate': (new Date(json['subscription_renewal_date'])),
-        'knowledgeBasesIds': json['knowledge_bases_ids'],
         'accessId': json['access_id'],
+        'tokenLimit': json['token_limit'],
+        'totalTokens': !exists(json, 'total_tokens') ? undefined : json['total_tokens'],
+        'usedTokens': json['used_tokens'],
+        'remainingTokens': !exists(json, 'remaining_tokens') ? undefined : json['remaining_tokens'],
+        'tokenPackageId': !exists(json, 'token_package_id') ? undefined : json['token_package_id'],
+        'subscriptionRenewalDate': !exists(json, 'subscription_renewal_date') ? undefined : (new Date(json['subscription_renewal_date'])),
+        'autoBuyAdditionalTokens': json['auto_buy_additional_tokens'],
+        'tools': ((json['tools'] as Array<any>).map(AgentToolsInnerFromJSON)),
+        'additionalModelIds': json['additional_model_ids'],
+        'additionalModels': ((json['additional_models'] as Array<any>).map(AgentAdditionalModelFromJSON)),
+        'isWebSearchEnabled': json['is_web_search_enabled'],
+        'aiGatewayKeyId': !exists(json, 'ai_gateway_key_id') ? undefined : json['ai_gateway_key_id'],
         'createdAt': (new Date(json['created_at'])),
+        'knowledgeBasesIds': json['knowledge_bases_ids'],
     };
 }
 
@@ -212,19 +287,27 @@ export function AgentToJSON(value?: Agent | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'project_id': value.projectId,
         'model_id': value.modelId,
         'provider_id': value.providerId,
         'settings': AgentSettingsToJSON(value.settings),
         'status': value.status,
         'access_type': value.accessType,
+        'access_id': value.accessId,
+        'token_limit': value.tokenLimit,
         'total_tokens': value.totalTokens,
         'used_tokens': value.usedTokens,
         'remaining_tokens': value.remainingTokens,
         'token_package_id': value.tokenPackageId,
-        'subscription_renewal_date': (value.subscriptionRenewalDate.toISOString()),
-        'knowledge_bases_ids': value.knowledgeBasesIds,
-        'access_id': value.accessId,
+        'subscription_renewal_date': value.subscriptionRenewalDate === undefined ? undefined : (value.subscriptionRenewalDate.toISOString()),
+        'auto_buy_additional_tokens': value.autoBuyAdditionalTokens,
+        'tools': ((value.tools as Array<any>).map(AgentToolsInnerToJSON)),
+        'additional_model_ids': value.additionalModelIds,
+        'additional_models': ((value.additionalModels as Array<any>).map(AgentAdditionalModelToJSON)),
+        'is_web_search_enabled': value.isWebSearchEnabled,
+        'ai_gateway_key_id': value.aiGatewayKeyId,
         'created_at': (value.createdAt.toISOString()),
+        'knowledge_bases_ids': value.knowledgeBasesIds,
     };
 }
 

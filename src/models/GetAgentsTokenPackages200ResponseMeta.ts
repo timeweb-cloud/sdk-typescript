@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface GetAgentsTokenPackages200ResponseMeta {
     /**
-     * Общее количество пакетов токенов
+     * Количество пакетов токенов
      * @type {number}
      * @memberof GetAgentsTokenPackages200ResponseMeta
      */

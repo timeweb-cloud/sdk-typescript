@@ -14,19 +14,19 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Данные для обновления базы знаний
+ * Данные для изменения базы знаний. Передайте только поля, которые нужно изменить
  * @export
  * @interface UpdateKnowledgebase
  */
 export interface UpdateKnowledgebase {
     /**
-     * Название базы знаний
+     * Новое название. Пустая строка игнорируется
      * @type {string}
      * @memberof UpdateKnowledgebase
      */
     name?: string;
     /**
-     * Описание базы знаний
+     * Новое описание
      * @type {string}
      * @memberof UpdateKnowledgebase
      */

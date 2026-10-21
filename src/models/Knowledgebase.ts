@@ -21,13 +21,13 @@ import {
 } from './Document';
 
 /**
- * База знаний
+ * База знаний со списком документов
  * @export
  * @interface Knowledgebase
  */
 export interface Knowledgebase {
     /**
-     * Уникальный идентификатор базы знаний
+     * ID базы знаний
      * @type {number}
      * @memberof Knowledgebase
      */
@@ -43,69 +43,79 @@ export interface Knowledgebase {
      * @type {string}
      * @memberof Knowledgebase
      */
-    description?: string | null;
+    description: string | null;
     /**
-     * ID базы данных opensearch
+     * ID проекта, в котором находится база знаний. Поля нет, если проект не определён
+     * @type {number}
+     * @memberof Knowledgebase
+     */
+    projectId?: number;
+    /**
+     * ID кластера базы данных OpenSearch, который создан для базы знаний в вашем аккаунте
      * @type {number}
      * @memberof Knowledgebase
      */
     dbaasId: number;
     /**
-     * Статус базы знаний
+     * Статус базы знаний:
+     * - `creating` — создаётся кластер базы данных, документы будут проиндексированы после перехода в `active`
+     * - `active` — база знаний работает
+     * - `blocked` — заблокирована: закончились токены или не удалось продлить подписку
+     * - `deleted` — удалена
      * @type {string}
      * @memberof Knowledgebase
      */
     status: KnowledgebaseStatusEnum;
     /**
-     * Дата последней синхронизации
+     * Дата и время последней синхронизации. `null`, если синхронизации не было
      * @type {Date}
      * @memberof Knowledgebase
      */
-    lastSync?: Date | null;
+    lastSync: Date | null;
     /**
-     * Всего токенов выделено
+     * Количество токенов, доступных в текущем периоде подписки (пакет подписки и докупленные пакеты)
      * @type {number}
      * @memberof Knowledgebase
      */
     totalTokens: number;
     /**
-     * Использовано токенов
+     * Количество израсходованных токенов
      * @type {number}
      * @memberof Knowledgebase
      */
     usedTokens: number;
     /**
-     * Осталось токенов
+     * Количество оставшихся токенов
      * @type {number}
      * @memberof Knowledgebase
      */
     remainingTokens: number;
     /**
-     * ID пакета токенов
+     * ID пакета токенов подписки базы знаний
      * @type {number}
      * @memberof Knowledgebase
      */
     tokenPackageId: number;
     /**
-     * Дата обновления подписки
+     * Дата следующего продления подписки (списания стоимости пакета токенов)
      * @type {Date}
      * @memberof Knowledgebase
      */
-    subscriptionRenewalDate: Date;
+    subscriptionRenewalDate: Date | null;
     /**
-     * Документы в базе знаний
+     * Документы базы знаний
      * @type {Array<Document>}
      * @memberof Knowledgebase
      */
     documents: Array<Document>;
     /**
-     * ID агентов, связанных с базой знаний
+     * ID агентов, к которым привязана база знаний
      * @type {Array<number>}
      * @memberof Knowledgebase
      */
     agentsIds: Array<number>;
     /**
-     * Дата создания базы знаний
+     * Дата и время создания базы знаний
      * @type {Date}
      * @memberof Knowledgebase
      */
@@ -132,8 +142,10 @@ export function instanceOfKnowledgebase(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "dbaasId" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "lastSync" in value;
     isInstance = isInstance && "totalTokens" in value;
     isInstance = isInstance && "usedTokens" in value;
     isInstance = isInstance && "remainingTokens" in value;
@@ -158,15 +170,16 @@ export function KnowledgebaseFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'id': json['id'],
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'],
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
         'dbaasId': json['dbaas_id'],
         'status': json['status'],
-        'lastSync': !exists(json, 'last_sync') ? undefined : (json['last_sync'] === null ? null : new Date(json['last_sync'])),
+        'lastSync': (json['last_sync'] === null ? null : new Date(json['last_sync'])),
         'totalTokens': json['total_tokens'],
         'usedTokens': json['used_tokens'],
         'remainingTokens': json['remaining_tokens'],
         'tokenPackageId': json['token_package_id'],
-        'subscriptionRenewalDate': (new Date(json['subscription_renewal_date'])),
+        'subscriptionRenewalDate': (json['subscription_renewal_date'] === null ? null : new Date(json['subscription_renewal_date'])),
         'documents': ((json['documents'] as Array<any>).map(DocumentFromJSON)),
         'agentsIds': json['agents_ids'],
         'createdAt': (new Date(json['created_at'])),
@@ -185,14 +198,15 @@ export function KnowledgebaseToJSON(value?: Knowledgebase | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'project_id': value.projectId,
         'dbaas_id': value.dbaasId,
         'status': value.status,
-        'last_sync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
+        'last_sync': (value.lastSync === null ? null : value.lastSync.toISOString()),
         'total_tokens': value.totalTokens,
         'used_tokens': value.usedTokens,
         'remaining_tokens': value.remainingTokens,
         'token_package_id': value.tokenPackageId,
-        'subscription_renewal_date': (value.subscriptionRenewalDate.toISOString()),
+        'subscription_renewal_date': (value.subscriptionRenewalDate === null ? null : value.subscriptionRenewalDate.toISOString()),
         'documents': ((value.documents as Array<any>).map(DocumentToJSON)),
         'agents_ids': value.agentsIds,
         'created_at': (value.createdAt.toISOString()),

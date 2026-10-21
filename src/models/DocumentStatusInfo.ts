@@ -21,29 +21,45 @@ import {
 } from './DocumentStatusInfoDetails';
 
 /**
- * Детальная информация о текущем состоянии документа в базе знаний
+ * Подробности о состоянии индексации документа. `null`, если информации нет
  * @export
  * @interface DocumentStatusInfo
  */
 export interface DocumentStatusInfo {
     /**
-     * Тип статуса документа
+     * Тип состояния, совпадает со статусом документа
      * @type {string}
      * @memberof DocumentStatusInfo
      */
     type: DocumentStatusInfoTypeEnum;
     /**
-     * Время записи информации (ISO string)
+     * Время, когда записано состояние
      * @type {Date}
      * @memberof DocumentStatusInfo
      */
     timestamp: Date;
     /**
-     * Код ошибки (только для type: 'error')
+     * Код ошибки, только для `type: error`:
+     * - `INSUFFICIENT_TOKENS` — недостаточно токенов для индексации
+     * - `CRITICAL_BALANCE` — критически низкий остаток токенов
+     * - `NEGATIVE_BALANCE` — отрицательный остаток токенов
+     * - `INDEXING_ERROR` — не удалось обработать документ
      * @type {string}
      * @memberof DocumentStatusInfo
      */
     errorCode?: DocumentStatusInfoErrorCodeEnum;
+    /**
+     * Этап индексации, на котором произошла ошибка
+     * @type {string}
+     * @memberof DocumentStatusInfo
+     */
+    stage?: string;
+    /**
+     * Идентификатор операции индексации — укажите его при обращении в поддержку
+     * @type {string}
+     * @memberof DocumentStatusInfo
+     */
+    traceId?: string;
     /**
      * 
      * @type {DocumentStatusInfoDetails}
@@ -100,6 +116,8 @@ export function DocumentStatusInfoFromJSONTyped(json: any, ignoreDiscriminator: 
         'type': json['type'],
         'timestamp': (new Date(json['timestamp'])),
         'errorCode': !exists(json, 'error_code') ? undefined : json['error_code'],
+        'stage': !exists(json, 'stage') ? undefined : json['stage'],
+        'traceId': !exists(json, 'trace_id') ? undefined : json['trace_id'],
         'details': !exists(json, 'details') ? undefined : DocumentStatusInfoDetailsFromJSON(json['details']),
     };
 }
@@ -116,6 +134,8 @@ export function DocumentStatusInfoToJSON(value?: DocumentStatusInfo | null): any
         'type': value.type,
         'timestamp': (value.timestamp.toISOString()),
         'error_code': value.errorCode,
+        'stage': value.stage,
+        'trace_id': value.traceId,
         'details': DocumentStatusInfoDetailsToJSON(value.details),
     };
 }

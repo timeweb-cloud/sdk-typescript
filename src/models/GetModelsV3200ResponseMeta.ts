@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface GetModelsV3200ResponseMeta {
     /**
-     * Общее количество моделей
+     * Количество моделей
      * @type {number}
      * @memberof GetModelsV3200ResponseMeta
      */

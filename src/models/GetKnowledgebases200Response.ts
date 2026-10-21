@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GetKnowledgebasesV2200ResponseMeta } from './GetKnowledgebasesV2200ResponseMeta';
+import type { GetKnowledgebasesV3200ResponseMeta } from './GetKnowledgebasesV3200ResponseMeta';
 import {
-    GetKnowledgebasesV2200ResponseMetaFromJSON,
-    GetKnowledgebasesV2200ResponseMetaFromJSONTyped,
-    GetKnowledgebasesV2200ResponseMetaToJSON,
-} from './GetKnowledgebasesV2200ResponseMeta';
+    GetKnowledgebasesV3200ResponseMetaFromJSON,
+    GetKnowledgebasesV3200ResponseMetaFromJSONTyped,
+    GetKnowledgebasesV3200ResponseMetaToJSON,
+} from './GetKnowledgebasesV3200ResponseMeta';
 import type { Knowledgebase } from './Knowledgebase';
 import {
     KnowledgebaseFromJSON,
@@ -37,13 +37,13 @@ export interface GetKnowledgebases200Response {
      * @type {Array<Knowledgebase>}
      * @memberof GetKnowledgebases200Response
      */
-    knowledgebases: Array<Knowledgebase>;
+    knowledgeBases: Array<Knowledgebase>;
     /**
      * 
-     * @type {GetKnowledgebasesV2200ResponseMeta}
+     * @type {GetKnowledgebasesV3200ResponseMeta}
      * @memberof GetKnowledgebases200Response
      */
-    meta: GetKnowledgebasesV2200ResponseMeta;
+    meta: GetKnowledgebasesV3200ResponseMeta;
 }
 
 /**
@@ -51,7 +51,7 @@ export interface GetKnowledgebases200Response {
  */
 export function instanceOfGetKnowledgebases200Response(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "knowledgebases" in value;
+    isInstance = isInstance && "knowledgeBases" in value;
     isInstance = isInstance && "meta" in value;
 
     return isInstance;
@@ -67,8 +67,8 @@ export function GetKnowledgebases200ResponseFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'knowledgebases': ((json['knowledgebases'] as Array<any>).map(KnowledgebaseFromJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaFromJSON(json['meta']),
+        'knowledgeBases': ((json['knowledge_bases'] as Array<any>).map(KnowledgebaseFromJSON)),
+        'meta': GetKnowledgebasesV3200ResponseMetaFromJSON(json['meta']),
     };
 }
 
@@ -81,8 +81,8 @@ export function GetKnowledgebases200ResponseToJSON(value?: GetKnowledgebases200R
     }
     return {
         
-        'knowledgebases': ((value.knowledgebases as Array<any>).map(KnowledgebaseToJSON)),
-        'meta': GetKnowledgebasesV2200ResponseMetaToJSON(value.meta),
+        'knowledge_bases': ((value.knowledgeBases as Array<any>).map(KnowledgebaseToJSON)),
+        'meta': GetKnowledgebasesV3200ResponseMetaToJSON(value.meta),
     };
 }
 

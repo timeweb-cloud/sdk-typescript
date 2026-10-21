@@ -27,6 +27,12 @@ import {
  */
 export interface Status {
     /**
+     * Логин аккаунта.
+     * @type {string}
+     * @memberof Status
+     */
+    login: string;
+    /**
      * Это логическое значение, которое показывает, заблокирован ли аккаунт.
      * @type {boolean}
      * @memberof Status
@@ -69,6 +75,7 @@ export interface Status {
  */
 export function instanceOfStatus(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "login" in value;
     isInstance = isInstance && "isBlocked" in value;
     isInstance = isInstance && "isPermanentBlocked" in value;
     isInstance = isInstance && "isSendBillLetters" in value;
@@ -89,6 +96,7 @@ export function StatusFromJSONTyped(json: any, ignoreDiscriminator: boolean): St
     }
     return {
         
+        'login': json['login'],
         'isBlocked': json['is_blocked'],
         'isPermanentBlocked': json['is_permanent_blocked'],
         'isSendBillLetters': json['is_send_bill_letters'],
@@ -107,6 +115,7 @@ export function StatusToJSON(value?: Status | null): any {
     }
     return {
         
+        'login': value.login,
         'is_blocked': value.isBlocked,
         'is_permanent_blocked': value.isPermanentBlocked,
         'is_send_bill_letters': value.isSendBillLetters,

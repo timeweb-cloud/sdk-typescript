@@ -14,13 +14,13 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * База знаний (версия API v2)
+ * База знаний (v2): вместо списка документов — их количество
  * @export
  * @interface KnowledgebaseV2
  */
 export interface KnowledgebaseV2 {
     /**
-     * Уникальный идентификатор базы знаний
+     * ID базы знаний
      * @type {number}
      * @memberof KnowledgebaseV2
      */
@@ -36,69 +36,79 @@ export interface KnowledgebaseV2 {
      * @type {string}
      * @memberof KnowledgebaseV2
      */
-    description?: string | null;
+    description: string | null;
     /**
-     * ID базы данных opensearch
+     * ID проекта, в котором находится база знаний. Поля нет, если проект не определён
+     * @type {number}
+     * @memberof KnowledgebaseV2
+     */
+    projectId?: number;
+    /**
+     * ID кластера базы данных OpenSearch, который создан для базы знаний в вашем аккаунте
      * @type {number}
      * @memberof KnowledgebaseV2
      */
     dbaasId: number;
     /**
-     * Статус базы знаний
+     * Статус базы знаний:
+     * - `creating` — создаётся кластер базы данных, документы будут проиндексированы после перехода в `active`
+     * - `active` — база знаний работает
+     * - `blocked` — заблокирована: закончились токены или не удалось продлить подписку
+     * - `deleted` — удалена
      * @type {string}
      * @memberof KnowledgebaseV2
      */
     status: KnowledgebaseV2StatusEnum;
     /**
-     * Дата последней синхронизации
+     * Дата и время последней синхронизации. `null`, если синхронизации не было
      * @type {Date}
      * @memberof KnowledgebaseV2
      */
-    lastSync?: Date | null;
+    lastSync: Date | null;
     /**
-     * Всего токенов выделено
+     * Количество токенов, доступных в текущем периоде подписки (пакет подписки и докупленные пакеты)
      * @type {number}
      * @memberof KnowledgebaseV2
      */
     totalTokens: number;
     /**
-     * Использовано токенов
+     * Количество израсходованных токенов
      * @type {number}
      * @memberof KnowledgebaseV2
      */
     usedTokens: number;
     /**
-     * Осталось токенов
+     * Количество оставшихся токенов
      * @type {number}
      * @memberof KnowledgebaseV2
      */
     remainingTokens: number;
     /**
-     * ID пакета токенов
+     * ID пакета токенов подписки базы знаний
      * @type {number}
      * @memberof KnowledgebaseV2
      */
     tokenPackageId: number;
     /**
-     * Дата обновления подписки
+     * Дата следующего продления подписки (списания стоимости пакета токенов)
      * @type {Date}
      * @memberof KnowledgebaseV2
      */
-    subscriptionRenewalDate: Date;
+    subscriptionRenewalDate: Date | null;
     /**
-     * Общее количество документов в базе знаний
+     * Количество документов в базе знаний
      * @type {number}
      * @memberof KnowledgebaseV2
      */
     documentsCount: number;
     /**
-     * ID агентов, связанных с базой знаний
+     * ID агентов, к которым привязана база знаний
      * @type {Array<number>}
      * @memberof KnowledgebaseV2
      */
     agentsIds: Array<number>;
     /**
-     * Дата создания базы знаний
+     * Дата и время создания базы знаний
      * @type {Date}
      * @memberof KnowledgebaseV2
      */
@@ -125,8 +135,10 @@ export function instanceOfKnowledgebaseV2(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "dbaasId" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "lastSync" in value;
     isInstance = isInstance && "totalTokens" in value;
     isInstance = isInstance && "usedTokens" in value;
     isInstance = isInstance && "remainingTokens" in value;
@@ -151,15 +163,16 @@ export function KnowledgebaseV2FromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'id': json['id'],
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'],
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
         'dbaasId': json['dbaas_id'],
         'status': json['status'],
-        'lastSync': !exists(json, 'last_sync') ? undefined : (json['last_sync'] === null ? null : new Date(json['last_sync'])),
+        'lastSync': (json['last_sync'] === null ? null : new Date(json['last_sync'])),
         'totalTokens': json['total_tokens'],
         'usedTokens': json['used_tokens'],
         'remainingTokens': json['remaining_tokens'],
         'tokenPackageId': json['token_package_id'],
-        'subscriptionRenewalDate': (new Date(json['subscription_renewal_date'])),
+        'subscriptionRenewalDate': (json['subscription_renewal_date'] === null ? null : new Date(json['subscription_renewal_date'])),
         'documentsCount': json['documents_count'],
         'agentsIds': json['agents_ids'],
         'createdAt': (new Date(json['created_at'])),
@@ -178,14 +191,15 @@ export function KnowledgebaseV2ToJSON(value?: KnowledgebaseV2 | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'project_id': value.projectId,
         'dbaas_id': value.dbaasId,
         'status': value.status,
-        'last_sync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
+        'last_sync': (value.lastSync === null ? null : value.lastSync.toISOString()),
         'total_tokens': value.totalTokens,
         'used_tokens': value.usedTokens,
         'remaining_tokens': value.remainingTokens,
         'token_package_id': value.tokenPackageId,
-        'subscription_renewal_date': (value.subscriptionRenewalDate.toISOString()),
+        'subscription_renewal_date': (value.subscriptionRenewalDate === null ? null : value.subscriptionRenewalDate.toISOString()),
         'documents_count': value.documentsCount,
         'agents_ids': value.agentsIds,
         'created_at': (value.createdAt.toISOString()),

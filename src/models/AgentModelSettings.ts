@@ -14,41 +14,48 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Настройки модели агента
+ * Параметры модели агента. Допустимые параметры и их границы зависят от модели (см. параметры модели в разделе «AI Модели»): параметры, которые модель не поддерживает, отбрасываются при сохранении, а значения вне допустимых границ отклоняются с ошибкой 400.
  * @export
  * @interface AgentModelSettings
  */
 export interface AgentModelSettings {
+    [key: string]: any | any;
     /**
-     * Контролирует случайность вывода модели.
+     * Температура: чем выше, тем случайнее ответы модели.
      * @type {number}
      * @memberof AgentModelSettings
      */
     temperature?: number;
     /**
-     * Контролирует разнообразие вывода модели.
+     * Nucleus sampling: доля вероятностной массы, из которой выбираются токены.
      * @type {number}
      * @memberof AgentModelSettings
      */
     topP?: number;
     /**
-     * Максимальное количество токенов в выводе.
+     * Максимальное количество токенов в ответе модели.
      * @type {number}
      * @memberof AgentModelSettings
      */
     maxTokens?: number;
     /**
-     * Положительные значения штрафуют новые токены на основе их существующей частоты.
+     * Штраф за частоту: положительные значения снижают повторы уже использованных токенов.
      * @type {number}
      * @memberof AgentModelSettings
      */
     frequencyPenalty?: number;
     /**
-     * Положительные значения штрафуют новые токены на основе того, встречались ли они в тексте ранее.
+     * Штраф за присутствие: положительные значения поощряют новые темы.
      * @type {number}
      * @memberof AgentModelSettings
      */
     presencePenalty?: number;
+    /**
+     * Включает режим рассуждений (thinking) для моделей, которые его поддерживают.
+     * @type {boolean}
+     * @memberof AgentModelSettings
+     */
+    enableThinking?: boolean;
 }
 
 /**
@@ -70,11 +77,13 @@ export function AgentModelSettingsFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
+            ...json,
         'temperature': !exists(json, 'temperature') ? undefined : json['temperature'],
         'topP': !exists(json, 'top_p') ? undefined : json['top_p'],
         'maxTokens': !exists(json, 'max_tokens') ? undefined : json['max_tokens'],
         'frequencyPenalty': !exists(json, 'frequency_penalty') ? undefined : json['frequency_penalty'],
         'presencePenalty': !exists(json, 'presence_penalty') ? undefined : json['presence_penalty'],
+        'enableThinking': !exists(json, 'enable_thinking') ? undefined : json['enable_thinking'],
     };
 }
 
@@ -87,11 +96,13 @@ export function AgentModelSettingsToJSON(value?: AgentModelSettings | null): any
     }
     return {
         
+            ...value,
         'temperature': value.temperature,
         'top_p': value.topP,
         'max_tokens': value.maxTokens,
         'frequency_penalty': value.frequencyPenalty,
         'presence_penalty': value.presencePenalty,
+        'enable_thinking': value.enableThinking,
     };
 }
 

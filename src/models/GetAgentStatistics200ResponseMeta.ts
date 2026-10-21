@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface GetAgentStatistics200ResponseMeta {
     /**
-     * Количество полученных временных отрезков
+     * Количество точек статистики
      * @type {number}
      * @memberof GetAgentStatistics200ResponseMeta
      */

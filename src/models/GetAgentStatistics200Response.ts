@@ -13,18 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AgentTokenStatistic } from './AgentTokenStatistic';
+import {
+    AgentTokenStatisticFromJSON,
+    AgentTokenStatisticFromJSONTyped,
+    AgentTokenStatisticToJSON,
+} from './AgentTokenStatistic';
 import type { GetAgentStatistics200ResponseMeta } from './GetAgentStatistics200ResponseMeta';
 import {
     GetAgentStatistics200ResponseMetaFromJSON,
     GetAgentStatistics200ResponseMetaFromJSONTyped,
     GetAgentStatistics200ResponseMetaToJSON,
 } from './GetAgentStatistics200ResponseMeta';
-import type { TokenStatistic } from './TokenStatistic';
-import {
-    TokenStatisticFromJSON,
-    TokenStatisticFromJSONTyped,
-    TokenStatisticToJSON,
-} from './TokenStatistic';
 
 /**
  * 
@@ -34,10 +34,10 @@ import {
 export interface GetAgentStatistics200Response {
     /**
      * 
-     * @type {Array<TokenStatistic>}
+     * @type {Array<AgentTokenStatistic>}
      * @memberof GetAgentStatistics200Response
      */
-    agentStatistics: Array<TokenStatistic>;
+    agentStatistics: Array<AgentTokenStatistic>;
     /**
      * 
      * @type {GetAgentStatistics200ResponseMeta}
@@ -67,7 +67,7 @@ export function GetAgentStatistics200ResponseFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'agentStatistics': ((json['agent_statistics'] as Array<any>).map(TokenStatisticFromJSON)),
+        'agentStatistics': ((json['agent_statistics'] as Array<any>).map(AgentTokenStatisticFromJSON)),
         'meta': GetAgentStatistics200ResponseMetaFromJSON(json['meta']),
     };
 }
@@ -81,7 +81,7 @@ export function GetAgentStatistics200ResponseToJSON(value?: GetAgentStatistics20
     }
     return {
         
-        'agent_statistics': ((value.agentStatistics as Array<any>).map(TokenStatisticToJSON)),
+        'agent_statistics': ((value.agentStatistics as Array<any>).map(AgentTokenStatisticToJSON)),
         'meta': GetAgentStatistics200ResponseMetaToJSON(value.meta),
     };
 }

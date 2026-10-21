@@ -20,19 +20,19 @@ import { exists, mapValues } from '../runtime';
  */
 export interface GetKnowledgebaseDocumentsV2200ResponseMeta {
     /**
-     * Общее количество документов
+     * Количество документов, подходящих под фильтр
      * @type {number}
      * @memberof GetKnowledgebaseDocumentsV2200ResponseMeta
      */
     total: number;
     /**
-     * Количество документов на странице
+     * Применённый размер страницы
      * @type {number}
      * @memberof GetKnowledgebaseDocumentsV2200ResponseMeta
      */
     limit: number;
     /**
-     * Количество пропущенных документов
+     * Применённое смещение
      * @type {number}
      * @memberof GetKnowledgebaseDocumentsV2200ResponseMeta
      */

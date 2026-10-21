@@ -33,7 +33,7 @@ import {
  */
 export interface GetKnowledgebaseDocumentsV2200Response {
     /**
-     * Список документов
+     * Документы
      * @type {Array<Document>}
      * @memberof GetKnowledgebaseDocumentsV2200Response
      */

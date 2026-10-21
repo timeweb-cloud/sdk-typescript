@@ -15,9 +15,10 @@
 
 import * as runtime from '../runtime';
 import type {
-  AddTokenPackage,
+  CreateDocument,
   CreateKnowledgebase,
   CreateKnowledgebase201Response,
+  CreateKnowledgebaseDocument201Response,
   GetAccountStatus403Response,
   GetFinances400Response,
   GetFinances401Response,
@@ -25,19 +26,25 @@ import type {
   GetFinances500Response,
   GetImage404Response,
   GetKnowledgebaseDocumentsV2200Response,
-  GetKnowledgebaseStatistics200Response,
+  GetKnowledgebaseV3200Response,
   GetKnowledgebases200Response,
   GetKnowledgebasesV2200Response,
+  GetKnowledgebasesV3200Response,
+  KnowledgebaseAddTokenPackage,
+  LinkKnowledgebase,
+  UpdateDocument,
   UpdateKnowledgebase,
-  UploadFilesToKnowledgebase200Response,
+  UploadResult,
 } from '../models/index';
 import {
-    AddTokenPackageFromJSON,
-    AddTokenPackageToJSON,
+    CreateDocumentFromJSON,
+    CreateDocumentToJSON,
     CreateKnowledgebaseFromJSON,
     CreateKnowledgebaseToJSON,
     CreateKnowledgebase201ResponseFromJSON,
     CreateKnowledgebase201ResponseToJSON,
+    CreateKnowledgebaseDocument201ResponseFromJSON,
+    CreateKnowledgebaseDocument201ResponseToJSON,
     GetAccountStatus403ResponseFromJSON,
     GetAccountStatus403ResponseToJSON,
     GetFinances400ResponseFromJSON,
@@ -52,25 +59,38 @@ import {
     GetImage404ResponseToJSON,
     GetKnowledgebaseDocumentsV2200ResponseFromJSON,
     GetKnowledgebaseDocumentsV2200ResponseToJSON,
-    GetKnowledgebaseStatistics200ResponseFromJSON,
-    GetKnowledgebaseStatistics200ResponseToJSON,
+    GetKnowledgebaseV3200ResponseFromJSON,
+    GetKnowledgebaseV3200ResponseToJSON,
     GetKnowledgebases200ResponseFromJSON,
     GetKnowledgebases200ResponseToJSON,
     GetKnowledgebasesV2200ResponseFromJSON,
     GetKnowledgebasesV2200ResponseToJSON,
+    GetKnowledgebasesV3200ResponseFromJSON,
+    GetKnowledgebasesV3200ResponseToJSON,
+    KnowledgebaseAddTokenPackageFromJSON,
+    KnowledgebaseAddTokenPackageToJSON,
+    LinkKnowledgebaseFromJSON,
+    LinkKnowledgebaseToJSON,
+    UpdateDocumentFromJSON,
+    UpdateDocumentToJSON,
     UpdateKnowledgebaseFromJSON,
     UpdateKnowledgebaseToJSON,
-    UploadFilesToKnowledgebase200ResponseFromJSON,
-    UploadFilesToKnowledgebase200ResponseToJSON,
+    UploadResultFromJSON,
+    UploadResultToJSON,
 } from '../models/index';
 
 export interface AddAdditionalTokenPackageToKnowledgebaseRequest {
     id: number;
-    addTokenPackage?: AddTokenPackage;
+    knowledgebaseAddTokenPackage?: KnowledgebaseAddTokenPackage;
 }
 
 export interface CreateKnowledgebaseRequest {
     createKnowledgebase: CreateKnowledgebase;
+}
+
+export interface CreateKnowledgebaseDocumentRequest {
+    id: number;
+    createDocument: CreateDocument;
 }
 
 export interface DeleteDocumentRequest {
@@ -97,18 +117,17 @@ export interface GetKnowledgebaseDocumentsV2Request {
     offset?: number;
     sortBy?: GetKnowledgebaseDocumentsV2SortByEnum;
     sortOrder?: GetKnowledgebaseDocumentsV2SortOrderEnum;
+    search?: string;
 }
 
-export interface GetKnowledgebaseStatisticsRequest {
+export interface GetKnowledgebaseV3Request {
     id: number;
-    startTime?: Date;
-    endTime?: Date;
-    interval?: number;
 }
 
 export interface LinkKnowledgebaseToAgentRequest {
     id: number;
     agentId: number;
+    linkKnowledgebase?: LinkKnowledgebase;
 }
 
 export interface ReindexDocumentRequest {
@@ -126,6 +145,18 @@ export interface UpdateKnowledgebaseRequest {
     updateKnowledgebase: UpdateKnowledgebase;
 }
 
+export interface UpdateKnowledgebaseAgentLinkRequest {
+    id: number;
+    agentId: number;
+    linkKnowledgebase?: LinkKnowledgebase;
+}
+
+export interface UpdateKnowledgebaseDocumentRequest {
+    id: number;
+    documentId: number;
+    updateDocument: UpdateDocument;
+}
+
 export interface UploadFilesToKnowledgebaseRequest {
     id: number;
     files: Array<Blob>;
@@ -137,8 +168,8 @@ export interface UploadFilesToKnowledgebaseRequest {
 export class KnowledgeBasesApi extends runtime.BaseAPI {
 
     /**
-     * Чтобы добавить дополнительный пакет токенов для базы знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/add-additional-token-package`.
-     * Добавление дополнительного пакета токенов
+     * Чтобы докупить токены для базы знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/add-additional-token-package`.  Покупается дополнительный пакет (`package_type: additional`) из `GET /api/v1/cloud-ai/token-packages/knowledge-bases` в количестве `count`. Стоимость списывается с баланса, токены добавляются к текущему периоду подписки, заблокированная база знаний разблокируется.  Возможные ошибки: - `400 insufficient_balance` — на балансе недостаточно средств - `400 subscription_expired` — база знаний заблокирована и дата продления подписки прошла: продлите подписку в панели управления - `404 additional_token_package_not_found` — дополнительный пакет недоступен
+     * Покупка дополнительных пакетов токенов
      */
     async addAdditionalTokenPackageToKnowledgebaseRaw(requestParameters: AddAdditionalTokenPackageToKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -164,22 +195,22 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AddTokenPackageToJSON(requestParameters.addTokenPackage),
+            body: KnowledgebaseAddTokenPackageToJSON(requestParameters.knowledgebaseAddTokenPackage),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Чтобы добавить дополнительный пакет токенов для базы знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/add-additional-token-package`.
-     * Добавление дополнительного пакета токенов
+     * Чтобы докупить токены для базы знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/add-additional-token-package`.  Покупается дополнительный пакет (`package_type: additional`) из `GET /api/v1/cloud-ai/token-packages/knowledge-bases` в количестве `count`. Стоимость списывается с баланса, токены добавляются к текущему периоду подписки, заблокированная база знаний разблокируется.  Возможные ошибки: - `400 insufficient_balance` — на балансе недостаточно средств - `400 subscription_expired` — база знаний заблокирована и дата продления подписки прошла: продлите подписку в панели управления - `404 additional_token_package_not_found` — дополнительный пакет недоступен
+     * Покупка дополнительных пакетов токенов
      */
     async addAdditionalTokenPackageToKnowledgebase(requestParameters: AddAdditionalTokenPackageToKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.addAdditionalTokenPackageToKnowledgebaseRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Чтобы создать базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases`, задав необходимые атрибуты.  База знаний будет создана с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданной базе знаний.
+     * Чтобы создать базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases`, задав необходимые атрибуты.  Для базы знаний в вашем аккаунте создаётся кластер базы данных OpenSearch по выбранному тарифу в указанной приватной сети, а с баланса сразу списывается стоимость пакета токенов. Подписка продлевается автоматически раз в период пакета.  Пока кластер создаётся, база знаний находится в статусе `creating`; документы, добавленные в это время, будут проиндексированы после перехода в `active`.  Возможные ошибки: - `404 token_package_not_found` — пакет токенов не найден или недоступен - `400 invalid_token_package_type` — пакет не является базовым пакетом для баз знаний - `400 insufficient_balance` — на балансе недостаточно средств для оплаты пакета  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
      * Создание базы знаний
      */
     async createKnowledgebaseRaw(requestParameters: CreateKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateKnowledgebase201Response>> {
@@ -213,7 +244,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases`, задав необходимые атрибуты.  База знаний будет создана с использованием предоставленной информации. Тело ответа будет содержать объект JSON с информацией о созданной базе знаний.
+     * Чтобы создать базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases`, задав необходимые атрибуты.  Для базы знаний в вашем аккаунте создаётся кластер базы данных OpenSearch по выбранному тарифу в указанной приватной сети, а с баланса сразу списывается стоимость пакета токенов. Подписка продлевается автоматически раз в период пакета.  Пока кластер создаётся, база знаний находится в статусе `creating`; документы, добавленные в это время, будут проиндексированы после перехода в `active`.  Возможные ошибки: - `404 token_package_not_found` — пакет токенов не найден или недоступен - `400 invalid_token_package_type` — пакет не является базовым пакетом для баз знаний - `400 insufficient_balance` — на балансе недостаточно средств для оплаты пакета  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
      * Создание базы знаний
      */
     async createKnowledgebase(requestParameters: CreateKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateKnowledgebase201Response> {
@@ -222,7 +253,54 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить документ из базы знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.
+     * Чтобы добавить в базу знаний документ по ссылке, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents`.  Перед добавлением выполняется HEAD-запрос к `url`: адрес должен быть публично доступен, а ответ — содержать заголовок `Content-Type` одного из поддерживаемых форматов (текст, Markdown, HTML, XML, CSV, PDF, DOC, DOCX, XLS, XLSX; JSON не поддерживается). Документ сразу ставится в очередь на индексацию. Чтобы содержимое по ссылке переиндексировалось автоматически, задайте `indexing_schedule`.  Возможные ошибки: - `400 url_is_not_accessible` — адрес недоступен или вернул ошибку - `400 unsupported_file_type` — неподдерживаемый `Content-Type`  Тело ответа будет представлять собой объект JSON с ключом `document`.
+     * Добавление документа по ссылке
+     */
+    async createKnowledgebaseDocumentRaw(requestParameters: CreateKnowledgebaseDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateKnowledgebaseDocument201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createKnowledgebaseDocument.');
+        }
+
+        if (requestParameters.createDocument === null || requestParameters.createDocument === undefined) {
+            throw new runtime.RequiredError('createDocument','Required parameter requestParameters.createDocument was null or undefined when calling createKnowledgebaseDocument.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/knowledge-bases/{id}/documents`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateDocumentToJSON(requestParameters.createDocument),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateKnowledgebaseDocument201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы добавить в базу знаний документ по ссылке, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents`.  Перед добавлением выполняется HEAD-запрос к `url`: адрес должен быть публично доступен, а ответ — содержать заголовок `Content-Type` одного из поддерживаемых форматов (текст, Markdown, HTML, XML, CSV, PDF, DOC, DOCX, XLS, XLSX; JSON не поддерживается). Документ сразу ставится в очередь на индексацию. Чтобы содержимое по ссылке переиндексировалось автоматически, задайте `indexing_schedule`.  Возможные ошибки: - `400 url_is_not_accessible` — адрес недоступен или вернул ошибку - `400 unsupported_file_type` — неподдерживаемый `Content-Type`  Тело ответа будет представлять собой объект JSON с ключом `document`.
+     * Добавление документа по ссылке
+     */
+    async createKnowledgebaseDocument(requestParameters: CreateKnowledgebaseDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateKnowledgebaseDocument201Response> {
+        const response = await this.createKnowledgebaseDocumentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы удалить документ из базы знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.  Документ удаляется вместе с его фрагментами в поисковом индексе.
      * Удаление документа из базы знаний
      */
     async deleteDocumentRaw(requestParameters: DeleteDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -257,7 +335,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить документ из базы знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.
+     * Чтобы удалить документ из базы знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.  Документ удаляется вместе с его фрагментами в поисковом индексе.
      * Удаление документа из базы знаний
      */
     async deleteDocument(requestParameters: DeleteDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -265,7 +343,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить базу знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.
+     * Чтобы удалить базу знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.  База знаний отвязывается от всех агентов, её кластер базы данных OpenSearch удаляется, подписка закрывается.
      * Удаление базы знаний
      */
     async deleteKnowledgebaseRaw(requestParameters: DeleteKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -296,7 +374,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы удалить базу знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.
+     * Чтобы удалить базу знаний, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.  База знаний отвязывается от всех агентов, её кластер базы данных OpenSearch удаляется, подписка закрывается.
      * Удаление базы знаний
      */
     async deleteKnowledgebase(requestParameters: DeleteKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -304,8 +382,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы скачать документ из базы знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/download`.
-     * Скачивание документа из базы знаний
+     * Чтобы скачать загруженный файл документа, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/download`.  Доступно только для документов типа `file`. Файл возвращается потоком с исходным MIME-типом в заголовке `Content-Type` и именем в `Content-Disposition`.
+     * Скачивание файла документа
      */
     async downloadDocumentRaw(requestParameters: DownloadDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -339,8 +417,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы скачать документ из базы знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/download`.
-     * Скачивание документа из базы знаний
+     * Чтобы скачать загруженный файл документа, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/download`.  Доступно только для документов типа `file`. Файл возвращается потоком с исходным MIME-типом в заголовке `Content-Type` и именем в `Content-Disposition`.
+     * Скачивание файла документа
      */
     async downloadDocument(requestParameters: DownloadDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
         const response = await this.downloadDocumentRaw(requestParameters, initOverrides);
@@ -348,8 +426,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить информацию о базе знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.
-     * Получение базы знаний
+     * Чтобы получить информацию о базе знаний вместе со всеми её документами, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
+     * Получение базы знаний со списком документов
      */
     async getKnowledgebaseRaw(requestParameters: GetKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateKnowledgebase201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -379,8 +457,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить информацию о базе знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.
-     * Получение базы знаний
+     * Чтобы получить информацию о базе знаний вместе со всеми её документами, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
+     * Получение базы знаний со списком документов
      */
     async getKnowledgebase(requestParameters: GetKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateKnowledgebase201Response> {
         const response = await this.getKnowledgebaseRaw(requestParameters, initOverrides);
@@ -388,7 +466,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список документов базы знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Тело ответа будет представлять собой объект JSON с ключами `knowledgebase_documents` и `meta`.
+     * Чтобы получить список документов базы знаний с пагинацией, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Некорректные значения параметров пагинации и сортировки не приводят к ошибке — вместо них применяются значения по умолчанию.  Тело ответа будет представлять собой объект JSON с ключами `knowledgebase_documents` и `meta`.
      * Получение списка документов базы знаний
      */
     async getKnowledgebaseDocumentsV2Raw(requestParameters: GetKnowledgebaseDocumentsV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebaseDocumentsV2200Response>> {
@@ -414,6 +492,10 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
             queryParameters['sort_order'] = requestParameters.sortOrder;
         }
 
+        if (requestParameters.search !== undefined) {
+            queryParameters['search'] = requestParameters.search;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.accessToken) {
@@ -435,7 +517,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список документов базы знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Тело ответа будет представлять собой объект JSON с ключами `knowledgebase_documents` и `meta`.
+     * Чтобы получить список документов базы знаний с пагинацией, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Некорректные значения параметров пагинации и сортировки не приводят к ошибке — вместо них применяются значения по умолчанию.  Тело ответа будет представлять собой объект JSON с ключами `knowledgebase_documents` и `meta`.
      * Получение списка документов базы знаний
      */
     async getKnowledgebaseDocumentsV2(requestParameters: GetKnowledgebaseDocumentsV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebaseDocumentsV2200Response> {
@@ -444,27 +526,15 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить статистику использования токенов базы знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/statistic`.  Можно указать временной диапазон и интервал агрегации.
-     * Получение статистики использования токенов базы знаний
+     * Чтобы получить информацию о базе знаний, отправьте GET-запрос на `/api/v3/cloud-ai/knowledge-bases/{id}`.  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
+     * Получение базы знаний
      */
-    async getKnowledgebaseStatisticsRaw(requestParameters: GetKnowledgebaseStatisticsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebaseStatistics200Response>> {
+    async getKnowledgebaseV3Raw(requestParameters: GetKnowledgebaseV3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebaseV3200Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getKnowledgebaseStatistics.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getKnowledgebaseV3.');
         }
 
         const queryParameters: any = {};
-
-        if (requestParameters.startTime !== undefined) {
-            queryParameters['startTime'] = (requestParameters.startTime as any).toISOString();
-        }
-
-        if (requestParameters.endTime !== undefined) {
-            queryParameters['endTime'] = (requestParameters.endTime as any).toISOString();
-        }
-
-        if (requestParameters.interval !== undefined) {
-            queryParameters['interval'] = requestParameters.interval;
-        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -477,27 +547,27 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/cloud-ai/knowledge-bases/{id}/statistic`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/v3/cloud-ai/knowledge-bases/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetKnowledgebaseStatistics200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetKnowledgebaseV3200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Чтобы получить статистику использования токенов базы знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/statistic`.  Можно указать временной диапазон и интервал агрегации.
-     * Получение статистики использования токенов базы знаний
+     * Чтобы получить информацию о базе знаний, отправьте GET-запрос на `/api/v3/cloud-ai/knowledge-bases/{id}`.  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
+     * Получение базы знаний
      */
-    async getKnowledgebaseStatistics(requestParameters: GetKnowledgebaseStatisticsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebaseStatistics200Response> {
-        const response = await this.getKnowledgebaseStatisticsRaw(requestParameters, initOverrides);
+    async getKnowledgebaseV3(requestParameters: GetKnowledgebaseV3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebaseV3200Response> {
+        const response = await this.getKnowledgebaseV3Raw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключом `knowledgebases`.
-     * Получение списка баз знаний
+     * Метод устарел — используйте `GET /api/v3/cloud-ai/knowledge-bases`.  Чтобы получить список баз знаний вместе со всеми их документами, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключами `knowledge_bases` и `meta`.
+     * Получение списка баз знаний (v1)
      */
     async getKnowledgebasesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebases200Response>> {
         const queryParameters: any = {};
@@ -523,8 +593,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключом `knowledgebases`.
-     * Получение списка баз знаний
+     * Метод устарел — используйте `GET /api/v3/cloud-ai/knowledge-bases`.  Чтобы получить список баз знаний вместе со всеми их документами, отправьте GET-запрос на `/api/v1/cloud-ai/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключами `knowledge_bases` и `meta`.
+     * Получение списка баз знаний (v1)
      */
     async getKnowledgebases(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebases200Response> {
         const response = await this.getKnowledgebasesRaw(initOverrides);
@@ -532,7 +602,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases`.  Версия API v2 возвращает оптимизированный ответ с количеством документов вместо полного списка документов.  Тело ответа будет представлять собой объект JSON с ключом `knowledgebases`.
+     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases`.  Вместо списка документов возвращается их количество, привязанные агенты — списком ID. Режим поиска для каждого агента возвращает `GET /api/v3/cloud-ai/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключами `knowledge_bases` и `meta`.
      * Получение списка баз знаний (v2)
      */
     async getKnowledgebasesV2Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebasesV2200Response>> {
@@ -559,7 +629,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases`.  Версия API v2 возвращает оптимизированный ответ с количеством документов вместо полного списка документов.  Тело ответа будет представлять собой объект JSON с ключом `knowledgebases`.
+     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v2/cloud-ai/knowledge-bases`.  Вместо списка документов возвращается их количество, привязанные агенты — списком ID. Режим поиска для каждого агента возвращает `GET /api/v3/cloud-ai/knowledge-bases`.  Тело ответа будет представлять собой объект JSON с ключами `knowledge_bases` и `meta`.
      * Получение списка баз знаний (v2)
      */
     async getKnowledgebasesV2(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebasesV2200Response> {
@@ -568,7 +638,43 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы привязать базу знаний к AI агенту, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.
+     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v3/cloud-ai/knowledge-bases`.  Ответ содержит количество документов и привязанных агентов с режимом поиска. Документы базы знаний запрашивайте отдельно — `GET /api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Тело ответа будет представлять собой объект JSON с ключами `knowledge_bases` и `meta`.
+     * Получение списка баз знаний
+     */
+    async getKnowledgebasesV3Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetKnowledgebasesV3200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v3/cloud-ai/knowledge-bases`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetKnowledgebasesV3200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить список баз знаний, отправьте GET-запрос на `/api/v3/cloud-ai/knowledge-bases`.  Ответ содержит количество документов и привязанных агентов с режимом поиска. Документы базы знаний запрашивайте отдельно — `GET /api/v2/cloud-ai/knowledge-bases/{id}/documents`.  Тело ответа будет представлять собой объект JSON с ключами `knowledge_bases` и `meta`.
+     * Получение списка баз знаний
+     */
+    async getKnowledgebasesV3(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetKnowledgebasesV3200Response> {
+        const response = await this.getKnowledgebasesV3Raw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы привязать базу знаний к AI агенту, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.  Тело запроса необязательно: в нём можно выбрать режим поиска `retrievalMode` (по умолчанию `agentic`). Изменить режим для существующей привязки можно запросом PATCH на тот же адрес.  Возможные ошибки: `404 knowledgebase_not_found`, `404 agent_not_found`.
      * Привязка базы знаний к агенту
      */
     async linkKnowledgebaseToAgentRaw(requestParameters: LinkKnowledgebaseToAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -584,6 +690,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
             const tokenString = await token("Bearer", []);
@@ -597,13 +705,14 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: LinkKnowledgebaseToJSON(requestParameters.linkKnowledgebase),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Чтобы привязать базу знаний к AI агенту, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.
+     * Чтобы привязать базу знаний к AI агенту, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.  Тело запроса необязательно: в нём можно выбрать режим поиска `retrievalMode` (по умолчанию `agentic`). Изменить режим для существующей привязки можно запросом PATCH на тот же адрес.  Возможные ошибки: `404 knowledgebase_not_found`, `404 agent_not_found`.
      * Привязка базы знаний к агенту
      */
     async linkKnowledgebaseToAgent(requestParameters: LinkKnowledgebaseToAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -611,7 +720,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы переиндексировать документ в базе знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/reindex`.
+     * Чтобы переиндексировать документ, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/reindex`.  Документ ставится в очередь на индексацию; следите за полем `status` документа. Для документа по ссылке содержимое скачивается заново. Если база знаний не в статусе `active`, документ будет проиндексирован после активации.  Возможные ошибки: `404 knowledgebase_not_found`, `404 document_not_found`.
      * Переиндексация документа
      */
     async reindexDocumentRaw(requestParameters: ReindexDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -646,7 +755,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы переиндексировать документ в базе знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/reindex`.
+     * Чтобы переиндексировать документ, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}/reindex`.  Документ ставится в очередь на индексацию; следите за полем `status` документа. Для документа по ссылке содержимое скачивается заново. Если база знаний не в статусе `active`, документ будет проиндексирован после активации.  Возможные ошибки: `404 knowledgebase_not_found`, `404 document_not_found`.
      * Переиндексация документа
      */
     async reindexDocument(requestParameters: ReindexDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -654,7 +763,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы отвязать базу знаний от AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.
+     * Чтобы отвязать базу знаний от AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.  Возможные ошибки: `404 knowledgebase_not_found`, `404 agent_not_found`.
      * Отвязка базы знаний от агента
      */
     async unlinkKnowledgebaseFromAgentRaw(requestParameters: UnlinkKnowledgebaseFromAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -689,7 +798,7 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы отвязать базу знаний от AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.
+     * Чтобы отвязать базу знаний от AI агента, отправьте DELETE-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.  Возможные ошибки: `404 knowledgebase_not_found`, `404 agent_not_found`.
      * Отвязка базы знаний от агента
      */
     async unlinkKnowledgebaseFromAgent(requestParameters: UnlinkKnowledgebaseFromAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -697,8 +806,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы обновить базу знаний, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.
-     * Обновление базы знаний
+     * Чтобы изменить название или описание базы знаний, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
+     * Изменение базы знаний
      */
     async updateKnowledgebaseRaw(requestParameters: UpdateKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateKnowledgebase201Response>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -735,8 +844,8 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы обновить базу знаний, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.
-     * Обновление базы знаний
+     * Чтобы изменить название или описание базы знаний, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}`.  Тело ответа будет представлять собой объект JSON с ключом `knowledge_base`.
+     * Изменение базы знаний
      */
     async updateKnowledgebase(requestParameters: UpdateKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateKnowledgebase201Response> {
         const response = await this.updateKnowledgebaseRaw(requestParameters, initOverrides);
@@ -744,10 +853,107 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы загрузить файлы в базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/upload` с файлами в формате multipart/form-data.  Поддерживаемые форматы: CSV, XML, Markdown (md), HTML, TXT. JSON не поддерживается. Максимум 10 файлов, до 10 МБ каждый.
+     * Чтобы изменить режим поиска по привязанной базе знаний для AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.  Если `retrievalMode` не передан, устанавливается `agentic`. Если база знаний не привязана к агенту, запрос ничего не меняет и также возвращает `204`.  Возможные ошибки: `404 knowledgebase_not_found`, `404 agent_not_found`.
+     * Изменение режима поиска по базе знаний для агента
+     */
+    async updateKnowledgebaseAgentLinkRaw(requestParameters: UpdateKnowledgebaseAgentLinkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateKnowledgebaseAgentLink.');
+        }
+
+        if (requestParameters.agentId === null || requestParameters.agentId === undefined) {
+            throw new runtime.RequiredError('agentId','Required parameter requestParameters.agentId was null or undefined when calling updateKnowledgebaseAgentLink.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"agent_id"}}`, encodeURIComponent(String(requestParameters.agentId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: LinkKnowledgebaseToJSON(requestParameters.linkKnowledgebase),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Чтобы изменить режим поиска по привязанной базе знаний для AI агента, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/link/{agent_id}`.  Если `retrievalMode` не передан, устанавливается `agentic`. Если база знаний не привязана к агенту, запрос ничего не меняет и также возвращает `204`.  Возможные ошибки: `404 knowledgebase_not_found`, `404 agent_not_found`.
+     * Изменение режима поиска по базе знаний для агента
+     */
+    async updateKnowledgebaseAgentLink(requestParameters: UpdateKnowledgebaseAgentLinkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateKnowledgebaseAgentLinkRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Чтобы изменить документ базы знаний, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.  Можно изменить название, расписание переиндексации и — только для документов типа `link` — адрес. После смены адреса документ переиндексируется; изменение названия и расписания переиндексацию не запускает. Новый адрес проверяется так же, как при добавлении документа.  Тело ответа будет представлять собой объект JSON с ключом `document`.
+     * Изменение документа
+     */
+    async updateKnowledgebaseDocumentRaw(requestParameters: UpdateKnowledgebaseDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateKnowledgebaseDocument201Response>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateKnowledgebaseDocument.');
+        }
+
+        if (requestParameters.documentId === null || requestParameters.documentId === undefined) {
+            throw new runtime.RequiredError('documentId','Required parameter requestParameters.documentId was null or undefined when calling updateKnowledgebaseDocument.');
+        }
+
+        if (requestParameters.updateDocument === null || requestParameters.updateDocument === undefined) {
+            throw new runtime.RequiredError('updateDocument','Required parameter requestParameters.updateDocument was null or undefined when calling updateKnowledgebaseDocument.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"document_id"}}`, encodeURIComponent(String(requestParameters.documentId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateDocumentToJSON(requestParameters.updateDocument),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateKnowledgebaseDocument201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы изменить документ базы знаний, отправьте PATCH-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/documents/{document_id}`.  Можно изменить название, расписание переиндексации и — только для документов типа `link` — адрес. После смены адреса документ переиндексируется; изменение названия и расписания переиндексацию не запускает. Новый адрес проверяется так же, как при добавлении документа.  Тело ответа будет представлять собой объект JSON с ключом `document`.
+     * Изменение документа
+     */
+    async updateKnowledgebaseDocument(requestParameters: UpdateKnowledgebaseDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateKnowledgebaseDocument201Response> {
+        const response = await this.updateKnowledgebaseDocumentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы загрузить файлы в базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/upload` с файлами в поле `files` формата `multipart/form-data`. Для каждого файла создаётся документ типа `file`, после загрузки документы ставятся в очередь на индексацию (если база знаний в статусе `active`; иначе — после активации).  Поддерживаемые форматы: TXT, Markdown (`md`, `markdown`), HTML (`html`, `htm`), XML, CSV, PDF, DOC, DOCX, XLS, XLSX, а также другие файлы с MIME-типом `text/_*`. JSON (`json`, `jsonl`, `ndjson`) не поддерживается. Размер одного файла — не более 50 МБ.  Если хотя бы один файл неподдерживаемого формата, запрос завершается ошибкой.  Тело ответа будет представлять собой объект JSON с ключами `uploadedFiles` и `documents`.
      * Загрузка файлов в базу знаний
      */
-    async uploadFilesToKnowledgebaseRaw(requestParameters: UploadFilesToKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadFilesToKnowledgebase200Response>> {
+    async uploadFilesToKnowledgebaseRaw(requestParameters: UploadFilesToKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadResult>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling uploadFilesToKnowledgebase.');
         }
@@ -798,14 +1004,14 @@ export class KnowledgeBasesApi extends runtime.BaseAPI {
             body: formParams,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UploadFilesToKnowledgebase200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UploadResultFromJSON(jsonValue));
     }
 
     /**
-     * Чтобы загрузить файлы в базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/upload` с файлами в формате multipart/form-data.  Поддерживаемые форматы: CSV, XML, Markdown (md), HTML, TXT. JSON не поддерживается. Максимум 10 файлов, до 10 МБ каждый.
+     * Чтобы загрузить файлы в базу знаний, отправьте POST-запрос на `/api/v1/cloud-ai/knowledge-bases/{id}/upload` с файлами в поле `files` формата `multipart/form-data`. Для каждого файла создаётся документ типа `file`, после загрузки документы ставятся в очередь на индексацию (если база знаний в статусе `active`; иначе — после активации).  Поддерживаемые форматы: TXT, Markdown (`md`, `markdown`), HTML (`html`, `htm`), XML, CSV, PDF, DOC, DOCX, XLS, XLSX, а также другие файлы с MIME-типом `text/_*`. JSON (`json`, `jsonl`, `ndjson`) не поддерживается. Размер одного файла — не более 50 МБ.  Если хотя бы один файл неподдерживаемого формата, запрос завершается ошибкой.  Тело ответа будет представлять собой объект JSON с ключами `uploadedFiles` и `documents`.
      * Загрузка файлов в базу знаний
      */
-    async uploadFilesToKnowledgebase(requestParameters: UploadFilesToKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UploadFilesToKnowledgebase200Response> {
+    async uploadFilesToKnowledgebase(requestParameters: UploadFilesToKnowledgebaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UploadResult> {
         const response = await this.uploadFilesToKnowledgebaseRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -14,42 +14,57 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Ресурс MCP
  * @export
  * @interface Resource
  */
 export interface Resource {
     /**
-     * Запрошенное количество ресурса
-     * @type {number}
+     * URI ресурса
+     * @type {string}
      * @memberof Resource
      */
-    requested?: number;
+    uri: ResourceUriEnum;
     /**
-     * Доступное количество
-     * @type {number}
+     * Имя ресурса
+     * @type {string}
      * @memberof Resource
      */
-    allocatable?: number;
+    name: string;
     /**
-     * Общее количество
-     * @type {number}
+     * Описание ресурса
+     * @type {string}
      * @memberof Resource
      */
-    capacity?: number;
+    description?: string;
     /**
-     * Используемое количество
-     * @type {number}
+     * Тип содержимого
+     * @type {string}
      * @memberof Resource
      */
-    used?: number;
+    mimeType?: string;
 }
+
+
+/**
+ * @export
+ */
+export const ResourceUriEnum = {
+    BillingMeFinances: 'billing://me/finances',
+    ServicesMeActive: 'services://me/active',
+    ServicesCloudCatalog: 'services://cloud/catalog',
+    LocationsCloudList: 'locations://cloud/list'
+} as const;
+export type ResourceUriEnum = typeof ResourceUriEnum[keyof typeof ResourceUriEnum];
+
 
 /**
  * Check if a given object implements the Resource interface.
  */
 export function instanceOfResource(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "uri" in value;
+    isInstance = isInstance && "name" in value;
 
     return isInstance;
 }
@@ -64,10 +79,10 @@ export function ResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'requested': !exists(json, 'requested') ? undefined : json['requested'],
-        'allocatable': !exists(json, 'allocatable') ? undefined : json['allocatable'],
-        'capacity': !exists(json, 'capacity') ? undefined : json['capacity'],
-        'used': !exists(json, 'used') ? undefined : json['used'],
+        'uri': json['uri'],
+        'name': json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'mimeType': !exists(json, 'mimeType') ? undefined : json['mimeType'],
     };
 }
 
@@ -80,10 +95,10 @@ export function ResourceToJSON(value?: Resource | null): any {
     }
     return {
         
-        'requested': value.requested,
-        'allocatable': value.allocatable,
-        'capacity': value.capacity,
-        'used': value.used,
+        'uri': value.uri,
+        'name': value.name,
+        'description': value.description,
+        'mimeType': value.mimeType,
     };
 }
 

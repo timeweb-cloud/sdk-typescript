@@ -13,44 +13,71 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ModelBatch } from './ModelBatch';
+import {
+    ModelBatchFromJSON,
+    ModelBatchFromJSONTyped,
+    ModelBatchToJSON,
+} from './ModelBatch';
+import type { ModelParamInfo } from './ModelParamInfo';
+import {
+    ModelParamInfoFromJSON,
+    ModelParamInfoFromJSONTyped,
+    ModelParamInfoToJSON,
+} from './ModelParamInfo';
+import type { ModelPriceTier } from './ModelPriceTier';
+import {
+    ModelPriceTierFromJSON,
+    ModelPriceTierFromJSONTyped,
+    ModelPriceTierToJSON,
+} from './ModelPriceTier';
+
 /**
- * Модель AI (v3). Идентификация и управляющие поля находятся на верхнем уровне, все сравнимые характеристики (цены, лимиты, возможности) — в словаре `parameter_values`
+ * AI модель с характеристиками для сравнения (v3). Цены и характеристики — в `parameter_values`
  * @export
  * @interface ModelV3
  */
 export interface ModelV3 {
     /**
-     * Уникальный идентификатор модели
+     * ID модели
      * @type {number}
      * @memberof ModelV3
      */
     id: number;
     /**
-     * ID провайдера, который предоставляет модель
+     * ID провайдера модели
      * @type {number}
      * @memberof ModelV3
      */
     providerId: number;
     /**
-     * Название модели
+     * Семейство модели
      * @type {string}
      * @memberof ModelV3
      */
     name: string;
     /**
-     * Публичное имя модели
+     * Отображаемое название модели
      * @type {string}
      * @memberof ModelV3
      */
     publicName: string;
     /**
-     * Идентификатор модели, который передаётся в поле `model` тела запроса
+     * Идентификатор модели с префиксом провайдера — передаётся в поле `model` запросов к AI Gateway
      * @type {string}
      * @memberof ModelV3
      */
     modelName: string;
     /**
-     * Тип модели (llm — языковая модель, hosted-llm — self-hosted языковая модель, embedding — модель для эмбеддингов, image — генерация изображений, audio — работа с аудио, moderation — модерация контента)
+     * Тип модели:
+     * - `llm` — языковая модель
+     * - `hosted-llm` — языковая модель, размещённая в Timeweb Cloud
+     * - `embedding` — модель эмбеддингов
+     * - `image` — генерация изображений
+     * - `audio` — работа с аудио
+     * - `video` — генерация видео
+     * - `moderation` — модерация контента
+     * - `system-one` — служебная модель с собственным API
      * @type {string}
      * @memberof ModelV3
      */
@@ -62,13 +89,13 @@ export interface ModelV3 {
      */
     version: string;
     /**
-     * Признак, что модель устарела
+     * Модель устарела и недоступна для выбора в новых агентах
      * @type {boolean}
      * @memberof ModelV3
      */
     isDeprecated: boolean;
     /**
-     * Признак, что поддержка модели остановлена
+     * Поддержка модели остановлена: запросы к ней не выполняются
      * @type {boolean}
      * @memberof ModelV3
      */
@@ -78,7 +105,7 @@ export interface ModelV3 {
      * @type {Date}
      * @memberof ModelV3
      */
-    deprecationDate?: Date | null;
+    deprecationDate: Date | null;
     /**
      * Дата и время добавления модели
      * @type {Date}
@@ -86,36 +113,48 @@ export interface ModelV3 {
      */
     createdAt: Date;
     /**
-     * Дата и время последнего обновления модели
+     * Дата и время последнего изменения модели
      * @type {Date}
      * @memberof ModelV3
      */
     updatedAt: Date;
     /**
-     * Информация о доступных параметрах модели с их ограничениями. Ключ — название параметра, значение — его тип, ограничения и значение по умолчанию
-     * @type {object}
+     * Параметры генерации, которые можно настроить у агента с этой моделью. Ключ — имя параметра (`temperature`, `top_p`, `max_tokens`, `reasoning_effort` и т.д.). `null`, если параметры не заданы
+     * @type {{ [key: string]: ModelParamInfo; }}
      * @memberof ModelV3
      */
-    paramsInfo?: object | null;
+    paramsInfo: { [key: string]: ModelParamInfo; } | null;
     /**
-     * Характеристики модели. Ключ — код характеристики, значение — число, строка, булево значение или массив строк.
+     * Характеристики модели. Ключ — `code` из справочника `GET /api/v3/cloud-ai/model-parameters`, значение — число, строка, булево значение или массив строк. Если значение неизвестно, ключа нет.
      * 
      * Основные коды:
-     * - `cost_in` — цена за 1 входной токен в рублях
-     * - `cost_out` — цена за 1 выходной токен в рублях
-     * - `context_window` — размер контекстного окна в токенах
-     * - `max_output_tokens` — максимальное количество токенов в ответе
-     * - `is_reasoning` — поддержка режима рассуждений
-     * - `supports_function_calling` — поддержка function calling
-     * - `supported_input_modalities` — поддерживаемые входные модальности (например, `text`, `image`)
-     * - `supported_output_modalities` — поддерживаемые выходные модальности
-     * - `avg_speed` — средняя скорость генерации в токенах в секунду
-     * - `aa_intelligence_index`, `aa_coding_index`, `aa_agentic_index` — индексы качества Artificial Analysis
-     * - `release_date` — дата релиза модели
-     * @type {{ [key: string]: any; }}
+     * - `cost_in`, `cost_out` — цена 1 входного / выходного токена в рублях
+     * - `cost_cache_read`, `cost_cache_write` — цена 1 токена чтения / записи кэша промпта в рублях; ключа нет, если отдельной цены нет (тарифицируется по `cost_in`)
+     * - `pricing_unit` — единица тарификации: `token` (по умолчанию), `megapixel`, `credit`
+     * - `cost_per_image` — цена изображения базового размера (1 МП) в рублях
+     * - `credits_from`, `cost_per_second_from` — минимальная ставка в кредитах провайдера и цена от, в рублях, за секунду видео
+     * - `context_window`, `max_output_tokens` — размер контекста и максимум токенов в ответе
+     * - `is_reasoning`, `supports_function_calling` — поддержка рассуждений и вызова инструментов
+     * - `supported_input_modalities`, `supported_output_modalities` — входные и выходные модальности (`text`, `image`, ...)
+     * - `avg_speed` — средняя скорость генерации, токенов в секунду
+     * - `aa_intelligence_index`, `aa_coding_index`, `aa_agentic_index` — индексы Artificial Analysis
+     * - `release_date` — дата релиза (`YYYY-MM-DD`)
+     * @type {{ [key: string]: number; }}
      * @memberof ModelV3
      */
-    parameterValues: { [key: string]: any; };
+    parameterValues: { [key: string]: number; };
+    /**
+     * Ступени цены по размеру входного контекста, по возрастанию порога. Пустой массив — у модели одна цена при любом контексте
+     * @type {Array<ModelPriceTier>}
+     * @memberof ModelV3
+     */
+    priceTiers: Array<ModelPriceTier>;
+    /**
+     * 
+     * @type {ModelBatch}
+     * @memberof ModelV3
+     */
+    batch: ModelBatch;
 }
 
 
@@ -128,7 +167,9 @@ export const ModelV3TypeEnum = {
     Embedding: 'embedding',
     Image: 'image',
     Audio: 'audio',
-    Moderation: 'moderation'
+    Video: 'video',
+    Moderation: 'moderation',
+    SystemOne: 'system-one'
 } as const;
 export type ModelV3TypeEnum = typeof ModelV3TypeEnum[keyof typeof ModelV3TypeEnum];
 
@@ -147,9 +188,13 @@ export function instanceOfModelV3(value: object): boolean {
     isInstance = isInstance && "version" in value;
     isInstance = isInstance && "isDeprecated" in value;
     isInstance = isInstance && "isStopped" in value;
+    isInstance = isInstance && "deprecationDate" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
+    isInstance = isInstance && "paramsInfo" in value;
     isInstance = isInstance && "parameterValues" in value;
+    isInstance = isInstance && "priceTiers" in value;
+    isInstance = isInstance && "batch" in value;
 
     return isInstance;
 }
@@ -173,11 +218,13 @@ export function ModelV3FromJSONTyped(json: any, ignoreDiscriminator: boolean): M
         'version': json['version'],
         'isDeprecated': json['is_deprecated'],
         'isStopped': json['is_stopped'],
-        'deprecationDate': !exists(json, 'deprecation_date') ? undefined : (json['deprecation_date'] === null ? null : new Date(json['deprecation_date'])),
+        'deprecationDate': (json['deprecation_date'] === null ? null : new Date(json['deprecation_date'])),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
-        'paramsInfo': !exists(json, 'params_info') ? undefined : json['params_info'],
+        'paramsInfo': (json['params_info'] === null ? null : mapValues(json['params_info'], ModelParamInfoFromJSON)),
         'parameterValues': json['parameter_values'],
+        'priceTiers': ((json['price_tiers'] as Array<any>).map(ModelPriceTierFromJSON)),
+        'batch': ModelBatchFromJSON(json['batch']),
     };
 }
 
@@ -199,11 +246,13 @@ export function ModelV3ToJSON(value?: ModelV3 | null): any {
         'version': value.version,
         'is_deprecated': value.isDeprecated,
         'is_stopped': value.isStopped,
-        'deprecation_date': value.deprecationDate === undefined ? undefined : (value.deprecationDate === null ? null : value.deprecationDate.toISOString()),
+        'deprecation_date': (value.deprecationDate === null ? null : value.deprecationDate.toISOString()),
         'created_at': (value.createdAt.toISOString()),
         'updated_at': (value.updatedAt.toISOString()),
-        'params_info': value.paramsInfo,
+        'params_info': (value.paramsInfo === null ? null : mapValues(value.paramsInfo, ModelParamInfoToJSON)),
         'parameter_values': value.parameterValues,
+        'price_tiers': ((value.priceTiers as Array<any>).map(ModelPriceTierToJSON)),
+        'batch': ModelBatchToJSON(value.batch),
     };
 }
 

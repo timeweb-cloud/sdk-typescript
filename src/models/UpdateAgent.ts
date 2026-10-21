@@ -13,15 +13,21 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { UpdateAgentSettings } from './UpdateAgentSettings';
+import type { AgentAdditionalModel } from './AgentAdditionalModel';
 import {
-    UpdateAgentSettingsFromJSON,
-    UpdateAgentSettingsFromJSONTyped,
-    UpdateAgentSettingsToJSON,
-} from './UpdateAgentSettings';
+    AgentAdditionalModelFromJSON,
+    AgentAdditionalModelFromJSONTyped,
+    AgentAdditionalModelToJSON,
+} from './AgentAdditionalModel';
+import type { AgentSettings } from './AgentSettings';
+import {
+    AgentSettingsFromJSON,
+    AgentSettingsFromJSONTyped,
+    AgentSettingsToJSON,
+} from './AgentSettings';
 
 /**
- * Данные для обновления AI агента
+ * Данные для обновления AI агента. Передавайте только изменяемые поля.
  * @export
  * @interface UpdateAgent
  */
@@ -39,35 +45,61 @@ export interface UpdateAgent {
      */
     description?: string;
     /**
-     * Тип доступа к агенту
+     * Тип доступа
      * @type {string}
      * @memberof UpdateAgent
      */
     accessType?: UpdateAgentAccessTypeEnum;
     /**
-     * Статус агента
+     * Статус агента: `suspended` — приостановить, `active` — возобновить. Статус заблокированного или удалённого агента изменить нельзя.
      * @type {string}
      * @memberof UpdateAgent
      */
     status?: UpdateAgentStatusEnum;
     /**
-     * ID пакета токенов
-     * @type {number}
-     * @memberof UpdateAgent
-     */
-    tokenPackageId?: number;
-    /**
      * 
-     * @type {UpdateAgentSettings}
+     * @type {AgentSettings}
      * @memberof UpdateAgent
      */
-    settings?: UpdateAgentSettings;
+    settings?: AgentSettings;
     /**
-     * ID проекта
+     * Не используется: перенести агента в другой проект можно методами проектов.
      * @type {number}
      * @memberof UpdateAgent
+     * @deprecated
      */
     projectId?: number;
+    /**
+     * ID дополнительных моделей агента (например, для генерации изображений). Список заменяет текущий целиком.
+     * @type {Array<number>}
+     * @memberof UpdateAgent
+     */
+    additionalModelIds?: Array<number>;
+    /**
+     * Дополнительные модели вместе с настройками (для моделей генерации изображений — `width`/`height`). Если переданы и `additional_models`, и `additional_model_ids`, используется `additional_models`.
+     * @type {Array<AgentAdditionalModel>}
+     * @memberof UpdateAgent
+     */
+    additionalModels?: Array<AgentAdditionalModel>;
+    /**
+     * Включить или выключить веб-поиск
+     * @type {boolean}
+     * @memberof UpdateAgent
+     */
+    isWebSearchEnabled?: boolean;
+    /**
+     * ID ключа AI Gateway, к которому нужно привязать агента. Привязка доступна, только если в ответе агента `ai_gateway_key_id` равен `null` (агент без баз знаний, инструментов и интеграций, созданный до 9 октября 2026 года), и делается один раз. При первой привязке на аккаунт однократно начисляется временная скидка 10% на запросы через ключи AI Gateway.
+     * @type {string}
+     * @memberof UpdateAgent
+     */
+    aiGatewayKeyId?: string;
+    /**
+     * Новый пакет токенов. Только для агентов с пакетом токенов (устаревшая схема оплаты): пакет должен относиться к модели агента и быть не меньше текущего, его стоимость сразу списывается с баланса.
+     * @type {number}
+     * @memberof UpdateAgent
+     * @deprecated
+     */
+    tokenPackageId?: number;
 }
 
 
@@ -113,9 +145,13 @@ export function UpdateAgentFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'description': !exists(json, 'description') ? undefined : json['description'],
         'accessType': !exists(json, 'access_type') ? undefined : json['access_type'],
         'status': !exists(json, 'status') ? undefined : json['status'],
-        'tokenPackageId': !exists(json, 'token_package_id') ? undefined : json['token_package_id'],
-        'settings': !exists(json, 'settings') ? undefined : UpdateAgentSettingsFromJSON(json['settings']),
+        'settings': !exists(json, 'settings') ? undefined : AgentSettingsFromJSON(json['settings']),
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'additionalModelIds': !exists(json, 'additional_model_ids') ? undefined : json['additional_model_ids'],
+        'additionalModels': !exists(json, 'additional_models') ? undefined : ((json['additional_models'] as Array<any>).map(AgentAdditionalModelFromJSON)),
+        'isWebSearchEnabled': !exists(json, 'is_web_search_enabled') ? undefined : json['is_web_search_enabled'],
+        'aiGatewayKeyId': !exists(json, 'ai_gateway_key_id') ? undefined : json['ai_gateway_key_id'],
+        'tokenPackageId': !exists(json, 'token_package_id') ? undefined : json['token_package_id'],
     };
 }
 
@@ -132,9 +168,13 @@ export function UpdateAgentToJSON(value?: UpdateAgent | null): any {
         'description': value.description,
         'access_type': value.accessType,
         'status': value.status,
-        'token_package_id': value.tokenPackageId,
-        'settings': UpdateAgentSettingsToJSON(value.settings),
+        'settings': AgentSettingsToJSON(value.settings),
         'project_id': value.projectId,
+        'additional_model_ids': value.additionalModelIds,
+        'additional_models': value.additionalModels === undefined ? undefined : ((value.additionalModels as Array<any>).map(AgentAdditionalModelToJSON)),
+        'is_web_search_enabled': value.isWebSearchEnabled,
+        'ai_gateway_key_id': value.aiGatewayKeyId,
+        'token_package_id': value.tokenPackageId,
     };
 }
 

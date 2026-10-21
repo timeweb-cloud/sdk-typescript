@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AgentAdditionalModel } from './AgentAdditionalModel';
+import {
+    AgentAdditionalModelFromJSON,
+    AgentAdditionalModelFromJSONTyped,
+    AgentAdditionalModelToJSON,
+} from './AgentAdditionalModel';
 import type { AgentSettings } from './AgentSettings';
 import {
     AgentSettingsFromJSON,
@@ -21,7 +27,7 @@ import {
 } from './AgentSettings';
 
 /**
- * Данные для создания AI агента через API v2
+ * Данные для создания AI агента
  * @export
  * @interface CreateAgentV2
  */
@@ -39,23 +45,17 @@ export interface CreateAgentV2 {
      */
     description?: string;
     /**
-     * Тип доступа к агенту
+     * Тип доступа: `public` — агент отвечает анонимным посетителям сайта через виджет; `private` — только по токену аккаунта.
      * @type {string}
      * @memberof CreateAgentV2
      */
     accessType: CreateAgentV2AccessTypeEnum;
     /**
-     * ID основной модели
+     * ID основной модели агента
      * @type {number}
      * @memberof CreateAgentV2
      */
     modelId: number;
-    /**
-     * Дневной лимит токенов для агента (0 — без лимита)
-     * @type {number}
-     * @memberof CreateAgentV2
-     */
-    tokenLimit?: number;
     /**
      * 
      * @type {AgentSettings}
@@ -63,23 +63,55 @@ export interface CreateAgentV2 {
      */
     settings: AgentSettings;
     /**
-     * ID проекта
+     * ID проекта, в который нужно добавить агента. По умолчанию — проект по умолчанию.
      * @type {number}
      * @memberof CreateAgentV2
      */
     projectId?: number;
     /**
-     * Список ID дополнительных моделей агента
+     * Включить веб-поиск
+     * @type {boolean}
+     * @memberof CreateAgentV2
+     */
+    isWebSearchEnabled?: boolean;
+    /**
+     * Дневной лимит расходов агента в валюте аккаунта. `0` или не передан — без лимита. Создаётся как лимит агента с периодом `day`; изменить его можно через лимиты агента.
+     * @type {number}
+     * @memberof CreateAgentV2
+     */
+    moneyLimit?: number;
+    /**
+     * Устарело: дневной лимит агента в токенах. `0` или не передан — без лимита. Не учитывается, если передан `money_limit`.
+     * @type {number}
+     * @memberof CreateAgentV2
+     * @deprecated
+     */
+    tokenLimit?: number;
+    /**
+     * Устарело и не учитывается: агент всегда создаётся с поресурсной оплатой.
+     * @type {number}
+     * @memberof CreateAgentV2
+     * @deprecated
+     */
+    tokenPackageId?: number;
+    /**
+     * ID дополнительных моделей агента (например, для генерации изображений). Список заменяет текущий целиком.
      * @type {Array<number>}
      * @memberof CreateAgentV2
      */
     additionalModelIds?: Array<number>;
     /**
-     * Признак использования веб-поиска агентом
-     * @type {boolean}
+     * Дополнительные модели вместе с настройками (для моделей генерации изображений — `width`/`height`). Если переданы и `additional_models`, и `additional_model_ids`, используется `additional_models`.
+     * @type {Array<AgentAdditionalModel>}
      * @memberof CreateAgentV2
      */
-    isWebSearchEnabled?: boolean;
+    additionalModels?: Array<AgentAdditionalModel>;
+    /**
+     * ID навыков, которые нужно подключить к агенту сразу после создания (текущие версии навыков). Неизвестные ID пропускаются; ошибка подключения навыков не отменяет создание агента.
+     * @type {Array<number>}
+     * @memberof CreateAgentV2
+     */
+    skillIds?: Array<number>;
 }
 
 
@@ -120,11 +152,15 @@ export function CreateAgentV2FromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': !exists(json, 'description') ? undefined : json['description'],
         'accessType': json['access_type'],
         'modelId': json['model_id'],
-        'tokenLimit': !exists(json, 'token_limit') ? undefined : json['token_limit'],
         'settings': AgentSettingsFromJSON(json['settings']),
         'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
-        'additionalModelIds': !exists(json, 'additional_model_ids') ? undefined : json['additional_model_ids'],
         'isWebSearchEnabled': !exists(json, 'is_web_search_enabled') ? undefined : json['is_web_search_enabled'],
+        'moneyLimit': !exists(json, 'money_limit') ? undefined : json['money_limit'],
+        'tokenLimit': !exists(json, 'token_limit') ? undefined : json['token_limit'],
+        'tokenPackageId': !exists(json, 'token_package_id') ? undefined : json['token_package_id'],
+        'additionalModelIds': !exists(json, 'additional_model_ids') ? undefined : json['additional_model_ids'],
+        'additionalModels': !exists(json, 'additional_models') ? undefined : ((json['additional_models'] as Array<any>).map(AgentAdditionalModelFromJSON)),
+        'skillIds': !exists(json, 'skill_ids') ? undefined : json['skill_ids'],
     };
 }
 
@@ -141,11 +177,15 @@ export function CreateAgentV2ToJSON(value?: CreateAgentV2 | null): any {
         'description': value.description,
         'access_type': value.accessType,
         'model_id': value.modelId,
-        'token_limit': value.tokenLimit,
         'settings': AgentSettingsToJSON(value.settings),
         'project_id': value.projectId,
-        'additional_model_ids': value.additionalModelIds,
         'is_web_search_enabled': value.isWebSearchEnabled,
+        'money_limit': value.moneyLimit,
+        'token_limit': value.tokenLimit,
+        'token_package_id': value.tokenPackageId,
+        'additional_model_ids': value.additionalModelIds,
+        'additional_models': value.additionalModels === undefined ? undefined : ((value.additionalModels as Array<any>).map(AgentAdditionalModelToJSON)),
+        'skill_ids': value.skillIds,
     };
 }
 

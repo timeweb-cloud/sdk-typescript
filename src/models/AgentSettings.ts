@@ -13,18 +13,24 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AgentAdditionalModel } from './AgentAdditionalModel';
+import {
+    AgentAdditionalModelFromJSON,
+    AgentAdditionalModelFromJSONTyped,
+    AgentAdditionalModelToJSON,
+} from './AgentAdditionalModel';
 import type { AgentModelSettings } from './AgentModelSettings';
 import {
     AgentModelSettingsFromJSON,
     AgentModelSettingsFromJSONTyped,
     AgentModelSettingsToJSON,
 } from './AgentModelSettings';
-import type { AgentSettingsWidget } from './AgentSettingsWidget';
+import type { AgentWidgetSettings } from './AgentWidgetSettings';
 import {
-    AgentSettingsWidgetFromJSON,
-    AgentSettingsWidgetFromJSONTyped,
-    AgentSettingsWidgetToJSON,
-} from './AgentSettingsWidget';
+    AgentWidgetSettingsFromJSON,
+    AgentWidgetSettingsFromJSONTyped,
+    AgentWidgetSettingsToJSON,
+} from './AgentWidgetSettings';
 
 /**
  * Настройки агента
@@ -39,23 +45,41 @@ export interface AgentSettings {
      */
     model: AgentModelSettings;
     /**
-     * Системный промпт
+     * Системный промпт (инструкция) агента
      * @type {string}
      * @memberof AgentSettings
      */
     systemPrompt: string;
     /**
-     * Уточнять ли запрос перед обработкой
+     * Уточнять (переформулировать) запрос пользователя перед поиском по базам знаний
      * @type {boolean}
      * @memberof AgentSettings
      */
     refineQuery: boolean;
     /**
-     * 
-     * @type {AgentSettingsWidget}
+     * Запоминать факты о каждом авторизованном пользователе и учитывать их в ответах. В виджете не работает.
+     * @type {boolean}
      * @memberof AgentSettings
      */
-    widget?: AgentSettingsWidget;
+    memoryEnabled?: boolean;
+    /**
+     * 
+     * @type {AgentWidgetSettings}
+     * @memberof AgentSettings
+     */
+    widget?: AgentWidgetSettings;
+    /**
+     * Домены, которыми ограничивается веб-поиск агента (не более 5). Каждый элемент — домен (`timeweb.ru`) или домен с путём (`timeweb.ru/docs`). Если поле не передано при обновлении, сохранённый список не меняется.
+     * @type {Array<string>}
+     * @memberof AgentSettings
+     */
+    webSearchAllowedSites?: Array<string>;
+    /**
+     * Настройки дополнительных моделей. Заполняется автоматически из поля `additional_models` запроса создания или обновления агента, передавать здесь не нужно.
+     * @type {Array<AgentAdditionalModel>}
+     * @memberof AgentSettings
+     */
+    additionalModels?: Array<AgentAdditionalModel>;
 }
 
 /**
@@ -83,7 +107,10 @@ export function AgentSettingsFromJSONTyped(json: any, ignoreDiscriminator: boole
         'model': AgentModelSettingsFromJSON(json['model']),
         'systemPrompt': json['system_prompt'],
         'refineQuery': json['refine_query'],
-        'widget': !exists(json, 'widget') ? undefined : AgentSettingsWidgetFromJSON(json['widget']),
+        'memoryEnabled': !exists(json, 'memory_enabled') ? undefined : json['memory_enabled'],
+        'widget': !exists(json, 'widget') ? undefined : AgentWidgetSettingsFromJSON(json['widget']),
+        'webSearchAllowedSites': !exists(json, 'web_search_allowed_sites') ? undefined : json['web_search_allowed_sites'],
+        'additionalModels': !exists(json, 'additional_models') ? undefined : ((json['additional_models'] as Array<any>).map(AgentAdditionalModelFromJSON)),
     };
 }
 
@@ -99,7 +126,10 @@ export function AgentSettingsToJSON(value?: AgentSettings | null): any {
         'model': AgentModelSettingsToJSON(value.model),
         'system_prompt': value.systemPrompt,
         'refine_query': value.refineQuery,
-        'widget': AgentSettingsWidgetToJSON(value.widget),
+        'memory_enabled': value.memoryEnabled,
+        'widget': AgentWidgetSettingsToJSON(value.widget),
+        'web_search_allowed_sites': value.webSearchAllowedSites,
+        'additional_models': value.additionalModels === undefined ? undefined : ((value.additionalModels as Array<any>).map(AgentAdditionalModelToJSON)),
     };
 }
 

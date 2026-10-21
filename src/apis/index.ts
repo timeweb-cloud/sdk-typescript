@@ -1,6 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AIAgentIntegrationsApi';
+export * from './AIAgentSkillsApi';
+export * from './AIAgentToolsApi';
 export * from './AIAgentsApi';
+export * from './AIGatewayApi';
+export * from './AIGatewayInferenceApi';
+export * from './AIModelsApi';
+export * from './AISolutionsApi';
 export * from './AccountApi';
 export * from './AppsApi';
 export * from './BalancersApi';
@@ -15,6 +22,7 @@ export * from './ImagesApi';
 export * from './KnowledgeBasesApi';
 export * from './KubernetesApi';
 export * from './LocationsApi';
+export * from './MCPApi';
 export * from './MailApi';
 export * from './NetworkDrivesApi';
 export * from './PaymentsApi';
