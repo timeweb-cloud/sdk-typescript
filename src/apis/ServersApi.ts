@@ -22,6 +22,7 @@ import type {
   CreateServer201Response,
   CreateServerDisk201Response,
   CreateServerDiskBackup201Response,
+  CreateServerDiskBackupDownloadUrl201Response,
   CreateServerDiskBackupRequest,
   CreateServerDiskRequest,
   DeleteServer200Response,
@@ -49,6 +50,7 @@ import type {
   GetSoftware200Response,
   PerformActionOnBackupRequest,
   PerformActionOnServerRequest,
+  ServerBackupDownloadUrlRequest,
   UpdateDatabaseInstance409Response,
   UpdateServer,
   UpdateServerDiskBackupRequest,
@@ -72,6 +74,8 @@ import {
     CreateServerDisk201ResponseToJSON,
     CreateServerDiskBackup201ResponseFromJSON,
     CreateServerDiskBackup201ResponseToJSON,
+    CreateServerDiskBackupDownloadUrl201ResponseFromJSON,
+    CreateServerDiskBackupDownloadUrl201ResponseToJSON,
     CreateServerDiskBackupRequestFromJSON,
     CreateServerDiskBackupRequestToJSON,
     CreateServerDiskRequestFromJSON,
@@ -126,6 +130,8 @@ import {
     PerformActionOnBackupRequestToJSON,
     PerformActionOnServerRequestFromJSON,
     PerformActionOnServerRequestToJSON,
+    ServerBackupDownloadUrlRequestFromJSON,
+    ServerBackupDownloadUrlRequestToJSON,
     UpdateDatabaseInstance409ResponseFromJSON,
     UpdateDatabaseInstance409ResponseToJSON,
     UpdateServerFromJSON,
@@ -172,6 +178,13 @@ export interface CreateServerDiskBackupOperationRequest {
     serverId: number;
     diskId: number;
     createServerDiskBackupRequest?: CreateServerDiskBackupRequest;
+}
+
+export interface CreateServerDiskBackupDownloadUrlRequest {
+    serverId: number;
+    diskId: number;
+    backupId: number;
+    serverBackupDownloadUrlRequest: ServerBackupDownloadUrlRequest;
 }
 
 export interface DeleteServerRequest {
@@ -642,6 +655,61 @@ export class ServersApi extends runtime.BaseAPI {
      */
     async createServerDiskBackup(requestParameters: CreateServerDiskBackupOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateServerDiskBackup201Response> {
         const response = await this.createServerDiskBackupRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы получить ссылку для скачивания бэкапа диска сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/disks/{disk_id}/backups/{backup_id}/download-url`.   Скачивание бэкапов доступно для серверов в локациях `ru-1` (Санкт-Петербург) и `ru-3` (Москва). Для серверов в других локациях метод вернет ошибку со статусом `400`.   Ссылка действует 7 дней. Скачать бэкап по ней может любой, у кого она есть, поэтому не передавайте ее третьим лицам.   Тело ответа будет представлять собой объект JSON с ключом `backup_url`.
+     * Получение ссылки для скачивания бэкапа диска сервера
+     */
+    async createServerDiskBackupDownloadUrlRaw(requestParameters: CreateServerDiskBackupDownloadUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateServerDiskBackupDownloadUrl201Response>> {
+        if (requestParameters.serverId === null || requestParameters.serverId === undefined) {
+            throw new runtime.RequiredError('serverId','Required parameter requestParameters.serverId was null or undefined when calling createServerDiskBackupDownloadUrl.');
+        }
+
+        if (requestParameters.diskId === null || requestParameters.diskId === undefined) {
+            throw new runtime.RequiredError('diskId','Required parameter requestParameters.diskId was null or undefined when calling createServerDiskBackupDownloadUrl.');
+        }
+
+        if (requestParameters.backupId === null || requestParameters.backupId === undefined) {
+            throw new runtime.RequiredError('backupId','Required parameter requestParameters.backupId was null or undefined when calling createServerDiskBackupDownloadUrl.');
+        }
+
+        if (requestParameters.serverBackupDownloadUrlRequest === null || requestParameters.serverBackupDownloadUrlRequest === undefined) {
+            throw new runtime.RequiredError('serverBackupDownloadUrlRequest','Required parameter requestParameters.serverBackupDownloadUrlRequest was null or undefined when calling createServerDiskBackupDownloadUrl.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/servers/{server_id}/disks/{disk_id}/backups/{backup_id}/download-url`.replace(`{${"server_id"}}`, encodeURIComponent(String(requestParameters.serverId))).replace(`{${"disk_id"}}`, encodeURIComponent(String(requestParameters.diskId))).replace(`{${"backup_id"}}`, encodeURIComponent(String(requestParameters.backupId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ServerBackupDownloadUrlRequestToJSON(requestParameters.serverBackupDownloadUrlRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateServerDiskBackupDownloadUrl201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы получить ссылку для скачивания бэкапа диска сервера, отправьте POST-запрос на `/api/v1/servers/{server_id}/disks/{disk_id}/backups/{backup_id}/download-url`.   Скачивание бэкапов доступно для серверов в локациях `ru-1` (Санкт-Петербург) и `ru-3` (Москва). Для серверов в других локациях метод вернет ошибку со статусом `400`.   Ссылка действует 7 дней. Скачать бэкап по ней может любой, у кого она есть, поэтому не передавайте ее третьим лицам.   Тело ответа будет представлять собой объект JSON с ключом `backup_url`.
+     * Получение ссылки для скачивания бэкапа диска сервера
+     */
+    async createServerDiskBackupDownloadUrl(requestParameters: CreateServerDiskBackupDownloadUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateServerDiskBackupDownloadUrl201Response> {
+        const response = await this.createServerDiskBackupDownloadUrlRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -311,6 +311,7 @@ src/models/CreateServer201Response.ts
 src/models/CreateServerConfiguration.ts
 src/models/CreateServerDisk201Response.ts
 src/models/CreateServerDiskBackup201Response.ts
+src/models/CreateServerDiskBackupDownloadUrl201Response.ts
 src/models/CreateServerDiskBackupRequest.ts
 src/models/CreateServerDiskRequest.ts
 src/models/CreateServerNetwork.ts
@@ -776,6 +777,8 @@ src/models/SchemasPresetsResponse.ts
 src/models/SendAiSolutionMessage.ts
 src/models/SendAiSolutionMessage200Response.ts
 src/models/ServerBackup.ts
+src/models/ServerBackupDownloadUrl.ts
+src/models/ServerBackupDownloadUrlRequest.ts
 src/models/ServerDisk.ts
 src/models/ServerIp.ts
 src/models/ServerLog.ts
