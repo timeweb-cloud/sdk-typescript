@@ -2,7 +2,6 @@
 /* eslint-disable */
 export * from './AIAgentIntegrationsApi';
 export * from './AIAgentSkillsApi';
-export * from './AIAgentToolsApi';
 export * from './AIAgentsApi';
 export * from './AIGatewayApi';
 export * from './AIGatewayInferenceApi';

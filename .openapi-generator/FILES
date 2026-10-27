@@ -5,7 +5,6 @@ README.md
 package.json
 src/apis/AIAgentIntegrationsApi.ts
 src/apis/AIAgentSkillsApi.ts
-src/apis/AIAgentToolsApi.ts
 src/apis/AIAgentsApi.ts
 src/apis/AIGatewayApi.ts
 src/apis/AIGatewayInferenceApi.ts
