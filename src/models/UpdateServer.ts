@@ -81,7 +81,7 @@ export interface UpdateServer {
      */
     imageId?: string;
     /**
-     * Cloud-init скрипт
+     * Cloud-init скрипт. Максимальный размер — 65 535 байт в UTF-8.
      * @type {string}
      * @memberof UpdateServer
      */
