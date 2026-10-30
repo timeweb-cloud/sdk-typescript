@@ -142,6 +142,11 @@ src/models/AppConfiguration.ts
 src/models/AppDiskStatus.ts
 src/models/AppDomainsInner.ts
 src/models/AppProvider.ts
+src/models/AppV2.ts
+src/models/AppV2Configuration.ts
+src/models/AppV2DiskStatus.ts
+src/models/AppV2DomainsInner.ts
+src/models/AppV2Provider.ts
 src/models/ApproveTelegramPairing.ts
 src/models/AppsPresets.ts
 src/models/AppsPresetsBackendPresetsInner.ts
@@ -247,6 +252,10 @@ src/models/CreateAiSolution.ts
 src/models/CreateAiSolution201Response.ts
 src/models/CreateApp.ts
 src/models/CreateApp201Response.ts
+src/models/CreateAppV2.ts
+src/models/CreateAppV2201Response.ts
+src/models/CreateAppV2Configuration.ts
+src/models/CreateAppV2Network.ts
 src/models/CreateBalancer.ts
 src/models/CreateBalancer200Response.ts
 src/models/CreateBalancerCertificates.ts

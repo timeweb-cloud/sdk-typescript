@@ -21,6 +21,8 @@ import type {
   AvailableFrameworks,
   CreateApp,
   CreateApp201Response,
+  CreateAppV2,
+  CreateAppV2201Response,
   CreateDeploy201Response,
   CreateDeployRequest,
   GetAccountStatus403Response,
@@ -56,6 +58,10 @@ import {
     CreateAppToJSON,
     CreateApp201ResponseFromJSON,
     CreateApp201ResponseToJSON,
+    CreateAppV2FromJSON,
+    CreateAppV2ToJSON,
+    CreateAppV2201ResponseFromJSON,
+    CreateAppV2201ResponseToJSON,
     CreateDeploy201ResponseFromJSON,
     CreateDeploy201ResponseToJSON,
     CreateDeployRequestFromJSON,
@@ -106,6 +112,10 @@ export interface AddProviderRequest {
 
 export interface CreateAppRequest {
     createApp: CreateApp;
+}
+
+export interface CreateAppV2Request {
+    createAppV2: CreateAppV2;
 }
 
 export interface CreateDeployOperationRequest {
@@ -239,7 +249,7 @@ export class AppsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать приложение, отправьте POST-запрос в `/api/v1/apps`, задав необходимые атрибуты.
+     * Метод устарел. Используйте [POST /api/v2/apps](#operation/createAppV2).  Чтобы создать приложение, отправьте POST-запрос в `/api/v1/apps`, задав необходимые атрибуты.
      * Создание приложения
      */
     async createAppRaw(requestParameters: CreateAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateApp201Response>> {
@@ -273,11 +283,54 @@ export class AppsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Чтобы создать приложение, отправьте POST-запрос в `/api/v1/apps`, задав необходимые атрибуты.
+     * Метод устарел. Используйте [POST /api/v2/apps](#operation/createAppV2).  Чтобы создать приложение, отправьте POST-запрос в `/api/v1/apps`, задав необходимые атрибуты.
      * Создание приложения
      */
     async createApp(requestParameters: CreateAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateApp201Response> {
         const response = await this.createAppRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Чтобы создать приложение, отправьте POST-запрос в `/api/v2/apps`.  Создание сервера, настройка окружения и первый деплой выполняются асинхронно. Ответ `201 Created` содержит запись приложения в статусе `new` и не означает, что приложение уже готово к работе. До создания инфраструктуры в ответе могут отсутствовать `ip`, `location`, `configuration`, `disk_status`, `language`, `framework`, `envs`, `env_version`, `build_cmd`, `run_cmd` и `index_dir`. Состояние приложения можно проверять через `GET /api/v2/apps/{app_id}`.  В v2 обязательно поле `language`, а в ответе ветка репозитория называется `branch`. Для Git-репозитория передайте параметры провайдера, репозитория, ветки, коммита и сборки. Для готового Docker-образа используйте `type: backend`, `language: custom-image`, `docker_image` и `docker_image_tag`. Для frontend обязателен `preset_id`, для backend — либо `preset_id`, либо `configuration`. ID тарифа можно получить через `GET /api/v1/presets/apps`.
+     * Создание приложения (v2)
+     */
+    async createAppV2Raw(requestParameters: CreateAppV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateAppV2201Response>> {
+        if (requestParameters.createAppV2 === null || requestParameters.createAppV2 === undefined) {
+            throw new runtime.RequiredError('createAppV2','Required parameter requestParameters.createAppV2 was null or undefined when calling createAppV2.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v2/apps`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateAppV2ToJSON(requestParameters.createAppV2),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateAppV2201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Чтобы создать приложение, отправьте POST-запрос в `/api/v2/apps`.  Создание сервера, настройка окружения и первый деплой выполняются асинхронно. Ответ `201 Created` содержит запись приложения в статусе `new` и не означает, что приложение уже готово к работе. До создания инфраструктуры в ответе могут отсутствовать `ip`, `location`, `configuration`, `disk_status`, `language`, `framework`, `envs`, `env_version`, `build_cmd`, `run_cmd` и `index_dir`. Состояние приложения можно проверять через `GET /api/v2/apps/{app_id}`.  В v2 обязательно поле `language`, а в ответе ветка репозитория называется `branch`. Для Git-репозитория передайте параметры провайдера, репозитория, ветки, коммита и сборки. Для готового Docker-образа используйте `type: backend`, `language: custom-image`, `docker_image` и `docker_image_tag`. Для frontend обязателен `preset_id`, для backend — либо `preset_id`, либо `configuration`. ID тарифа можно получить через `GET /api/v1/presets/apps`.
+     * Создание приложения (v2)
+     */
+    async createAppV2(requestParameters: CreateAppV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateAppV2201Response> {
+        const response = await this.createAppV2Raw(requestParameters, initOverrides);
         return await response.value();
     }
 
